@@ -6,7 +6,17 @@
     </div>
     <div class="content">
       <div class="phone-background">
-        <img class="phone" src="../assets/phone.png">
+        <div class="download-content">
+          <img class="phone" src="../assets/phone.png">
+          <div class="download-text">
+            <span>Watch Together!</span>
+            <br>
+            <span>Anywhere!</span>
+            <br>
+            <p class="small-text">Get the app.</p>
+            <img class="app-store" src="../assets/app-store.png">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -30,6 +40,7 @@ export default {
   font-size: 38px;
   color: white;
   float: left;
+  font-weight: 300;
 }
 
 .logo {
@@ -49,13 +60,20 @@ export default {
   position: relative;
 }
 
+.download-content {
+  padding-left: 10rem;
+  font-family: "Avenir Next";
+  font-size: 28px;
+  font-weight: 1000;
+  display: inline-block;
+}
+
 .phone {
   width: 240px;
   height: 319px;
   position: relative;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  display: inline-block;
+  padding-top: 5%;
 }
 
 .phone-background {
@@ -66,6 +84,22 @@ export default {
   border-top-right-radius: 5%;
   border-bottom-right-radius: 5%;
   
+}
+
+.download-text {
+  position: relative;
+  display: inline-block;
+  padding-right: 3rem;
+}
+
+.app-store {
+  width: 15rem;
+}
+
+.small-text {
+  font-size: 12px;
+  text-align: center;
+  font-weight: 100;
 }
 
 </style>

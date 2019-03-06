@@ -5,18 +5,16 @@
       <img class="logo" src="../assets/logo.png">
     </div>
     <div class="login-block">
+      <span class="login-label"> Username or email </span>
+      <span class="login-label"> Password </span>
       <v-layout row wrap>
-        <v-flex xs12 sm6 md3>
+        <v-flex xs12 sm6 md4>
           <v-text-field
-              label="Solo"
-              placeholder="First Name"
               solo
             ></v-text-field>
         </v-flex>
-        <v-flex xs12 sm6 md3>
+        <v-flex xs12 sm6 md4>
           <v-text-field
-              label="Solo"
-              placeholder="Last Name"
               solo
             ></v-text-field>
         </v-flex>
@@ -42,14 +40,14 @@
           <p class="registration-header"> Create a New Account </p>
           <p> Text and watch together! </p>
             <v-layout row wrap>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-text-field
                     label="Solo"
                     placeholder="First Name"
                     solo-inverted
                   ></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-text-field
                     label="Solo"
                     placeholder="Last Name"
@@ -65,39 +63,31 @@
             ></v-text-field>
             <v-spacer> </v-spacer>
             <v-text-field
-              label="Solo"
               placeholder="New password"
               solo-inverted
             ></v-text-field>
-            <p> Birthday </p>
 
-          <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :nudge-right="40"
-          :return-value.sync="date"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on }">
-            <v-text-field
-              v-model="date"
-              prepend-icon="event"
-              readonly
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-          </v-date-picker>
-        </v-menu>
-
+          <p> Birthday </p>
+          <v-layout row wrap>
+            <v-flex xs12 sm6 md2>
+              <v-text-field
+                  placeholder="Feb"
+                  solo-inverted
+                ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 md2>
+              <v-text-field
+                  placeholder="12"
+                  solo-inverted
+                ></v-text-field>
+            </v-flex>
+            <v-flex xs12 sm6 md3>
+              <v-text-field
+                  placeholder="2019"
+                  solo-inverted
+                ></v-text-field>
+            </v-flex>
+          </v-layout>
         <p> By clicking Sign Up, you agree to the Terms and Policy.</p>
         <v-btn large round color="#71C3FF" class="white--text">Sign Up</v-btn>
 
@@ -111,10 +101,6 @@
 export default {
   name: 'LandingPage',
   data: () => ({
-    date: new Date().toISOString().substr(0, 10),
-    menu: false,
-    modal: false,
-    menu2: false
   })
 }
 </script>
@@ -204,6 +190,7 @@ export default {
   padding-left: 4rem;
   padding-top: 3rem;
   padding-right: 2rem;
+  max-width: 500px;
 }
 
 .registration-header {
@@ -219,6 +206,11 @@ export default {
 
 .footer-information {
   display: inline-block;
+}
+
+.login-label {
+  margin: 2rem;
+  color: white;
 }
 
 </style>

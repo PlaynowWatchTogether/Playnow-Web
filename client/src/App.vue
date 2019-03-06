@@ -26,4 +26,25 @@ html {
 body {
   margin: 0px;
 }
+
+p {
+  margin: 0px;
+}
+
+.theme--light.v-text-field--solo-inverted.v-text-field--solo>.v-input__control>.v-input__slot {
+  border-radius: 500px;
+  margin: 6px;
+}
+
+.theme--light.v-text-field--solo.v-text-field--solo>.v-input__control>.v-input__slot {
+  border-radius: 500px;
+  margin: 6px;
+}
+
+.v-text-field.v-text-field--solo .v-input__control {
+  min-height: 0px;
+  margin-right: 6px;
+  min-height: 36px;
+  min-width: 100px;
+}
 </style>

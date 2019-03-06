@@ -96,10 +96,27 @@
     </div>
     <div class="footer-content">
       <v-layout row xs12 wrap>
-        <p class="footer-text"> Company </p>
-        <p class="footer-text"> Legal </p>
-        <p class="footer-text"> Community </p>
-        <p class="footer-text"> Business </p>
+          <v-layout column>
+            <p class="footer-headline">Company</p>
+            <p class="footer-text"> About Playnow </p>
+            <p class="footer-text"> Jobs </p>
+          </v-layout>
+          <v-layout column>
+            <p class="footer-headline">Legal</p>
+            <p class="footer-text"> Terms of Use </p>
+            <p class="footer-text"> Privacy Policy </p>
+            <p class="footer-text"> Copyright </p>
+          </v-layout>
+          <v-layout column>
+            <p class="footer-headline">Community</p>
+            <p class="footer-text"> Guidelines </p>
+            <p class="footer-text"> Support </p>
+          </v-layout>
+          <v-layout column>
+            <p class="footer-headline">Business</p>
+            <p class="footer-text"> Branding</p>
+            <p class="footer-text"> Contact </p>
+          </v-layout>
       </v-layout>
     </div>
 
@@ -121,7 +138,7 @@ export default {
   font-size: 38px;
   color: white;
   float: left;
-  font-weight: 300;
+  font-weight: bold;
 }
 
 .logo {
@@ -213,14 +230,20 @@ export default {
 
 .footer-content {
   display: inline-block;
-  padding: 2rem 0rem 0rem 10rem;
+  padding: 2rem 0rem 0rem 7rem;
   color: white;
   font-weight: 1000;
   font-size: 20px;
 }
 
 .footer-text {
-  padding: 0rem 3rem 1rem 3rem;;
+  padding: 0rem 4rem 1rem 1rem;
+}
+
+.footer-headline {
+  padding: 0rem 4rem 2rem 1rem;
+  font-size: 1.17em;
+  font-weight: bold;
 }
 
 .login-label {

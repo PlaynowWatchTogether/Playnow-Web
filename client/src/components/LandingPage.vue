@@ -94,6 +94,16 @@
         </div>
       </div>
     </div>
+    <div class="footer-content">
+      <v-layout row xs12 wrap>
+        <p class="footer-text"> Company </p>
+        <p class="footer-text"> Legal </p>
+        <p class="footer-text"> Community </p>
+        <p class="footer-text"> Business </p>
+      </v-layout>
+    </div>
+
+
   </div>
 </template>
 
@@ -108,7 +118,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .logo-text {
-  font-family: "Avenir Next";
   font-size: 38px;
   color: white;
   float: left;
@@ -124,7 +133,7 @@ export default {
 .logo-block {
   padding-left: 10rem;
   padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-bottom: 2rem;
   display: inline-block;
 }
 
@@ -136,7 +145,6 @@ export default {
 
 .download-content {
   padding-left: 10rem;
-  font-family: "Avenir Next";
   font-size: 28px;
   font-weight: 1000;
   display: inline-block;
@@ -194,7 +202,6 @@ export default {
 }
 
 .registration-header {
-  font-family: "Avenir Next";
   font-size: 30px;
 }
 
@@ -204,8 +211,16 @@ export default {
   padding-top: 1rem;
 }
 
-.footer-information {
+.footer-content {
   display: inline-block;
+  padding: 2rem 0rem 0rem 10rem;
+  color: white;
+  font-weight: 1000;
+  font-size: 20px;
+}
+
+.footer-text {
+  padding: 0rem 3rem 1rem 3rem;;
 }
 
 .login-label {

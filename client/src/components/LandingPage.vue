@@ -168,11 +168,10 @@ export default {
 }
 
 .phone {
-  width: 240px;
   height: 319px;
   position: relative;
   display: inline-block;
-  padding-top: 5%;
+  top: 8rem;
 }
 
 .phone-background {
@@ -196,7 +195,7 @@ export default {
 }
 
 .download-text {
-  position: relative;
+  position: sticky;
   display: inline-block;
   padding-right: 3rem;
 }
@@ -230,7 +229,7 @@ export default {
 
 .footer-content {
   display: inline-block;
-  padding: 2rem 0rem 0rem 7rem;
+  padding: 2rem 0rem 0rem 5rem;
   color: white;
   font-weight: 1000;
   font-size: 20px;

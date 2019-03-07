@@ -119,8 +119,9 @@
           </v-layout>
       </v-layout>
     </div>
-
-
+    <footer>
+    <p class="copyright-text">©2019 Playnow, Inc. All Rights Reserved.</p>
+    </footer>
   </div>
 </template>
 
@@ -248,6 +249,12 @@ export default {
 .login-label {
   margin: 2rem;
   color: white;
+}
+
+.copyright-text {
+  color: white;
+  float: right;
+  padding: 2rem 5rem 2rem 2rem;
 }
 
 </style>

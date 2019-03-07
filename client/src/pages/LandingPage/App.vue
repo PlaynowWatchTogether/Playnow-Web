@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="app">
     <div class="logo-block">
       <span class="logo-text">Playnow</span>
       <img class="logo" src="../assets/logo.png">

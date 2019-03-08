@@ -80,6 +80,12 @@
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 }
 
+.loginError {
+  display: block;
+  color: red;
+  font-size: 15px;
+  margin-left: 10px;
+}
 .welcomeHeader .forgotPassword {
   display: block;
   color: #D5AFED;

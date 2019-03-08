@@ -20,6 +20,14 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    firebase: {
+      apiKey: "AIzaSyB2wa-7D0HZTsSwFNXkUSWs7o-kGl0ku-0",
+      authDomain: "goldenfingers1-b95ba.firebaseapp.com",
+      databaseURL: "https://playnow-test.firebaseio.com",
+      projectId: "goldenfingers1-b95ba",
+      storageBucket: "goldenfingers1-b95ba.appspot.com",
+      messagingSenderId: "491254045283"
     }
   };
 

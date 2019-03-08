@@ -89,7 +89,7 @@
             </v-flex>
           </v-layout>
         <p> By clicking Sign Up, you agree to the Terms and Policy.</p>
-        <v-btn large round color="#71C3FF" class="white--text">Sign Up</v-btn>
+        <v-btn large round color="#71C3FF" class="white--text" href="main.html">Sign Up</v-btn>
 
         </div>
       </div>
@@ -127,7 +127,9 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'LandingPage',
+  methods: {
+  },
 }
 </script>
 

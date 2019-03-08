@@ -1,0 +1,55 @@
+<div class="container-fluid background_gradient maxHeight d-flex flex-column h-100">
+  <header>
+    <div class="row welcomeHeader">
+      <div class="col-5 welcomeIconHolder">
+        <span class="header_title">Playnow</span>
+        <img src="/assets/welcome_icon.png" class="welcome_icon" alt="Icon">
+      </div>
+      <div class="col-5">
+        <div class="row">
+          <div>
+            <div class="welcomeHeaderUsername">
+              <span class="usernameLabel">Username or email</span>
+              {{input value=form.username classNames="username"}}
+            </div>
+
+          </div>
+          <div>
+            <div class="welcomeHeaderPassword">
+              <span class="passwordLabel">Password</span>
+              {{input value=form.password classNames="password"}}
+              <span class="forgotPassword">Forgot Password?</span>
+            </div>
+          </div>
+          <div class="loginHolder">
+            <button {{action 'loginAction'}} class="loginBtn">Log In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  {{#resizablecontent classNames='flex-shrink-0 page-row page-row-expanded'}}
+    <div class="flex-shrink-0 page-row page-row-expanded">
+      <div class="container-fluid h-100">
+        <div class="row welcomeContent h-100">
+          <div class="col-7 welcomeLeft">
+            <div class="content">
+
+              asdf
+            </div>
+          </div>
+          <div class="col-5 welcomeRight">
+            <div class="content">
+              asdf
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/resizablecontent}}
+  <!-- Footer -->
+  <footer class="footer mt-auto py-3">
+
+    <div style="height:100px"></div>
+  </footer>
+</div>

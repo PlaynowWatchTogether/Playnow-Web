@@ -1,0 +1,28 @@
+<div class="row welcomeHeader">
+  <div class="col-7 welcomeIconHolder">
+    <span class="header_title">Playnow</span>
+    <img src="/assets/welcome_icon.png" class="welcome_icon" alt="Icon">
+  </div>
+  <div class="col-5">
+    <div class="row headerLoginControls">
+      <div>
+        <div class="welcomeHeaderUsername">
+          <span class="usernameLabel">Username or email</span>
+          {{input value=form.username classNames="username"}}
+        </div>
+
+      </div>
+      <div>
+        <div class="welcomeHeaderPassword">
+          <span class="passwordLabel">Password</span>
+          {{input value=form.password classNames="password"}}
+          <span class="forgotPassword">Forgot Password?</span>
+        </div>
+      </div>
+      <div class="loginHolder">
+        <button {{action "loginAction"}} class="loginBtn">Log In</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{yield}}

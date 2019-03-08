@@ -1,11 +1,11 @@
-body, html {
-  height: 100%;
-}
+/*body, html {*/
+/*height: 100%;*/
+/*}*/
 
-.body {
-  min-height: 100%;
-  min-width: 1200px;
-}
+/*.body {*/
+/*min-height: 100%;*/
+/*min-width: 1200px;*/
+/*}*/
 
 .background_gradient {
   background-image: linear-gradient(to bottom right, #87B7FA, #C837EA);
@@ -16,22 +16,22 @@ body, html {
   height: 100%;
 }
 
-header {
-  text-align: center;
-}
+/*header {*/
+/*text-align: center;*/
+/*}*/
 
-section {
-  display: -webkit-flex;
-  display: flex;
-}
-
-footer {
-  text-align: center;
-}
-
-body > .ember-view {
-  height: 100%;
-}
+/*section {*/
+/*display: -webkit-flex;*/
+/*display: flex;*/
+/*}*/
+/**/
+/*footer {*/
+/*text-align: center;*/
+/*}*/
+/**/
+/*body > .ember-view {*/
+/*height: 100%;*/
+/*}*/
 
 .header_title {
   font-size: 30px;
@@ -105,10 +105,16 @@ body > .ember-view {
 
 .welcomeIconHolder {
   text-align: center;
+  padding-right: 200px;
 }
 
+.welcomeBody {
+  margin: 0;
+  padding: 0;
+}
 .welcomeHeader {
   padding-top: 20px;
+  width: 100%;
 }
 
 .welcomeLeft {
@@ -117,6 +123,7 @@ body > .ember-view {
 }
 
 .welcomeLeft .content {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
   background: white;
   border: 0;
   height: 100%;
@@ -129,16 +136,27 @@ body > .ember-view {
 }
 
 .welcomeRight .content {
+  padding-left: 30px;
   background: white;
   border: 0;
   border-radius: 20px 0 0 20px;
   height: 100%;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 }
 
 .welcomeContent {
   padding-top: 10px;
 }
 
+.navbar {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar > .container, .navbar > .container-fluid {
+  margin: 0;
+  padding: 0;
+}
 .rootContainer {
   margin-left: 0;
   padding-left: 0;
@@ -153,4 +171,171 @@ body > .ember-view {
 
 .page-row-expanded {
   height: 70%;
+}
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  min-width: 1920px;
+  min-height: 700px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+
+body > .container {
+
+}
+
+.container .text-muted {
+
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.crHolder {
+  text-align: center;
+  position: relative;
+}
+
+.copyRight {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  color: white;
+}
+
+
+.footerColumnHeader {
+  padding-top: 20px;
+  color: white;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.footerColumnItem {
+  color: white;
+  font-size: 12px;
+}
+
+.headerLoginControls {
+  padding-left: 40px;
+}
+
+.registerEdit {
+  border: 1px #DDDDDD;
+  background: #F5F4F4;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.welcomeRight .content .title {
+  font-size: 25px;
+  padding-top: 40px;
+  padding-bottom: 0;
+  margin-bottom: 5px;
+}
+
+.welcomeRight .content .subTitle {
+  font-size: 11px;
+  margin-top: 0;
+}
+
+.firstLastName {
+  display: inline-block;
+}
+
+.registerFirstName {
+  display: inline-block;
+}
+
+.registerLastName {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+.addFriend {
+  font-size: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.registerUsername {
+  width: 50%;
+}
+
+.registerUsername input {
+  width: 100%;
+}
+
+.registerPassword {
+  width: 50%;
+  margin-top: 10px;
+}
+
+.registerPassword input {
+  width: 100%;
+}
+
+.birthdayLabel {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  padding-top: 10px;
+  font-size: 10px;
+}
+
+.registerBirthday .editMonth {
+  width: 60px;
+}
+
+.registerBirthday .editDate {
+  width: 60px;
+}
+
+.registerBirthday .editYear {
+  width: 60px;
+}
+
+.bdHint {
+  display: inline-block;
+  width: 200px;
+  font-size: 10px;
+  vertical-align: middle;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+  color: #009DFF;
+}
+
+.termsText {
+  padding-top: 20px;
+  font-size: 10px;
+}
+
+.signUpBtn {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+  color: white;
+  background: #71C3FF;
+  border-width: 0;
+  padding: 7px 30px;
+  border-radius: 20px;
+  margin-left: 60px;
 }

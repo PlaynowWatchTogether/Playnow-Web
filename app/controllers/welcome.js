@@ -8,22 +8,115 @@ export default Controller.extend({
 
     this.form = this.form || {
       username: '',
-      password: ''
+      password: '',
+      register: {
+        error: {}
+      }
     };
     this.error = ''
 
+  },
+  userCreated() {
+    const auth = this.get('firebaseApp').auth();
+    Ember.Logger.debug("Created user with " + auth.currentUser.uid);
+    this.transitionToRoute("home");
   },
   async loginWithEmail(email, password) {
     const auth = await this.get('firebaseApp').auth();
     auth.signInWithEmailAndPassword(email, password).then(() => {
       Ember.Logger.debug('signed in');
-      this.transitionToRoute("home");
+      this.userCreated()
     }).catch((error) => {
-      Ember.Logger.debug(error)
+      Ember.Logger.debug(error);
       this.set('error', "Login failed")
     })
   },
+  findUser(username) {
+    return new Promise((resolve, reject) => {
+      const db = this.get('firebaseApp').database();
+      db.ref('UserIndex').orderByChild('Username').equalTo(username).once('value', (snaphot) => {
+        if (snaphot.exists()) {
+          resolve(0)
+        } else {
+          resolve(1)
+        }
+      }, (error) => {
+        reject(error)
+      })
+    })
+  },
+  updateProfile(user, fields) {
+    const db = this.get('firebaseApp').database();
+    return db.ref("Users/" + user.uid).update(fields)
+  },
+  createUser(username, password) {
+    const auth = this.get('firebaseApp').auth();
+    return auth.createUserWithEmailAndPassword(username + "@g2z4oldenfingers.com", password)
+  },
+  isEmpty(str) {
+    return (!str || 0 === str.length);
+  },
+  years(birthday) {
+    let ageDifMs = Date.now() - birthday.getTime();
+    let ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  },
   actions: {
+    async signUpAction() {
+      let register = this.get('form.register');
+      this.set('form.register.error', {});
+      if (this.isEmpty(register.firstName)) {
+        this.set('form.register.error.firstName', 'Should not be empty');
+        return
+      }
+      if (this.isEmpty(register.lastName)) {
+        this.set('form.register.error.lastName', 'Should not be empty');
+        return
+      }
+      if (!register.birthDate) {
+        this.set('form.register.error.birthDate', 'Should not be empty');
+        return
+      }
+      if (this.years(register.birthDate) < 13) {
+        this.set('form.register.error.birthDate', 'Should be 13 years old');
+        return
+      }
+      if (!register.password) {
+        this.set('form.register.error.password', 'Should not be empty');
+        return
+      }
+      if (!register.username) {
+        this.set('form.register.error.username', 'Should not be empty');
+        return
+      }
+      this.findUser(register.username).then((ret) => {
+        Ember.Logger.debug("User found: " + ret);
+        if (ret === 0) {
+          this.set('form.register.error.username', 'Username already taken')
+        } else {
+          this.createUser(register.username, register.password).then((user) => {
+            let bd = register.birthDate.getFullYear() + "-" + (register.birthDate.getMonth() + 1) + "-" + register.birthDate.getDate()
+            let fields = {
+              'Email': register.username + "@g2z4oldenfingers.com",
+              'BirthDate': bd,
+              'FirstName': register.firstName,
+              'LastName': register.lastName,
+            };
+            user.updateProfile({displayName: register.username}).then(() => {
+              return this.updateProfile(user, fields)
+            }).then(() => {
+              this.userCreated();
+            }, () => {
+              this.userCreated()
+            })
+          }, () => {
+            this.set('form.register.error.global', 'Sign up failed')
+          })
+        }
+      }, (error) => {
+        Ember.Logger.debug(error);
+      });
+    },
     async loginAction() {
       this.set('error', "");
       const db = await this.get('firebaseApp').database();

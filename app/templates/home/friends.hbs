@@ -5,16 +5,23 @@
   <div class="friendsTitle">
     <span class="friends">Friends</span>
   </div>
+  <div class="divider"></div>
 </div>
-<div class="divider"></div>
+
 <div class="friendsSearchHolder">
   <img src="/assets/search_icon.png" class="searchIcon">
-  {{input value=query classNames="friendsSearch" placeholder="Searh in messaging"}}
+  {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
 </div>
 <div class="friendsList">
 
+  {{#if loading}}
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  {{/if}}
   {{#each model as |friend|}}
-    <div class="friend row">
+    <div class="friend row" {{action 'chatFriend'}}>
       <div class="profileName col">
         <span class="firstName">{{friend.firstName}}</span>
         <span class="lastName">{{friend.lastName}}</span>
@@ -33,5 +40,6 @@
     </div>
 
   {{/each}}
+
 </div>
 {{outlet}}

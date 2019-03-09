@@ -1,16 +1,31 @@
-<nav class="home navbar navbar-default navbar-fixed-top">
-  <img src="assets/welcome_icon.png" class="homeIcon">
-</nav>
-<div class="container-fluid homeRoot">
-  <div class="row">
-    <div class="col-3 homeFriends">
-      <div class="content">
-        {{outlet 'friends'}}
+<div class="mainPage background_gradient">
+
+  <header class="home navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <img src="assets/welcome_icon.png" class="homeIcon">
+        </div>
       </div>
     </div>
-    <div class="col">
-      {{outlet}}
+  </header>
+  {{#welcome-body classNames="container-fluid root" tagName='section' minHeight=0}}
+    <div class="row h-100">
+      <div class="col-3 col-friends h-100">
+        <div class="row row-friends h-100">
+          <div class="col h-100 friendsOutlet">
+            {{outlet 'friends'}}
+          </div>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="row col-outlet">
+          <div class="col">
+            {{outlet}}
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-
+  {{/welcome-body}}
+  <footer></footer>
 </div>

@@ -7,7 +7,7 @@ export default Controller.extend({
     this._super(...arguments);
 
     this.loading = true;
-    this.model = []
+    this.model = [];
     this.db.friends((data) => {
       this.set('loading', false);
       this.set('model', data);

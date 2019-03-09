@@ -1,4 +1,5 @@
-<nav class="navbar navbar-default navbar-fixed-top">
+<div class="background_gradient welcomePage">
+
   {{#welcome-header classNames="container-fluid" tagName="header"}}
     <div class="row welcomeHeader">
       <div class="col-7 welcomeIconHolder">
@@ -29,86 +30,85 @@
       </div>
     </div>
   {{/welcome-header}}
-</nav>
-{{#welcome-body classNames="container-fluid welcomeBody"}}
 
-  <div class="row welcomeContent h-100">
-    <div class="col-7 welcomeLeft">
-      <div class="content">
+  {{#welcome-body classNames="container-fluid welcomeBody" tagName='section'}}
+    <div class="row welcomeContent h-100">
+      <div class="col-6 welcomeLeft">
+        <div class="content">
 
-        asdf
+          asdf
+        </div>
       </div>
-    </div>
-    <div class="col-5 welcomeRight">
-      <div class="content">
-        <p class="title">Create a New Account</p>
-        <p class="subTitle">Text and watch together</p>
-        <div class="firstLastName">
+      <div class="col-6 welcomeRight">
+        <div class="content">
+          <p class="title">Create a New Account</p>
+          <p class="subTitle">Text and watch together</p>
+          <div class="firstLastName">
 
-          <div class="registerFirstName">
-            {{input value=form.register.firstName classNames="registerEdit" placeholder="First name"}}
-            <span class="loginError">{{form.register.error.firstName}}</span>
+            <div class="registerFirstName">
+              {{input value=form.register.firstName classNames="registerEdit" placeholder="First name"}}
+              <span class="loginError">{{form.register.error.firstName}}</span>
+            </div>
+            <div class="registerLastName">
+              {{input value=form.register.lastName classNames="registerEdit" placeholder="Last name"}}
+              <span class="loginError">{{form.register.error.lastName}}</span>
+            </div>
           </div>
-          <div class="registerLastName">
-            {{input value=form.register.lastName classNames="registerEdit" placeholder="Last name"}}
-            <span class="loginError">{{form.register.error.lastName}}</span>
+          <p class="addFriend">Add friends with your username!</p>
+          <div class="registerUsername">
+
+            {{input value=form.register.username classNames="registerEdit" placeholder="Pick a Username (e.g user123)"}}
+            <span class="loginError">{{form.register.error.username}}</span>
           </div>
+          <div class="registerPassword">
+            {{input value=form.register.password classNames="registerEdit" placeholder="Password" type="password"}}
+            <span class="loginError">{{form.register.error.password}}</span>
+          </div>
+          <p class="birthdayLabel">Birthday</p>
+          <div class="registerBirthday">
+            {{bootstrap-datepicker value=form.register.birthDate calendarWeeks=true autoclose=true
+                                   classNames="registerEdit"}}
+            <span class="loginError">{{form.register.error.birthDate}}</span>
+            <p class="bdHint">You can’t use Playnow if you
+              are younger than 13.</p>
+          </div>
+          <p class="termsText">By clicking Sign Up, you agree to the Terms and Policy.</p>
+          <button {{action "signUpAction"}} class="signUpBtn">Sign Up</button>
+          <span class="loginError">{{form.register.error.global}}</span>
         </div>
-        <p class="addFriend">Add friends with your username!</p>
-        <div class="registerUsername">
-
-          {{input value=form.register.username classNames="registerEdit" placeholder="Pick a Username (e.g user123)"}}
-          <span class="loginError">{{form.register.error.username}}</span>
-        </div>
-        <div class="registerPassword">
-          {{input value=form.register.password classNames="registerEdit" placeholder="Password" type="password"}}
-          <span class="loginError">{{form.register.error.password}}</span>
-        </div>
-        <p class="birthdayLabel">Birthday</p>
-        <div class="registerBirthday">
-          {{bootstrap-datepicker value=form.register.birthDate calendarWeeks=true autoclose=true
-                                 classNames="registerEdit"}}
-          <span class="loginError">{{form.register.error.birthDate}}</span>
-          <p class="bdHint">You can’t use Playnow if you
-            are younger than 13.</p>
-        </div>
-        <p class="termsText">By clicking Sign Up, you agree to the Terms and Policy.</p>
-        <button {{action "signUpAction"}} class="signUpBtn">Sign Up</button>
-        <span class="loginError">{{form.register.error.global}}</span>
       </div>
     </div>
-  </div>
-{{/welcome-body}}
-
-<footer class="footer">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-1">
-      </div>
-      <div class="col">
-        <p class="footerColumnHeader">Company</p>
-        <p class="footerColumnItem">About playnow</p>
-        <p class="footerColumnItem">Jobs</p>
-      </div>
-      <div class="col">
-        <p class="footerColumnHeader">Legal</p>
-        <p class="footerColumnItem">Rerms of Use</p>
-        <p class="footerColumnItem">Privacy Policy</p>
-        <p class="footerColumnItem">Copyright</p>
-      </div>
-      <div class="col">
-        <p class="footerColumnHeader">Community</p>
-        <p class="footerColumnItem">Guidelines</p>
-        <p class="footerColumnItem">Support</p>
-      </div>
-      <div class="col">
-        <p class="footerColumnHeader">Business</p>
-        <p class="footerColumnItem">Branding</p>
-        <p class="footerColumnItem">Contact</p>
-      </div>
-      <div class="col-5 crHolder">
-        <p class="copyRight">©2019 Playnow, Inc. All rights reserved.</p>
+  {{/welcome-body}}
+  <footer>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col">
+          <p class="footerColumnHeader">Company</p>
+          <p class="footerColumnItem">About playnow</p>
+          <p class="footerColumnItem">Jobs</p>
+        </div>
+        <div class="col">
+          <p class="footerColumnHeader">Legal</p>
+          <p class="footerColumnItem">Rerms of Use</p>
+          <p class="footerColumnItem">Privacy Policy</p>
+          <p class="footerColumnItem">Copyright</p>
+        </div>
+        <div class="col">
+          <p class="footerColumnHeader">Community</p>
+          <p class="footerColumnItem">Guidelines</p>
+          <p class="footerColumnItem">Support</p>
+        </div>
+        <div class="col">
+          <p class="footerColumnHeader">Business</p>
+          <p class="footerColumnItem">Branding</p>
+          <p class="footerColumnItem">Contact</p>
+        </div>
+        <div class="col-5 crHolder">
+          <p class="copyRight">©2019 Playnow, Inc. All rights reserved.</p>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
+  </footer>
+</div>

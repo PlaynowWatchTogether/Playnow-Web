@@ -12,7 +12,7 @@ export default Component.extend({
   },
   handleSize() {
     let minHeight = 700;
-    let calcHeight = Math.max($(window).height(), minHeight) - $('.navbar').height() - $('footer').height()
+    let calcHeight = Math.max($('body').height(), minHeight) - $('header').height() - $('footer').height()
     $(this.element).css('height', calcHeight)
   },
   didInsertElement() {

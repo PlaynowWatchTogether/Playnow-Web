@@ -1,6 +1,6 @@
-/*body, html {*/
-/*height: 100%;*/
-/*}*/
+body, html {
+  height: 100%;
+}
 
 /*.body {*/
 /*min-height: 100%;*/
@@ -344,4 +344,198 @@ body > .container {
   padding: 7px 30px;
   border-radius: 20px;
   margin-left: 60px;
+}
+
+/*
+HOME
+ */
+.homeIcon {
+  width: 45px;
+  height: 45px;
+}
+
+.home.navbar {
+  height: 60px;
+}
+
+.homeRoot {
+  padding: 0;
+}
+
+.homeFriends .content {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+  background: white;
+  border: 0;
+  height: 100%;
+  border-radius: 0 20px 0 0;
+}
+
+.profilePic {
+  width: 71px;
+  height: 71px;
+  border-radius: 50%;
+}
+
+.friend {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.profileName {
+  margin: auto;
+  padding: 0;
+}
+
+.friend .firstName {
+  display: block;
+  color: black;
+  font-size: 22px;
+  text-align: right;
+}
+
+.friend .lastName {
+  display: block;
+  color: #A5A5A5;
+  font-size: 18px;
+  text-align: right;
+}
+
+.profilePicHolder {
+  margin-right: 40px;
+  position: relative;
+  width: 91px;
+  height: 71px;
+}
+
+.profilePic {
+  margin-left: 20px;
+}
+
+.online {
+  width: 20px;
+  height: 20px;
+  background: #07FF23;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: solid white 1px;
+}
+
+.unread {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: -8px;
+  top: -8px;
+
+}
+
+.friends {
+  font-size: 24px;
+  color: #B757EE;
+}
+
+.friendsHeader {
+  padding: 20px 20px 15px 40px;
+}
+
+.friendsTitle {
+  margin-right: 22px;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background: #E6E6E6;
+}
+
+.friendsSearchHolder {
+  width: 100%;
+  position: relative;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.friendsSearch:focus {
+  background: #F0F0F0;
+  outline: none;
+}
+
+.friendsSearch {
+
+  display: block;
+  border-radius: 20px;
+  background: #F0F0F0;
+  border-width: 0;
+  width: 100%;
+  height: 46px;
+  font-size: 20px;
+  padding-left: 50px;
+  padding-right: 20px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 37px;
+  top: 32px;
+}
+
+.composeIcon {
+  width: 38px;
+  height: 29px;
+}
+
+.friendsList {
+  height: 300px;
+  overflow: scroll;
+}
+
+.publicRooms {
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+  background: white;
+  border: 0;
+  height: 600px;
+  border-radius: 20px 0px 0 0;
+}
+
+.publicRooms .content {
+  padding-top: 20px;
+}
+
+.roomsTitleHolder {
+  margin-bottom: 15px;
+}
+
+.roomsTitle {
+  color: #88B3F9;
+  font-size: 24px;
+  margin-left: 20px;
+}
+
+.roomsSearchHolder {
+  width: 100%;
+  position: relative;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.roomsSearch:focus {
+  background: #F0F0F0;
+  outline: none;
+}
+
+.roomsSearch {
+
+  display: block;
+  border-radius: 20px;
+  background: #F0F0F0;
+  border-width: 0;
+  width: 100%;
+  height: 46px;
+  font-size: 20px;
+  padding-left: 50px;
+  padding-right: 20px;
 }

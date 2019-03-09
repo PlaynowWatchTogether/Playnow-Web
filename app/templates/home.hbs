@@ -1,1 +1,16 @@
-{{outlet}}
+<nav class="home navbar navbar-default navbar-fixed-top">
+  <img src="assets/welcome_icon.png" class="homeIcon">
+</nav>
+<div class="container-fluid homeRoot">
+  <div class="row">
+    <div class="col-3 homeFriends">
+      <div class="content">
+        {{outlet 'friends'}}
+      </div>
+    </div>
+    <div class="col">
+      {{outlet}}
+    </div>
+  </div>
+
+</div>

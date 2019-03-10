@@ -338,7 +338,7 @@ body.home.chat {
   }
 
   .col-child-content {
-    padding-left: 0px;
+    padding-left: 15px;
   }
 }
 
@@ -684,3 +684,37 @@ body.home.chat {
   }
 }
 
+
+/*
+CHAT
+ */
+.chatRoot {
+  .content {
+    .holder {
+      background: #fff;
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      border-radius: 0 20px 0 0;
+      display: grid;
+      grid-template-columns: auto 50px;
+      grid-template-rows: 50px 50px auto 50px;
+
+      .back {
+        text-align: center;
+        margin: auto;
+      }
+    }
+  }
+
+  .media {
+    padding-left: 25px;
+    padding-right: 0;
+
+    .holder {
+      width: 100%;
+      background: #fff;
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      border-radius: 20px 0 0 0;
+
+    }
+  }
+}

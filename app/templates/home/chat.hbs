@@ -1,1 +1,23 @@
-{{outlet}}
+<div class="row chatRoot h-100">
+  <div class="col-9 content h-100">
+    <div class="row holder h-100">
+      <div class="title">
+        <img src="{{model.chat.safeProfilePic}}" alt="ProfilePic">
+        <span class="name">{{model.chat.FirstName}} {{model.chat.LastName}}</span>
+      </div>
+      <div class="back">
+        {{#link-to 'home'}}
+          <img src="/assets/ic_arrow_back.png">
+        {{/link-to}}
+      </div>
+    </div>
+  </div>
+  <div class="col-3 media h-100">
+    <div class="row holder h-100">
+      <div class="col">
+        asdfasf
+
+      </div>
+    </div>
+  </div>
+</div>

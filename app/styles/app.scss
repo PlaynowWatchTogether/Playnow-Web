@@ -695,12 +695,87 @@ CHAT
       box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
       border-radius: 0 20px 0 0;
       display: grid;
-      grid-template-columns: auto 50px;
       grid-template-rows: 50px 50px auto 50px;
 
       .back {
         text-align: center;
         margin: auto;
+      }
+
+      .titleHolder {
+        display: grid;
+        grid-template-columns: auto 50px;
+        border-bottom: 1px solid #E6E6E6;
+
+        .title {
+          text-align: center;
+          vertical-align: middle;
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+
+        .profilePic {
+          width: 30px;
+          height: 30px;
+        }
+
+        .divider {
+
+        }
+      }
+
+      .searchHolder {
+        display: grid;
+        grid-template-rows: auto;
+        width: 100%;
+        border-bottom: 1px solid #E6E6E6;
+
+        .row {
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+
+        .who {
+          margin-left: 20px;
+        }
+      }
+
+      .messagesHolder {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        .message {
+          width: fit-content;
+          background: white;
+          padding: 10px;
+          border-radius: 20px;
+          box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
+          display: block;
+          margin-top: 20px;
+        }
+      }
+
+      .newMessageHolder {
+        border-top: 1px solid #E6E6E6;
+        display: grid;
+        grid-template-columns: auto 60px 80px;
+
+        input {
+          background: none;
+          border: none;
+          padding-left: 20px;
+        }
+
+        input:focus {
+          background: none;
+          outline: none;
+        }
+
+        img {
+          width: 31px;
+          height: 31px;
+          margin: auto;
+        }
       }
     }
   }

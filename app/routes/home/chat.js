@@ -3,10 +3,7 @@ import Ember from "ember";
 
 export default Route.extend({
   model(params) {
-    return Ember.RSVP.hash({
-      chat: this.store.peekRecord('friends', params['chat_id']),
-      mode: params['mode']
-    });
+    return params
   },
   activate() {
     this._super(...arguments);

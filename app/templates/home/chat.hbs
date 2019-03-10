@@ -1,14 +1,46 @@
 <div class="row chatRoot h-100">
   <div class="col-9 content h-100">
     <div class="row holder h-100">
-      <div class="title">
-        <img src="{{model.chat.safeProfilePic}}" alt="ProfilePic">
-        <span class="name">{{model.chat.FirstName}} {{model.chat.LastName}}</span>
+      <div class="titleHolder">
+        <div class="title">
+          {{#if chatModel.hasProfilePic}}
+            <img src="{{chatModel.user.safeProfilePic}}" class="profilePic" alt="ProfilePic">
+          {{/if}}
+          <span class="name">{{chatModel.title}}</span>
+        </div>
+        <div class="back">
+          {{#link-to 'home'}}
+            <img src="/assets/ic_arrow_back.png">
+          {{/link-to}}
+        </div>
       </div>
-      <div class="back">
-        {{#link-to 'home'}}
-          <img src="/assets/ic_arrow_back.png">
-        {{/link-to}}
+      <div class="searchHolder">
+        <div class="row">
+          <div class="col">
+            <span class="who">Who:</span>
+          </div>
+        </div>
+      </div>
+      <div class="messagesHolder">
+        <div class="messagesWrappper">
+          {{#each messages as |message|}}
+            <div class="message">
+              {{#if message.text}}
+                <span class="text">
+                  {{message.text}}
+                </span>
+              {{/if}}
+              {{#if message.thumbnail}}
+                <img src="{{message.thumbnail}}"/>
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+      </div>
+      <div class="newMessageHolder">
+        {{input value=messageText placeholder="Type a message..."}}
+        <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
+        <img src="/assets/ic_chat_msg_image.png"/>
       </div>
     </div>
   </div>

@@ -311,6 +311,37 @@ body, html {
   }
 }
 
+body.home.index {
+  .mainPage {
+    .row-friends {
+      background: white;
+      height: 100%;
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      border-radius: 0 20px 0 0;
+    }
+  }
+
+  .col-child-content {
+    padding-left: 25px;
+  }
+}
+
+
+body.home.chat {
+  .mainPage {
+    .row-friends {
+      background: white;
+      height: 100%;
+      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      border-right: 1px solid #D5D3D3;
+    }
+  }
+
+  .col-child-content {
+    padding-left: 0px;
+  }
+}
+
 .mainPage {
   .navbar {
     padding: 0;
@@ -332,18 +363,6 @@ body, html {
 
     padding-right: 0;
     padding-left: 0;
-  }
-
-  .col-friends {
-    padding-right: 25px;
-  }
-
-  .row-friends {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-    background: white;
-    border: 0;
-    height: 100%;
-    border-radius: 0 20px 0 0;
   }
 
   .col-outlet {
@@ -664,3 +683,4 @@ body, html {
     opacity: 0;
   }
 }
+

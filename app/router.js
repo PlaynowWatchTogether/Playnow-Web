@@ -10,7 +10,7 @@ Router.map(function() {
   this.route('welcome', {path: '/'});
   this.route('home', function () {
     this.route('friends');
-    this.route('chat');
+    this.route('chat', {path: '/chat/:chat_id/:type'});
   });
 });
 

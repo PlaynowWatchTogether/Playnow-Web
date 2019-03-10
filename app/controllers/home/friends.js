@@ -7,13 +7,14 @@ export default Controller.extend({
     this._super(...arguments);
 
     this.loading = true;
-    this.model = [];
+    this.model = this.store.peekAll('friends');
     this.db.friends((data) => {
+      this.set('model', this.store.peekAll('friends'));
       this.set('loading', false);
-      this.set('model', data);
+      // this.set('model', data);
     }, () => {
-      this.set('loading', false);
-      this.set('model', []);
+      // this.set('loading', false);
+      // this.set('model', []);
     })
   }
 });

@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <img src="assets/welcome_icon.png" class="homeIcon">
+          <img src="/assets/welcome_icon.png" class="homeIcon">
         </div>
       </div>
     </div>
@@ -13,17 +13,12 @@
     <div class="row h-100">
       <div class="col-3 col-friends h-100">
         <div class="row row-friends h-100">
-          <div class="col h-100 friendsOutlet">
-            {{outlet 'friends'}}
-          </div>
+          {{#home-friends-list classNames="col h-100 friendsOutlet" model=model.friends
+                               chatAction=(action "chatFriend")}}{{/home-friends-list}}
         </div>
       </div>
-      <div class="col-9">
-        <div class="row col-outlet">
-          <div class="col">
-            {{outlet}}
-          </div>
-        </div>
+      <div class="col-9 col-child-content">
+        {{outlet}}
       </div>
     </div>
   {{/welcome-body}}

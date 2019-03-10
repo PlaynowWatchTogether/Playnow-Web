@@ -7,7 +7,7 @@ export default Controller.extend({
     this._super(...arguments);
 
     this.loading = true;
-    this.model = []
+    this.model = [];
     this.db.rooms((items) => {
       this.set('model', items);
       this.set('loading', false);

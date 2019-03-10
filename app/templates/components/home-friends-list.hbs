@@ -1,0 +1,26 @@
+<div class="row friendsHeader">
+  <div class="friendsCompose col">
+    <img src="/assets/friends_compose.png" class="composeIcon"/>
+  </div>
+  <div class="friendsTitle">
+    <span class="friends">Friends</span>
+  </div>
+  <div class="divider"></div>
+</div>
+
+<div class="friendsSearchHolder">
+  <img src="/assets/search_icon.png" class="searchIcon">
+  {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
+</div>
+<div class="friendsList">
+  {{#if loading}}
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  {{/if}}
+  {{#each model as |friend|}}
+    {{#home-friend-item model=friend classNames='friend row' chatAction=(action 'chatFriend')}}{{/home-friend-item}}
+  {{/each}}
+
+</div>

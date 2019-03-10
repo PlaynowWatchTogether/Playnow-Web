@@ -1,0 +1,15 @@
+<div class="profileName col">
+  <span class="firstName">{{model.firstName}}</span>
+  <span class="lastName">{{model.lastName}}</span>
+</div>
+
+<div class="profilePicHolder">
+  <img class="profilePic" src="{{model.safeProfilePic}}"/>
+  {{#if model.isOnline}}
+    <div class="online"></div>
+  {{/if}}
+  {{#if model.hasNewMessages}}
+    <img class="unread" src="/assets/friend_unread.png"/>
+  {{/if}}
+
+</div>

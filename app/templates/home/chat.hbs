@@ -24,16 +24,14 @@
       <div class="messagesHolder">
         <div class="messagesWrappper">
           {{#each messages as |message|}}
-            <div class="message">
-              {{#if message.text}}
-                <span class="text">
-                  {{message.text}}
-                </span>
-              {{/if}}
-              {{#if message.thumbnail}}
-                <img src="{{message.thumbnail}}"/>
-              {{/if}}
-            </div>
+            {{#if message.isMessage}}
+              {{#chat-message-item model=message.message classNames='messageHolder'
+                                   displaySender=message.displaySender}}{{/chat-message-item}}
+            {{/if}}
+            {{#if message.isDate}}
+              {{#chat-message-time model=message.date}}{{/chat-message-time}}
+
+            {{/if}}
           {{/each}}
         </div>
       </div>

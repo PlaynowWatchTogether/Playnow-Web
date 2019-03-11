@@ -1,0 +1,19 @@
+{{#if displaySender}}
+  <img src="{{user.safeProfilePic}}" class="profilePic">
+{{else}}
+  <div class="profilePic"/>
+{{/if}}
+{{#if model.thumbnail}}
+  <div class="message-img">
+    <img src="{{model.thumbnail}}"/>
+  </div>
+{{else}}
+  <div class="message-text">
+    {{#if model.text}}
+      <span class="text">
+        {{model.text}}
+      </span>
+    {{/if}}
+
+  </div>
+{{/if}}

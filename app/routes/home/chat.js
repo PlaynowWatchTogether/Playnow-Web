@@ -12,5 +12,8 @@ export default Route.extend({
   deactivate() {
     this._super(...arguments);
     Ember.$('body').removeClass('chat');
+  },
+  resetController(controller, isExiting, transition) {
+    controller.reset()
   }
 });

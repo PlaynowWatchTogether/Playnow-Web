@@ -33,9 +33,29 @@ export default Controller.extend({
   },
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');
+    let one_day = 1000 * 60 * 60 * 24;
     ds.messages((messages) => {
-      obj.set('messages', messages)
+      let uiMessages = [];
+      let lastDate = new Date(0);
+      messages.forEach(function (mes, index) {
+        let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
+        let mesDate = new Date(mes.date * 1000);
+        let diff = lastDate.getTime() - mesDate.getTime();
+        if (Math.abs(diff) > one_day) {
+          uiMessages.push({isDate: true, date: mesDate});
+        }
+        uiMessages.push({isMessage: true, message: mes, displaySender: displaySender});
+        lastDate = mesDate
+      });
+      obj.set('messages', uiMessages)
+      Ember.$('.messagesHolder').animate({scrollTop: Ember.$('.messagesHolder')[0].scrollHeight})
     });
+  },
+  reset() {
+    let ds = this.get('dataSource');
+    if (ds) {
+      ds.stop()
+    }
   },
   actions: {
     sendMessage() {

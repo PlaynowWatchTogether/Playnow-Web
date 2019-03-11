@@ -1,16 +1,46 @@
 import Controller from '@ember/controller';
 import MessageDataSource from '../../custom-objects/message-data-source'
+import VideoStateHandler from '../../custom-objects/video-state-handler'
 import {inject as service} from '@ember/service';
+import EmberObject, {computed} from '@ember/object';
 
 export default Controller.extend({
   firebaseApp: service(),
+  youtubeSearch: service(),
   init() {
     this._super(...arguments);
     this.chatModel = {};
     this.messageText = '';
+    this.videoStateHandler = VideoStateHandler.create({
+      delegate: {
+        loadVideo: (video, seconds) => {
+          this.set('playerVideo', {video: video, seconds: seconds});
+        },
+        updateState: (state, seconds = 0) => {
+          let ds = this.get('dataSource');
+          ds.updateWatchState(state, seconds);
+        },
+        playVideo: () => {
+          this.set('playerAction', 1);
+        },
+        updateWatching: (videoId, state) => {
+          let ds = this.get('dataSource');
+          ds.updateWatching(videoId, state);
+        },
+        slideVideo: () => {
+          this.set('playerAction', 2);
+        }
+      }
+    });
     this.addObserver('model', this, 'modelObserver');
     this.addObserver('dataSource', this, 'dataSourceObserver');
     this.addObserver('messageText', this, 'messageTextObserver');
+    this.addObserver('searchMode', this, 'searchModeObserver');
+    this.set('searchMode', 'video');
+    this.set('searchQueryVideo', '');
+    this.set('searchQueryMusic', '');
+    this.searchModeObserver(this);
+
   },
   messageTextObserver: (obj) => {
     console.log('typing ' + obj.get('messageText'));
@@ -21,7 +51,7 @@ export default Controller.extend({
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
     if ('one2one' === type) {
-
+      obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
       obj.store.find('user', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
           type: 'one2one',
@@ -40,6 +70,15 @@ export default Controller.extend({
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');
     let one_day = 1000 * 60 * 60 * 24;
+    ds.videoWatchers((watchers) => {
+      if (watchers)
+        obj.videoStateHandler.updateWatchers(watchers, 0);
+    });
+    ds.videoState((vs) => {
+      if (vs)
+        obj.videoStateHandler.handleVideoState(vs);
+      //this.set('playerVideoState',vs);
+    });
     ds.messages((messages) => {
       let uiMessages = [];
       let lastDate = new Date(0);
@@ -62,6 +101,8 @@ export default Controller.extend({
     if (ds) {
       ds.stop()
     }
+    this.set('searchQuery', '');
+    this.set('messages', []);
   },
   generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();
@@ -74,7 +115,31 @@ export default Controller.extend({
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
   },
+  searchModeObserver: (obj) => {
+    let music = obj.get('searchMode') === 'music';
+    obj.set('searchQuery', music ? obj.get('searchQueryMusic') : obj.get('searchQueryVideo'));
+    let q = obj.get('searchQuery');
+    if (q.length === 0) {
+      obj.get('youtubeSearch').trending(music).then((data) => {
+        obj.set('youtubeItems', data.items);
+      });
+    } else {
+      obj.get('youtubeSearch').search(q, music).then((data) => {
+        obj.set('youtubeItems', data.items);
+      });
+    }
+  },
+  videoTabClass: computed('searchMode', function () {
+    return this.get('searchMode') === 'video' ? 'active' : '';
+  }),
+  songsTabClass: computed('searchMode', function () {
+    return this.get('searchMode') === 'music' ? 'active' : '';
+  }),
   actions: {
+    videoLoaded() {
+      let ds = this.get('videoStateHandler');
+      ds.handleNextState('loaded');
+    },
     uploadImage(file) {
       file.readAsDataURL().then((url) => {
         let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
@@ -94,6 +159,30 @@ export default Controller.extend({
         let ds = this.get('dataSource');
         ds.sendMessage(this.get('messageText'));
         this.set('messageText', '');
+      }
+    },
+    videoPick(video) {
+      this.set('playerModel', video);
+      let ds = this.get('dataSource');
+      ds.sendVideo(video)
+    },
+    pickVideosSearch() {
+      this.set('searchMode', 'video');
+    },
+    pickSongsSearch() {
+      this.set('searchMode', 'music');
+    },
+    triggerSearch() {
+      let music = this.get('searchMode') === 'music';
+      let q = this.get('searchQuery');
+      if (q.length === 0) {
+        this.get('youtubeSearch').trending(music).then((data) => {
+          this.set('youtubeItems', data.items);
+        });
+      } else {
+        this.get('youtubeSearch').search(q, music).then((data) => {
+          this.set('youtubeItems', data.items);
+        });
       }
     }
   }

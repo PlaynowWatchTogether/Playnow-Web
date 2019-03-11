@@ -6,6 +6,8 @@ export default EmberObject.extend({
   myId: '',
   db: null,
   messagesRef: null,
+  videoStateRef: null,
+  videoWatchersRef: null,
   typingInterval: null,
   convId() {
     if (this.type === 'one2one') {
@@ -20,6 +22,61 @@ export default EmberObject.extend({
     if (this.type === 'one2one') {
       return 'channels/messages';
     }
+  },
+
+  updateWatchState(state, seconds) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoState";
+    let values = {};
+    values['updatedAt'] = new Date().getTime() / 1000.0;
+    values['syncAt'] = new Date().getTime() / 1000.0;
+    values['type'] = state;
+    values['seconds'] = seconds;
+
+    this.db.ref(ref).update(values);
+  },
+  sendVideo(video) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoState";
+    let values = {};
+    values['type'] = 'new';
+    values['syncAt'] = new Date().getTime() / 1000.0;
+    values['updatedAt'] = new Date().getTime() / 1000.0;
+    values['videoId'] = video['id'];
+    values['videoType'] = 'youtubeVideo';
+    values['videoName'] = video['snippet']['title'];
+    values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
+    values['senderId'] = this.myId;
+    values['seconds'] = 0;
+
+    this.db.ref(ref).update(values);
+  },
+  videoWatchers(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoWatching";
+    this.videoWatchersRef = this.db.ref(ref);
+    this.videoWatchersRef.on('value', (snippet) => {
+      let records = [];
+      snippet.forEach((item) => {
+        records.push(item.val());
+      });
+      updateCallback(records);
+    })
+  },
+  updateWatching(videoId, state) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoWatching/" + this.myId;
+    let values = {};
+    values['videoId'] = videoId;
+    values['userId'] = this.myId;
+    values['updatedAt'] = new Date().getTime() / 1000.0;
+    values['state'] = state;
+    this.db.ref(ref).onDisconnect().remove();
+    this.db.ref(ref).update(values);
   },
   sendTyping(typing) {
     let convId = this.convId();
@@ -50,6 +107,16 @@ export default EmberObject.extend({
     this.db.ref(ref).update(updated)
 
   },
+  videoState(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoState";
+    this.videoStateRef = ref;
+    this.db.ref(ref).on('value', (snapshot) => {
+      updateCallback(snapshot.val());
+    });
+
+  },
   messages(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
@@ -72,6 +139,10 @@ export default EmberObject.extend({
     if (this.messagesRef) {
       this.db.ref(this.messagesRef).off('value');
     }
+    if (this.videoStateRef) {
+      this.db.ref(this.videoStateRef).off('value');
+
+    }
   },
   sendMessage(text, thumbnail) {
     let senderId = this.myId;
@@ -86,10 +157,10 @@ export default EmberObject.extend({
     message['senderName'] = 'Test sender';
     if (thumbnail) {
       message['type'] = 'photo';
+      message['thumbnail'] = thumbnail;
     } else {
       message['type'] = 'text';
     }
-    message['thumbnail'] = thumbnail;
     message['userId'] = senderId;
     message['message'] = 'web';
     message['text'] = text;

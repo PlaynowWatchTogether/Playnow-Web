@@ -1,5 +1,5 @@
 <div class="row chatRoot h-100">
-  <div class="col-9 content h-100">
+  <div class="col-8 content h-100">
     <div class="row holder h-100">
       <div class="titleHolder">
         <div class="title">
@@ -21,6 +21,8 @@
           </div>
         </div>
       </div>
+      {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
+                              videoLoadedAction=(action 'videoLoaded')}}{{/youtube-video-player}}
       <div class="messagesHolder">
         <div class="messagesWrappper">
           {{#each messages as |message|}}
@@ -48,12 +50,40 @@
       </div>
     </div>
   </div>
-  <div class="col-3 media h-100">
+  <div class="col-4 media">
     <div class="row holder h-100">
-      <div class="col">
-        asdfasf
-
+      <div class="title">
+        <div>
+          <span>Trending</span>
+        </div>
       </div>
+      <div class="search">
+        <img src="/assets/search_icon.png" class="icon">
+        {{input value=searchQuery classNames="searchInput" placeholder="Search content"}}
+        <div class="trigger-search" {{action 'triggerSearch'}}>
+          <img src="/assets/ic_search_trigger.png" class="icon">
+        </div>
+      </div>
+      <div class="tabs">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a class="nav-link {{videoTabClass}}" {{action 'pickVideosSearch'}}>Videos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{songsTabClass}}" {{action 'pickSongsSearch'}}>Songs</a>
+          </li>
+        </ul>
+      </div>
+      <div class="tabs-content">
+        <div class="youtube-items row">
+          {{#each youtubeItems as |video|}}
+            {{#youtube-video model=video classNames='youtube-item col-6'
+                             clickAction=(action 'videoPick')}}{{/youtube-video}}
+          {{/each}}
+        </div>
+      </div>
+
+
     </div>
   </div>
 </div>

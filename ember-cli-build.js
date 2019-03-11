@@ -6,8 +6,22 @@ module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     sassOptions: {
       extension: 'scss'
-    }
+    },
+    // nodeModulesToVendor: [
+    //   'node_modules/ntp-time-sync/dist/index.js'
+    // ]
   });
+  app.import('node_modules/ntp-time-sync/dist/index.js', {
+    using: [
+      {transformation: 'cjs', as: 'ntp-time'}
+    ]
+  });
+  // app.import('node_modules/moment/moment.js', {
+  //   using: [
+  //     { transformation: 'amd', as: 'moment' }
+  //   ]
+  // });
+
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

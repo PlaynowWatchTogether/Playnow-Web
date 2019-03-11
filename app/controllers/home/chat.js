@@ -7,9 +7,15 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
     this.chatModel = {};
+    this.messageText = '';
     this.addObserver('model', this, 'modelObserver');
     this.addObserver('dataSource', this, 'dataSourceObserver');
-    this.messageText = '';
+    this.addObserver('messageText', this, 'messageTextObserver');
+  },
+  messageTextObserver: (obj) => {
+    console.log('typing ' + obj.get('messageText'));
+    let ds = obj.get('dataSource');
+    ds.typing(obj.get('messageText'));
   },
   modelObserver: (obj) => {
     let type = obj.get('model').type;

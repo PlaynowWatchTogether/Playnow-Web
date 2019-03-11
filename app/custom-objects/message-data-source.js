@@ -6,6 +6,7 @@ export default EmberObject.extend({
   myId: '',
   db: null,
   messagesRef: null,
+  typingInterval: null,
   convId() {
     if (this.type === 'one2one') {
       return [this.myId, this.user.id].sort((a, b) => {
@@ -21,7 +22,23 @@ export default EmberObject.extend({
     }
   },
   sendTyping(typing) {
-
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/typingIndicator";
+    let updated = {};
+    updated[this.myId] = typing;
+    let dbRef = this.db.ref(ref);
+    dbRef.onDisconnect().remove();
+    dbRef.update(updated);
+  },
+  typing(mes) {
+    if (this.typingInterval) {
+      clearTimeout(this.typingInterval);
+    }
+    this.sendTyping(true);
+    this.typingInterval = setTimeout(() => {
+      this.sendTyping(false)
+    }, 5000)
   },
   sendSeen(mesId) {
     let convId = this.convId();

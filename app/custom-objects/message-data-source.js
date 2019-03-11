@@ -73,7 +73,7 @@ export default EmberObject.extend({
       this.db.ref(this.messagesRef).off('value');
     }
   },
-  sendMessage(text) {
+  sendMessage(text, thumbnail) {
     let senderId = this.myId;
     let path = this.messageRoot();
     let convId = this.convId();
@@ -84,8 +84,12 @@ export default EmberObject.extend({
     message['convoId'] = convId;
     message['senderId'] = senderId;
     message['senderName'] = 'Test sender';
-    message['type'] = 'text';
-    message['thumbnail'] = '';
+    if (thumbnail) {
+      message['type'] = 'photo';
+    } else {
+      message['type'] = 'text';
+    }
+    message['thumbnail'] = thumbnail;
     message['userId'] = senderId;
     message['message'] = 'web';
     message['text'] = text;

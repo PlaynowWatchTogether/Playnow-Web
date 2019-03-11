@@ -38,7 +38,13 @@
       <div class="newMessageHolder">
         {{input value=messageText placeholder="Type a message..."}}
         <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
-        <img src="/assets/ic_chat_msg_image.png"/>
+        {{#file-upload name="photos"
+                       accept="image/*"
+                       onfileadd=(action "uploadImage") as |queue|}}
+          <img src="/assets/ic_chat_msg_image.png"/>
+        {{/file-upload}}
+
+
       </div>
     </div>
   </div>

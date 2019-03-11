@@ -63,7 +63,32 @@ export default Controller.extend({
       ds.stop()
     }
   },
+  generateUUID() { // Public Domain/MIT
+    var d = new Date().getTime();
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+      d += performance.now(); //use high-precision timer if available
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  },
   actions: {
+    uploadImage(file) {
+      file.readAsDataURL().then((url) => {
+        let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
+
+        ref.putString(url, 'data_url').then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
+            let ds = this.get('dataSource');
+            ds.sendMessage('', downloadURL);
+
+            console.log('File available at', downloadURL);
+          });
+        });
+      });
+    },
     sendMessage() {
       if (this.get('messageText').length !== 0) {
         let ds = this.get('dataSource');

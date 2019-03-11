@@ -65,7 +65,11 @@ export default Controller.extend({
   },
   actions: {
     sendMessage() {
-
+      if (this.get('messageText').length !== 0) {
+        let ds = this.get('dataSource');
+        ds.sendMessage(this.get('messageText'));
+        this.set('messageText', '');
+      }
     }
   }
 });

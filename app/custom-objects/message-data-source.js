@@ -35,7 +35,7 @@ export default EmberObject.extend({
     if (this.typingInterval) {
       clearTimeout(this.typingInterval);
     }
-    this.sendTyping(true);
+    this.sendTyping(mes.length !== 0);
     this.typingInterval = setTimeout(() => {
       this.sendTyping(false)
     }, 5000)
@@ -72,6 +72,25 @@ export default EmberObject.extend({
     if (this.messagesRef) {
       this.db.ref(this.messagesRef).off('value');
     }
+  },
+  sendMessage(text) {
+    let senderId = this.myId;
+    let path = this.messageRoot();
+    let convId = this.convId();
+    let msgUid = new Date().getTime().toString() + senderId;
+    let message = {};
+    message['uid'] = msgUid;
+    message['date'] = new Date().getTime() / 1000.0;
+    message['convoId'] = convId;
+    message['senderId'] = senderId;
+    message['senderName'] = 'Test sender';
+    message['type'] = 'text';
+    message['thumbnail'] = '';
+    message['userId'] = senderId;
+    message['message'] = 'web';
+    message['text'] = text;
+    let ref = path + "/" + convId + "/Messages/" + msgUid;
+    this.db.ref(ref).update(message)
   }
 
 });

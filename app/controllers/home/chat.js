@@ -119,6 +119,7 @@ export default Controller.extend({
     let music = obj.get('searchMode') === 'music';
     obj.set('searchQuery', music ? obj.get('searchQueryMusic') : obj.get('searchQueryVideo'));
     let q = obj.get('searchQuery');
+    obj.set('youtubeItems', []);
     if (q.length === 0) {
       obj.get('youtubeSearch').trending(music).then((data) => {
         obj.set('youtubeItems', data.items);
@@ -134,6 +135,9 @@ export default Controller.extend({
   }),
   songsTabClass: computed('searchMode', function () {
     return this.get('searchMode') === 'music' ? 'active' : '';
+  }),
+  isMusicResult: computed('searchMode', function () {
+    return this.get('searchMode') === 'music'
   }),
   actions: {
     videoLoaded() {
@@ -166,6 +170,11 @@ export default Controller.extend({
       let ds = this.get('dataSource');
       ds.sendVideo(video)
     },
+    musicPick(video) {
+      this.set('playerModel', video);
+      let ds = this.get('dataSource');
+      ds.sendVideo(video, 'youtubeMusic')
+    },
     pickVideosSearch() {
       this.set('searchMode', 'video');
     },
@@ -175,6 +184,7 @@ export default Controller.extend({
     triggerSearch() {
       let music = this.get('searchMode') === 'music';
       let q = this.get('searchQuery');
+      this.set('youtubeItems', []);
       if (q.length === 0) {
         this.get('youtubeSearch').trending(music).then((data) => {
           this.set('youtubeItems', data.items);

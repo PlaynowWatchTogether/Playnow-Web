@@ -75,10 +75,16 @@
         </ul>
       </div>
       <div class="tabs-content">
-        <div class="youtube-items row">
+        <div class="youtube-items row {{if isMusicResult 'music'}}">
           {{#each youtubeItems as |video|}}
-            {{#youtube-video model=video classNames='youtube-item col-6'
-                             clickAction=(action 'videoPick')}}{{/youtube-video}}
+            {{#if isMusicResult}}
+              {{#youtube-video model=video classNames='youtube-item-music col-12'
+                               clickAction=(action 'musicPick')}}{{/youtube-video}}
+            {{else}}
+              {{#youtube-video model=video classNames='youtube-item col-6'
+                               clickAction=(action 'videoPick')}}{{/youtube-video}}
+
+            {{/if}}
           {{/each}}
         </div>
       </div>

@@ -36,7 +36,7 @@ export default EmberObject.extend({
 
     this.db.ref(ref).update(values);
   },
-  sendVideo(video) {
+  sendVideo(video, mode = 'youtubeVideo') {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/videoState";
@@ -45,7 +45,7 @@ export default EmberObject.extend({
     values['syncAt'] = new Date().getTime() / 1000.0;
     values['updatedAt'] = new Date().getTime() / 1000.0;
     values['videoId'] = video['id'];
-    values['videoType'] = 'youtubeVideo';
+    values['videoType'] = mode;
     values['videoName'] = video['snippet']['title'];
     values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
     values['senderId'] = this.myId;

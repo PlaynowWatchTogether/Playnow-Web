@@ -926,6 +926,7 @@ CHAT
       }
 
       .trigger-search {
+        cursor: pointer;
         display: grid;
         width: 100%;
         height: 100%;
@@ -971,6 +972,25 @@ CHAT
         padding-left: 20px;
         padding-right: 20px;
 
+        .youtube-item-music {
+          display: grid;
+          grid-template-columns: 80px auto;
+          margin-top: 10px;
+          border-radius: 20px;
+          box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.16);
+          padding-top: 10px;
+          padding-bottom: 10px;
+
+          .videoTitle {
+            margin: auto auto auto 20px;
+
+          }
+
+          .thumbnail {
+            width: 80px;
+            border-radius: 10px;
+          }
+        }
         .youtube-item {
           cursor: pointer;
           margin-top: 10px;
@@ -980,6 +1000,11 @@ CHAT
             border-radius: 20px;
           }
         }
+      }
+
+      .youtube-items.music {
+        padding-left: 40px;
+        padding-right: 40px;
       }
     }
   }

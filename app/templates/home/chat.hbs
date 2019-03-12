@@ -21,8 +21,23 @@
           </div>
         </div>
       </div>
-      {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
-                              videoLoadedAction=(action 'videoLoaded')}}{{/youtube-video-player}}
+      <div id="youtubeHolder">
+
+        {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
+                                videoLoadedAction=(action 'videoLoaded')}}{{/youtube-video-player}}
+        <div class="overlay"></div>
+        <div class="controlsOverlay">
+          <div class="controlsHolder">
+            <img src="/assets/ic_icon_play_video.png" class="play">
+            <img src="/assets/ic_icon_pause_video.png" class="pause">
+            <img src="/assets/ic_video_close.png" class="close">
+            <span class="video-title"></span>
+            <input type="range" min="1" max="100" value="50" class="slider">
+          </div>
+        </div>
+      </div>
+      <div id="youtubePlaceHolder"></div>
+
       <div class="messagesHolder">
         <div class="messagesWrappper">
           {{#each messages as |message|}}

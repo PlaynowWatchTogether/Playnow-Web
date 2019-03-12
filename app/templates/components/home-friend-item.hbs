@@ -1,9 +1,14 @@
-<div class="profileName col">
+<div class="profileName">
   <span class="firstName">{{model.firstName}}</span>
   <span class="lastName">{{model.lastName}}</span>
 </div>
 
-<div class="profilePicHolder">
+<div class="profilePicHolder {{playingClass}}">
+
+  {{#if model.videoIsPlaying}}
+    <div class="playing"></div>
+    <div class="playing2"></div>
+  {{/if}}
   <img class="profilePic" src="{{model.safeProfilePic}}"/>
   {{#if model.isOnline}}
     <div class="online"></div>

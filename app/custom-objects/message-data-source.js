@@ -24,16 +24,16 @@ export default EmberObject.extend({
     }
   },
 
-  updateWatchState(state, seconds) {
+  updateWatchState(state, seconds, syncAt = null) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/videoState";
     let values = {};
     values['updatedAt'] = new Date().getTime() / 1000.0;
-    values['syncAt'] = new Date().getTime() / 1000.0;
+    values['syncAt'] = syncAt == null ? new Date().getTime() / 1000.0 : syncAt / 1000;
     values['type'] = state;
     values['seconds'] = seconds;
-
+    console.log('updateWatchState ' + JSON.stringify(values));
     this.db.ref(ref).update(values);
   },
   sendVideo(video, mode = 'youtubeVideo') {
@@ -50,7 +50,7 @@ export default EmberObject.extend({
     values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
     values['senderId'] = this.myId;
     values['seconds'] = 0;
-
+    console.log('sendVideo ' + JSON.stringify(values));
     this.db.ref(ref).update(values);
   },
   videoWatchers(updateCallback) {
@@ -75,6 +75,7 @@ export default EmberObject.extend({
     values['userId'] = this.myId;
     values['updatedAt'] = new Date().getTime() / 1000.0;
     values['state'] = state;
+    console.log('updateWatching ' + JSON.stringify(values));
     this.db.ref(ref).onDisconnect().remove();
     this.db.ref(ref).update(values);
   },

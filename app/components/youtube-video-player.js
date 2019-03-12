@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import EmberObject, {computed} from '@ember/object';
-import {Subject, BehaviorSubject, from} from 'rxjs';
+import {Subject, BehaviorSubject, from, interval} from 'rxjs';
+import {debounce} from 'rxjs/operators';
+import {timer} from 'rxjs';
 
 export default Component.extend({
   init() {
@@ -12,6 +14,27 @@ export default Component.extend({
     this.playerSubj = new BehaviorSubject(0);
     this.secondsToPlay = 0.0;
     this.isPrebuffering = true;
+    this.controlHideSubject = new Subject();
+    this.controlHideSubject.pipe(debounce(() => interval(2000))).subscribe({
+      next: (newState) => {
+        Ember.$('#youtubeHolder .controlsOverlay').hide();
+      }
+    });
+    const source = timer(1000, 1000);
+
+    const subscribe = source.subscribe(val => {
+      if (window.globalPlayer) {
+        if (window.globalPlayer.getDuration) {
+          if (window.globalPlayer.getDuration() !== 0) {
+            Ember.$('#youtubeHolder .controlsOverlay .slider').attr('max', window.globalPlayer.getDuration());
+          }
+        }
+        if (window.globalPlayer.getCurrentTime) {
+          Ember.$('#youtubeHolder .controlsOverlay .slider').val(window.globalPlayer.getCurrentTime());
+        }
+      }
+    });
+
   },
   didInsertElement() {
     this._super(...arguments);
@@ -22,6 +45,10 @@ export default Component.extend({
 
     window.onYouTubePlayerAPIReady = this.onYouTubePlayerAPIReady;
     window.playerObj = this
+    Ember.$('#youtubeHolder .overlay').on('click', () => {
+      Ember.$('#youtubeHolder .controlsOverlay').show();
+      this.controlHideSubject.next(1);
+    })
   },
   actionObserver(obj) {
     let player = obj.get('player');
@@ -34,8 +61,14 @@ export default Component.extend({
             player.playVideo();
           } else if (action === 2) {
             player.pauseVideo();
-
+          } else if (action === 3) {
+            player.playVideo();
+          } else if (action === 4) {
+            player.pauseVideo();
+          } else {
+            return;
           }
+          this.set('playerAction', 0);
         }
       }
     });
@@ -52,7 +85,10 @@ export default Component.extend({
   },
   playerStateChanged(event) {
     console.log('playerStateChanged ' + event.data);
+    window.playerObj.lastState = event.data;
     if (event.data === -1) {//unstarted
+      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
+      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 0) {//ended
 
     } else if (event.data === 1) {//playing
@@ -62,16 +98,21 @@ export default Component.extend({
         event.target.seekTo(window.playerObj.secondsToPlay);
         window.playerObj.videoLoadedAction();
       } else {
-
+        Ember.$('#youtubeHolder .controlsOverlay .play').hide();
+        Ember.$('#youtubeHolder .controlsOverlay .pause').show();
       }
     } else if (event.data === 2) {//paused
-
+      Ember.$('#youtubeHolder .controlsOverlay .play').show();
+      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 3) {//buffering
-
+      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
+      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 5) {//queued
+      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
+      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
       window.playerObj.isPrebuffering = true;
       if (window.playerObj.secondsToPlay === 0.0 || window.playerObj.secondsToPlay === 0) {
-        event.target.playVideo()
+        event.target.playVideo();
       } else {
         event.target.seekTo(window.playerObj.secondsToPlay);
         event.target.playVideo();
@@ -90,16 +131,30 @@ export default Component.extend({
         if (val === 1) {
           obj.secondsToPlay = v.seconds;
           player.cueVideoById(v.video['videoId'], v.seconds);
-          Ember.$('#ytplayer').show();
+          Ember.$('#youtubeHolder').show();
+          Ember.$('#youtubePlaceHolder').show();
+          Ember.$('#youtubeHolder .overlay').show();
+
           console.log('video');
         }
       }
     });
+    Ember.$('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName'])
   },
   onYouTubePlayerAPIReady() {
     window.globalPlayer = new YT.Player('ytplayer', {
       height: '360',
-      width: '640'
+      width: '640',
+      playerVars: {
+        controls: 0,
+        modestbranding: 1,
+        iv_load_policy: 3,
+        fs: 0,
+        enablejsapi: 1,
+        disablekb: 1,
+        cc_load_policy: 0,
+        showinfo: 0
+      }
     });
     window.playerObj.set('player', window.globalPlayer);
   }

@@ -1,11 +1,10 @@
-<div class="row friendsHeader">
-  <div class="friendsCompose col">
+<div class="friendsHeader">
+  <div class="friendsCompose">
     <img src="/assets/friends_compose.png" class="composeIcon"/>
   </div>
   <div class="friendsTitle">
     <span class="friends">Friends</span>
   </div>
-  <div class="divider"></div>
 </div>
 
 <div class="friendsSearchHolder">
@@ -21,7 +20,7 @@
   {{/if}}
   {{#each model as |friend|}}
     {{#link-to 'home.chat' friend.id 'one2one' classNames='friend-chat-link'}}
-      {{#home-friend-item model=friend classNames='friend row' chatAction=(action 'chatFriend')}}{{/home-friend-item}}
+      {{#home-friend-item model=friend classNames='friend' chatAction=(action 'chatFriend')}}{{/home-friend-item}}
     {{/link-to}}
   {{/each}}
 

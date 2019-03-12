@@ -14,11 +14,12 @@ export default Controller.extend({
     this.videoStateHandler = VideoStateHandler.create({
       delegate: {
         loadVideo: (video, seconds) => {
+          this.set('playerAction', 0);
           this.set('playerVideo', {video: video, seconds: seconds});
         },
-        updateState: (state, seconds = 0) => {
+        updateState: (state, seconds = 0, syncAt = null) => {
           let ds = this.get('dataSource');
-          ds.updateWatchState(state, seconds);
+          ds.updateWatchState(state, seconds, syncAt);
         },
         playVideo: () => {
           this.set('playerAction', 1);
@@ -29,6 +30,14 @@ export default Controller.extend({
         },
         slideVideo: () => {
           this.set('playerAction', 2);
+          let ds = this.get('dataSource');
+          ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+        },
+        play: () => {
+          this.set('playerAction', 3);
+        },
+        pause: () => {
+          this.set('playerAction', 4);
         }
       }
     });
@@ -95,6 +104,18 @@ export default Controller.extend({
       obj.set('messages', uiMessages)
       Ember.$('.messagesHolder').animate({scrollTop: Ember.$('.messagesHolder')[0].scrollHeight})
     });
+    Ember.$('#youtubeHolder .controlsOverlay .pause').on('click', () => {
+      let ds = obj.get('dataSource');
+      ds.updateWatchState('pause', window.globalPlayer.getCurrentTime());
+    });
+    Ember.$('#youtubeHolder .controlsOverlay .play').on('click', () => {
+      let ds = obj.get('dataSource');
+      ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+    });
+
+    Ember.$('#youtubeHolder .controlsOverlay .slider').on('change', () => {
+      console.log('slider changed');
+    })
   },
   reset() {
     let ds = this.get('dataSource');

@@ -6,6 +6,7 @@ export default Service.extend({
   uid: null,
   localStore: storageFor('user-session'),
   firebaseApp: Ember.inject.service(),
+  store: Ember.inject.service(),
   init() {
     this._super(...arguments);
     const localStore = this.get('localStore');
@@ -16,6 +17,11 @@ export default Service.extend({
       } else {
         this.setUID("")
       }
+    });
+  },
+  logout() {
+    this.firebaseApp.auth().signOut().then(() => {
+      location.reload();
     });
   },
   setUID(id) {

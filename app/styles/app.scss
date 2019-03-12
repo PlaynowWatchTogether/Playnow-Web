@@ -440,6 +440,27 @@ body.home.chat {
           cursor: pointer;
           margin: auto;
         }
+
+        .gear.show {
+          padding: 5px 10px;
+
+          img {
+            filter: brightness(0) invert(1);
+          }
+        }
+
+        .dropdown-menu {
+          border-radius: 20px;
+          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+        }
+
+        .dropdown-item:hover:first-child {
+          border-radius: 10px 10px 0 0;
+        }
+
+        .dropdown-item:hover:last-child {
+          border-radius: 0 0 10px 10px;
+        }
       }
     }
     .container-fluid {
@@ -1353,12 +1374,10 @@ CHAT
 }
 
 
-.dropdown-backdrop {
-  position: fixed;
-  top: 0;
+.dropdown-toggle::after {
   display: none;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 990;
+}
+
+.datepicker td, .datepicker th {
+  width: 40px;
 }

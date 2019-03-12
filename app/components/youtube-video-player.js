@@ -17,7 +17,7 @@ export default Component.extend({
     this.controlHideSubject = new Subject();
     this.controlHideSubject.pipe(debounce(() => interval(2000))).subscribe({
       next: (newState) => {
-        Ember.$('#youtubeHolder .controlsOverlay').hide();
+        $('#youtubeHolder .controlsOverlay').hide();
       }
     });
     const source = timer(1000, 1000);
@@ -26,11 +26,11 @@ export default Component.extend({
       if (window.globalPlayer) {
         if (window.globalPlayer.getDuration) {
           if (window.globalPlayer.getDuration() !== 0) {
-            Ember.$('#youtubeHolder .controlsOverlay .slider').attr('max', window.globalPlayer.getDuration());
+            $('#youtubeHolder .controlsOverlay .slider').attr('max', window.globalPlayer.getDuration());
           }
         }
         if (window.globalPlayer.getCurrentTime) {
-          Ember.$('#youtubeHolder .controlsOverlay .slider').val(window.globalPlayer.getCurrentTime());
+          $('#youtubeHolder .controlsOverlay .slider').val(window.globalPlayer.getCurrentTime());
         }
       }
     });
@@ -45,8 +45,8 @@ export default Component.extend({
 
     window.onYouTubePlayerAPIReady = this.onYouTubePlayerAPIReady;
     window.playerObj = this
-    Ember.$('#youtubeHolder .overlay').on('click', () => {
-      Ember.$('#youtubeHolder .controlsOverlay').show();
+    $('#youtubeHolder .overlay').on('click', () => {
+      $('#youtubeHolder .controlsOverlay').show();
       this.controlHideSubject.next(1);
     })
   },
@@ -87,8 +87,8 @@ export default Component.extend({
     console.log('playerStateChanged ' + event.data);
     window.playerObj.lastState = event.data;
     if (event.data === -1) {//unstarted
-      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
-      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
+      $('#youtubeHolder .controlsOverlay .play').hide();
+      $('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 0) {//ended
 
     } else if (event.data === 1) {//playing
@@ -98,18 +98,18 @@ export default Component.extend({
         event.target.seekTo(window.playerObj.secondsToPlay);
         window.playerObj.videoLoadedAction();
       } else {
-        Ember.$('#youtubeHolder .controlsOverlay .play').hide();
-        Ember.$('#youtubeHolder .controlsOverlay .pause').show();
+        $('#youtubeHolder .controlsOverlay .play').hide();
+        $('#youtubeHolder .controlsOverlay .pause').show();
       }
     } else if (event.data === 2) {//paused
-      Ember.$('#youtubeHolder .controlsOverlay .play').show();
-      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
+      $('#youtubeHolder .controlsOverlay .play').show();
+      $('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 3) {//buffering
-      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
-      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
+      $('#youtubeHolder .controlsOverlay .play').hide();
+      $('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 5) {//queued
-      Ember.$('#youtubeHolder .controlsOverlay .play').hide();
-      Ember.$('#youtubeHolder .controlsOverlay .pause').hide();
+      $('#youtubeHolder .controlsOverlay .play').hide();
+      $('#youtubeHolder .controlsOverlay .pause').hide();
       window.playerObj.isPrebuffering = true;
       if (window.playerObj.secondsToPlay === 0.0 || window.playerObj.secondsToPlay === 0) {
         event.target.playVideo();
@@ -131,15 +131,15 @@ export default Component.extend({
         if (val === 1) {
           obj.secondsToPlay = v.seconds;
           player.cueVideoById(v.video['videoId'], v.seconds);
-          Ember.$('#youtubeHolder').show();
-          Ember.$('#youtubePlaceHolder').show();
-          Ember.$('#youtubeHolder .overlay').show();
+          $('#youtubeHolder').show();
+          $('#youtubePlaceHolder').show();
+          $('#youtubeHolder .overlay').show();
 
           console.log('video');
         }
       }
     });
-    Ember.$('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName'])
+    $('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName'])
   },
   onYouTubePlayerAPIReady() {
     window.globalPlayer = new YT.Player('ytplayer', {

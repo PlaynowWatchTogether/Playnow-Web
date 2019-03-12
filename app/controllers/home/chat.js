@@ -123,18 +123,18 @@ export default Controller.extend({
         lastDate = mesDate
       });
       obj.set('messages', uiMessages)
-      Ember.$('.messagesHolder').animate({scrollTop: Ember.$('.messagesHolder')[0].scrollHeight})
+      $('.messagesHolder').animate({scrollTop: $('.messagesHolder')[0].scrollHeight})
     });
-    Ember.$('#youtubeHolder .controlsOverlay .pause').on('click', () => {
+    $('#youtubeHolder .controlsOverlay .pause').on('click', () => {
       let ds = obj.get('dataSource');
       ds.updateWatchState('pause', window.globalPlayer.getCurrentTime());
     });
-    Ember.$('#youtubeHolder .controlsOverlay .play').on('click', () => {
+    $('#youtubeHolder .controlsOverlay .play').on('click', () => {
       let ds = obj.get('dataSource');
       ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
     });
 
-    Ember.$('#youtubeHolder .controlsOverlay .slider').on('change', () => {
+    $('#youtubeHolder .controlsOverlay .slider').on('change', () => {
       console.log('slider changed');
     })
   },

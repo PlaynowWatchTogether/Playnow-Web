@@ -5,6 +5,8 @@ import {inject as service} from '@ember/service';
 export default Route.extend({
   db: service(),
   firebaseApp: service(),
+  auth: service(),
+
   beforeModel() {
     this._super(...arguments);
     return new Promise((resolve, reject) => {
@@ -13,7 +15,7 @@ export default Route.extend({
         if (user) {
           resolve()
         } else {
-          reject()
+          this.transitionTo('welcome')
         }
       })
 
@@ -27,10 +29,10 @@ export default Route.extend({
   },
   activate() {
     this._super(...arguments);
-    Ember.$('body').addClass('home');
+    $('body').addClass('home');
   },
   deactivate() {
     this._super(...arguments);
-    Ember.$('body').removeClass('home');
+    $('body').removeClass('home');
   }
 });

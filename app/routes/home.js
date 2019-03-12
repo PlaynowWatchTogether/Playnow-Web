@@ -19,7 +19,7 @@ export default Route.extend({
     });
   },
   model() {
-    return Ember.RSVP.hash({friends: this.store.findAll('friends')});
+    return Ember.RSVP.hash({friends: this.store.query('friends', {})});
   },
   activate() {
     this._super(...arguments);

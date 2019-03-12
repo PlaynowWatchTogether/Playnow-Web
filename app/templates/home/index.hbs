@@ -1,27 +1,26 @@
-<div class="row col-outlet">
-  <div class="col">
-    <div class="container-fluid publicRoomsHolder">
-      <div class="publicRooms">
-        <div class="content">
-          <div class="roomsTitleHolder">
-            <span class="roomsTitle">Public rooms</span>
-          </div>
-          <div class="divider"></div>
-          <div class="roomsSearchHolder">
-            <img src="/assets/search_icon.png" class="searchIcon">
-            {{input value=query classNames="roomsSearch" placeholder="Search for Rooms"}}
-          </div>
-          <div class="roomsHolder">
-            {{#if loading}}
-              Loading
-            {{/if}}
-            {{#each model as |room|}}
-              {{room.creatorName}}
-            {{/each}}
-          </div>
-        </div>
+<div class="publicRooms">
+  <div class="content h-100">
+    <div class="title-holder">
+      <span class="title">Public rooms</span>
+    </div>
+    <div class="search-holder">
+      <div class="search-wrapper">
+
+        <img src="/assets/search_icon.png" class="icon">
+        {{input value=query classNames="searchInput" placeholder="Search for Rooms"}}
       </div>
     </div>
-
+    <div class="roomsHolder">
+      <div class="row">
+        {{#if loading}}
+          Loading
+        {{/if}}
+        {{#each model as |room|}}
+          {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link col-3'}}
+            {{#home-room-item model=room classNames='room'}}{{/home-room-item}}
+          {{/link-to}}
+        {{/each}}
+      </div>
+    </div>
   </div>
 </div>

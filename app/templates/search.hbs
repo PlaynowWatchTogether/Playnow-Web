@@ -1,13 +1,28 @@
-{{#welcome-body classNames="container-fluid root" tagName='section' minHeight=0}}
-  <div class="col-4 search h-100">
+{{#welcome-body classNames="container-fluid root row" tagName='section' minHeight=0}}
+  <div class="col-4 search users h-100">
     <div class="content h-100">
       <div class="header">
         <span>People</span>
       </div>
-      <div class="searchResult">
+      <div class="searchResult users">
         {{#each search.users as |user|}}
           {{#search-user-item model=user classNames='search-user' addAction=(action 'followUser')
                               sent=sentRequests}}{{/search-user-item}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="col-8 search rooms h-100">
+    <div class="content h-100">
+      <div class="header">
+        <span>Rooms</span>
+      </div>
+      <div class="searchResult rooms row">
+        {{#each search.rooms as |room|}}
+          {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link col-3'}}
+            {{#home-room-item model=room classNames='search-room'
+                              sent=sentRequests}}{{/home-room-item}}
+          {{/link-to}}
         {{/each}}
       </div>
     </div>

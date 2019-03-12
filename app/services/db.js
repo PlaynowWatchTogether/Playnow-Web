@@ -38,26 +38,22 @@ export default Service.extend({
       })
     });
   },
-  rooms(resolve, reject) {
-    this.firebaseApp.auth().onAuthStateChanged((user) => {
-      if (user) {
-        let ref = this.firebaseApp.database().ref("channels/channels");
-        ref.on('value', (data) => {
-          let records = [];
-          data.forEach((item) => {
-            let payload = item.val();
-            var normalizedData = this.store.normalize('room', payload);
-            normalizedData.data.id = item.key;
-            records.push(this.store.push(normalizedData))
-          });
-          resolve(records);
-        }, (error) => {
-          reject(error);
-        })
-      } else {
-        resolve([])
-      }
-    })
+  rooms() {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref("channels/channels");
+      ref.on('value', (data) => {
+        let records = [];
+        data.forEach((item) => {
+          let payload = item.val();
+          var normalizedData = this.store.normalize('room', payload);
+          normalizedData.data.id = item.key;
+          records.push(this.store.push(normalizedData))
+        });
+        resolve(records);
+      }, (error) => {
+        reject(error);
+      })
+    });
   },
   followUser(user) {
 

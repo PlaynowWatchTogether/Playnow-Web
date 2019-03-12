@@ -1225,7 +1225,47 @@ CHAT
     }
   }
 
-  .searchResult {
+  .searchResult.rooms {
+    padding-left: 20px;
+    padding-right: 50px;
+    overflow: scroll;
+
+    .room-chat-link {
+      text-decoration: none;
+      color: black;
+    }
+
+    .room-chat-link:hover {
+      text-decoration: none;
+      color: black;
+    }
+
+    .search-room {
+      margin-top: 20px;
+
+      .thumbnail {
+        width: 100%;
+        border-radius: 20px;
+      }
+
+      .title {
+        font-weight: 400;
+      }
+
+      .watchers {
+        font-size: 14px;
+        color: #606060;
+        display: block;
+      }
+
+      .creator {
+        font-size: 17px;
+        font-weight: 900;
+      }
+    }
+  }
+
+  .searchResult.users {
     overflow: scroll;
 
     .search-user {

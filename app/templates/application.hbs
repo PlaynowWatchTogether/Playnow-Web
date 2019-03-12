@@ -17,11 +17,25 @@
           <img class="profilePic" src="{{model.safeProfilePic}}"/>
         </div>
         <div class="controls">
-          <img src="/assets/ic_friends_add.png"/>
-          <img src="/assets/ic_gear.png"/>
+          <img class="friend-requests" src="/assets/ic_friends_add.png"/>
+          {{#bs-dropdown classNames="gear dropdown"}}
+
+            <div class="btn dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="false">
+              <img src="/assets/ic_gear.png"/>
+            </div>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          {{/bs-dropdown}}
+
         </div>
       </div>
     </header>
   {{/if}}
   {{outlet}}
 </div>
+<div class="dropdown-backdrop"></div>

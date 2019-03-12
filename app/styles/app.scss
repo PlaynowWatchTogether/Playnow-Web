@@ -426,6 +426,21 @@ body.home.chat {
           border-radius: 50%;
         }
       }
+
+      .controls {
+        display: grid;
+        grid-template-columns: 60px 60px;
+
+        .friend-requests {
+          margin: auto;
+        }
+
+        .gear {
+          position: relative;
+          cursor: pointer;
+          margin: auto;
+        }
+      }
     }
     .container-fluid {
       padding-top: 10px;
@@ -688,7 +703,15 @@ body.home.chat {
   }
 }
 
+.loading-holder {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
 
+  .lds-ripple {
+    margin: auto;
+  }
+}
 /*
 CHAT
  */
@@ -827,6 +850,7 @@ CHAT
         .profilePic {
           width: 30px;
           height: 30px;
+          border-radius: 50%;
         }
 
         .divider {
@@ -875,6 +899,7 @@ CHAT
           .profilePic {
             width: 37px;
             height: 37px;
+            border-radius: 50%;
             margin-top: auto;
             margin-bottom: auto;
           }
@@ -1325,4 +1350,15 @@ CHAT
       }
     }
   }
+}
+
+
+.dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  display: none;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 990;
 }

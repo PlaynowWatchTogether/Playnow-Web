@@ -1,26 +1,14 @@
-<div class="mainPage background_gradient">
-
-  <header class="home navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col">
-          <img src="/assets/welcome_icon.png" class="homeIcon">
-        </div>
+{{#welcome-body classNames="container-fluid root" tagName='section' minHeight=0}}
+  <div class="row h-100">
+    <div class="col-3 col-friends h-100">
+      <div class="row row-friends h-100">
+        {{#home-friends-list classNames="col h-100 friendsOutlet" model=model.friends
+                             chatAction=(action "chatFriend")}}{{/home-friends-list}}
       </div>
     </div>
-  </header>
-  {{#welcome-body classNames="container-fluid root" tagName='section' minHeight=0}}
-    <div class="row h-100">
-      <div class="col-3 col-friends h-100">
-        <div class="row row-friends h-100">
-          {{#home-friends-list classNames="col h-100 friendsOutlet" model=model.friends
-                               chatAction=(action "chatFriend")}}{{/home-friends-list}}
-        </div>
-      </div>
-      <div class="col-9 col-child-content h-100">
-        {{outlet}}
-      </div>
+    <div class="col-9 col-child-content h-100">
+      {{outlet}}
     </div>
-  {{/welcome-body}}
-  <footer></footer>
-</div>
+  </div>
+{{/welcome-body}}
+<footer></footer>

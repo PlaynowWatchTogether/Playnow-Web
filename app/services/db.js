@@ -26,6 +26,18 @@ export default Service.extend({
       }
     });
   },
+  profile(user) {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref("Users/" + user);
+      ref.once('value').then((snapshot) => {
+        let payload = snapshot.val();
+        payload['id'] = snapshot.key;
+        resolve(payload);
+      }).catch((error) => {
+        reject(error);
+      })
+    });
+  },
   rooms(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -45,6 +57,27 @@ export default Service.extend({
       } else {
         resolve([])
       }
+    })
+  },
+  followUser(user) {
+
+    this.profile(this.firebaseApp.auth().currentUser.uid).then((profile) => {
+      let name = profile['FirstName'] + ' ' + profile['LastName'];
+      let email = this.firebaseApp.auth().currentUser.email;
+      let username = name;
+      if (email && email.includes('@')) {
+        username = email.split("@")[0]
+      }
+      let ref = this.firebaseApp.database().ref("Users/" + user['id'] + '/Followers/' + this.firebaseApp.auth().currentUser.uid);
+      let updates = {};
+      updates['Email'] = email;
+      updates['Name'] = name;
+      updates['Username'] = name;
+      if (profile['ProfilePic']) {
+        updates['ProfilePic'] = profile['ProfilePic'];
+      }
+      ref.update(updates);
+
     })
   }
 });

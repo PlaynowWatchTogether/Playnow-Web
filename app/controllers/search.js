@@ -1,0 +1,26 @@
+import Controller from '@ember/controller';
+// import {computed, on} from '@ember/object'
+import Ember from 'ember'
+import {inject as service} from '@ember/service';
+
+export default Controller.extend({
+  db: service(),
+  init() {
+    this._super(...arguments);
+    this.addObserver('model', this, 'modelObserver');
+    this.search = {};
+    this.sentRequests = [];
+  },
+  modelObserver(arg) {
+    arg.store.query('user', {orderBy: 'Email', startAt: arg.get('model.query'), limitToFirst: 10}).then((res) => {
+      arg.set('search.users', res);
+    })
+  },
+  actions: {
+    followUser(user) {
+      this.get('db').followUser(user);
+      this.get('sentRequests').addObject(user);
+      this.notifyPropertyChange('sentRequests');
+    }
+  }
+});

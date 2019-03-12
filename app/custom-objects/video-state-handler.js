@@ -10,7 +10,7 @@ export default EmberObject.extend({
     this.isMaster = true;
     this.lastState = {
       videoId: ''
-    }
+    };
     this.currentVideo = {};
     this.stateSubject = new Subject();
     this.stateSubject.pipe(
@@ -91,9 +91,9 @@ export default EmberObject.extend({
       let shouldSlide = this.syncMode === 'sliding' && !this.isMaster;
       if (shouldSlide) {
         let syncAt = newState['syncAt'];
-        let timePassed = Date().getTime() - syncAt * 1000;
+        let timePassed = new Date().getTime() - syncAt * 1000;
         seconds += timePassed / 1000 + 5.0;
-        let startTime = 5000 + 40;
+        let startTime = 2000 + 40;
         this.play(startTime)
       }
       this.loadVideo(newState, seconds);

@@ -9,6 +9,7 @@ export default Route.extend({
     this._super(...arguments);
     return new Promise((resolve, reject) => {
       this.firebaseApp.auth().onAuthStateChanged((user) => {
+        this.set('user', user);
         if (user) {
           resolve()
         } else {
@@ -19,16 +20,13 @@ export default Route.extend({
     });
   },
   model() {
-    return Ember.RSVP.hash({friends: this.store.query('friends', {})});
+    return Ember.RSVP.hash({
+      friends: this.store.query('friends', {}),
+      profile: this.store.find('user', this.get('user').uid)
+    });
   },
   activate() {
     this._super(...arguments);
-
-    this.db.friends(() => {
-
-    }, () => {
-
-    });
     Ember.$('body').addClass('home');
   },
   deactivate() {

@@ -1,0 +1,20 @@
+<img class="profilePic" src="{{model.safeProfilePic}}"/>
+<div class="firstName">{{model.FirstName}} {{model.LastName}}</div>
+<div class="addHolder">
+  {{#if isAdded}}
+    <div class="added">
+      <img src="/assets/ic_friend_added.png"/>
+      <div class="label">
+        Added
+      </div>
+    </div>
+  {{else}}
+    <div class="add" {{action 'addFriend'}}>
+      <img src="/assets/ic_add_friend.png"/>
+      <div class="label">
+        Add
+      </div>
+    </div>
+  {{/if}}
+
+</div>

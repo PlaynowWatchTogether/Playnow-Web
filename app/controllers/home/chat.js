@@ -59,8 +59,9 @@ export default Controller.extend({
   modelObserver: (obj) => {
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
+    obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
+
     if ('one2one' === type) {
-      obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
       obj.store.find('user', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
           type: 'one2one',
@@ -73,8 +74,28 @@ export default Controller.extend({
           title: friend.get('FirstName'),
           user: friend
         });
+        obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
+        obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+      });
+    } else if ('room' === type) {
+      obj.store.find('room', convId).then((room) => {
+        obj.set('dataSource', MessageDataSource.create({
+          type: 'room',
+          room: room,
+          myId: obj.firebaseApp.auth().currentUser.uid,
+          db: obj.firebaseApp.database()
+        }));
+        obj.set('chatModel', {
+          hasProfilePic: false,
+          title: '@' + room.get('creatorName') + "' room",
+          room: room
+        });
+        obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
+        obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+
       });
     }
+
   },
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');

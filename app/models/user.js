@@ -4,6 +4,8 @@ import EmberObject, {computed} from '@ember/object';
 const {attr, belongsTo, hasMany} = DS;
 export default DS.Model.extend({
   ProfilePic: attr('string'),
+  Username: attr('string'),
+  Email: attr('string'),
   BirthDate: attr('string'),
   FirstName: attr('string'),
   LastName: attr('string'),

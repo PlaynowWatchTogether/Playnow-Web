@@ -1,2 +1,27 @@
-
-{{outlet}}
+<div class="mainPage background_gradient h-100">
+  {{#if model}}
+    <header class="home navbar navbar-default navbar-fixed-top">
+      <div class="content">
+        {{#link-to 'home' classNames='play-icon'}}
+          <img src="/assets/welcome_icon.png" class="play-icon">
+        {{/link-to}}
+        <div class="search">
+          <img src="/assets/search_icon.png" class="icon">
+          {{input value=searchQuery classNames="searchInput" placeholder="Search"}}
+          <div class="trigger-search" {{action 'triggerSearch'}}>
+            <img src="/assets/ic_search_trigger.png" class="icon">
+          </div>
+        </div>
+        <div class="profile">
+          <span class="name">{{model.FirstName}}</span>
+          <img class="profilePic" src="{{model.safeProfilePic}}"/>
+        </div>
+        <div class="controls">
+          <img src="/assets/ic_friends_add.png"/>
+          <img src="/assets/ic_gear.png"/>
+        </div>
+      </div>
+    </header>
+  {{/if}}
+  {{outlet}}
+</div>

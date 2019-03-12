@@ -12,13 +12,14 @@ export default Component.extend({
     $(window).off("resize");
   },
   handleSize() {
-    let calcHeight = Math.max($('body').height(), this.minHeight) - $('header').height() - $('footer').height();
+    let headerHeight = $('header').height();
+    let footerHeight = $('footer').height();
+    let calcHeight = Math.max($('body').height(), this.minHeight) - (headerHeight ? headerHeight : 0) - (footerHeight ? footerHeight : 0);
     $(this.element).css('height', calcHeight);
   },
   didInsertElement() {
     this._super(...arguments);
     this.handleSize()
-
-  },
+  }
 
 });

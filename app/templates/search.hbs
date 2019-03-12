@@ -1,0 +1,16 @@
+{{#welcome-body classNames="container-fluid root" tagName='section' minHeight=0}}
+  <div class="col-4 search h-100">
+    <div class="content h-100">
+      <div class="header">
+        <span>People</span>
+      </div>
+      <div class="searchResult">
+        {{#each search.users as |user|}}
+          {{#search-user-item model=user classNames='search-user' addAction=(action 'followUser')
+                              sent=sentRequests}}{{/search-user-item}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+{{/welcome-body}}
+<footer></footer>

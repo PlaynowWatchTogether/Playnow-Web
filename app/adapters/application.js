@@ -11,10 +11,19 @@ export default FirestoreAdapter.extend({
       return this._ref.child('Users/' + user.uid + "/Friends")
     }
     if (typeClass.modelName === 'user') {
-      return this._ref.child('Users/' + id)
+      if (id) {
+        return this._ref.child('Users/' + id)
+      } else {
+        return this._ref.child('Users/')
+
+      }
     }
     if (typeClass.modelName === 'room') {
-      return this._ref.child('channels/channels')
+      if (id) {
+        return this._ref.child('channels/channels/' + id)
+      } else {
+        return this._ref.child('channels/channels/')
+      }
     }
     return this._super(arguments)
   }

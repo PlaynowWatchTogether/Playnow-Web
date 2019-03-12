@@ -14,6 +14,8 @@ export default EmberObject.extend({
       return [this.myId, this.user.id].sort((a, b) => {
         return b.localeCompare(a)
       }).join("");
+    } else if (this.type === 'room') {
+      return this.room.id
     } else {
       return "";
     }
@@ -21,6 +23,8 @@ export default EmberObject.extend({
   messageRoot() {
     if (this.type === 'one2one') {
       return 'channels/messages';
+    } else if (this.type === 'room') {
+      return 'channels/channels';
     }
   },
 

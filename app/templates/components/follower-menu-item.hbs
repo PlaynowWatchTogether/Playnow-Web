@@ -1,0 +1,32 @@
+<div class="profilePic">
+  <img src="{{profilePic}}"/>
+</div>
+<div class="name">
+  <div class="username">
+    {{username}}
+  </div>
+  <div class="display-name">
+    {{name}}
+  </div>
+
+</div>
+<div class="follow-controls">
+  {{#if isAdded}}
+    <div class="added">
+      <img src="/assets/ic_friend_added.png"/>
+      <div class="label">
+        Added
+      </div>
+    </div>
+  {{else}}
+    <div class="add" {{action 'confirmRequest'}}>
+      <img src="/assets/ic_add_friend.png"/>
+      <div class="label">
+        Add
+      </div>
+    </div>
+    <div class="cancel" {{action 'cancelRequest'}}>
+      Delete
+    </div>
+  {{/if}}
+</div>

@@ -17,7 +17,29 @@
           <img class="profilePic" src="{{model.safeProfilePic}}"/>
         </div>
         <div class="controls">
-          <img class="friend-requests" src="/assets/ic_friends_add.png"/>
+          <div class="dropdown followers">
+            <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
+                 aria-expanded="false" data-display="static">
+              <img class="friend-requests" src="/assets/ic_friends_add.png"/>
+              <img src="/assets/ic_chevron_settings.png"/>
+            </div>
+            <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
+              <div class="followers-content">
+                <div class="title">
+                  <div>
+                    Friend request
+                  </div>
+                </div>
+
+                <div class="follower-items">
+                  {{#each followers as |follower|}}
+                    {{#follower-menu-item model=follower classNames='follower'
+                                          actionHandler=(action 'followerAction')}}{{/follower-menu-item}}
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
           {{#bs-dropdown classNames="gear dropdown"}}
 
             <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"

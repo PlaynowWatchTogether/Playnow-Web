@@ -435,6 +435,120 @@ body.home.chat {
           margin: auto;
         }
 
+        .followers {
+          margin: auto;
+          cursor: pointer;
+
+          .followers-content {
+            overflow: hidden;
+            display: grid;
+            grid-template-rows: 50px auto;
+            height: 400px;
+
+            .title {
+              padding-left: 20px;
+              font-size: 18px;
+              font-weight: 600;
+              border-bottom: 1px solid #dedede;
+              display: grid;
+
+              div {
+                margin-top: auto;
+                margin-bottom: auto;
+              }
+            }
+          }
+
+          .followers {
+            width: 500px;
+          }
+
+          .dropdown-menu {
+            margin-left: -457px;
+            width: 500px;
+            padding-top: 0;
+          }
+
+          .follower-items {
+            overflow: scroll;
+            padding-left: 10px;
+            padding-top: 10px;
+            padding-right: 10px;
+            display: grid;
+            grid-template-rows: repeat(auto-fit, 100px);
+            grid-row-gap: 10px;
+
+            .follower {
+              padding: 10px;
+              background: #F0F0F0;
+              border-radius: 20px;
+              display: grid;
+              grid-template-columns: 80px minmax(0, auto) 220px;
+
+              .name {
+                margin-top: auto;
+                margin-bottom: auto;
+                margin-left: 10px;
+              }
+
+              .display-name {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 11px;
+                color: #A7A2A2;
+              }
+
+              .username {
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 19px;
+
+              }
+
+              .profilePic {
+                img {
+                  width: 77px;
+                  height: 77px;
+                  border-radius: 50%;
+                }
+              }
+
+              .follow-controls {
+                display: grid;
+                grid-template-columns: auto auto;
+
+                .add {
+                  display: grid;
+                  background: #CF77FF;
+                  margin: auto;
+                  padding: 5px 20px 5px 20px;
+                  border-radius: 20px;
+                  grid-template-columns: auto auto;
+
+                  img {
+                    margin: auto;
+                  }
+
+                  .label {
+                    margin-top: auto;
+                    margin-left: 10px;
+                    color: white;
+                  }
+                }
+
+                .cancel {
+                  margin: auto;
+                  background: #C4C4C4;
+                  border-radius: 20px;
+                  padding: 5px 20px;
+                  color: white;
+                }
+              }
+            }
+          }
+        }
         .gear {
           position: relative;
           cursor: pointer;

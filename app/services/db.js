@@ -38,6 +38,57 @@ export default Service.extend({
       })
     });
   },
+  followers(uid, resolve) {
+    let ref = this.firebaseApp.database().ref('Users/' + uid + "/Followers");
+    ref.on('value', (data) => {
+      let records = [];
+      data.forEach((item) => {
+        let payload = item.val();
+        payload['id'] = item.key;
+        records.push(payload)
+
+      });
+      resolve(records)
+    }, (error) => {
+
+    });
+  },
+  confirmRequest(model) {
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    let myFollower = this.firebaseApp.database().ref("Users/" + myId + "/Followers/" + model['id']);
+    let otherFollower = this.firebaseApp.database().ref("Users/" + model['id'] + "/FollowedUsers/" + myId);
+    let myFriend = this.firebaseApp.database().ref("Users/" + myId + "/Friends/" + model['id']);
+    let otherFriend = this.firebaseApp.database().ref("Users/" + model['id'] + "/Friends/" + myId);
+    let myValues = {};
+    let otherValues = {};
+    myValues['Username'] = model['Username'];
+    otherValues['Username'] = this.firebaseApp.auth().currentUser.email;
+    this.profile(myId).then((profile) => {
+      // let myName = profile['FirstName'] + " " + profile['LastName'];
+      Promise.all([
+        myFollower.remove(),
+        otherFollower.remove(),
+        myFriend.update(myValues),
+        otherFriend.update(otherValues)
+      ]).then((data) => {
+        console.log('Request confirmed ' + data);
+      }).catch((error) => {
+        console.log('Request confirm failed ' + error);
+
+      });
+
+    })
+
+  },
+  cancelRequest(model) {
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    let myFollower = this.firebaseApp.database().ref("Users/" + myId + "/Followers/" + model['id']);
+    myFollower.remove().then(() => {
+      console.log('Request cancelled ');
+    }).catch((error) => {
+      console.log('Request cancel failed ' + error);
+    });
+  },
   rooms() {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("channels/channels");

@@ -26,6 +26,15 @@ export default Service.extend({
       }
     });
   },
+  updateProfile(firstName, lastName, bd) {
+    let uid = this.firebaseApp.auth().currentUser.uid
+    let ref = this.firebaseApp.database().ref("Users/" + uid);
+    let updates = {};
+    updates['BirthDate'] = bd;
+    updates['FirstName'] = firstName;
+    updates['LastName'] = lastName;
+    ref.update(updates)
+  },
   profile(user) {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("Users/" + user);

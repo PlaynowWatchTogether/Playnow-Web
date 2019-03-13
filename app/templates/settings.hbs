@@ -1,0 +1,32 @@
+<div class="settings-root">
+  <div class="account-root">
+    <div class="title">
+      <div>Settings</div>
+    </div>
+    <div class="profile-content">
+      <img src="{{profilePic}}" class="profilePic"/>
+      <div class="username-holder">
+        <div class="username">{{form.username}}</div>
+        <div class="change-pic">Change Profile Pic</div>
+      </div>
+      <div class="first-name-label label">First Name</div>
+      <div class="input">
+        {{input value=form.firstName classNames='first-name-input'}}
+      </div>
+      <div class="last-name-label label">Last Name</div>
+      <div class="input">
+        {{input value=form.lastName classNames='first-name-input'}}
+      </div>
+      <div class="birthdate-label label">Birthday</div>
+      <div class="input">
+        {{bootstrap-datepicker value=date calendarWeeks=true autoclose=true
+                               classNames="birthday-input" format="yyyy-mm-dd"}}
+      </div>
+      <div class="email-label label">Email</div>
+      <div class="input">
+        {{input value=form.email classNames='email-input'}}
+      </div>
+      <button class="btn-submit" {{action 'updateProfile'}}>Submit</button>
+    </div>
+  </div>
+</div>

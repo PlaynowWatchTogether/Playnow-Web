@@ -1495,3 +1495,109 @@ CHAT
 .datepicker td, .datepicker th {
   width: 40px;
 }
+
+.settings-root {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+
+  .account-root {
+    grid-template-rows: 50px auto;
+    background: #fff;
+    height: fit-content;
+    border-radius: 20px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    padding: 10px;
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+
+    .title {
+      border-bottom: 1px solid #E6E6E6;
+      display: grid;
+      padding-left: 20px;
+
+      div {
+        margin-top: auto;
+        margin-bottom: auto;
+        font-size: 24px;
+        color: #88B3F9;
+      }
+    }
+
+    .profile-content {
+      grid-template-columns: 100px 100px 100px 100px 100px 200px;
+      grid-template-rows: 100px auto;
+      display: grid;
+      grid-row-gap: 20px;
+      padding-top: 20px;
+
+      .profilePic {
+        width: 93px;
+        height: 93px;
+        border-radius: 50%;
+        grid-column-start: 3;
+      }
+
+      .username-holder {
+        grid-column-start: 4;
+        grid-column-end: 7;
+        margin-top: auto;
+        margin-bottom: auto;
+
+        .username {
+          font-size: 30px;
+          font-weight: 900;
+        }
+      }
+
+      .label {
+        font-weight: 700;
+        font-size: 24px;
+        grid-column-start: 2;
+        grid-column-end: 4;
+        text-align: right;
+        padding-right: 20px;
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+
+      .input {
+        grid-column-start: 4;
+        grid-column-end: 6;
+        margin-top: auto;
+        margin-bottom: auto;
+
+        input {
+          background: #F2F2F2;
+          border: none;
+          border-radius: 20px;
+          padding: 10px 20px;
+        }
+
+        input:focus {
+          outline: none;
+        }
+      }
+
+      .change-pic {
+        color: #0093FF;
+        font-size: 18px;
+      }
+
+      .btn-submit {
+        grid-column-start: 3;
+        grid-column-end: 6;
+        background: #9FC2FA;
+        color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 30px;
+        font-size: 24px;
+        margin: 30px;
+
+      }
+    }
+  }
+}

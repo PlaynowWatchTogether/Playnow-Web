@@ -13,6 +13,7 @@ Router.map(function() {
     this.route('chat', {path: '/chat/:chat_id/:type'});
   });
   this.route('search', {path: '/search/:query'});
+  this.route('settings');
 });
 
 export default Router;

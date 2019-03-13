@@ -51,7 +51,7 @@
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <h6 class="dropdown-header">More:</h6>
-              {{#link-to 'settings' classNames='dropdown-item'}}Settings{{/link-to}}
+              <a class="dropdown-item" data-toggle="modal" data-target="#settingsModal">Settings</a>
               <a class="dropdown-item" href="#">Information</a>
               <a class="dropdown-item" href="#">Support</a>
               <h6 class="dropdown-header">Action:</h6>
@@ -66,4 +66,54 @@
   {{/if}}
   {{outlet}}
 </div>
-<div class="dropdown-backdrop"></div>
+<!-- Modal -->
+<div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="settings-root modal-content">
+      <div class="account-root">
+        <div class="title">
+          <div>Settings</div>
+        </div>
+        <div class="profile-content">
+          <div class="profilePicWrapper">
+            <img src="{{profilePic}}" class="profilePic"/>
+          </div>
+          <div class="username-holder">
+            <div class="username">{{form.username}}</div>
+            {{#file-upload name="photos"
+                           accept="image/*"
+                           onfileadd=(action "uploadImage") as |queue|}}
+              <a class="change-pic">Change Profile Pic</a>
+            {{/file-upload}}
+
+          </div>
+          <div class="first-name-label label">First Name</div>
+          <div class="input">
+            {{input value=form.firstName classNames='first-name-input' disabled=isDisabled}}
+          </div>
+          <div class="last-name-label label">Last Name</div>
+          <div class="input">
+            {{input value=form.lastName classNames='first-name-input' disabled=isDisabled}}
+          </div>
+          <div class="birthdate-label label">Birthday</div>
+          <div class="input">
+            {{bootstrap-datepicker value=date calendarWeeks=true autoclose=true
+                                   classNames="birthday-input" format="yyyy-mm-dd" disabled=isDisabled}}
+          </div>
+          <div class="email-label label">Email</div>
+          <div class="input">
+            {{input value=form.email classNames='email-input' disabled=isDisabled}}
+          </div>
+          {{#if isDisabled}}
+            <button class="btn-edit" {{action 'edit'}}>Edit</button>
+          {{else}}
+            <button class="btn-submit" {{action 'updateProfile'}}>Submit</button>
+            <button class="btn-cancel" {{action 'cancelUpdate'}}>Cancel</button>
+          {{/if}}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

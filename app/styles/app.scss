@@ -448,6 +448,7 @@ body.home.chat {
           width: 31px;
           height: 31px;
           border-radius: 50%;
+          object-fit: cover;
         }
       }
 
@@ -533,6 +534,7 @@ body.home.chat {
 
               .profilePic {
                 img {
+                  object-fit: cover;
                   width: 77px;
                   height: 77px;
                   border-radius: 50%;
@@ -763,6 +765,7 @@ body.home.chat {
     width: 91px;
 
     .profilePic {
+      object-fit: cover;
       width: 71px;
       height: 71px;
       border-radius: 50%;
@@ -814,6 +817,7 @@ body.home.chat {
     }
 
     .profilePic {
+      object-fit: cover;
       margin-left: 20px;
       z-index: 30;
       position: absolute;
@@ -1051,6 +1055,7 @@ CHAT
         }
 
         .profilePic {
+          object-fit: cover;
           width: 30px;
           height: 30px;
           border-radius: 50%;
@@ -1100,6 +1105,7 @@ CHAT
           margin-top: 20px;
 
           .profilePic {
+            object-fit: cover;
             width: 37px;
             height: 37px;
             border-radius: 50%;
@@ -1508,6 +1514,7 @@ CHAT
       margin-bottom: 10px;
 
       .profilePic {
+        object-fit: cover;
         width: 93px;
         height: 93px;
         border-radius: 50%;
@@ -1572,7 +1579,7 @@ CHAT
   width: 100%;
   display: grid;
   grid-template-columns: auto;
-
+  border-radius: 20px;
   .account-root {
     grid-template-rows: 50px auto;
     background: #fff;
@@ -1605,10 +1612,12 @@ CHAT
       padding-top: 20px;
 
       .profilePic {
+
         width: 93px;
         height: 93px;
         border-radius: 50%;
         grid-column-start: 3;
+        object-fit: cover;
       }
 
       .username-holder {
@@ -1658,7 +1667,7 @@ CHAT
         cursor: pointer;
       }
 
-      .btn-submit {
+      .btn-edit {
         grid-column-start: 3;
         grid-column-end: 6;
         background: #9FC2FA;
@@ -1668,7 +1677,29 @@ CHAT
         border-radius: 30px;
         font-size: 24px;
         margin: 30px;
+      }
+      .btn-submit {
+        grid-column-start: 1;
+        grid-column-end: 5;
+        background: #9FC2FA;
+        color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 30px;
+        font-size: 24px;
+        margin: 30px;
+      }
 
+      .btn-cancel {
+        grid-column-start: 5;
+        grid-column-end: 7;
+        background: #c7c8ca;
+        color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 30px;
+        font-size: 24px;
+        margin: 30px;
       }
     }
   }
@@ -1681,3 +1712,4 @@ CHAT
 .trigger-search:hover {
   background: #8cbbfd !important;
 }
+

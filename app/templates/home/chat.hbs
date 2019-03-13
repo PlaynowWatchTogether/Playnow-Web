@@ -74,7 +74,8 @@
       </div>
       <div class="search">
         <img src="/assets/search_icon.png" class="icon">
-        {{input value=searchQuery classNames="searchInput" placeholder="Search content"}}
+        {{input value=searchQuery classNames="searchInput" placeholder="Search content"
+                insert-newline=(action 'triggerSearch')}}
         <div class="trigger-search" {{action 'triggerSearch'}}>
           <img src="/assets/ic_search_trigger.png" class="icon">
         </div>

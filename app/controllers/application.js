@@ -6,7 +6,10 @@ export default Controller.extend({
   db: service(),
   actions: {
     triggerSearch() {
-      this.transitionToRoute('search', {query: this.get('searchQuery')});
+      let q = this.get('searchQuery');
+      if (q.length !== 0) {
+        this.transitionToRoute('search', {query: q});
+      }
     },
     logout() {
       this.get('auth').logout();

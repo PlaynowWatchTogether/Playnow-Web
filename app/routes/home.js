@@ -29,6 +29,9 @@ export default Route.extend({
   },
   activate() {
     this._super(...arguments);
+    this.get('db').friends(() => {
+    }, () => {
+    });
     $('body').addClass('home');
   },
   deactivate() {

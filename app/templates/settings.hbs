@@ -7,7 +7,12 @@
       <img src="{{profilePic}}" class="profilePic"/>
       <div class="username-holder">
         <div class="username">{{form.username}}</div>
-        <div class="change-pic">Change Profile Pic</div>
+        {{#file-upload name="photos"
+                       accept="image/*"
+                       onfileadd=(action "uploadImage") as |queue|}}
+          <a class="change-pic">Change Profile Pic</a>
+        {{/file-upload}}
+
       </div>
       <div class="first-name-label label">First Name</div>
       <div class="input">

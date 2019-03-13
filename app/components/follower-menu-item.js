@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import {computed} from "@ember/object";
-
+import {run} from '@ember/runloop';
 export default Component.extend({
   profilePic: computed('model', function () {
     let m = this.get('model');
@@ -18,15 +18,28 @@ export default Component.extend({
     let m = this.get('model');
     return m['Username'];
   }),
-  isAdded: computed('sent', function () {
-    return false
-  }),
   actions: {
-    confirmRequest() {
-      this.actionHandler(1, this.get('model'))
+    confirmRequest(event) {
+      this.set('isAdded', true);
+      setTimeout(() => {
+        $(this.element).fadeOut(1000, () => {
+          run(() => {
+            this.actionHandler(1, this.get('model'));
+          });
+        });
+      }, 1000);
+      return false;
     },
-    cancelRequest() {
-      this.actionHandler(0, this.get('model'))
+    cancelRequest(event) {
+      this.set('isRemoved', true);
+      setTimeout(() => {
+        $(this.element).fadeOut(1000, () => {
+          run(() => {
+            this.actionHandler(0, this.get('model'));
+          });
+        });
+      }, 1000);
+      return false;
     }
   }
 

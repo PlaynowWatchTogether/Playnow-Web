@@ -19,14 +19,23 @@
       </div>
     </div>
   {{else}}
-    <div class="add" {{action 'confirmRequest'}}>
-      <img src="/assets/ic_add_friend.png"/>
-      <div class="label">
-        Add
+    {{#if isRemoved}}
+      <div class="removed">
+        <div class="label">
+          Removed
+        </div>
       </div>
-    </div>
-    <div class="cancel" {{action 'cancelRequest'}}>
-      Delete
-    </div>
+    {{else}}
+      {{#clickable-div classNames="add hoveredBtn actionItem" clickAction=(action 'confirmRequest')}}
+        <img src="/assets/ic_add_friend.png"/>
+        <div class="label">
+          Add
+        </div>
+      {{/clickable-div}}
+      {{#clickable-div classNames="cancel hoveredBtn actionItem" clickAction=(action 'cancelRequest')}}
+        Delete
+      {{/clickable-div}}
+    {{/if}}
+
   {{/if}}
 </div>

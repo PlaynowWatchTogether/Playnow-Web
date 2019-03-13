@@ -18,6 +18,7 @@ body, html {
 body > .ember-view {
   height: 100%;
 }
+
 .background_gradient {
   background-image: linear-gradient(to bottom right, #87B7FA, #C837EA);
 }
@@ -60,6 +61,13 @@ body > .ember-view {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
   }
 
+  .welcomeHeader input.username:focus {
+    outline: none;
+  }
+
+  .welcomeHeader input.password:focus {
+    outline: none;
+  }
   .welcomeHeader input.password {
     display: block;
     border-radius: 20px;
@@ -91,6 +99,9 @@ body > .ember-view {
     margin-left: 10px;
   }
 
+  .loginBtn:focus {
+    outline: none;
+  }
   .loginBtn {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     color: white;
@@ -532,6 +543,34 @@ body.home.chat {
                 display: grid;
                 grid-template-columns: auto auto;
 
+                .added {
+                  display: grid;
+                  background: #5AB9FF;
+                  margin: auto;
+                  grid-column-start: 2;
+                  padding: 5px 20px 5px 20px;
+                  border-radius: 20px;
+                  grid-template-columns: auto auto;
+
+                  img {
+                    margin: auto;
+                  }
+
+                  .label {
+                    margin-top: auto;
+                    margin-left: 10px;
+                    color: white;
+                  }
+                }
+
+                .removed {
+                  margin: auto;
+                  background: #C4C4C4;
+                  border-radius: 20px;
+                  padding: 5px 20px;
+                  color: white;
+                  grid-column-start: 2;
+                }
                 .add {
                   display: grid;
                   background: #CF77FF;
@@ -562,6 +601,7 @@ body.home.chat {
             }
           }
         }
+
         .gear {
           position: relative;
           cursor: pointer;
@@ -590,6 +630,7 @@ body.home.chat {
         }
       }
     }
+
     .container-fluid {
       padding-top: 10px;
       padding-bottom: 10px;
@@ -872,6 +913,7 @@ body.home.chat {
     margin: auto;
   }
 }
+
 /*
 CHAT
  */
@@ -988,6 +1030,7 @@ CHAT
           cursor: pointer; /* Cursor on hover */
         }
       }
+
       .back {
         text-align: center;
         margin: auto;
@@ -1125,6 +1168,7 @@ CHAT
         .file-upload {
           margin: auto;
         }
+
         img {
           width: 31px;
           height: 31px;
@@ -1207,6 +1251,7 @@ CHAT
         background: #BCD7FD;
         border-radius: 20px;
       }
+
     }
 
     .tabs {
@@ -1265,6 +1310,7 @@ CHAT
             border-radius: 10px;
           }
         }
+
         .youtube-item {
           cursor: pointer;
           margin-top: 10px;
@@ -1626,4 +1672,12 @@ CHAT
       }
     }
   }
+}
+
+.hoveredBtn:hover {
+  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.16) !important;
+}
+
+.trigger-search:hover {
+  background: #8cbbfd !important;
 }

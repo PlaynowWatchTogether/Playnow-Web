@@ -18,7 +18,7 @@
           <img class="profilePic" src="{{model.safeProfilePic}}"/>
         </div>
         <div class="controls">
-          <div class="dropdown followers">
+          {{#bs-dropdown classNames='dropdown followers'}}
             <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
                  aria-expanded="false" data-display="static">
               <img class="friend-requests" src="/assets/ic_friends_add.png"/>
@@ -40,7 +40,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          {{/bs-dropdown}}
           {{#bs-dropdown classNames="gear dropdown"}}
 
             <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"

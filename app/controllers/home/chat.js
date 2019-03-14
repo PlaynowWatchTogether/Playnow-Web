@@ -112,7 +112,10 @@ export default Controller.extend({
     ds.messages((messages) => {
       let uiMessages = [];
       let lastDate = new Date(0);
-      messages.forEach(function (mes, index) {
+      let sorted = messages.sort(function (a, b) {
+        return a['date'] - b['date'];
+      });
+      sorted.forEach(function (mes, index) {
         let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
         let mesDate = new Date(mes.date * 1000);
         let diff = lastDate.getTime() - mesDate.getTime();

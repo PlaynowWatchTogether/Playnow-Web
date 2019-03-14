@@ -24,12 +24,9 @@
     </div>
   {{else}}
     <div class="message-text">
-      {{#if model.text}}
-        <span class="text">
-          {{model.text}}
-        </span>
-      {{/if}}
-
+      <div class="text">
+        {{{bodyMessage}}}
+      </div>
     </div>
 
   {{/if}}

@@ -79,12 +79,14 @@
           <span>Trending</span>
         </div>
       </div>
-      <div class="search">
-        <img src="/assets/search_icon.png" class="icon">
-        {{input value=searchQuery classNames="searchInput" placeholder="Search content"
-                insert-newline=(action 'triggerSearch')}}
-        <div class="trigger-search" {{action 'triggerSearch'}}>
-          <img src="/assets/ic_search_trigger.png" class="icon">
+      <div class="searchHolder">
+        <div class="search">
+          <img src="/assets/search_icon.png" class="icon">
+          {{input value=searchQuery classNames="searchInput" placeholder="Search content"
+                  insert-newline=(action 'triggerSearch')}}
+          <div class="trigger-search" {{action 'triggerSearch'}}>
+            <img src="/assets/ic_search_trigger.png" class="icon">
+          </div>
         </div>
       </div>
       <div class="tabs">
@@ -101,8 +103,8 @@
         <div class="youtube-items row {{if isMusicResult 'music'}}">
           {{#each youtubeItems as |video|}}
             {{#if isMusicResult}}
-              {{#youtube-video model=video classNames='youtube-item-music col-12'
-                               clickAction=(action 'musicPick')}}{{/youtube-video}}
+              {{#youtube-music model=video classNames='youtube-item-music col-12'
+                               clickAction=(action 'musicPick')}}{{/youtube-music}}
             {{else}}
               {{#youtube-video model=video classNames='youtube-item col-6'
                                clickAction=(action 'videoPick')}}{{/youtube-video}}

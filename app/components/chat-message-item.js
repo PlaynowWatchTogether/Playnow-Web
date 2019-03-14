@@ -33,5 +33,10 @@ export default Component.extend({
   requestChannel: computed('model', function () {
     let model = this.get('model');
     return model['video']['title'];
+  }),
+  bodyMessage: computed('model', function () {
+    let model = this.get('model');
+    return model['text'].autoLink();
+
   })
 });

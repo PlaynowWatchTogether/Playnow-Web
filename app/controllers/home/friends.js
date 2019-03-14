@@ -9,7 +9,7 @@ export default Controller.extend({
     this.loading = true;
     this.model = this.store.peekAll('friends');
     this.db.friends((data) => {
-      this.set('model', this.store.peekAll('friends'));
+      this.set('model', this.store.peekAll('friends').sortBy('latestMessageDate'));
       this.set('loading', false);
       // this.set('model', data);
     }, () => {

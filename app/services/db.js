@@ -12,10 +12,9 @@ export default Service.extend({
           let records = [];
           data.forEach((item) => {
             let payload = item.val();
-            var normalizedData = this.store.normalize('friends', payload);
-            normalizedData.data.id = item.key;
-            records.push(this.store.push(normalizedData))
-
+            payload.id = item.key;
+            let ser = this.store.seria
+            records.push(payload)
           });
           resolve(records)
         }, (error) => {
@@ -27,7 +26,7 @@ export default Service.extend({
     });
   },
   updateProfile(firstName, lastName, bd) {
-    let uid = this.firebaseApp.auth().currentUser.uid
+    let uid = this.firebaseApp.auth().currentUser.uid;
     let ref = this.firebaseApp.database().ref("Users/" + uid);
     let updates = {};
     updates['BirthDate'] = bd;
@@ -36,7 +35,7 @@ export default Service.extend({
     ref.update(updates)
   },
   updateProfilePic(pic) {
-    let uid = this.firebaseApp.auth().currentUser.uid
+    let uid = this.firebaseApp.auth().currentUser.uid;
     let ref = this.firebaseApp.database().ref("Users/" + uid);
     let updates = {};
     updates['ProfilePic'] = pic;

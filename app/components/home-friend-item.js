@@ -12,5 +12,13 @@ export default Component.extend({
   }),
   click() {
     this.chatAction(this.get('model'));
-  }
+  },
+  safeProfilePic: computed('model.ProfilePic', function () {
+    let m = this.get('model');
+    if (!m['ProfilePic'] || m['ProfilePic'].length === 0) {
+      return '/assets/monalisa.png'
+    } else {
+      return m['ProfilePic']
+    }
+  }),
 });

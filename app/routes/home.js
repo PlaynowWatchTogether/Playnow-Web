@@ -23,14 +23,16 @@ export default Route.extend({
   },
   model() {
     return Ember.RSVP.hash({
-      friends: this.store.query('friends', {}),
       profile: this.store.find('user', this.get('user').uid)
     });
   },
   activate() {
     this._super(...arguments);
-    this.get('db').friends(() => {
+    this.get('db').friends((friends) => {
+      let ctrl = this.controllerFor('home');
+      ctrl.set('friends', friends);
     }, () => {
+
     });
     $('body').addClass('home');
   },

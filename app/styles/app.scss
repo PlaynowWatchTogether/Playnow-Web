@@ -1174,9 +1174,8 @@ CHAT
         }
 
         .messageContent:empty:not(:focus):before {
-          content: attr(data-ph);
+          content: attr(placeholder);
           color: grey;
-          font-style: italic;
         }
 
         .messageContent {

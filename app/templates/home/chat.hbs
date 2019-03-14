@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="newMessageHolder">
-        <div class="messageContent" contentEditable data-ph="Type a message..."></div>
+        {{content-editable value=messageText placeholder="Search content" classNames="messageContent"}}
         <div class="imgHolder">
           <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
         </div>

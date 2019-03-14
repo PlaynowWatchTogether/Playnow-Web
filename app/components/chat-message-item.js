@@ -11,5 +11,27 @@ export default Component.extend({
   }),
   mine: computed('model', 'auth.uid', function () {
     return this.get('model').senderId === this.auth.get('uid')
+  }),
+  isPhoto: computed('model', function () {
+    let model = this.get('model');
+    let type = model['type'];
+    return type === 'photo';
+  }),
+  isVideoRequest: computed('model', function () {
+    let model = this.get('model');
+    let type = model['type'];
+    return type === 'VideoRequest';
+  }),
+  requestTitle: computed('model', function () {
+    let model = this.get('model');
+    return model['senderName'] + ' requested to watch:';
+  }),
+  requestThumbnail: computed('model', function () {
+    let model = this.get('model');
+    return model['video']['imageURL'];
+  }),
+  requestChannel: computed('model', function () {
+    let model = this.get('model');
+    return model['video']['title'];
   })
 });

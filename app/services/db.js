@@ -141,5 +141,12 @@ export default Service.extend({
       ref.update(updates);
 
     })
+  },
+  handleOnline() {
+    let uid = this.firebaseApp.auth().currentUser.uid;
+    let ref = this.firebaseApp.database().ref("Users/" + uid + "/Last Active Date");
+    ref.set("online");
+    ref.onDisconnect().set(new Date().getTime() / 1000.0);
+
   }
 });

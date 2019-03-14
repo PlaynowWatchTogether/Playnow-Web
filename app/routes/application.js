@@ -11,6 +11,7 @@ export default Route.extend({
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.db.handleOnline();
         this.db.followers(user.uid, (list) => {
           let ct = this.controllerFor('application');
           ct.set('followers', list);

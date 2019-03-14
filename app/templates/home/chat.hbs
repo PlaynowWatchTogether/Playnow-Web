@@ -92,25 +92,39 @@
       <div class="tabs">
         <ul class="nav nav-pills">
           <li class="nav-item">
-            <a class="nav-link {{videoTabClass}}" {{action 'pickVideosSearch'}}>Videos</a>
+            <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+               aria-selected="true" {{action 'pickVideosSearch'}}>Videos</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{songsTabClass}}" {{action 'pickSongsSearch'}}>Songs</a>
+            <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
+               aria-selected="true" {{action 'pickSongsSearch'}}>Songs</a>
           </li>
         </ul>
       </div>
-      <div class="tabs-content">
-        <div class="youtube-items row {{if isMusicResult 'music'}}">
-          {{#each youtubeItems as |video|}}
-            {{#if isMusicResult}}
-              {{#youtube-music model=video classNames='youtube-item-music col-12'
-                               clickAction=(action 'musicPick')}}{{/youtube-music}}
-            {{else}}
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="videos">
+          {{#scroll-with-listener classNames='youtube-items row' music=false
+                                  onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
+                                  loading=loadingVideo}}
+
+            {{#each youtubeVideoItems as |video|}}
               {{#youtube-video model=video classNames='youtube-item col-6'
                                clickAction=(action 'videoPick')}}{{/youtube-video}}
 
-            {{/if}}
-          {{/each}}
+            {{/each}}
+
+          {{/scroll-with-listener}}
+        </div>
+        <div class="tab-pane fade" id="music">
+          {{#scroll-with-listener classNames='youtube-items row music' music=false
+                                  onScrolledHalf=(action 'scrolledHalfYoutubeMusic') scrollParent='.tab-content'
+                                  loading=loadingMusic}}
+            {{#each youtubeMusicItems as |video|}}
+              {{#youtube-music model=video classNames='youtube-item-music col-12'
+                               clickAction=(action 'musicPick')}}{{/youtube-music}}
+
+            {{/each}}
+          {{/scroll-with-listener}}
         </div>
       </div>
 

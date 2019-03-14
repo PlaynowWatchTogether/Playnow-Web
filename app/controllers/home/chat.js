@@ -46,10 +46,77 @@ export default Controller.extend({
     this.addObserver('messageText', this, 'messageTextObserver');
     this.addObserver('searchMode', this, 'searchModeObserver');
     this.set('searchMode', 'video');
+    this.set('searchQuery', '');
     this.set('searchQueryVideo', '');
     this.set('searchQueryMusic', '');
     this.searchModeObserver(this);
 
+
+    this.queryYoutubeVideos(true);
+    this.queryYoutubeMusic(true);
+  },
+
+  queryYoutubeMusic(reset) {
+    return new Promise((resolve) => {
+      let q = this.get('searchQuery');
+      let page = this.get('youtubeMusicItemsPage');
+      if (reset) {
+        this.set('youtubeMusicItems', []);
+      }
+      if (q.length === 0) {
+        this.get('youtubeSearch').trending(true, page).then((data) => {
+          this.set('youtubeMusicItemsPage', data.nextPage);
+          if (reset) {
+            this.set('youtubeMusicItems', data.items);
+          } else {
+            this.get('youtubeMusicItems').pushObjects(data.items);
+          }
+          resolve();
+        });
+      } else {
+        this.get('youtubeSearch').search(q, true, page).then((data) => {
+          this.set('youtubeMusicItemsPage', data.nextPage);
+          if (reset) {
+            this.set('youtubeMusicItems', data.items);
+          } else {
+            this.get('youtubeMusicItems').pushObjects(data.items);
+          }
+          resolve();
+        });
+      }
+
+    });
+  },
+  queryYoutubeVideos(reset) {
+    return new Promise((resolve) => {
+      let q = this.get('searchQueryVideo');
+      let page = this.get('youtubeVideoItemsPage');
+      if (reset) {
+        this.set('youtubeVideoItems', []);
+      }
+      if (q.length === 0) {
+        this.get('youtubeSearch').trending(false, page).then((data) => {
+          this.set('youtubeVideoItemsPage', data.nextPage);
+          if (reset) {
+            this.set('youtubeVideoItems', data.items);
+          } else {
+            this.get('youtubeVideoItems').pushObjects(data.items);
+          }
+          resolve();
+        });
+      } else {
+        this.get('youtubeSearch').search(q, false, page).then((data) => {
+          this.set('youtubeVideoItemsPage', data.nextPage);
+          if (reset) {
+            this.set('youtubeVideoItems', data.items);
+          } else {
+            this.get('youtubeVideoItems').pushObjects(data.items);
+          }
+          resolve();
+        });
+      }
+
+    });
   },
   messageTextObserver: (obj) => {
     console.log('typing ' + obj.get('messageText'));
@@ -161,19 +228,19 @@ export default Controller.extend({
     });
   },
   searchModeObserver: (obj) => {
-    let music = obj.get('searchMode') === 'music';
-    obj.set('searchQuery', music ? obj.get('searchQueryMusic') : obj.get('searchQueryVideo'));
-    let q = obj.get('searchQuery');
-    obj.set('youtubeItems', []);
-    if (q.length === 0) {
-      obj.get('youtubeSearch').trending(music).then((data) => {
-        obj.set('youtubeItems', data.items);
-      });
-    } else {
-      obj.get('youtubeSearch').search(q, music).then((data) => {
-        obj.set('youtubeItems', data.items);
-      });
-    }
+    // let music = obj.get('searchMode') === 'music';
+    // obj.set('searchQuery', music ? obj.get('searchQueryMusic') : obj.get('searchQueryVideo'));
+    // let q = obj.get('searchQuery');
+    // obj.set('youtubeItems', []);
+    // if (q.length === 0) {
+    //   obj.get('youtubeSearch').trending(music).then((data) => {
+    //     obj.set('youtubeItems', data.items);
+    //   });
+    // } else {
+    //   obj.get('youtubeSearch').search(q, music).then((data) => {
+    //     obj.set('youtubeItems', data.items);
+    //   });
+    // }
   },
   videoTabClass: computed('searchMode', function () {
     return this.get('searchMode') === 'video' ? 'active' : '';
@@ -185,6 +252,22 @@ export default Controller.extend({
     return this.get('searchMode') === 'music'
   }),
   actions: {
+    scrolledHalfYoutubeVideo() {
+      if (this.get('searchMode') === 'video') {
+        this.set('loadingVideo', true);
+        this.queryYoutubeVideos(false).then(() => {
+          this.set('loadingVideo', false);
+        });
+      }
+    },
+    scrolledHalfYoutubeMusic() {
+      if (this.get('searchMode') === 'music') {
+        this.set('loadingMusic', true);
+        this.queryYoutubeMusic(false).then(() => {
+          this.set('loadingMusic', false);
+        });
+      }
+    },
     videoLoaded() {
       let ds = this.get('videoStateHandler');
       ds.handleNextState('loaded');
@@ -221,24 +304,30 @@ export default Controller.extend({
       ds.sendVideo(video, 'youtubeMusic')
     },
     pickVideosSearch() {
-      this.set('searchMode', 'video');
+      if (this.get('searchMode') !== 'video') {
+        this.set('searchMode', 'video');
+        this.set('searchQueryMusic', this.get('searchQuery'));
+        this.set('searchQuery', this.get('searchQueryVideo'))
+      }
     },
     pickSongsSearch() {
-      this.set('searchMode', 'music');
+      if (this.get('searchMode') !== 'music') {
+        this.set('searchMode', 'music');
+        this.set('searchQueryVideo', this.get('searchQuery'));
+        this.set('searchQuery', this.get('searchQueryMusic'))
+      }
     },
     triggerSearch() {
-      let music = this.get('searchMode') === 'music';
-      let q = this.get('searchQuery');
-      this.set('youtubeItems', []);
-      if (q.length === 0) {
-        this.get('youtubeSearch').trending(music).then((data) => {
-          this.set('youtubeItems', data.items);
-        });
+      if (this.get('searchMode') === 'video') {
+        this.set('searchQueryVideo', this.get('searchQuery'));
+        this.set('youtubeVideoItemsPage', null);
+        this.queryYoutubeVideos(true);
       } else {
-        this.get('youtubeSearch').search(q, music).then((data) => {
-          this.set('youtubeItems', data.items);
-        });
+        this.set('searchQueryMusic', this.get('searchQuery'));
+        this.set('youtubeMusicItemsPage', null);
+        this.queryYoutubeMusic(true);
       }
+
     }
   }
 });

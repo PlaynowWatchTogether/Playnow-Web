@@ -19,8 +19,12 @@ body > .ember-view {
   height: 100%;
 }
 
+//Variables
+$primary-gradient: linear-gradient(to bottom right, #87B7FA, #C837EA);
+$input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+
 .background_gradient {
-  background-image: linear-gradient(to bottom right, #87B7FA, #C837EA);
+  background-image: $primary-gradient
 }
 
 .welcomePage {
@@ -58,7 +62,7 @@ body > .ember-view {
     border-width: 0;
     padding-left: 10px;
     padding-right: 10px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
   }
 
   .welcomeHeader input.username:focus {
@@ -76,7 +80,7 @@ body > .ember-view {
     border-width: 0;
     padding-left: 10px;
     padding-right: 10px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
   }
 
   .loginError {
@@ -105,7 +109,7 @@ body > .ember-view {
   }
 
   .loginBtn {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
     color: white;
     background: #71C3FF;
     border-width: 0;
@@ -134,7 +138,7 @@ body > .ember-view {
   }
 
   .welcomeLeft .content {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
     background: white;
     border: 0;
     height: 100%;
@@ -152,7 +156,7 @@ body > .ember-view {
     border: 0;
     border-radius: 20px 0 0 20px;
     height: 100%;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
   }
 
   .welcomeContent {
@@ -330,7 +334,7 @@ body > .ember-view {
   }
 
   .signUpBtn {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
     color: white;
     background: #71C3FF;
     border-width: 0;
@@ -345,7 +349,7 @@ body.home.index {
     .row-friends {
       background: white;
       height: 100%;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      box-shadow: $input-shadow;
       border-radius: 0 20px 0 0;
     }
   }
@@ -361,7 +365,7 @@ body.home.chat {
     .row-friends {
       background: white;
       height: 100%;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      box-shadow: $input-shadow;
       border-right: 1px solid #D5D3D3;
     }
   }
@@ -623,7 +627,7 @@ body.home.chat {
 
         .dropdown-menu {
           border-radius: 20px;
-          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+          box-shadow: $input-shadow;
         }
 
         .dropdown-item:hover:first-child {
@@ -651,7 +655,7 @@ body.home.chat {
   }
 
   .col-outlet {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
     background: white;
     border: 0;
     height: 100%;
@@ -933,7 +937,7 @@ CHAT
   .content {
     .holder {
       background: #fff;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      box-shadow: $input-shadow;
       border-radius: 0 20px 0 0;
       display: flex;
       flex-direction: column;
@@ -1254,7 +1258,7 @@ CHAT
       flex-direction: column;
       width: 100%;
       background: #fff;
-      box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+      box-shadow: $input-shadow;
       border-radius: 20px 0 0 0;
       margin-left: 0;
       .title {
@@ -1350,7 +1354,7 @@ CHAT
       }
     }
 
-    .tabs-content {
+    .tab-content {
       flex: 1 1 auto;
       flex-basis: auto;
       height: 50px;
@@ -1423,7 +1427,7 @@ CHAT
 .publicRooms {
   background: white;
   height: 100%;
-  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+  box-shadow: $input-shadow;
   border-radius: 20px 0 0 0;
 
   .content {
@@ -1667,7 +1671,7 @@ CHAT
     background: #fff;
     height: fit-content;
     border-radius: 20px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+    box-shadow: $input-shadow;
     padding: 10px;
     display: grid;
     margin-left: auto;

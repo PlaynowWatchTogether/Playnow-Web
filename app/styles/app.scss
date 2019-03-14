@@ -68,6 +68,7 @@ body > .ember-view {
   .welcomeHeader input.password:focus {
     outline: none;
   }
+
   .welcomeHeader input.password {
     display: block;
     border-radius: 20px;
@@ -102,6 +103,7 @@ body > .ember-view {
   .loginBtn:focus {
     outline: none;
   }
+
   .loginBtn {
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     color: white;
@@ -439,17 +441,21 @@ body.home.chat {
         margin-top: auto;
         margin-bottom: auto;
         padding: 5px 10px 5px 20px;
+        display: grid;
+        grid-template-columns: min-content auto;
 
         .name {
           color: white;
+          margin: auto 10px auto auto;
         }
 
-        .profilePic {
+        .profilePicWrapper {
           width: 31px;
           height: 31px;
           border-radius: 50%;
-          object-fit: cover;
+
         }
+
       }
 
       .controls {
@@ -532,13 +538,9 @@ body.home.chat {
 
               }
 
-              .profilePic {
-                img {
-                  object-fit: cover;
-                  width: 77px;
-                  height: 77px;
-                  border-radius: 50%;
-                }
+              .profilePicWrapper {
+                width: 77px;
+                height: 77px;
               }
 
               .follow-controls {
@@ -573,6 +575,7 @@ body.home.chat {
                   color: white;
                   grid-column-start: 2;
                 }
+
                 .add {
                   display: grid;
                   background: #CF77FF;
@@ -764,8 +767,7 @@ body.home.chat {
     position: relative;
     width: 91px;
 
-    .profilePic {
-      object-fit: cover;
+    .profilePicWrapper {
       width: 71px;
       height: 71px;
       border-radius: 50%;
@@ -773,7 +775,13 @@ body.home.chat {
       z-index: 30;
       position: absolute;
       top: 5px;
+      overflow: hidden;
       right: 5.5px;
+
+      .profilePic {
+
+
+      }
     }
 
     .online {
@@ -1050,15 +1058,18 @@ CHAT
         .title {
           text-align: center;
           vertical-align: middle;
-          margin-top: auto;
-          margin-bottom: auto;
+          display: grid;
+          grid-template-columns: 30px auto;
+          margin: auto;
         }
 
-        .profilePic {
-          object-fit: cover;
+        .name {
+          margin: auto auto auto 10px;
+        }
+
+        .profilePicWrapper {
           width: 30px;
           height: 30px;
-          border-radius: 50%;
         }
 
         .divider {
@@ -1104,11 +1115,9 @@ CHAT
           grid-template-columns: 50px 70%;
           margin-top: 20px;
 
-          .profilePic {
-            object-fit: cover;
+          .profilePicWrapper {
             width: 37px;
             height: 37px;
-            border-radius: 50%;
             margin-top: auto;
             margin-bottom: auto;
           }
@@ -1158,15 +1167,34 @@ CHAT
         display: grid;
         grid-template-columns: auto 60px 80px;
         flex: 0 0 auto;
-        height: 50px;
 
-        input {
+        .messageContent:focus {
+          outline: none;
+
+        }
+
+        .messageContent:empty:not(:focus):before {
+          content: attr(data-ph);
+          color: grey;
+          font-style: italic;
+        }
+
+        .messageContent {
+          min-height: 40px;
+          white-space: pre;
+          outline: none;
+          font-size: 20px;
+          padding: 5px 10px;
+        }
+
+        textarea {
+          resize: none;
           background: none;
           border: none;
           padding-left: 20px;
         }
 
-        input:focus {
+        textarea:focus {
           background: none;
           outline: none;
         }
@@ -1175,10 +1203,12 @@ CHAT
           margin: auto;
         }
 
+        .imgHolder {
+          margin: auto;
+        }
         img {
           width: 31px;
           height: 31px;
-          margin: auto;
         }
       }
     }
@@ -1580,6 +1610,7 @@ CHAT
   display: grid;
   grid-template-columns: auto;
   border-radius: 20px;
+
   .account-root {
     grid-template-rows: 50px auto;
     background: #fff;
@@ -1611,13 +1642,13 @@ CHAT
       grid-row-gap: 20px;
       padding-top: 20px;
 
-      .profilePic {
-
+      .profilePicWrapper {
+        grid-column-start: 3;
+        position: relative;
         width: 93px;
         height: 93px;
+        overflow: hidden;
         border-radius: 50%;
-        grid-column-start: 3;
-        object-fit: cover;
       }
 
       .username-holder {
@@ -1678,6 +1709,7 @@ CHAT
         font-size: 24px;
         margin: 30px;
       }
+
       .btn-submit {
         grid-column-start: 1;
         grid-column-end: 5;
@@ -1713,3 +1745,17 @@ CHAT
   background: #8cbbfd !important;
 }
 
+.profilePicWrapper {
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+}
+
+.profilePic {
+  position: absolute;
+  left: 0;
+  height: auto;
+  width: 100%;
+  min-width: 100%;
+  min-height: 100%;
+}

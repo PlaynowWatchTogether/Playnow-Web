@@ -1,7 +1,9 @@
 {{#if displaySender}}
-  <img src="{{user.safeProfilePic}}" class="profilePic">
+  <div class="profilePicWrapper">
+    <img src="{{user.safeProfilePic}}" class="profilePic">
+  </div>
 {{else}}
-  <div class="profilePic"/>
+  <div class="profilePicWrapper"/>
 {{/if}}
 {{#if model.thumbnail}}
   <div class="message-img">

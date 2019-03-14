@@ -4,8 +4,13 @@
       <div class="titleHolder">
         <div class="title">
           {{#if chatModel.hasProfilePic}}
-            <img src="{{chatModel.user.safeProfilePic}}" class="profilePic" alt="ProfilePic">
+            <div class="profilePicWrapper">
+              <img src="{{chatModel.user.safeProfilePic}}" class="profilePic" alt="ProfilePic">
+            </div>
+          {{else}}
+            <div class="profilePicWrapper"></div>
           {{/if}}
+
           <span class="name">{{chatModel.title}}</span>
         </div>
         <div class="back">
@@ -53,8 +58,10 @@
         </div>
       </div>
       <div class="newMessageHolder">
-        {{input value=messageText placeholder="Type a message..."}}
-        <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
+        <div class="messageContent" contentEditable data-ph="Type a message..."></div>
+        <div class="imgHolder">
+          <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
+        </div>
         {{#file-upload name="photos"
                        accept="image/*"
                        onfileadd=(action "uploadImage") as |queue|}}

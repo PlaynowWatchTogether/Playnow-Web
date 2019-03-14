@@ -15,7 +15,9 @@
         </div>
         <div class="profile">
           <span class="name">{{model.FirstName}}</span>
-          <img class="profilePic" src="{{model.safeProfilePic}}"/>
+          <div class="profilePicWrapper">
+            <img class="profilePic" src="{{model.safeProfilePic}}"/>
+          </div>
         </div>
         <div class="controls">
           {{#bs-dropdown classNames='dropdown followers'}}

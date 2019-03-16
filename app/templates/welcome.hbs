@@ -12,7 +12,7 @@
             <div class="welcomeHeaderUsername">
               <span class="usernameLabel">Username or email</span>
               {{input value=form.username classNames="username"}}
-              <span class="loginError">{{error}}</span>
+              <span class="error-tip">{{error}}</span>
             </div>
 
           </div>
@@ -47,34 +47,34 @@
 
             <div class="registerFirstName">
               {{input value=form.register.firstName classNames="registerEdit" placeholder="First name"}}
-              <span class="loginError">{{form.register.error.firstName}}</span>
+              <span class="error-tip">{{form.register.error.firstName}}</span>
             </div>
             <div class="registerLastName">
               {{input value=form.register.lastName classNames="registerEdit" placeholder="Last name"}}
-              <span class="loginError">{{form.register.error.lastName}}</span>
+              <span class="error-tip">{{form.register.error.lastName}}</span>
             </div>
           </div>
           <p class="addFriend">Add friends with your username!</p>
           <div class="registerUsername">
 
             {{input value=form.register.username classNames="registerEdit" placeholder="Pick a Username (e.g user123)"}}
-            <span class="loginError">{{form.register.error.username}}</span>
+            <span class="error-tip">{{form.register.error.username}}</span>
           </div>
           <div class="registerPassword">
             {{input value=form.register.password classNames="registerEdit" placeholder="Password" type="password"}}
-            <span class="loginError">{{form.register.error.password}}</span>
+            <span class="error-tip">{{form.register.error.password}}</span>
           </div>
           <p class="birthdayLabel">Birthday</p>
           <div class="registerBirthday">
             {{bootstrap-datepicker value=form.register.birthDate calendarWeeks=true autoclose=true
                                    classNames="registerEdit"}}
-            <span class="loginError">{{form.register.error.birthDate}}</span>
+            <span class="error-tip">{{form.register.error.birthDate}}</span>
             <p class="bdHint">You can’t use Playnow if you
               are younger than 13.</p>
           </div>
           <p class="termsText">By clicking Sign Up, you agree to the Terms and Policy.</p>
           <button {{action "signUpAction"}} class="signUpBtn hoveredBtn">Sign Up</button>
-          <span class="loginError">{{form.register.error.global}}</span>
+          <span class="error-tip">{{form.register.error.global}}</span>
         </div>
       </div>
     </div>

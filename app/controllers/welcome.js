@@ -29,7 +29,8 @@ export default Controller.extend({
       this.userCreated()
     }).catch((error) => {
       Ember.Logger.debug(error);
-      this.set('error', "Login failed")
+      this.set('error', "Login failed");
+      this.clearError();
     })
   },
   findUser(username) {
@@ -71,38 +72,52 @@ export default Controller.extend({
     updates[friendID + '/Friends/' + uid + '/id'] = friendID;
     return db.ref('/Users').update(updates)
   },
+  clearError() {
+    setTimeout(() => {
+      this.set('form.register.error', {});
+      this.set('error', '');
+    }, 2000);
+
+  },
   actions: {
     async signUpAction() {
       let register = this.get('form.register');
       this.set('form.register.error', {});
       if (this.isEmpty(register.firstName)) {
         this.set('form.register.error.firstName', 'Should not be empty');
+        this.clearError();
         return
       }
       if (this.isEmpty(register.lastName)) {
         this.set('form.register.error.lastName', 'Should not be empty');
+        this.clearError();
         return
       }
       if (!register.birthDate) {
         this.set('form.register.error.birthDate', 'Should not be empty');
+        this.clearError();
         return
       }
       if (this.years(register.birthDate) < 13) {
         this.set('form.register.error.birthDate', 'Should be 13 years old');
+        this.clearError();
         return
       }
       if (!register.password) {
         this.set('form.register.error.password', 'Should not be empty');
+        this.clearError();
         return
       }
       if (!register.username) {
         this.set('form.register.error.username', 'Should not be empty');
+        this.clearError();
         return
       }
       this.findUser(register.username).then((ret) => {
         Ember.Logger.debug("User found: " + ret);
         if (ret === 0) {
-          this.set('form.register.error.username', 'Username already taken')
+          this.set('form.register.error.username', 'Username already taken');
+          this.clearError();
         } else {
           this.createUser(register.username, register.password).then((user) => {
             let bd = register.birthDate.getFullYear() + "-" + (register.birthDate.getMonth() + 1) + "-" + register.birthDate.getDate()
@@ -122,7 +137,8 @@ export default Controller.extend({
               this.userCreated()
             })
           }, (error) => {
-            this.set('form.register.error.global', 'Sign up failed')
+            this.set('form.register.error.global', 'Sign up failed');
+            this.clearError();
           })
         }
       }, (error) => {
@@ -149,7 +165,8 @@ export default Controller.extend({
           this.loginWithEmail(userEmail, password)
         }, (error) => {
           Ember.Logger.debug(error)
-          this.set('error', "Login failed")
+          this.set('error', "Login failed");
+          this.clearError();
         });
         Ember.Logger.debug('w/o @')
       }

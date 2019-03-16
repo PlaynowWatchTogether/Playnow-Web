@@ -236,6 +236,9 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
   }
 
   .footerColumnItem {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
     color: white;
     font-size: 12px;
   }

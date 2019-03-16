@@ -41,6 +41,15 @@ export default Service.extend({
     updates['ProfilePic'] = pic;
     ref.update(updates)
   },
+  profileObserver(user, updateCallback) {
+
+    let ref = this.firebaseApp.database().ref("Users/" + user);
+    ref.on('value', (snapshot) => {
+      let payload = snapshot.val();
+      payload['id'] = snapshot.key;
+      updateCallback(payload);
+    })
+  },
   profile(user) {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("Users/" + user);

@@ -16,7 +16,7 @@ export default Controller.extend({
     let form = {};
     let email = m['Email'];
     form.username = m['Username'];
-    if (email.includes('@g2z4oldenfingers.com')) {
+    if (email && email.includes('@g2z4oldenfingers.com')) {
       form.username = email.split("@")[0];
     } else {
       form.email = m['Email'];

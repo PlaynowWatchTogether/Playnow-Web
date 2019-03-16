@@ -20,7 +20,7 @@ export default Controller.extend({
     let form = {};
     let email = m['Email'];
     form.username = m['Username'];
-    if (email.includes('@g2z4oldenfingers.com')) {
+    if (email && email.includes('@g2z4oldenfingers.com')) {
       form.username = email.split("@")[0];
     } else {
       form.email = m['Email'];
@@ -46,10 +46,10 @@ export default Controller.extend({
 
   profilePic: computed('form.ProfilePic', function () {
     let m = this.get('form');
-    if (!m['ProfilePic'] || m['ProfilePic'].length === 0) {
+    if (!m || !m['ProfilePic'] || m['ProfilePic'].length === 0) {
       return '/assets/monalisa.png'
     } else {
-      return m['ProfilePic']
+      return m['ProfilePic'] || '/assets/monalisa.png'
     }
   }),
   username: computed('model', function () {
@@ -120,7 +120,7 @@ export default Controller.extend({
       let form = {};
       let email = m['Email'];
       form.username = m['Username'];
-      if (email.includes('@g2z4oldenfingers.com')) {
+      if (email && email.includes('@g2z4oldenfingers.com')) {
         form.username = email.split("@")[0];
       } else {
         form.email = m['Email'];

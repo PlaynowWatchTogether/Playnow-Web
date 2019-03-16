@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import Ember from "ember"
+
 export default Controller.extend({
   firebaseApp: service(),
   init() {
@@ -61,6 +62,15 @@ export default Controller.extend({
     let ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   },
+  addDefaultFriend() {
+    let db = this.get('firebaseApp').database();
+    let friendID = 'IZ3cAldc41PsvRnppzngv85utJf2';
+    let uid = this.get('firebaseApp').auth().currentUser.uid;
+    let updates = {};
+    updates[uid + '/Friends/' + friendID + '/id'] = uid;
+    updates[friendID + '/Friends/' + uid + '/id'] = friendID;
+    return db.ref('/Users').update(updates)
+  },
   actions: {
     async signUpAction() {
       let register = this.get('form.register');
@@ -105,11 +115,13 @@ export default Controller.extend({
             user.updateProfile({displayName: register.username}).then(() => {
               return this.updateProfile(user, fields)
             }).then(() => {
+              return this.addDefaultFriend();
+            }).then(() => {
               this.userCreated();
-            }, () => {
+            }, (error) => {
               this.userCreated()
             })
-          }, () => {
+          }, (error) => {
             this.set('form.register.error.global', 'Sign up failed')
           })
         }

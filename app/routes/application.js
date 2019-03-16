@@ -16,7 +16,8 @@ export default Route.extend({
           let ct = this.controllerFor('application');
           ct.set('followers', list);
         });
-        this.store.find('user', user.uid).then((model) => {
+
+        this.db.profileObserver(user.uid, (model) => {
           this.set('model', model);
           let ct = this.controllerFor('application');
           ct.set('model', model);

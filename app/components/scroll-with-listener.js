@@ -9,7 +9,7 @@ export default Component.extend({
       if ($(this.element).height() === 0)
         return;
       let maxScrollY = $(this.element).height() - $(this.element).closest(this.get('scrollParent')).height();
-      let scrollHalf = maxScrollY / 2;
+      let scrollHalf = 2 * maxScrollY / 3;
 
       let scrolled = $(this.element).closest(this.get('scrollParent')).scrollTop();
       if (scrolled > scrollHalf) {

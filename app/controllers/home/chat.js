@@ -272,7 +272,7 @@ export default Controller.extend({
       let ds = this.get('videoStateHandler');
       ds.handleNextState('loaded');
     },
-    uploadImage(file) {
+    uploadImageToChat(file) {
       file.readAsDataURL().then((url) => {
         let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
 

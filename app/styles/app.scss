@@ -791,8 +791,8 @@ body.home.chat {
   }
 
   .friend {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     cursor: pointer;
     display: grid;
     grid-template-columns: auto 100px;
@@ -988,6 +988,7 @@ CHAT
 .chatRoot {
   .content {
     .holder {
+      position: relative;
       background: #fff;
       box-shadow: $input-shadow;
       border-radius: 0 20px 0 0;
@@ -1945,4 +1946,32 @@ CHAT
 // end .error-tip
 .error-tip:not(:empty) {
   display: inline;
+}
+
+.dropzone {
+  position: absolute;
+  left: 0;
+  background: #c3c3c391;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 100;
+  padding: 20px;
+  vertical-align: middle;
+  display: grid;
+  grid-template-columns: auto;
+
+  .content {
+    border: 2px dashed;
+    padding: 20px;
+    text-align: center;
+    vertical-align: middle;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+
+    div {
+      margin: auto;
+    }
+  }
 }

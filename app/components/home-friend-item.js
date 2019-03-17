@@ -10,6 +10,12 @@ export default Component.extend({
   playingClass: computed('model.videoIsPlaying', function () {
     return this.get('model.videoIsPlaying') ? 'playing' : '';
   }),
+  onlineClass: computed('model.isOnline', function () {
+    return this.get('model.isOnline') ? 'online' : '';
+  }),
+  unreadClass: computed('model', function () {
+    return this.get('model.hasNewMessages') ? 'unread' : '';
+  }),
   click() {
     this.chatAction(this.get('model'));
   },

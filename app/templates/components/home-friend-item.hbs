@@ -3,20 +3,14 @@
   <span class="lastName">{{model.lastName}}</span>
 </div>
 
-<div class="profilePicHolder {{playingClass}}">
-
-  {{#if model.videoIsPlaying}}
+<div class="profilePicHolder {{playingClass}} {{onlineClass}} {{unreadClass}}">
+  <div class="content">
     <div class="playing"></div>
     <div class="playing2"></div>
-  {{/if}}
-  <div class="profilePicWrapper">
-    <img class="profilePic" src="{{safeProfilePic}}"/>
+    <div class="profilePicWrapper">
+      <img class="profilePic" src="{{safeProfilePic}}"/>
+    </div>
+    <div class="online-icon"></div>
+    <img class="unread-icon" src="/assets/friend_unread.png"/>
   </div>
-  {{#if model.isOnline}}
-    <div class="online"></div>
-  {{/if}}
-  {{#if model.hasNewMessages}}
-    <img class="unread" src="/assets/friend_unread.png"/>
-  {{/if}}
-
 </div>

@@ -101,19 +101,21 @@
           </li>
         </ul>
       </div>
-      <div class="tab-content">
-        <div class="tab-pane fade show active" id="videos">
-          {{#scroll-with-listener classNames='youtube-items row' music=false
-                                  onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
-                                  loading=loadingVideo}}
+      <div class="tab-content col-12">
+        <div class="tab-pane row fade show active" id="videos">
+          <div class="col-12">
+            {{#scroll-with-listener classNames='youtube-items' music=false
+                                    onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
+                                    loading=loadingVideo}}
 
-            {{#each youtubeVideoItems as |video|}}
-              {{#youtube-video model=video classNames='youtube-item col-6'
-                               clickAction=(action 'videoPick')}}{{/youtube-video}}
+              {{#each youtubeVideoItems as |video|}}
+                {{#youtube-video model=video classNames='youtube-item'
+                                 clickAction=(action 'videoPick')}}{{/youtube-video}}
 
-            {{/each}}
+              {{/each}}
 
-          {{/scroll-with-listener}}
+            {{/scroll-with-listener}}
+          </div>
         </div>
         <div class="tab-pane fade" id="music">
           {{#scroll-with-listener classNames='youtube-items row music' music=false

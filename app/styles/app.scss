@@ -434,21 +434,19 @@ body.home.chat {
     .content {
       display: grid;
       grid-template-columns: 200px min-content 600px auto auto auto;
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
       width: 100%;
 
       .play-icon {
-        width: 45px;
-        height: 45px;
-        margin-right: 20px;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
         grid-column-start: 2;
       }
 
       .search {
-        height: 38px;
-        margin-top: auto;
-        margin-bottom: auto;
+        height: 30px;
         border-radius: 20px;
         background: white;
         border-width: 0;
@@ -461,20 +459,21 @@ body.home.chat {
         }
 
         .searchInput {
+
           background: none;
           border: none;
           display: block;
           width: 100%;
-          height: 38px;
-          font-size: 20px;
+          font-size: 100%;
+          height: 30px;
 
           padding-right: 20px;
         }
 
         .icon {
+          width: 20px;
+          height: 20px;
           margin: auto;
-          left: 37px;
-          top: 32px;
         }
 
         .trigger-search {
@@ -488,27 +487,29 @@ body.home.chat {
       }
 
       .profile {
+        height: 30px;
+        margin-top: auto;
+        margin-bottom: auto;
+
         background: #9953E8;
         border-radius: 20px;
         width: fit-content;
         text-align: center;
         grid-column-start: 5;
-        height: 41px;
-        margin-top: auto;
-        margin-bottom: auto;
         padding: 5px 10px 5px 20px;
         display: grid;
         grid-template-columns: min-content auto;
 
         .name {
           color: white;
+          font-size: 100%;
           margin: auto 10px auto auto;
         }
 
         .profilePicWrapper {
-          width: 31px;
-          height: 31px;
           border-radius: 50%;
+          width: 20px;
+          height: 20px;
 
         }
 
@@ -517,11 +518,18 @@ body.home.chat {
       .controls {
         display: grid;
         grid-template-columns: 60px 60px;
-
+        height: 30px;
         .friend-requests {
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
           margin: auto;
         }
 
+        .gear-icon {
+          width: 24px;
+          height: 24px;
+        }
         .followers {
           margin: auto;
           cursor: pointer;
@@ -715,7 +723,7 @@ body.home.chat {
   }
 
   .friends {
-    font-size: 24px;
+    font-size: 130%;
     color: #B757EE;
   }
 
@@ -726,19 +734,21 @@ body.home.chat {
   }
 
   .friendsTitle {
-    height: 50px;
-    margin: 6px 20px auto auto;
+    height: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: right;
+    margin-right: 20px;
   }
 
   .friendsCompose {
-    height: 50px;
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 20px;
+    height: 30px;
+    margin: auto;
   }
 
   .composeIcon {
-    margin-top: 6px;
+    height: 24px;
+    width: auto;
   }
 
   .divider {
@@ -749,45 +759,40 @@ body.home.chat {
 
   .friendsSearchHolder {
     width: 100%;
-    position: relative;
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 10px 20px;
+
+    .content {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display: grid;
+      grid-template-columns: 60px auto;
+      border-radius: 20px;
+      background: #F0F0F0;
+      border-width: 0;
+    }
   }
 
   .friendsSearch:focus {
-    background: #F0F0F0;
+    background: none;
     outline: none;
   }
 
   .friendsSearch {
-
+    border: none;
+    background: none;
     display: block;
-    border-radius: 20px;
-    background: #F0F0F0;
-    border-width: 0;
     width: 100%;
-    height: 46px;
-    font-size: 20px;
-    padding-left: 50px;
-    padding-right: 20px;
+    font-size: 100%;
+    height: auto;
   }
 
   .searchIcon {
-    position: absolute;
-    left: 37px;
-    top: 32px;
-  }
-
-  .composeIcon {
-    width: 38px;
-    height: 29px;
+    margin: auto;
   }
 
   .friend {
-    height: 100px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     cursor: pointer;
     display: grid;
     grid-template-columns: auto 100px;
@@ -808,110 +813,105 @@ body.home.chat {
   .friend .firstName {
     display: block;
     color: black;
-    font-size: 22px;
+    font-size: 100%;
     text-align: right;
   }
 
   .friend .lastName {
     display: block;
     color: #A5A5A5;
-    font-size: 18px;
+    font-size: 80%;
     text-align: right;
   }
 
   .profilePicHolder {
     position: relative;
-    width: 91px;
+    margin: auto;
 
-    .profilePicWrapper {
-      width: 71px;
-      height: 71px;
-      border-radius: 50%;
-      margin-left: 20px;
-      z-index: 30;
-      position: absolute;
-      top: -3px;
-      right: 21px;
-      overflow: hidden;
+    .content {
+      position: relative;
 
-      .profilePic {
+      .profilePicWrapper {
+        width: 60px;
+        height: 60px;
+        margin: auto;
+        z-index: 40;
+
+        .profilePic {
 
 
+        }
+      }
+
+      .online-icon {
+        width: 20px;
+        height: 20px;
+        background: #07FF23;
+        border-radius: 50%;
+        position: absolute;
+        border: solid white 1px;
+        z-index: 40;
+        top: -5px;
+        right: -5px;
+        display: none;
+      }
+
+      .unread-icon {
+        position: absolute;
+        top: 0;
+        left: -24px;
+        display: none;
+      }
+
+      .playing {
+        width: 74px;
+        height: 74px;
+        position: absolute;
+        right: -7px;
+        top: -7px;
+        display: none;
+        border-radius: 50%;
+        background: $primary-gradient;
+        z-index: 21;
+      }
+
+      .playing2 {
+        width: 66px;
+        height: 66px;
+        position: absolute;
+        right: -3px;
+        top: -3px;
+        display: none;
+        border-radius: 50%;
+        background: #fff;
+        z-index: 22;
       }
     }
 
-    .online {
-      width: 20px;
-      height: 20px;
-      background: #07FF23;
-      border-radius: 50%;
-      position: absolute;
-      right: 8px;
-      top: 2px;
-      border: solid white 1px;
-      z-index: 40;
-    }
+
 
   }
 
   .profilePicHolder.playing {
-    position: relative;
-    width: 91px;
-
     .playing {
-      width: 75px;
-      height: 75px;
-      position: absolute;
-      right: 0;
-      top: 5px;
-      border-radius: 50%;
-      background: #f00;
-      z-index: 21;
+      display: block;
     }
 
     .playing2 {
-      width: 66px;
-      height: 66px;
-      position: absolute;
-      right: 4.5px;
-      top: 9px;
-      border-radius: 50%;
-      background: #fff;
-      z-index: 22;
-    }
-
-    .profilePic {
-      object-fit: cover;
-      margin-left: 20px;
-      z-index: 30;
-      position: absolute;
-      top: 11px;
-      right: 5.5px;
-      width: 63px;
-      height: 63px;
-      border-radius: 50%;
-    }
-
-    .online {
-      width: 20px;
-      height: 20px;
-      background: #07FF23;
-      border-radius: 50%;
-      position: absolute;
-      right: 0;
-      top: 0;
-      border: solid white 1px;
-      z-index: 40;
+      display: block;
     }
   }
 
+  .profilePicHolder.unread {
+    .unread-icon {
+      display: block;
+    }
+  }
 
-  .unread {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    left: -8px;
-    top: -8px;
+  .profilePicHolder.online {
+    .online-icon {
+      display: block;
+    }
   }
 
   .friendsList {
@@ -932,7 +932,7 @@ body.home.chat {
     padding-right: 0px;
     display: grid;
     overflow: hidden;
-    grid-template-rows: 50px 80px auto;
+    grid-template-rows: 50px min-content auto;
   }
 }
 
@@ -1159,6 +1159,11 @@ CHAT
         overflow: scroll;
         padding-bottom: 20px;
 
+        .messagesWrappper {
+          display: grid;
+          grid-template-columns: auto;
+          grid-row-gap: 5px;
+        }
         .messageTime {
           color: #E3D636;
           text-align: center;
@@ -1169,7 +1174,6 @@ CHAT
         .messageHolder {
           display: grid;
           grid-template-columns: 50px 70%;
-          margin-top: 20px;
 
           .profilePicWrapper {
             width: 37px;
@@ -1182,8 +1186,8 @@ CHAT
             width: fit-content;
             background: white;
             padding: 10px;
-            border-radius: 20px;
-            box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
+            border-radius: 14px;
+            box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);
             display: block;
             margin-top: auto;
           }
@@ -1247,8 +1251,8 @@ CHAT
 
       .newMessageHolder {
         border-top: 1px solid #E6E6E6;
-        display: grid;
-        grid-template-columns: minmax(0, auto) 60px 80px;
+        display: flex;
+        //grid-template-columns: 200px 60px 80px;
         flex: 0 0 auto;
 
         .messageContent:focus {
@@ -1286,10 +1290,12 @@ CHAT
 
         .file-upload {
           margin: auto;
+          width: 60px;
         }
 
         .imgHolder {
           margin: auto;
+          width: 50px;
         }
         img {
           width: 31px;
@@ -1333,15 +1339,15 @@ CHAT
 
       .searchHolder {
         width: 100%;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
 
         .search {
+          margin-top: 10px;
           border-radius: 20px;
           background: #F0F0F0;
           border-width: 0;
           display: grid;
-          margin-top: 20px;
           grid-template-columns: 60px auto 80px;
 
           .searchInput:focus {
@@ -1350,13 +1356,15 @@ CHAT
           }
 
           .searchInput {
+            font-size: 100%;
+            height: auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
             background: none;
             border: none;
             display: block;
             width: 100%;
-            height: 46px;
-            font-size: 20px;
-
             padding-right: 20px;
           }
 
@@ -1382,8 +1390,6 @@ CHAT
     .tabs {
       margin-left: auto;
       margin-right: auto;
-      padding-top: 10px;
-      padding-bottom: 10px;
 
       .nav-item {
         cursor: pointer;
@@ -1413,17 +1419,28 @@ CHAT
       overflow: scroll;
 
       .youtube-items {
-        padding-left: 10px;
-        padding-right: 10px;
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+
+        .youtube-item:hover {
+          background: rgba(202, 201, 201, 0.59);
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
+        }
+
+        .youtube-item-music:hover {
+          background: rgba(202, 201, 201, 0.59);
+        }
         .youtube-item-music {
           display: grid;
+          cursor: pointer;
           grid-template-columns: min-content auto;
-          margin-top: 10px;
-          border-radius: 20px;
-          box-shadow: 0px 0px 5px 4px rgba(0, 0, 0, 0.16);
+          border-radius: 15px;
+          box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.16);
           padding-top: 10px;
           padding-bottom: 10px;
-          margin-bottom: 10px;
 
           .songDesc {
             margin-left: 10px;
@@ -1460,6 +1477,10 @@ CHAT
           cursor: pointer;
           margin-top: 10px;
 
+          .videoTitle {
+            font-size: 80%;
+
+          }
           .thumbnail {
             width: 100%;
             border-radius: 20px;
@@ -1468,8 +1489,13 @@ CHAT
       }
 
       .youtube-items.music {
-        padding-left: 30px;
-        padding-right: 30px;
+        display: grid;
+        grid-template-columns: auto;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 10px;
       }
     }
   }
@@ -1484,32 +1510,39 @@ CHAT
 
   .content {
     display: grid;
-    grid-template-rows: 50px 80px auto;
+    grid-template-rows: 50px min-content auto;
 
     .title-holder {
       border-bottom: 1px solid #E6E6E6;
       height: 50px;
 
       .title {
+        height: 100%;
+        font-size: 130%;
         color: #88B3F9;
         margin-left: 20px;
-        font-size: 24px;
-        margin-top: 6px;
-        display: block;
+        display: grid;
+        grid-template-columns: auto;
+
+        span {
+          margin-top: auto;
+          margin-bottom: auto;
+        }
       }
     }
 
     .search-holder {
-      height: 80px;
 
       .search-wrapper {
         border-radius: 20px;
         background: #F0F0F0;
         border-width: 0;
         display: grid;
-        margin-left: 40px;
-        margin-right: 40px;
-        margin-top: 20px;
+        margin-top: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
         grid-template-columns: 60px auto 80px;
 
         .searchInput:focus {
@@ -1518,13 +1551,12 @@ CHAT
         }
 
         .searchInput {
+          font-size: 100%;
+          height: auto;
           background: none;
           border: none;
           display: block;
           width: 100%;
-          height: 46px;
-          font-size: 20px;
-
           padding-right: 20px;
         }
 
@@ -1554,8 +1586,9 @@ CHAT
       }
 
       .room {
-        margin-top: 20px;
-
+        margin-top: 10px;
+        text-overflow: ellipsis;
+        overflow: hidden;
         .thumbnail {
           width: 100%;
           border-radius: 20px;
@@ -1563,16 +1596,21 @@ CHAT
 
         .title {
           font-weight: 400;
+          font-size: 75%;
+          overflow-wrap: break-word;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
         .watchers {
-          font-size: 14px;
+          font-size: 80%;
           color: #606060;
           display: block;
         }
 
         .creator {
-          font-size: 17px;
+          font-size: 80%;
           font-weight: 900;
         }
       }

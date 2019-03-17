@@ -8,8 +8,10 @@
 </div>
 
 <div class="friendsSearchHolder">
-  <img src="/assets/search_icon.png" class="searchIcon">
-  {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
+  <div class="content">
+    <img src="/assets/search_icon.png" class="searchIcon">
+    {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
+  </div>
 </div>
 <div class="friendsList">
   {{#if loading}}

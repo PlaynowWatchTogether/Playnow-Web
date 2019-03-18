@@ -13,6 +13,14 @@ export default Route.extend(AuthRouteMixin, {
   deactivate() {
     this._super(...arguments);
     $('body').removeClass('chat');
+    $('body').removeClass('room');
+  },
+  afterModel(model) {
+    if (model.type === 'room') {
+      $('body').addClass('room');
+    } else {
+      $('body').removeClass('room');
+    }
   },
   resetController(controller, isExiting, transition) {
     controller.reset()

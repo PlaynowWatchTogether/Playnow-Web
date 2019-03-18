@@ -242,6 +242,9 @@ export default Controller.extend({
     //   });
     // }
   },
+  modeClass: computed('model', function () {
+    return this.get('model').type;
+  }),
   videoTabClass: computed('searchMode', function () {
     return this.get('searchMode') === 'video' ? 'active' : '';
   }),

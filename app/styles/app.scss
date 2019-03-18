@@ -427,6 +427,14 @@ body.home.chat {
   }
 }
 
+body.home.chat.room {
+  .mainPage {
+    .row-friends {
+      border-right: none;
+      border-radius: 0 20px 0 0;
+    }
+  }
+}
 .mainPage {
   .navbar {
     padding: 0;
@@ -1502,7 +1510,25 @@ CHAT
   }
 }
 
+.chatRoot.room {
+  .content {
+    padding-left: 25px;
 
+    .holder {
+      border-radius: 20px 0 0 0;
+    }
+  }
+
+  .media {
+    border-radius: 0;
+    padding-left: 0;
+    border-left: 1px solid #D5D3D3;
+
+    .holder {
+      border-radius: 0;
+    }
+  }
+}
 .publicRooms {
   background: white;
   height: 100%;
@@ -1685,23 +1711,25 @@ CHAT
 
     .search-user {
       display: grid;
-      grid-template-columns: 91px auto 100px;
+      grid-template-columns: min-content auto min-content;
       padding-left: 20px;
       padding-right: 20px;
       margin-top: 10px;
       margin-bottom: 10px;
 
       .profilePicWrapper {
-        width: 93px;
-        height: 93px;
+        width: 60px;
+        height: 60px;
       }
 
       .firstName {
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-left: 20px;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin: auto 10px;
         font-weight: 600;
-        font-size: 26px;
+        font-size: 100%;
       }
 
       .addHolder {
@@ -1716,8 +1744,7 @@ CHAT
         display: grid;
         grid-template-columns: auto 20px auto auto;
         text-align: center;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding: 5px 20px;
 
         img {
           width: 20px;
@@ -1729,6 +1756,7 @@ CHAT
         }
 
         .label {
+          margin-left: 5px;
           color: white;
           display: inline-block;
         }

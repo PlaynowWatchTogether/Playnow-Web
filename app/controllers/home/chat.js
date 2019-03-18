@@ -3,7 +3,7 @@ import MessageDataSource from '../../custom-objects/message-data-source'
 import VideoStateHandler from '../../custom-objects/video-state-handler'
 import {inject as service} from '@ember/service';
 import EmberObject, {computed} from '@ember/object';
-
+import {run} from '@ember/runloop';
 export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
@@ -14,6 +14,7 @@ export default Controller.extend({
     this.videoStateHandler = VideoStateHandler.create({
       delegate: {
         loadVideo: (video, seconds) => {
+          this.set('hasPlayer', true);
           this.set('playerAction', 0);
           this.set('playerVideo', {video: video, seconds: seconds});
         },
@@ -174,7 +175,6 @@ export default Controller.extend({
     ds.videoState((vs) => {
       if (vs)
         obj.videoStateHandler.handleVideoState(vs);
-      //this.set('playerVideoState',vs);
     });
     ds.messages((messages) => {
       let uiMessages = [];
@@ -192,26 +192,73 @@ export default Controller.extend({
         uiMessages.push({isMessage: true, message: mes, displaySender: displaySender});
         lastDate = mesDate
       });
-      obj.set('messages', uiMessages)
+      obj.set('messages', uiMessages);
       $('.messagesHolder').animate({scrollTop: $('.messagesHolder')[0].scrollHeight})
     });
-    $('#youtubeHolder .controlsOverlay .pause').on('click', () => {
-      let ds = obj.get('dataSource');
-      ds.updateWatchState('pause', window.globalPlayer.getCurrentTime());
+    $('#youtubeHolder').on('click', '.controlsOverlay .pause', () => {
+      run(function () {
+
+        let vsh = obj.get('videoStateHandler');
+        let ds = obj.get('dataSource');
+        if (vsh.isMaster || vsh.syncMode === 'awaiting') {
+          ds.updateWatchState('pause', window.globalPlayer.getCurrentTime());
+        }
+      });
     });
-    $('#youtubeHolder .controlsOverlay .play').on('click', () => {
-      let ds = obj.get('dataSource');
-      ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+    $('#youtubeHolder').on('click', ' .controlsOverlay .play', () => {
+      run(function () {
+
+        let vsh = obj.get('videoStateHandler');
+        let ds = obj.get('dataSource');
+        if (vsh.isMaster || vsh.syncMode === 'awaiting') {
+          ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+        }
+      });
+    });
+    $('#youtubeHolder').on('click', ' .controlsOverlay .close', () => {
+      run(function () {
+        let vsh = obj.get('videoStateHandler');
+        obj.set('hasPlayer', false);
+        vsh.closeVideo();
+        let ds = obj.get('dataSource');
+        if (ds) {
+          obj.set('playerAction', 10);
+          ds.updateWatching('', 'closed');
+          // ds.stop()
+        }
+      });
     });
 
-    $('#youtubeHolder .controlsOverlay .slider').on('change', () => {
-      console.log('slider changed');
+    $('#youtubeHolder').on('change', '.controlsOverlay .slider', () => {
+      run(function () {
+        console.log('slider changed');
+        let vsh = obj.get('videoStateHandler');
+        let ds = obj.get('dataSource');
+        if (vsh.isMaster || vsh.syncMode === 'awaiting') {
+          ds.updateWatchState('slide', parseFloat($('#youtubeHolder .controlsOverlay .slider').val()));
+        }
+        obj.set('slidingProgress', 0);
+
+      });
+    })
+    $('#youtubeHolder').on('input', '.controlsOverlay .slider', () => {
+      run(function () {
+
+        obj.set('slidingProgress', new Date().getTime());
+      });
     })
   },
   reset() {
     let ds = this.get('dataSource');
     if (ds) {
+      this.set('playerAction', 10);
+      ds.updateWatching('', 'closed');
       ds.stop()
+    }
+    this.set('hasPlayer', false);
+    let vsh = this.get('videoStateHandler');
+    if (vsh) {
+      vsh.closeVideo();
     }
     this.set('searchQuery', '');
     this.set('messages', []);

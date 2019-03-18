@@ -47,6 +47,11 @@ export default EmberObject.extend({
       }
     })
   },
+  closeVideo() {
+    this.lastState = {};
+    this.state = 'closed';
+    this.currentVideo = {};
+  },
   handleVideoState(newState) {
     this.stateSubject.next(newState);
   },

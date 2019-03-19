@@ -12,6 +12,7 @@ export default Controller.extend({
     this._super(...arguments);
     this.chatModel = {};
     this.messageText = '';
+    this.composeChips = [];
     this.videoStateHandler = VideoStateHandler.create({
       delegate: {
         loadVideo: (video, seconds) => {
@@ -57,6 +58,9 @@ export default Controller.extend({
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
   },
+  isCompose: computed('model', function () {
+    return this.get('model.chat_id') === 'compose'
+  }),
   playerLoadingClass: computed('playerState', function () {
     let l = this.get('playerState');
     if (l) {
@@ -415,7 +419,19 @@ export default Controller.extend({
         this.set('youtubeMusicItemsPage', null);
         this.queryYoutubeMusic(true);
       }
-
+    },
+    onChipAdd(data) {
+      let exists = this.get('composeChips').filter((elem) => {
+        return elem['id'] === data['id'];
+      });
+      if (exists.length === 0) {
+        this.get('composeChips').pushObject(data);
+        this.notifyPropertyChange('composeChips');
+      }
+    },
+    onChipClick(data) {
+      this.get('composeChips').removeObject(data);
+      this.notifyPropertyChange('composeChips');
     }
   }
 });

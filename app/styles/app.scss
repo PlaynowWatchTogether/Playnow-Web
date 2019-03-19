@@ -816,6 +816,10 @@ body.home.chat.room {
     padding: 0;
     margin-top: auto;
     margin-bottom: auto;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .friend .firstName {
@@ -830,6 +834,9 @@ body.home.chat.room {
     color: #A5A5A5;
     font-size: 80%;
     text-align: right;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .profilePicHolder {
@@ -1196,7 +1203,6 @@ CHAT
 
       .searchHolder {
         flex: 0 0 auto;
-        height: 50px;
         display: grid;
         grid-template-rows: auto;
         width: 100%;
@@ -1208,7 +1214,86 @@ CHAT
         }
 
         .who {
+          margin-top: auto;
+          margin-bottom: auto;
           margin-left: 20px;
+        }
+
+        .compose-search {
+          display: grid;
+          grid-template-columns: min-content auto;
+          grid-row-gap: 5px;
+          padding-top: 5px;
+
+          .twitter-typeahead:nth-child(3) {
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+
+          .chips-holder {
+            overflow-y: hidden;
+            padding-left: 10px;
+
+            .chips-wrapper {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, 130px);
+              grid-row-gap: 5px;
+
+              .chip {
+                cursor: pointer;
+                margin-right: 5px;
+                display: grid;
+                grid-template-columns: min-content auto;
+                background: $primary-gradient;
+                border-radius: 10px;
+                padding: 5px;
+                color: white;
+                grid-column-gap: 5px;
+
+                .profilePicWrapper {
+                  width: 20px;
+                  height: 20px;
+                  margin: auto;
+                }
+              }
+            }
+          }
+
+          .tt-menu {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.16);
+            padding: 10px;
+            width: max-content;
+
+            .suggestion-item {
+              cursor: pointer;
+              display: grid;
+              grid-template-columns: min-content auto;
+              grid-column-gap: 10px;
+              margin-bottom: 5px;
+
+              .profilePicWrapper {
+                width: 30px;
+                height: 30px;
+              }
+
+              .name {
+                margin-top: auto;
+                margin-bottom: auto;
+              }
+            }
+          }
+
+          input {
+            margin-left: 10px;
+            background: none;
+            border: none;
+          }
+
+          input:focus {
+            outline: none;
+          }
         }
       }
 
@@ -1301,6 +1386,10 @@ CHAT
             grid-column-start: 2;
             justify-self: end;
             background: #F0F0F0;
+
+            .text {
+              word-break: break-word;
+            }
           }
 
           .message-img {
@@ -1312,8 +1401,8 @@ CHAT
 
       .newMessageHolder {
         border-top: 1px solid #E6E6E6;
-        display: flex;
-        //grid-template-columns: 200px 60px 80px;
+        display: grid;
+        grid-template-columns: minmax(0, auto) 50px 50px;
         flex: 0 0 auto;
 
         .messageContent:focus {

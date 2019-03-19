@@ -31,13 +31,16 @@
           {{/link-to}}
         </div>
       </div>
-      <div class="searchHolder">
-        <div class="row">
-          <div class="col">
-            <span class="who">Who:</span>
+      {{#if isCompose}}
+        <div class="searchHolder">
+          <div class="row">
+            {{#users-chat-compose classNames='col compose-search' chips=composeChips onChipAdd=(action 'onChipAdd')
+                                  onChipClick=(action 'onChipClick')}}
+
+            {{/users-chat-compose}}
           </div>
         </div>
-      </div>
+      {{/if}}
       <div id="youtubeHolder" class="{{playerLoadingClass}}">
         {{#if hasPlayer}}
           {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction

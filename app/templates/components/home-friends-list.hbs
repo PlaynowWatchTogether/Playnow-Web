@@ -1,6 +1,8 @@
 <div class="friendsHeader">
   <div class="friendsCompose">
-    <img src="/assets/friends_compose.png" class="composeIcon"/>
+    {{#link-to 'home.chat' 'compose' 'group'}}
+      <img src="/assets/friends_compose.png" class="composeIcon"/>
+    {{/link-to}}
   </div>
   <div class="friendsTitle">
     <span class="friends">Friends</span>

@@ -5,6 +5,7 @@ import {debounce} from 'rxjs/operators';
 import {timer} from 'rxjs';
 
 export default Component.extend({
+  classNameBindings: ['isLoading:loading'],
   init() {
     this._super(arguments);
     this.addObserver('player', this, 'playerObserver');
@@ -94,10 +95,12 @@ export default Component.extend({
       next: (val) => {
         if (val === 1) {
           if (action === 1) {
+            window.playerObj.isPlaying = true;
             player.playVideo();
           } else if (action === 2) {
             player.pauseVideo();
           } else if (action === 3) {
+            window.playerObj.isPlaying = true;
             player.playVideo();
           } else if (action === 4) {
             player.pauseVideo();
@@ -107,6 +110,11 @@ export default Component.extend({
             return;
           }
           this.set('playerAction', 0);
+          window.playerObj.playerState({
+            state: window.playerObj.lastState,
+            buffering: window.playerObj.isPrebuffering,
+            playing: window.playerObj.isPlaying
+          });
         }
       }
     });
@@ -124,6 +132,11 @@ export default Component.extend({
   playerStateChanged(event) {
     console.log('playerStateChanged ' + event.data);
     window.playerObj.lastState = event.data;
+    window.playerObj.playerState({
+      state: event.data,
+      buffering: window.playerObj.isPrebuffering,
+      playing: window.playerObj.isPlaying
+    });
     if (event.data === -1) {//unstarted
       $('#youtubeHolder .controlsOverlay .play').hide();
       $('#youtubeHolder .controlsOverlay .pause').hide();
@@ -164,6 +177,7 @@ export default Component.extend({
   videoObserver(obj) {
     let v = obj.get('video');
     let player = obj.get('player');
+    window.playerObj.isPlaying = false;
     obj.playerSubj.subscribe({
       next: (val) => {
         if (val === 1) {

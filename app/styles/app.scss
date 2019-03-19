@@ -1106,6 +1106,58 @@ CHAT
           background: #C330FC; /* Green background */
           cursor: pointer; /* Cursor on hover */
         }
+
+        .watchers-holder {
+          position: absolute;
+          display: flex;
+          padding-left: 10px;
+          padding-top: 10px;
+
+          .profilePicWrapper {
+            width: 30px;
+            height: 30px;
+          }
+        }
+
+        .watchers-holder.loading {
+          display: grid;
+          grid-template-columns: auto 150px auto;
+          grid-template-rows: auto 150px auto;
+          width: 100%;
+          height: 320px;
+
+          .watchers-streamer {
+            grid-column-start: 2;
+            grid-row-start: 2;
+            margin: auto;
+
+            .profilePicWrapper {
+              width: 140px;
+              height: 140px;
+              animation-name: pulse;
+              animation-duration: 1s;
+              animation-iteration-count: infinite;
+            }
+
+            @keyframes pulse {
+              from {
+                transform: scale(1);
+              }
+              50% {
+                transform: scale(0.85);
+              }
+              to {
+                transform: scale(1);
+              }
+            }
+          }
+
+          .watchers-other {
+            grid-column-start: 3;
+            grid-row-start: 2;
+            margin-top: auto;
+          }
+        }
       }
 
       .back {
@@ -2001,5 +2053,11 @@ CHAT
     div {
       margin: auto;
     }
+  }
+}
+
+#youtubeHolder.active {
+  #ytplayer {
+    filter: blur(15px);
   }
 }

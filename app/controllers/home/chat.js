@@ -7,6 +7,7 @@ import {run} from '@ember/runloop';
 export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
+  db: service(),
   init() {
     this._super(...arguments);
     this.chatModel = {};
@@ -51,12 +52,35 @@ export default Controller.extend({
     this.set('searchQueryVideo', '');
     this.set('searchQueryMusic', '');
     this.searchModeObserver(this);
-
+    this.set('playerState', {});
 
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
   },
-
+  playerLoadingClass: computed('playerState', function () {
+    let l = this.get('playerState');
+    if (l) {
+      if (l.buffering)
+        return 'active';
+      if (!l.playing)
+        return 'active'
+    }
+    return ''
+  }),
+  loadingOverlayClass: computed('playerState', function () {
+    console.log(JSON.stringify(this.get('playerState')));
+    return 'loading'
+  }),
+  watchersClass: computed('playerState', function () {
+    let l = this.get('playerState');
+    if (l) {
+      if (l.buffering)
+        return 'loading';
+      if (!l.playing)
+        return 'loading'
+    }
+    return ''
+  }),
   queryYoutubeMusic(reset) {
     return new Promise((resolve) => {
       let q = this.get('searchQuery');
@@ -169,8 +193,16 @@ export default Controller.extend({
     let ds = obj.get('dataSource');
     let one_day = 1000 * 60 * 60 * 24;
     ds.videoWatchers((watchers) => {
-      if (watchers)
+      if (watchers) {
         obj.videoStateHandler.updateWatchers(watchers, 0);
+        let watcherProfiles = [];
+        watchers.forEach((elem) => {
+          watcherProfiles.push(obj.db.profile(elem['userId']))
+        });
+        Promise.all(watcherProfiles).then((profiles) => {
+          obj.set('watchers', profiles);
+        })
+      }
     });
     ds.videoState((vs) => {
       if (vs)
@@ -302,6 +334,12 @@ export default Controller.extend({
     return this.get('searchMode') === 'music'
   }),
   actions: {
+
+    playerStateAction(state) {
+      run(() => {
+        this.set('playerState', state);
+      });
+    },
     scrolledHalfYoutubeVideo() {
       if (this.get('searchMode') === 'video') {
         this.set('loadingVideo', true);

@@ -38,10 +38,12 @@
           </div>
         </div>
       </div>
-      <div id="youtubeHolder">
+      <div id="youtubeHolder" class="{{playerLoadingClass}}">
         {{#if hasPlayer}}
           {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
                                   videoLoadedAction=(action 'videoLoaded')
+                                  playerState=(action 'playerStateAction')
+                                  isLoading=playerLoading
                                   slidingProgress=slidingProgress}}{{/youtube-video-player}}
           <div class="overlay"></div>
           <div class="controlsOverlay">
@@ -51,6 +53,20 @@
               <img src="/assets/ic_video_close.png" class="close">
               <span class="video-title"></span>
               <input type="range" min="1" max="100" value="50" class="slider">
+            </div>
+          </div>
+          <div class="loading-overlay {{loadingOverlayClass}}"></div>
+          <div class="watchers-holder {{watchersClass}}">
+
+            <div class="watchers-streamer">
+              {{#each watchers as |watcher index|}}
+                {{#watcher-item model=watcher index=index streamer=true}}{{/watcher-item}}
+              {{/each}}
+            </div>
+            <div class="watchers-other">
+              {{#each watchers as |watcher index|}}
+                {{#watcher-item model=watcher index=index streamer=false}}{{/watcher-item}}
+              {{/each}}
             </div>
           </div>
         {{/if}}

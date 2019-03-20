@@ -12,7 +12,7 @@
 <div class="friendsSearchHolder">
   <div class="content">
     <img src="/assets/search_icon.png" class="searchIcon">
-    {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
+    {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
   </div>
 </div>
 <div class="friendsList">
@@ -22,7 +22,7 @@
       <div></div>
     </div>
   {{/if}}
-  {{#each model as |friend|}}
+  {{#each queriedModel as |friend|}}
     {{#if friend.isFriend}}
       {{#link-to 'home.chat' friend.id 'one2one' classNames='friend-chat-link'}}
         {{#home-friend-item model=friend.model classNames='friend'}}{{/home-friend-item}}

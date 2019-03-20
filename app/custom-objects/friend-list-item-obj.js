@@ -12,5 +12,12 @@ export default EmberObject.extend({
   }),
   isFriend: computed('model', function () {
     return this.type === 'friend'
+  }),
+  filterTitle: computed('model', function () {
+    if (this.type === 'friend') {
+      return this.get('firstName') + ' ' + this.get('lastName');
+    } else {
+      return this.get('GroupName');
+    }
   })
 });

@@ -5,12 +5,14 @@ export default Route.extend({
   auth: service(),
   db: service(),
   firebaseApp: service(),
+  firebaseMessage: service(),
   activate() {
     this._super(...arguments);
   },
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
+
         this.db.messaging.requestPermission().then(() => {
           console.log('Notification permission granted.');
           this.db.messagePermissionsGranted();

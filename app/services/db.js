@@ -198,14 +198,15 @@ export default Service.extend({
     ref.onDisconnect().set(new Date().getTime() / 1000.0);
   },
   messagePermissionsGranted() {
-    this.get('messaging').getToken().then(function (currentToken) {
+    this.get('messaging').getToken().then((currentToken) => {
       if (currentToken) {
         console.log('Token received ' + currentToken);
         let id = this.myId();
         let ref = this.get('firebaseApp').database().ref("/Tokens/" + id);
         ref.once('value', (tokens) => {
-          let tokensValues = tokens.map((elem) => {
-            elem.child("token_id").val();
+          let tokensValues = []
+          tokens.forEach((elem) => {
+            tokensValues.push(elem.child("token_id").val());
           });
           let exists = tokensValues.includes(currentToken);
           if (!exists) {

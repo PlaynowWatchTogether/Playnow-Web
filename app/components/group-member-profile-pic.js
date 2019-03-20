@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import {htmlSafe} from '@ember/template'
 import {computed} from '@ember/object'
 
 export default Component.extend({
@@ -19,7 +20,6 @@ export default Component.extend({
     return false;
   }),
   style: computed('model', function () {
-
-    return 'background-image: url(' + this.get('model.profilePic') + ");";
+    return htmlSafe('background-image: url(' + this.get('model.profilePic') + ");");
   })
 });

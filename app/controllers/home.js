@@ -20,7 +20,6 @@ export default Controller.extend({
     return f.concat(g);
   }),
   sortedFriends: sort('contactList', function (a, b) {
-    console.log('compare ' + JSON.stringify(a) + ' and ' + JSON.stringify(b));
     if (a.get('latestMessageDate') > b.get('latestMessageDate')) {
       return -1;
     } else if (a.get('latestMessageDate') < b.get('latestMessageDate')) {

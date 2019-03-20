@@ -385,6 +385,13 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     font-size: 80%;
   }
 
+  .signUpHolder {
+    position: relative;
+
+    .error-tip {
+      right: unset;
+    }
+  }
   .signUpBtn {
     box-shadow: $input-shadow;
     color: white;
@@ -806,6 +813,12 @@ body.home.chat.room {
     grid-template-columns: auto 100px;
   }
 
+  .friend-chat-link:hover {
+    .friend {
+
+      background: #dadada5e;
+    }
+  }
   .friend-chat-link.active {
     .friend {
       background: #dadada;
@@ -815,6 +828,13 @@ body.home.chat.room {
   .friend-group-link.active {
     .group {
       background: #dadada;
+    }
+  }
+
+  .friend-group-link:hover {
+    .group {
+
+      background: #dadada5e;
     }
   }
 
@@ -836,6 +856,7 @@ body.home.chat.room {
   }
 
   .friend .lastName {
+    margin-left: 10px;
     display: block;
     color: #A5A5A5;
     font-size: 80%;
@@ -959,7 +980,32 @@ body.home.chat.room {
           display: grid;
           grid-template-columns: auto 100px;
 
+          .groupIconHolder {
+            border-radius: 50%;
+            overflow: hidden;
+            width: 60px;
+            height: 60px;
+            margin: auto;
+
+            .member-icon {
+              display: inline-block;
+              float: left;
+              background-position: center;
+              background-size: cover;
+              width: 100%;
+              height: 100%;
+            }
+
+            .member-icon.half {
+              width: 50%;
+            }
+
+            .member-icon.quoter {
+              height: 50%;
+            }
+          }
           .group-name {
+            margin-left: 10px;
             margin-top: auto;
             margin-bottom: auto;
             overflow-wrap: break-word;
@@ -970,6 +1016,14 @@ body.home.chat.room {
             text-decoration: none;
           }
 
+          .last-message {
+            color: #A5A5A5;
+            font-size: 80%;
+            text-align: right;
+            overflow-wrap: break-word;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
           .status {
             position: relative;
           }
@@ -986,7 +1040,7 @@ body.home.chat.room {
 
           .unread-icon {
             left: -40px;
-            top: -4px;
+            top: -7px;
             display: none;
             position: absolute;
           }
@@ -1040,7 +1094,7 @@ body.home.chat.room {
     padding-right: 0px;
     display: grid;
     overflow: hidden;
-    grid-template-rows: 50px min-content auto;
+    grid-template-rows: 50px auto;
   }
 }
 
@@ -2154,7 +2208,8 @@ CHAT
 }
 
 .hoveredBtn:hover {
-  box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.16) !important;
+  //box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.16) !important;
+  background: #28a4ff;
 }
 
 .trigger-search:hover {

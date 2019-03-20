@@ -4,6 +4,15 @@
     <div class="content">
       {{model.GroupName}}
     </div>
+    <div class="last-message">
+      {{lastMessageText}}
+    </div>
+  </div>
+  <div class="groupIconHolder">
+    {{#each members as |member index|}}
+      {{#group-member-profile-pic classNames="member-icon" model=member index=index
+                                  total=members.length}}{{/group-member-profile-pic}}
+    {{/each}}
   </div>
   <div class="status">
     <div class="online-icon"></div>

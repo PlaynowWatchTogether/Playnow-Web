@@ -243,6 +243,17 @@ export default Controller.extend({
       let sorted = messages.sort(function (a, b) {
         return a['date'] - b['date'];
       });
+      if (sorted.length > 0) {
+        let lastRecord = null;
+        sorted.forEach((elem) => {
+          // if (elem.senderId !== obj.get('db').myId()){
+          lastRecord = elem;
+          // }
+        });
+        if (lastRecord) {
+          ds.sendSeen(lastRecord.uid);
+        }
+      }
       sorted.forEach(function (mes, index) {
         let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
         let mesDate = new Date(mes.date * 1000);
@@ -375,7 +386,7 @@ export default Controller.extend({
         }).map((member) => {
           return member['firstName'];
         }));
-        groupName = memberNames.join(" ");
+        groupName = memberNames.join(", ");
         let refName = groupName + "@" + db.myId();
         db.createGroup(groupName, this.get('composeChips')).then(() => {
           this.transitionToRoute('home.chat', refName, 'group');

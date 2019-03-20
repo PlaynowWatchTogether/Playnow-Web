@@ -8,14 +8,13 @@
     <span class="friends">Friends</span>
   </div>
 </div>
-
-<div class="friendsSearchHolder">
-  <div class="content">
-    <img src="/assets/search_icon.png" class="searchIcon">
-    {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
-  </div>
-</div>
 <div class="friendsList">
+  <div class="friendsSearchHolder">
+    <div class="content">
+      <img src="/assets/search_icon.png" class="searchIcon">
+      {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
+    </div>
+  </div>
   {{#if loading}}
     <div class="lds-ripple">
       <div></div>

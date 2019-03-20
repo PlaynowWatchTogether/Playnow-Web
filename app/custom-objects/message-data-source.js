@@ -6,6 +6,7 @@ export default EmberObject.extend({
   myId: '',
   db: null,
   messagesRef: null,
+  membersRef: null,
   videoStateRef: null,
   videoWatchersRef: null,
   typingInterval: null,
@@ -138,13 +139,28 @@ export default EmberObject.extend({
         mes.id = item.key;
         records.push(mes);
       });
-      if (records.length > 0) {
-        this.sendSeen(records[records.length - 1].uid);
-      }
+      updateCallback(records);
+    })
+  },
+  members(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Members";
+    this.membersRef = ref;
+    this.db.ref(ref).on('value', (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let mes = item.val();
+        mes.id = item.key;
+        records.push(mes);
+      });
       updateCallback(records);
     })
   },
   stop() {
+    if (this.membersRef) {
+      this.db.ref(this.membersRef).off('value');
+    }
     if (this.messagesRef) {
       this.db.ref(this.messagesRef).off('value');
     }

@@ -1,7 +1,19 @@
 import Component from '@ember/component';
 import EmberObject, {computed} from '@ember/object';
+import MessageDataSource from "../custom-objects/message-data-source";
+import PicturedObject from "../custom-objects/pictured-object";
+import {inject as service} from '@ember/service';
 
 export default Component.extend({
+  db: service(),
+  firebaseApp: service(),
+  init() {
+    this._super(...arguments);
+    this.addObserver('model', this, 'modelObserver');
+    if (this.get('model')) {
+      this.modelObserver(this);
+    }
+  },
   playingClass: computed('model.videoType', function () {
     let type = this.get('model.videoType');
     if (type === 'youtubeVideo') {
@@ -18,4 +30,36 @@ export default Component.extend({
   unreadClass: computed('model', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
+  modelObserver(obj) {
+    let ds = this.get('dataSource');
+    if (ds) {
+      ds.stop();
+    }
+    let newDs = MessageDataSource.create({
+      type: 'group',
+      group: obj.get('model'),
+      myId: this.firebaseApp.auth().currentUser.uid,
+      db: this.firebaseApp.database()
+    });
+    this.set('dataSource', newDs);
+    newDs.messages((messages) => {
+      let sorted = messages.sort(function (a, b) {
+        return a['date'] - b['date'];
+      });
+      sorted.forEach((elem) => {
+        if (elem['text'] && elem['text'].length > 0) {
+          obj.set('lastMessage', elem);
+          return;
+        }
+      });
+    })
+    newDs.members((members) => {
+      obj.set('members', members.slice(0, 3).map((elem) => {
+        return PicturedObject.create({content: elem});
+      }));
+    })
+  },
+  lastMessageText: computed('lastMessage', function () {
+    return this.get('lastMessage.text');
+  })
 });

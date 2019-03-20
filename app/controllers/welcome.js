@@ -113,6 +113,18 @@ export default Controller.extend({
         this.clearError();
         return
       }
+      if (register.username.length < 3) {
+        this.set('form.register.error.username', 'Should be at least 3 characters.');
+        this.clearError();
+        return
+
+      }
+      if (register.username.includes('@')) {
+        this.set('form.register.error.username', 'Should not contain @ character');
+        this.clearError();
+        return
+
+      }
       this.findUser(register.username).then((ret) => {
         Ember.Logger.debug("User found: " + ret);
         if (ret === 0) {
@@ -137,8 +149,13 @@ export default Controller.extend({
               this.userCreated()
             })
           }, (error) => {
+            // if (error.code === 'auth/weak-password'){
+            //   this.set('form.register.error.password', error.message);
+            // }else{
+
             this.set('form.register.error.global', 'Sign up failed');
             this.clearError();
+            // }
           })
         }
       }, (error) => {

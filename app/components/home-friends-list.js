@@ -17,7 +17,11 @@ export default Component.extend({
       } else {
         title = elem.get('model.GroupName');
       }
-      return title.toLowerCase().includes(query.toLowerCase());
+      if (title) {
+        return title.toLowerCase().includes(query.toLowerCase());
+      } else {
+        return false
+      }
     })
   })
 

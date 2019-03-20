@@ -12,7 +12,11 @@ export default Controller.extend({
       if (!q || q.length === 0)
         return true;
       let title = elem.get('videoName');
-      return title.toLowerCase().includes(q.toLowerCase());
+      if (title) {
+        return title.toLowerCase().includes(q.toLowerCase());
+      } else {
+        return false;
+      }
     })
   })
 });

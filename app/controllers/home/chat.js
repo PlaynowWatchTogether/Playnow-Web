@@ -310,6 +310,8 @@ export default Controller.extend({
     })
   },
   reset() {
+    this.set('composeChips', []);
+    this.set('chatModel', {});
     let ds = this.get('dataSource');
     if (ds) {
       this.set('playerAction', 10);

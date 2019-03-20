@@ -4,6 +4,7 @@ import VideoStateHandler from '../../custom-objects/video-state-handler'
 import {inject as service} from '@ember/service';
 import EmberObject, {computed} from '@ember/object';
 import {run} from '@ember/runloop';
+
 export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
@@ -150,13 +151,18 @@ export default Controller.extend({
   messageTextObserver: (obj) => {
     console.log('typing ' + obj.get('messageText'));
     let ds = obj.get('dataSource');
-    ds.typing(obj.get('messageText'));
+    if (ds) {
+      ds.typing(obj.get('messageText'));
+    }
   },
   modelObserver: (obj) => {
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
     obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
 
+    if ('compose' === convId) {
+      return;
+    }
     if ('one2one' === type) {
       obj.store.find('user', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
@@ -190,6 +196,25 @@ export default Controller.extend({
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
 
       });
+    } else if ('group' === type) {
+      obj.store.find('group', convId).then((group) => {
+        obj.set('dataSource', MessageDataSource.create({
+          type: 'group',
+          group: group,
+          myId: obj.firebaseApp.auth().currentUser.uid,
+          db: obj.firebaseApp.database()
+        }));
+        obj.set('chatModel', {
+          hasProfilePic: false,
+          title: group.get('GroupName'),
+          group: group
+        });
+        obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
+        obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+
+      });
+    } else {
+      obj.set('chatModel', {});
     }
 
   },
@@ -337,6 +362,29 @@ export default Controller.extend({
   isMusicResult: computed('searchMode', function () {
     return this.get('searchMode') === 'music'
   }),
+  createGroup() {
+    return new Promise((resolve, reject) => {
+      let db = this.get('db');
+      let groupName = '';
+      db.profile(db.myId()).then((profile) => {
+
+        let memberNames = [profile['FirstName']].concat(this.get('composeChips').sort((a, b) => {
+          a['id'].localeCompare(b['id'])
+        }).map((member) => {
+          return member['firstName'];
+        }));
+        groupName = memberNames.join(" ");
+        let refName = groupName + "@" + db.myId();
+        db.createGroup(groupName, this.get('composeChips')).then(() => {
+          this.transitionToRoute('home.chat', refName, 'group');
+          resolve()
+        }).catch((error) => {
+          reject(error);
+        });
+      });
+
+    });
+  },
   actions: {
 
     playerStateAction(state) {
@@ -365,6 +413,16 @@ export default Controller.extend({
       ds.handleNextState('loaded');
     },
     uploadImageToChat(file) {
+      if (this.get('isCompose')) {
+        if (this.get('composeChips').length === 0) {
+          this.set('composeError', 'Add friends to group');
+          setTimeout(() => {
+            this.set('composeError', '');
+          }, 2000);
+        }
+        return;
+      }
+
       file.readAsDataURL().then((url) => {
         let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
 
@@ -379,18 +437,54 @@ export default Controller.extend({
       });
     },
     sendMessage() {
-      if (this.get('messageText').length !== 0) {
-        let ds = this.get('dataSource');
-        ds.sendMessage(this.get('messageText'));
-        this.set('messageText', '');
+
+      if (this.get('messageText').length === 0) {
+        return;
       }
+      if (this.get('isCompose')) {
+        if (this.get('composeChips').length === 0) {
+          this.set('composeError', 'Add friends to group');
+          setTimeout(() => {
+            this.set('composeError', '');
+          }, 2000);
+        } else {
+          this.createGroup();
+        }
+        return;
+      }
+      let ds = this.get('dataSource');
+      ds.sendMessage(this.get('messageText'));
+      this.set('messageText', '');
+
     },
     videoPick(video) {
+      if (this.get('isCompose')) {
+        if (this.get('composeChips').length === 0) {
+          this.set('composeError', 'Add friends to group');
+          setTimeout(() => {
+            this.set('composeError', '');
+          }, 2000);
+        } else {
+          this.createGroup();
+        }
+        return;
+      }
       this.set('playerModel', video);
       let ds = this.get('dataSource');
       ds.sendVideo(video)
     },
     musicPick(video) {
+      if (this.get('isCompose')) {
+        if (this.get('composeChips').length === 0) {
+          this.set('composeError', 'Add friends to group');
+          setTimeout(() => {
+            this.set('composeError', '');
+          }, 2000);
+        } else {
+          this.createGroup();
+        }
+        return;
+      }
       this.set('playerModel', video);
       let ds = this.get('dataSource');
       ds.sendVideo(video, 'youtubeMusic')

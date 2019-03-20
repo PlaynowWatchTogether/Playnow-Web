@@ -812,6 +812,12 @@ body.home.chat.room {
     }
   }
 
+  .friend-group-link.active {
+    .group {
+      background: #dadada;
+    }
+  }
+
   .profileName {
     padding: 0;
     margin-top: auto;
@@ -863,12 +869,12 @@ body.home.chat.room {
         height: 20px;
         background: #07FF23;
         border-radius: 50%;
-        position: absolute;
         border: solid white 1px;
+        display: none;
+        position: absolute;
         z-index: 40;
         top: -5px;
         right: -5px;
-        display: none;
       }
 
       .unread-icon {
@@ -938,6 +944,93 @@ body.home.chat.room {
       text-decoration: none;
     }
 
+    .friend-group-link {
+      text-decoration: none;
+      color: black;
+
+      .group {
+        cursor: pointer;
+
+        .group-item {
+          height: 80px;
+          padding-top: 7px;
+          padding-bottom: 7px;
+          cursor: pointer;
+          display: grid;
+          grid-template-columns: auto 100px;
+
+          .group-name {
+            margin-top: auto;
+            margin-bottom: auto;
+            overflow-wrap: break-word;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            text-align: right;
+            text-decoration: none;
+          }
+
+          .status {
+            position: relative;
+          }
+
+          .online-icon {
+            width: 20px;
+            height: 20px;
+            background: #07FF23;
+            border-radius: 50%;
+            border: solid white 1px;
+            display: none;
+            position: absolute;
+          }
+
+          .unread-icon {
+            left: -40px;
+            top: -4px;
+            display: none;
+            position: absolute;
+          }
+
+          .playing-music-icon {
+            display: none;
+            margin: auto;
+          }
+
+          .playing-video-icon {
+            display: none;
+            margin: auto;
+          }
+        }
+
+        .group-item.playing-video {
+          .playing-video-icon {
+            display: block;
+          }
+        }
+
+        .group-item.playing-music {
+          .playing-music-icon {
+            display: block;
+          }
+        }
+
+        .group-item.online {
+          .online-icon {
+            display: block;
+          }
+        }
+
+        .group-item.unread {
+          .unread-icon {
+            display: block;
+          }
+        }
+      }
+    }
+
+    .friend-group-link:hover {
+      text-decoration: none;
+    }
     .friend-chat-link:hover {
       text-decoration: none;
     }
@@ -1211,6 +1304,14 @@ CHAT
         .row {
           margin-top: auto;
           margin-bottom: auto;
+        }
+
+        .compose-row {
+          .error-tip {
+            right: auto;
+            margin-top: 3px;
+            left: 50%;
+          }
         }
 
         .who {

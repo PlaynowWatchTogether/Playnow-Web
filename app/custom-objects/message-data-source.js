@@ -15,7 +15,9 @@ export default EmberObject.extend({
         return b.localeCompare(a)
       }).join("");
     } else if (this.type === 'room') {
-      return this.room.id
+      return this.room.id;
+    } else if (this.type === 'group') {
+      return this.group['id'];
     } else {
       return "";
     }
@@ -25,6 +27,8 @@ export default EmberObject.extend({
       return 'channels/messages';
     } else if (this.type === 'room') {
       return 'channels/channels';
+    } else if (this.type === 'group') {
+      return 'channels/Groups';
     }
   },
 

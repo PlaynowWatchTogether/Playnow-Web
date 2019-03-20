@@ -13,7 +13,26 @@ export default Service.extend({
           data.forEach((item) => {
             let payload = item.val();
             payload.id = item.key;
-            let ser = this.store.seria
+            records.push(payload)
+          });
+          resolve(records)
+        }, (error) => {
+          reject(error);
+        });
+      } else {
+        resolve([]);
+      }
+    });
+  },
+  groups(resolve, reject) {
+    this.firebaseApp.auth().onAuthStateChanged((user) => {
+      if (user) {
+        let ref = this.firebaseApp.database().ref('Users/' + user.uid + "/Groups");
+        ref.on('value', (data) => {
+          let records = [];
+          data.forEach((item) => {
+            let payload = item.val();
+            payload.id = item.key;
             records.push(payload)
           });
           resolve(records)
@@ -150,6 +169,22 @@ export default Service.extend({
       ref.update(updates);
 
     })
+  },
+  myId() {
+    return this.firebaseApp.auth().currentUser.uid
+  },
+  createGroup(name, members) {
+    let refName = name + "@" + this.myId();
+    let update = {};
+    members.forEach((member) => {
+      update["/channels/Groups/" + refName + "/Members/" + member["id"] + "/Name"] = member['firstName'] + ' ' + member['lastName'];
+      update["/Users/" + member['id'] + "/Groups/" + refName + "/GroupName"] = name;
+    });
+    update["/Users/" + this.myId() + "/Groups/" + refName + "/GroupName"] = name;
+    let ref = this.firebaseApp.database().ref();
+    return ref.update(update);
+
+
   },
   handleOnline() {
     let uid = this.firebaseApp.auth().currentUser.uid;

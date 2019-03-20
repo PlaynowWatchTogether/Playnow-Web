@@ -33,10 +33,10 @@
       </div>
       {{#if isCompose}}
         <div class="searchHolder">
-          <div class="row">
+          <div class="row compose-row">
             {{#users-chat-compose classNames='col compose-search' chips=composeChips onChipAdd=(action 'onChipAdd')
                                   onChipClick=(action 'onChipClick')}}
-
+              <div class="error-tip">{{composeError}}</div>
             {{/users-chat-compose}}
           </div>
         </div>
@@ -91,7 +91,7 @@
         </div>
       </div>
       <div class="newMessageHolder">
-        {{content-editable value=messageText placeholder="Search content" classNames="messageContent"}}
+        {{content-editable value=messageText placeholder="Type a message" classNames="messageContent"}}
         <div class="imgHolder">
           <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
         </div>

@@ -34,6 +34,12 @@ export default Route.extend({
     }, () => {
 
     });
+    this.get('db').groups((friends) => {
+      let ctrl = this.controllerFor('home');
+      ctrl.set('groups', friends);
+    }, () => {
+
+    });
     $('body').addClass('home');
   },
   deactivate() {

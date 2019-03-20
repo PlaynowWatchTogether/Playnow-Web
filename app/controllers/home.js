@@ -1,21 +1,29 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import {sort} from '@ember/object/computed';
-
+import {computed} from '@ember/object';
+import FriendListItemObj from '../custom-objects/friend-list-item-obj'
 export default Controller.extend({
   db: service(),
   actions: {
-    chatFriend(friend) {
-      this.transitionToRoute('home.chat', {chat_id: friend.id, type: 'one2one'});
-    },
     triggerSearch() {
       this.transitionToRoute('search', {query: this.get('searchQuery')});
     }
   },
-  sortedFriends: sort('friends', function (a, b) {
-    if (a['latestMessageDate'] > b['latestMessageDate']) {
+  contactList: computed('friends', 'groups', function () {
+    let f = (this.get('friends') || []).map((elem) => {
+      return FriendListItemObj.create({type: 'friend', model: elem})
+    });
+    let g = (this.get('groups') || []).map((elem) => {
+      return FriendListItemObj.create({type: 'group', model: elem})
+    });
+    return f.concat(g);
+  }),
+  sortedFriends: sort('contactList', function (a, b) {
+    console.log('compare ' + JSON.stringify(a) + ' and ' + JSON.stringify(b));
+    if (a.get('latestMessageDate') > b.get('latestMessageDate')) {
       return -1;
-    } else if (a['latestMessageDate'] < b['latestMessageDate']) {
+    } else if (a.get('latestMessageDate') < b.get('latestMessageDate')) {
       return 1;
     }
 

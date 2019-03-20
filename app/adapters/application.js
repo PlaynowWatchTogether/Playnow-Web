@@ -35,6 +35,15 @@ export default FirestoreAdapter.extend({
 
       }
     }
+    if (typeClass.modelName === 'group') {
+      if (id) {
+        let user = this.firebaseApp.auth().currentUser.uid;
+
+        return this._ref.child('Users/' + user + '/Groups/' + id)
+      } else {
+        return this._ref.child('channels/Groups/')
+      }
+    }
     if (typeClass.modelName === 'room') {
       if (id) {
         return this._ref.child('channels/channels/' + id)

@@ -5,11 +5,6 @@ import MessageDataSource from '../custom-objects/message-data-source'
 export default Component.extend({
   db: service(),
   firebaseApp: service(),
-  actions: {
-    chatFriend() {
-      this.chatAction(this.get('model'));
-    }
-  },
   init() {
     this._super(...arguments);
     this.addObserver('model', this, 'modelObserver');
@@ -51,15 +46,12 @@ export default Component.extend({
 
     })
   },
-  click() {
-    this.chatAction(this.get('model'));
-  },
-  safeProfilePic: computed('model.ProfilePic', function () {
+  safeProfilePic: computed('model.profilePic', function () {
     let m = this.get('model');
-    if (!m['ProfilePic'] || m['ProfilePic'].length === 0) {
+    if (!m['profilePic'] || m['profilePic'].length === 0) {
       return '/assets/monalisa.png'
     } else {
-      return m['ProfilePic']
+      return m['profilePic']
     }
   }),
   lastMessageText: computed('lastMessage', function () {

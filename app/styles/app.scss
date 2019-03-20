@@ -19,6 +19,7 @@ img, a {
   font-weight: normal;
   font-style: normal;
 }
+
 body, html {
   height: 100%;
   font-family: 'Conv_Segoe UI', Sans-Serif;
@@ -28,6 +29,13 @@ body > .ember-view {
   height: 100%;
 }
 
+.welcome-icon-a {
+  text-decoration: none;
+}
+
+.welcome-icon-a:hover {
+  text-decoration: none;
+}
 
 //Variables
 $primary-gradient: linear-gradient(to bottom right, #87B7FA, #C837EA);
@@ -75,6 +83,7 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
       top: 16px;
     }
   }
+
   .welcomeHeader input.username {
     display: block;
     border-radius: 20px;
@@ -143,8 +152,8 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
   }
 
   .welcomeBody {
-    margin: 0;
-    padding: 0;
+    //margin: 0;
+    //padding: 0;
   }
 
   .welcomeHeader {
@@ -154,7 +163,7 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 
   .welcomeLeft {
     height: 100%;
-    padding-right: 10px;
+    //padding-right: 10px;
   }
 
   .welcomeLeft .content {
@@ -163,6 +172,37 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     border: 0;
     height: 100%;
     border-radius: 0 20px 20px 0;
+    margin-left: -15px;
+    display: grid;
+    grid-template-columns: 10% 40% 50%;
+    grid-template-rows: auto;
+
+    .welcome-text {
+      font-size: 200%;
+      font-weight: 900;
+    }
+
+    .get-the-app {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .welcome-img {
+      width: 250px;
+      margin: auto;
+      grid-column-start: 2;
+    }
+
+    .welcome-text-holder {
+      margin: auto;
+    }
+
+    a {
+
+      img.gplay {
+        height: 60px;
+      }
+    }
   }
 
   .welcomeRight {
@@ -211,10 +251,13 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
     height: 70%;
   }
 
-  .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  footer {
+
+    .holder {
+      display: grid;
+      grid-template-columns: auto auto auto auto auto 40%;
+    }
+
     /* Set the fixed height of the footer here */
   }
 
@@ -232,10 +275,6 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 
   }
 
-  .footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
 
   .crHolder {
     text-align: center;
@@ -352,12 +391,29 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
   .registerBirthday {
     position: relative;
 
+    .registerEdit {
+      min-height: 44px;
+      min-width: 60px;
+    }
+
+    .input-holder {
+      display: grid;
+      grid-template-columns: min-content min-content min-content;
+      grid-column-gap: 10px;
+    }
+
+    .dropdown-menu {
+      max-height: 200px;
+      overflow: scroll;
+    }
+
     .error-tip {
-      left: auto;
+      left: 220px;
       right: auto;
       margin-left: 2px;
     }
   }
+
   .registerBirthday .editMonth {
     width: 60px;
   }
@@ -392,6 +448,7 @@ $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
       right: unset;
     }
   }
+
   .signUpBtn {
     box-shadow: $input-shadow;
     color: white;
@@ -442,6 +499,7 @@ body.home.chat.room {
     }
   }
 }
+
 .mainPage {
   .navbar {
     padding: 0;
@@ -534,6 +592,7 @@ body.home.chat.room {
         display: grid;
         grid-template-columns: 60px 60px;
         height: 30px;
+
         .friend-requests {
           width: 24px;
           height: 24px;
@@ -545,6 +604,7 @@ body.home.chat.room {
           width: 24px;
           height: 24px;
         }
+
         .followers {
           margin: auto;
           cursor: pointer;
@@ -819,6 +879,7 @@ body.home.chat.room {
       background: #dadada5e;
     }
   }
+
   .friend-chat-link.active {
     .friend {
       background: #dadada;
@@ -931,7 +992,6 @@ body.home.chat.room {
     }
 
 
-
   }
 
   .profilePicHolder.playing {
@@ -1004,6 +1064,7 @@ body.home.chat.room {
               height: 50%;
             }
           }
+
           .group-name {
             margin-left: 10px;
             margin-top: auto;
@@ -1024,6 +1085,7 @@ body.home.chat.room {
             text-overflow: ellipsis;
             overflow: hidden;
           }
+
           .status {
             position: relative;
           }
@@ -1085,6 +1147,7 @@ body.home.chat.room {
     .friend-group-link:hover {
       text-decoration: none;
     }
+
     .friend-chat-link:hover {
       text-decoration: none;
     }
@@ -1465,6 +1528,7 @@ CHAT
           grid-template-columns: auto;
           grid-row-gap: 5px;
         }
+
         .messageTime {
           color: #E3D636;
           text-align: center;
@@ -1520,6 +1584,7 @@ CHAT
               margin-left: 20px;
             }
           }
+
           .message-img {
             padding: 10px;
 
@@ -1602,6 +1667,7 @@ CHAT
           margin: auto;
           width: 50px;
         }
+
         img {
           width: 31px;
           height: 31px;
@@ -1624,6 +1690,7 @@ CHAT
       box-shadow: $input-shadow;
       border-radius: 20px 0 0 0;
       margin-left: 0;
+
       .title {
         width: 100%;
         flex: 0 0 auto;
@@ -1738,6 +1805,7 @@ CHAT
         .youtube-item-music:hover {
           background: rgba(202, 201, 201, 0.59);
         }
+
         .youtube-item-music {
           display: grid;
           cursor: pointer;
@@ -1768,6 +1836,7 @@ CHAT
             white-space: nowrap;
             overflow: hidden;
           }
+
           .videoTitle {
             margin: auto auto auto 20px;
           }
@@ -1786,6 +1855,7 @@ CHAT
             font-size: 80%;
 
           }
+
           .thumbnail {
             width: 100%;
             border-radius: 20px;
@@ -1825,6 +1895,7 @@ CHAT
     }
   }
 }
+
 .publicRooms {
   background: white;
   height: 100%;
@@ -1912,6 +1983,7 @@ CHAT
         margin-top: 10px;
         text-overflow: ellipsis;
         overflow: hidden;
+
         .thumbnail {
           width: 100%;
           border-radius: 20px;
@@ -2111,6 +2183,23 @@ CHAT
       display: grid;
       grid-row-gap: 20px;
       padding-top: 20px;
+
+      .birthday-input-holder {
+        display: grid;
+        grid-template-columns: min-content min-content min-content;
+        grid-column-gap: 10px;
+
+      }
+
+      .registerEdit {
+        min-height: 44px;
+        min-width: 60px;
+        border: 1px #DDDDDD;
+        background: #F5F4F4;
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 100%;
+      }
 
       .profilePicWrapper {
         grid-column-start: 3;

@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
-import Ember from "ember"
+import Ember from "ember";
+import moment from "moment";
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -59,9 +60,7 @@ export default Controller.extend({
     return (!str || 0 === str.length);
   },
   years(birthday) {
-    let ageDifMs = Date.now() - birthday.getTime();
-    let ageDate = new Date(ageDifMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
+    return moment().diff(birthday, 'years');
   },
   addDefaultFriend() {
     let db = this.get('firebaseApp').database();
@@ -80,6 +79,9 @@ export default Controller.extend({
 
   },
   actions: {
+    onDateSet(dateMoment) {
+      this.set('form.register.birthDate', dateMoment);
+    },
     async signUpAction() {
       let register = this.get('form.register');
       this.set('form.register.error', {});
@@ -132,7 +134,7 @@ export default Controller.extend({
           this.clearError();
         } else {
           this.createUser(register.username, register.password).then((user) => {
-            let bd = register.birthDate.getFullYear() + "-" + (register.birthDate.getMonth() + 1) + "-" + register.birthDate.getDate()
+            let bd = register.birthDate.format("YYYY-MM-DD");
             let fields = {
               'Email': register.username + "@g2z4oldenfingers.com",
               'BirthDate': bd,
@@ -149,13 +151,13 @@ export default Controller.extend({
               this.userCreated()
             })
           }, (error) => {
-            // if (error.code === 'auth/weak-password'){
-            //   this.set('form.register.error.password', error.message);
-            // }else{
+            if (error.code === 'auth/weak-password') {
+              this.set('form.register.error.password', error.message);
+            } else {
 
-            this.set('form.register.error.global', 'Sign up failed');
-            this.clearError();
-            // }
+              this.set('form.register.error.global', 'Sign up failed');
+              this.clearError();
+            }
           })
         }
       }, (error) => {

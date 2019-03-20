@@ -69,6 +69,10 @@ export default Controller.extend({
   },
 
   actions: {
+    onBirthdayDateSet(bd) {
+      this.set('form.birthDay', bd);
+    },
+
     triggerSearch() {
       let q = this.get('searchQuery');
       if (q.length !== 0) {

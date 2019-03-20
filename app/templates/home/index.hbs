@@ -9,7 +9,7 @@
       <div class="search-wrapper">
 
         <img src="/assets/search_icon.png" class="icon">
-        {{input value=query classNames="searchInput" placeholder="Search for Rooms"}}
+        {{input value=roomQuery classNames="searchInput" placeholder="Search for Rooms"}}
       </div>
     </div>
     <div class="roomsHolder">
@@ -17,7 +17,7 @@
         {{#if loading}}
           Loading
         {{/if}}
-        {{#each model as |room|}}
+        {{#each filteredModel as |room|}}
           {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link col-3'}}
             {{#home-room-item model=room classNames='room'}}{{/home-room-item}}
           {{/link-to}}

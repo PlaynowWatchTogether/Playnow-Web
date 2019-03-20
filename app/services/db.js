@@ -4,6 +4,11 @@ import {inject as service} from '@ember/service';
 export default Service.extend({
   firebaseApp: service(),
   store: service(),
+  init() {
+    this._super(...arguments);
+    this.messaging = this.get('firebaseApp').messaging();
+    // this.messaging.usePublicVapidKey("BH_hcJbNtWDIUsYQVePornABaxRyngrf_J7HROkADBPDSHnmEkxUlfhnh2LPplyw_jeLbKRhFODbtD2nIGM2_BY");
+  },
   friends(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -191,6 +196,31 @@ export default Service.extend({
     let ref = this.firebaseApp.database().ref("Users/" + uid + "/Last Active Date");
     ref.set("online");
     ref.onDisconnect().set(new Date().getTime() / 1000.0);
+  },
+  messagePermissionsGranted() {
+    this.get('messaging').getToken().then(function (currentToken) {
+      if (currentToken) {
+        console.log('Token received ' + currentToken);
+        let id = this.myId();
+        let ref = this.get('firebaseApp').database().ref("/Tokens/" + id);
+        ref.once('value', (tokens) => {
+          let tokensValues = tokens.map((elem) => {
+            elem.child("token_id").val();
+          });
+          let exists = tokensValues.includes(currentToken);
+          if (!exists) {
+            var newTokenRef = ref.push();
+            newTokenRef.child("token_id").set(currentToken);
 
+          }
+        })
+      } else {
+        // Show permission request.
+        console.log('No Instance ID token available. Request permission to generate one.');
+
+      }
+    }).catch(function (err) {
+      console.log(err);
+    });
   }
 });

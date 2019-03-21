@@ -3,6 +3,7 @@ import EmberObject, {computed} from '@ember/object';
 import {inject as service} from '@ember/service';
 import MessageDataSource from '../custom-objects/message-data-source'
 export default Component.extend({
+  classNameBindings: ['unread'],
   db: service(),
   firebaseApp: service(),
   init() {
@@ -17,6 +18,9 @@ export default Component.extend({
   }),
   onlineClass: computed('model.isOnline', function () {
     return this.get('model.isOnline') ? 'online' : '';
+  }),
+  unread: computed('model.hasNewMessages', function () {
+    return this.get('model.hasNewMessages');
   }),
   unreadClass: computed('model', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';

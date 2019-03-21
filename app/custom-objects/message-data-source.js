@@ -1,5 +1,6 @@
 import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
+
 export default EmberObject.extend({
   gcmManager: service(),
   type: 'one2one',
@@ -8,6 +9,8 @@ export default EmberObject.extend({
   db: null,
   messagesRef: null,
   membersRef: null,
+  lastSeenRef: null,
+  typingRef: null,
   videoStateRef: null,
   videoWatchersRef: null,
   typingInterval: null,
@@ -108,12 +111,42 @@ export default EmberObject.extend({
       this.sendTyping(false)
     }, 5000)
   },
+  lastMessageSeen(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/lastMessageSeen";
+    this.lastSeenRef = ref;
+    this.db.ref(ref).on('value', (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let mes = item.val();
+        let id = item.key;
+        records.push({messageId: mes, userId: id});
+      });
+      updateCallback(records);
+    })
+  },
+  typingIndicator(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/typingIndicator";
+    this.typingRef = ref;
+    this.db.ref(ref).on('value', (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let mes = item.val();
+        let id = item.key;
+        records.push({messageId: mes, userId: id});
+      });
+      updateCallback(records);
+    })
+  },
   sendSeen(mesId) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/lastMessageSeen";
     let updated = {};
-    updated[this.myId] = mesId
+    updated[this.myId] = mesId;
 
     this.db.ref(ref).update(updated)
 
@@ -185,30 +218,41 @@ export default EmberObject.extend({
     }
   },
   members(updateCallback) {
-    let convId = this.convId();
-    let path = this.messageRoot();
-    let ref = path + "/" + convId + "/Members";
-    this.membersRef = ref;
-    this.db.ref(ref).on('value', (snapshot) => {
-      let records = [];
-      snapshot.forEach((item) => {
-        let mes = item.val();
-        mes.id = item.key;
-        records.push(mes);
+    if (this.type === 'one2one') {
+      this.profile(this.get('user.id')).then((profile) => {
+        updateCallback([profile]);
       });
-      updateCallback(records);
-    })
+    } else {
+      let convId = this.convId();
+      let path = this.messageRoot();
+      let ref = path + "/" + convId + "/Members";
+      this.membersRef = ref;
+      this.db.ref(ref).on('value', (snapshot) => {
+        let records = [];
+        snapshot.forEach((item) => {
+          let mes = item.val();
+          mes.id = item.key;
+          records.push(mes);
+        });
+        updateCallback(records);
+      })
+    }
   },
   stop() {
     if (this.membersRef) {
       this.db.ref(this.membersRef).off('value');
+    }
+    if (this.typingRef) {
+      this.db.ref(this.typingRef).off('value');
     }
     if (this.messagesRef) {
       this.db.ref(this.messagesRef).off('value');
     }
     if (this.videoStateRef) {
       this.db.ref(this.videoStateRef).off('value');
-
+    }
+    if (this.lastSeenRef) {
+      this.db.ref(this.lastSeenRef).off('value');
     }
   },
   sendMessage(text, thumbnail) {

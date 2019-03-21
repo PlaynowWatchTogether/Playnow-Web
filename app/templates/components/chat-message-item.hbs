@@ -7,7 +7,7 @@
 {{/if}}
 {{#if isPhoto}}
   <div class="message-img">
-    <img src="{{model.thumbnail}}"/>
+    <img src="{{model.thumbnail}}" {{action 'clickOnPhoto'}}/>
   </div>
 {{else}}
   {{#if isVideoRequest}}
@@ -28,6 +28,13 @@
         {{{bodyMessage}}}
       </div>
     </div>
+    {{#if isLastSeen}}
+      <div class="last-seen">
+        <div class="profilePicWrapper">
+          <img src="{{receiver.safeProfilePic}}" class="profilePic">
+        </div>
+      </div>
+    {{/if}}
 
   {{/if}}
 {{/if}}

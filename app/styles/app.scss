@@ -40,7 +40,7 @@ body > .ember-view {
 //Variables
 $primary-gradient: linear-gradient(to bottom right, #87B7FA, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-
+$friends-list-hover-color: #dadada5e;
 .background_gradient {
   background-image: $primary-gradient
 }
@@ -512,6 +512,8 @@ body.home.chat.room {
       width: 100%;
 
       .play-icon {
+        margin-top: auto;
+        margin-bottom: auto;
         width: 30px;
         height: 30px;
         margin-right: 10px;
@@ -525,7 +527,8 @@ body.home.chat.room {
         border-width: 0;
         display: grid;
         grid-template-columns: 60px auto 80px;
-
+        margin-top: auto;
+        margin-bottom: auto;
         .searchInput:focus {
           background: none;
           outline: none;
@@ -560,7 +563,7 @@ body.home.chat.room {
       }
 
       .profile {
-        height: 30px;
+        height: 34px;
         margin-top: auto;
         margin-bottom: auto;
 
@@ -589,9 +592,9 @@ body.home.chat.room {
       }
 
       .controls {
+        height: 34px;
         display: grid;
         grid-template-columns: 60px 60px;
-        height: 30px;
 
         .friend-requests {
           width: 24px;
@@ -746,6 +749,32 @@ body.home.chat.room {
           }
         }
 
+        .followers, .gear {
+          .dropdown-toggle {
+            padding: 3px;
+          }
+        }
+
+        .followers:hover {
+          .dropdown-toggle {
+            background: #dadada54;
+            border-radius: 10px;
+          }
+        }
+
+        .gear:hover {
+          .dropdown-toggle {
+            background: #dadada54;
+            border-radius: 10px;
+
+          }
+        }
+
+        .followers.show {
+          .friend-requests, .chevron {
+            filter: brightness(0) invert(1);
+          }
+        }
         .gear {
           position: relative;
           cursor: pointer;
@@ -753,7 +782,7 @@ body.home.chat.room {
         }
 
         .gear.show {
-          padding: 5px 10px;
+          //padding: 5px 10px;
 
           img {
             filter: brightness(0) invert(1);
@@ -798,6 +827,7 @@ body.home.chat.room {
   }
 
   .friends {
+
     font-size: 130%;
     color: #B757EE;
   }
@@ -862,6 +892,8 @@ body.home.chat.room {
   }
 
   .searchIcon {
+    width: 22px;
+    height: 22px;
     margin: auto;
   }
 
@@ -873,29 +905,33 @@ body.home.chat.room {
     grid-template-columns: auto 100px;
   }
 
+  .friend.unread {
+    font-weight: 800;
+  }
+
   .friend-chat-link:hover {
     .friend {
 
-      background: #dadada5e;
+      background: $friends-list-hover-color;
     }
   }
 
   .friend-chat-link.active {
     .friend {
-      background: #dadada;
+      background: $friends-list-hover-color;
     }
   }
 
   .friend-group-link.active {
     .group {
-      background: #dadada;
+      background: $friends-list-hover-color;
     }
   }
 
   .friend-group-link:hover {
     .group {
 
-      background: #dadada5e;
+      background: $friends-list-hover-color;
     }
   }
 
@@ -960,6 +996,7 @@ body.home.chat.room {
       }
 
       .unread-icon {
+        width: 33px;
         position: absolute;
         top: 0;
         left: -24px;
@@ -1040,6 +1077,10 @@ body.home.chat.room {
           display: grid;
           grid-template-columns: auto 100px;
 
+          .group-icon-wrapper {
+            position: relative;
+
+          }
           .groupIconHolder {
             border-radius: 50%;
             overflow: hidden;
@@ -1091,6 +1132,8 @@ body.home.chat.room {
           }
 
           .online-icon {
+            top: 0px;
+            right: 15px;
             width: 20px;
             height: 20px;
             background: #07FF23;
@@ -1101,8 +1144,9 @@ body.home.chat.room {
           }
 
           .unread-icon {
-            left: -40px;
-            top: -7px;
+            width: 33px;
+            top: -10px;
+            right: 71px;
             display: none;
             position: absolute;
           }
@@ -1122,11 +1166,19 @@ body.home.chat.room {
           .playing-video-icon {
             display: block;
           }
+
+          .groupIconHolder {
+            display: none;
+          }
         }
 
         .group-item.playing-music {
           .playing-music-icon {
             display: block;
+          }
+
+          .groupIconHolder {
+            display: none;
           }
         }
 
@@ -1137,7 +1189,9 @@ body.home.chat.room {
         }
 
         .group-item.unread {
+          font-weight: 900;
           .unread-icon {
+            width: 33px;
             display: block;
           }
         }
@@ -1229,6 +1283,7 @@ CHAT
       }
 
       #youtubeHolder {
+        height: 360px;
         display: none;
         width: 100%;
         position: relative;
@@ -1377,11 +1432,29 @@ CHAT
         }
       }
 
+      #youtubeHolder.active {
+        overflow: hidden;
+      }
       .back {
         text-align: center;
         margin: auto;
       }
 
+      .chat-members {
+        display: flex;
+        position: absolute;
+        top: 60px;
+        left: 10px;
+
+        .member:not(:first-child) {
+          margin-left: -10px;
+        }
+
+        .profilePicWrapper {
+          width: 30px;
+          height: 30px;
+        }
+      }
       .titleHolder {
         flex: 0 0 auto;
         height: 50px;
@@ -1527,6 +1600,23 @@ CHAT
           display: grid;
           grid-template-columns: auto;
           grid-row-gap: 5px;
+
+          .typing-indicators {
+            .indicator {
+              display: grid;
+              grid-template-columns: min-content min-content;
+
+              .profilePicWrapper {
+                width: 37px;
+                height: 37px;
+              }
+
+              .typing-icon {
+                width: 20px;
+                height: 20px;
+              }
+            }
+          }
         }
 
         .messageTime {
@@ -1557,6 +1647,22 @@ CHAT
             margin-top: auto;
           }
 
+          .last-seen {
+            text-align: right;
+            grid-column-start: 2;
+
+            .profilePicWrapper {
+              width: 15px;
+              height: 15px;
+              text-align: right;
+              float: right;
+              margin-top: 5px;
+
+              .profilePic {
+                display: block;
+              }
+            }
+          }
           .message-video-request {
             background: white;
             padding: 10px;
@@ -1586,6 +1692,7 @@ CHAT
           }
 
           .message-img {
+            cursor: pointer;
             padding: 10px;
 
             img {
@@ -1638,9 +1745,7 @@ CHAT
         .messageContent {
           width: 100%;
           max-width: 100vh;
-          overflow: scroll;
           min-height: 40px;
-          white-space: pre;
           outline: none;
           font-size: 20px;
           padding: 5px 10px;
@@ -1711,8 +1816,6 @@ CHAT
 
       .searchHolder {
         width: 100%;
-        padding-left: 10px;
-        padding-right: 10px;
 
         .search {
           margin-top: 10px;
@@ -1744,6 +1847,8 @@ CHAT
             margin: auto;
             left: 37px;
             top: 32px;
+            width: 22px;
+            height: 22px;
           }
 
           .trigger-search {
@@ -1792,18 +1897,21 @@ CHAT
 
       .youtube-items {
         display: grid;
-        grid-template-columns: auto auto;
-        grid-column-gap: 10px;
+        grid-template-columns: 50% 50%;
+        grid-column-gap: 5px;
         grid-row-gap: 10px;
+        margin-left: -5px;
+        width: 100%;
 
         .youtube-item:hover {
           background: rgba(202, 201, 201, 0.59);
-          border-top-left-radius: 20px;
-          border-top-right-radius: 20px;
+          border-radius: 10px;
+          padding: 5px;
         }
 
         .youtube-item-music:hover {
           background: rgba(202, 201, 201, 0.59);
+
         }
 
         .youtube-item-music {
@@ -1850,6 +1958,7 @@ CHAT
         .youtube-item {
           cursor: pointer;
           margin-top: 10px;
+          padding: 5px;
 
           .videoTitle {
             font-size: 80%;
@@ -1868,9 +1977,6 @@ CHAT
         grid-template-columns: auto;
         grid-column-gap: 10px;
         grid-row-gap: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 10px;
       }
     }
   }
@@ -1955,6 +2061,8 @@ CHAT
         }
 
         .icon {
+          width: 22px;
+          height: 22px;
           margin: auto;
           left: 37px;
           top: 32px;
@@ -2394,4 +2502,59 @@ CHAT
   #ytplayer {
     filter: blur(15px);
   }
+}
+
+.chevron {
+  width: 8px;
+}
+
+.back-icon {
+  width: 12px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                   supported by Chrome and Opera */
+}
+
+.z1 {
+  z-index: 1;
+}
+
+.z2 {
+  z-index: 2;
+}
+
+.z3 {
+  z-index: 3;
+}
+
+.z4 {
+  z-index: 4;
+}
+
+.z5 {
+  z-index: 5;
+}
+
+.z6 {
+  z-index: 6;
+}
+
+.z7 {
+  z-index: 7;
+}
+
+.z8 {
+  z-index: 8;
+}
+
+.hidden {
+  display: none;
 }

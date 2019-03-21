@@ -32,7 +32,7 @@ export default Component.extend({
           }
         }
         if (window.globalPlayer.getCurrentTime) {
-          if (this.get('slidingProgress') === 0) {
+          if (this.get('slidingProgress') === 0 || !this.get('slidingProgress')) {
             $('#youtubeHolder .controlsOverlay .slider').val(window.globalPlayer.getCurrentTime());
           }
         }
@@ -65,10 +65,10 @@ export default Component.extend({
       this.controlHideSubject.next(1);
     });
 
-
+    console.log('Create yt player width ' + $('#youtubeHolder').width());
     window.globalPlayer = new YT.Player('ytplayer', {
       height: '360',
-      width: '640',
+      width: $('#youtubeHolder').width(),
       playerVars: {
         controls: 0,
         modestbranding: 1,
@@ -106,6 +106,8 @@ export default Component.extend({
             player.pauseVideo();
           } else if (action === 10) {
             // player.stopVideo()
+          } else if (action === 5) {
+            player.seekVideo(this.get('playerSeconds'))
           } else {
             return;
           }

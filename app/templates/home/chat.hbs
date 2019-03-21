@@ -27,7 +27,7 @@
         </div>
         <div class="back">
           {{#link-to 'home'}}
-            <img src="/assets/ic_arrow_back.png">
+            <img class='back-icon' src="/assets/ic_arrow_back@2x.png">
           {{/link-to}}
         </div>
       </div>
@@ -40,6 +40,16 @@
             {{/users-chat-compose}}
           </div>
         </div>
+      {{else}}
+        <div class="chat-members {{membersClass}}">
+          {{#each membersProfiles as |member|}}
+            <div class="member {{member.className}}">
+              <div class="profilePicWrapper">
+                <img class="profilePic" src="{{member.profilePic}}">
+              </div>
+            </div>
+          {{/each}}
+        </div>
       {{/if}}
       <div id="youtubeHolder" class="{{playerLoadingClass}}">
         {{#if hasPlayer}}
@@ -47,6 +57,7 @@
                                   videoLoadedAction=(action 'videoLoaded')
                                   playerState=(action 'playerStateAction')
                                   isLoading=playerLoading
+                                  playerSeconds=playerSeconds
                                   slidingProgress=slidingProgress}}{{/youtube-video-player}}
           <div class="overlay"></div>
           <div class="controlsOverlay">
@@ -74,31 +85,44 @@
           </div>
         {{/if}}
       </div>
-      <div id="youtubePlaceHolder"></div>
-
+      {{#unless hasPlayer}}
+        <div id="youtubePlaceHolder"></div>
+      {{/unless}}
       <div class="messagesHolder">
         <div class="messagesWrappper">
           {{#each messages as |message|}}
             {{#if message.isMessage}}
               {{#chat-message-item model=message.message classNames='messageHolder'
-                                   displaySender=message.displaySender}}{{/chat-message-item}}
+                                   displaySender=message.displaySender lastSeen=lastSeenMessage myID=myID
+                                   members=members onPhotoSelect=(action 'onPhotoSelect')}}{{/chat-message-item}}
             {{/if}}
             {{#if message.isDate}}
               {{#chat-message-time model=message.date}}{{/chat-message-time}}
 
             {{/if}}
           {{/each}}
+          <div class="typing-indicators">
+            {{#each typingIndicatorProfiles as |indicator|}}
+              <div class="indicator">
+                <div class="profilePicWrapper">
+                  <img class="profilePic" src="{{indicator.profilePic}}">
+                </div>
+                <img src="/assets/ic_typing_indicator.png" class="typing-icon">
+              </div>
+            {{/each}}
+          </div>
         </div>
       </div>
       <div class="newMessageHolder">
-        {{content-editable value=messageText placeholder="Type a message" classNames="messageContent"}}
+        {{custom-content-editable value=messageText placeholder="Type a message" classNames="messageContent"
+                                  enter=(action 'onMessageEnterPress') allowNewlines=true}}
         <div class="imgHolder">
           <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
         </div>
         {{#file-upload name="chatPhotos"
                        accept="image/*"
                        onfileadd=(action "uploadImageToChat") as |queue|}}
-          <img src="/assets/ic_chat_msg_image.png"/>
+          <img src="/assets/ic_chat_msg_image@2x.png"/>
         {{/file-upload}}
 
       </div>
@@ -108,17 +132,7 @@
     <div class="row holder h-100">
       <div class="title">
         <div>
-          <span>Trending</span>
-        </div>
-      </div>
-      <div class="searchHolder">
-        <div class="search">
-          <img src="/assets/search_icon.png" class="icon">
-          {{input value=searchQuery classNames="searchInput" placeholder="Search content"
-                  insert-newline=(action 'triggerSearch')}}
-          <div class="trigger-search" {{action 'triggerSearch'}}>
-            <img src="/assets/ic_search_trigger.png" class="icon">
-          </div>
+          <span class="noselect">Trending</span>
         </div>
       </div>
       <div class="tabs">
@@ -136,15 +150,28 @@
       <div class="tab-content col-12">
         <div class="tab-pane row fade show active" id="videos">
           <div class="col-12">
-            {{#scroll-with-listener classNames='youtube-items' music=false
-                                    onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
-                                    loading=loadingVideo}}
 
-              {{#each youtubeVideoItems as |video|}}
-                {{#youtube-video model=video classNames='youtube-item'
-                                 clickAction=(action 'videoPick')}}{{/youtube-video}}
+            {{#scroll-with-listener  music=false
+                                     onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
+                                     loading=loadingVideo}}
 
-              {{/each}}
+              <div class="searchHolder">
+                <div class="search">
+                  <img src="/assets/search_icon@2x.png" class="icon">
+                  {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
+                          insert-newline=(action 'triggerSearch')}}
+                  <div class="trigger-search" {{action 'triggerSearch'}}>
+                    <img src="/assets/ic_search_trigger@2x.png" class="icon">
+                  </div>
+                </div>
+              </div>
+              <div class="youtube-items">
+                {{#each youtubeVideoItems as |video|}}
+                  {{#youtube-video model=video classNames='youtube-item'
+                                   clickAction=(action 'videoPick')}}{{/youtube-video}}
+
+                {{/each}}
+              </div>
 
             {{/scroll-with-listener}}
           </div>
@@ -153,6 +180,16 @@
           {{#scroll-with-listener classNames='youtube-items row music' music=false
                                   onScrolledHalf=(action 'scrolledHalfYoutubeMusic') scrollParent='.tab-content'
                                   loading=loadingMusic}}
+            <div class="searchHolder">
+              <div class="search">
+                <img src="/assets/search_icon@2x.png" class="icon">
+                {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
+                        insert-newline=(action 'triggerSearch')}}
+                <div class="trigger-search" {{action 'triggerSearch'}}>
+                  <img src="/assets/ic_search_trigger@2x.png" class="icon">
+                </div>
+              </div>
+            </div>
             {{#each youtubeMusicItems as |video|}}
               {{#youtube-music model=video classNames='youtube-item-music col-12'
                                clickAction=(action 'musicPick')}}{{/youtube-music}}
@@ -164,5 +201,12 @@
 
 
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="photoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
+     aria-hidden="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <img src="{{selectedPhoto}}">
   </div>
 </div>

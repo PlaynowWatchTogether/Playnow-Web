@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
-import MessageDataSource from '../../custom-objects/message-data-source'
-import VideoStateHandler from '../../custom-objects/video-state-handler'
+import MessageDataSource from '../../custom-objects/message-data-source';
+import VideoStateHandler from '../../custom-objects/video-state-handler';
+import PicturedObject from '../../custom-objects/pictured-object';
 import {inject as service} from '@ember/service';
 import EmberObject, {computed} from '@ember/object';
 import {run} from '@ember/runloop';
@@ -33,6 +34,10 @@ export default Controller.extend({
           let ds = this.get('dataSource');
           ds.updateWatching(videoId, state);
         },
+        seekVideo: (seconds) => {
+          this.set('playerSeconds', seconds);
+          this.set('playerAction', 5);
+        },
         slideVideo: () => {
           this.set('playerAction', 2);
           let ds = this.get('dataSource');
@@ -51,9 +56,6 @@ export default Controller.extend({
     this.addObserver('messageText', this, 'messageTextObserver');
     this.addObserver('searchMode', this, 'searchModeObserver');
     this.set('searchMode', 'video');
-    this.set('searchQuery', '');
-    this.set('searchQueryVideo', '');
-    this.set('searchQueryMusic', '');
     this.searchModeObserver(this);
     this.set('playerState', {});
 
@@ -89,12 +91,12 @@ export default Controller.extend({
   }),
   queryYoutubeMusic(reset) {
     return new Promise((resolve) => {
-      let q = this.get('searchQuery');
+      let q = this.get('searchQueryMusic');
       let page = this.get('youtubeMusicItemsPage');
       if (reset) {
         this.set('youtubeMusicItems', []);
       }
-      if (q.length === 0) {
+      if (!q || q.length === 0) {
         this.get('youtubeSearch').trending(true, page).then((data) => {
           this.set('youtubeMusicItemsPage', data.nextPage);
           if (reset) {
@@ -125,7 +127,7 @@ export default Controller.extend({
       if (reset) {
         this.set('youtubeVideoItems', []);
       }
-      if (q.length === 0) {
+      if (!q || q.length === 0) {
         this.get('youtubeSearch').trending(false, page).then((data) => {
           this.set('youtubeVideoItemsPage', data.nextPage);
           if (reset) {
@@ -162,6 +164,10 @@ export default Controller.extend({
     obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
 
     if ('compose' === convId) {
+      obj.set('chatModel', {
+        hasProfilePic: false,
+        title: 'Compose message'
+      });
       return;
     }
     if ('one2one' === type) {
@@ -224,6 +230,7 @@ export default Controller.extend({
   },
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');
+    ds.updateWatching('', 'closed');
     let one_day = 1000 * 60 * 60 * 24;
     ds.videoWatchers((watchers) => {
       if (watchers) {
@@ -240,6 +247,21 @@ export default Controller.extend({
     ds.videoState((vs) => {
       if (vs)
         obj.videoStateHandler.handleVideoState(vs);
+    });
+    ds.lastMessageSeen((lastSeen) => {
+      if (ds.type === 'one2one') {
+        obj.set('lastSeenMessage', lastSeen);
+      }
+    });
+    ds.members((members) => {
+      obj.set('members', members);
+    });
+    ds.typingIndicator((indicator) => {
+      let myId = obj.get('db').myId();
+      let filtered = indicator.filter((elem) => {
+        return elem.userId !== myId;
+      });
+      obj.set('typingIndicator', filtered);
     });
     ds.messages((messages) => {
       let uiMessages = [];
@@ -338,7 +360,8 @@ export default Controller.extend({
     if (vsh) {
       vsh.closeVideo();
     }
-    this.set('searchQuery', '');
+    this.set('searchQueryVideo', '');
+    this.set('searchQueryMusic', '');
     this.set('messages', []);
   },
   generateUUID() { // Public Domain/MIT
@@ -379,6 +402,44 @@ export default Controller.extend({
   isMusicResult: computed('searchMode', function () {
     return this.get('searchMode') === 'music'
   }),
+  myID: computed('model', function () {
+    return this.get('db').myId();
+  }),
+  membersProfiles: computed('watchers', function () {
+    let members = this.get('watchers');
+    if (members) {
+      return members.map((elem, index) => {
+        elem.className = 'z' + (members.length - index);
+        return PicturedObject.create({content: elem})
+      });
+    } else {
+      return []
+    }
+  }),
+  membersClass: computed('hasPlayer', function () {
+    return this.get('hasPlayer') ? '' : 'hidden';
+  }),
+  typingIndicatorProfiles: computed('typingIndicator', 'members', function () {
+    let members = this.get('members');
+    let indicators = this.get('typingIndicator');
+    if (members && indicators) {
+      let typing = [];
+      indicators.forEach((indicator) => {
+        if (indicator.messageId) {
+          let member = members.find((member) => {
+            return member.id === indicator.userId;
+          });
+          if (member) {
+            typing.push(PicturedObject.create({content: member}));
+          }
+
+        }
+      });
+      return typing;
+    } else {
+      return [];
+    }
+  }),
   createGroup() {
     return new Promise((resolve, reject) => {
       let db = this.get('db');
@@ -401,6 +462,25 @@ export default Controller.extend({
       });
 
     });
+  },
+  performSendMessage() {
+    if (this.get('messageText').length === 0) {
+      return;
+    }
+    if (this.get('isCompose')) {
+      if (this.get('composeChips').length === 0) {
+        this.set('composeError', 'Add friends to group');
+        setTimeout(() => {
+          this.set('composeError', '');
+        }, 2000);
+      } else {
+        this.createGroup();
+      }
+      return;
+    }
+    let ds = this.get('dataSource');
+    ds.sendMessage(this.get('messageText'));
+    this.set('messageText', '');
   },
   actions: {
 
@@ -454,25 +534,7 @@ export default Controller.extend({
       });
     },
     sendMessage() {
-
-      if (this.get('messageText').length === 0) {
-        return;
-      }
-      if (this.get('isCompose')) {
-        if (this.get('composeChips').length === 0) {
-          this.set('composeError', 'Add friends to group');
-          setTimeout(() => {
-            this.set('composeError', '');
-          }, 2000);
-        } else {
-          this.createGroup();
-        }
-        return;
-      }
-      let ds = this.get('dataSource');
-      ds.sendMessage(this.get('messageText'));
-      this.set('messageText', '');
-
+      this.performSendMessage();
     },
     videoPick(video) {
       if (this.get('isCompose')) {
@@ -509,24 +571,18 @@ export default Controller.extend({
     pickVideosSearch() {
       if (this.get('searchMode') !== 'video') {
         this.set('searchMode', 'video');
-        this.set('searchQueryMusic', this.get('searchQuery'));
-        this.set('searchQuery', this.get('searchQueryVideo'))
       }
     },
     pickSongsSearch() {
       if (this.get('searchMode') !== 'music') {
         this.set('searchMode', 'music');
-        this.set('searchQueryVideo', this.get('searchQuery'));
-        this.set('searchQuery', this.get('searchQueryMusic'))
       }
     },
     triggerSearch() {
       if (this.get('searchMode') === 'video') {
-        this.set('searchQueryVideo', this.get('searchQuery'));
         this.set('youtubeVideoItemsPage', null);
         this.queryYoutubeVideos(true);
       } else {
-        this.set('searchQueryMusic', this.get('searchQuery'));
         this.set('youtubeMusicItemsPage', null);
         this.queryYoutubeMusic(true);
       }
@@ -543,6 +599,13 @@ export default Controller.extend({
     onChipClick(data) {
       this.get('composeChips').removeObject(data);
       this.notifyPropertyChange('composeChips');
+    },
+    onMessageEnterPress(event) {
+      this.performSendMessage();
+    },
+    onPhotoSelect(photo) {
+      this.set('selectedPhoto', photo);
+      $('#photoPreviewModal').modal('toggle');
     }
   }
 });

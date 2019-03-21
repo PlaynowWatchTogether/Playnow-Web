@@ -9,6 +9,7 @@ export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
   db: service(),
+  gcmManager: service(),
   init() {
     this._super(...arguments);
     this.chatModel = {};
@@ -166,6 +167,7 @@ export default Controller.extend({
     if ('one2one' === type) {
       obj.store.find('user', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
+          gcmManager: obj.gcmManager,
           type: 'one2one',
           user: friend,
           myId: obj.firebaseApp.auth().currentUser.uid,
@@ -183,6 +185,7 @@ export default Controller.extend({
       obj.store.find('room', convId).then((room) => {
         obj.set('dataSource', MessageDataSource.create({
           type: 'room',
+          gcmManager: obj.gcmManager,
           room: room,
           myId: obj.firebaseApp.auth().currentUser.uid,
           db: obj.firebaseApp.database()
@@ -200,6 +203,7 @@ export default Controller.extend({
       obj.store.find('group', convId).then((group) => {
         obj.set('dataSource', MessageDataSource.create({
           type: 'group',
+          gcmManager: obj.gcmManager,
           group: group,
           myId: obj.firebaseApp.auth().currentUser.uid,
           db: obj.firebaseApp.database()

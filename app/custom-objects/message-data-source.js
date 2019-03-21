@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
-
+import {inject as service} from '@ember/service';
 export default EmberObject.extend({
+  gcmManager: service(),
   type: 'one2one',
   user: null,
   myId: '',
@@ -142,6 +143,47 @@ export default EmberObject.extend({
       updateCallback(records);
     })
   },
+  profile(user) {
+    return new Promise((resolve, reject) => {
+      let ref = this.db.ref("Users/" + user);
+      ref.once('value').then((snapshot) => {
+        let payload = snapshot.val();
+        payload['id'] = snapshot.key;
+        resolve(payload);
+      }).catch((error) => {
+        reject(error);
+      })
+    });
+  },
+  membersOnce() {
+    if (this.type === 'one2one') {
+      return new Promise((resolve, reject) => {
+        this.profile(this.get('user.id')).then((profile) => {
+          resolve([profile]);
+        }).catch((error) => {
+          reject(error);
+        })
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        let convId = this.convId();
+        let path = this.messageRoot();
+        let ref = path + "/" + convId + "/Members";
+        this.membersRef = ref;
+        this.db.ref(ref).once('value', (snapshot) => {
+          let records = [];
+          snapshot.forEach((item) => {
+            let mes = item.val();
+            mes.id = item.key;
+            records.push(mes);
+          });
+          resolve(records);
+        }, (error) => {
+          reject(error);
+        })
+      });
+    }
+  },
   members(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
@@ -190,7 +232,17 @@ export default EmberObject.extend({
     message['message'] = 'web';
     message['text'] = text;
     let ref = path + "/" + convId + "/Messages/" + msgUid;
-    this.db.ref(ref).update(message)
+    this.db.ref(ref).update(message).then(() => {
+      if (this.gcmManager) {
+        this.profile(this.myId).then((myProfile) => {
+          this.membersOnce().then((members) => {
+            members.forEach((member) => {
+              this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
+            });
+          });
+        });
+      }
+    })
   }
 
 });

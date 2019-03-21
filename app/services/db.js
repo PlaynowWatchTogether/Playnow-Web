@@ -4,6 +4,7 @@ import {inject as service} from '@ember/service';
 export default Service.extend({
   firebaseApp: service(),
   store: service(),
+  gcmManager: service(),
   init() {
     this._super(...arguments);
     this.messaging = this.get('firebaseApp').messaging();
@@ -119,6 +120,9 @@ export default Service.extend({
         myFriend.update(myValues),
         otherFriend.update(otherValues)
       ]).then((data) => {
+        this.profile(myId).then((myProfile) => {
+          this.get('gcmManager').sendMessage(model['id'], null, profile['FirstName'] + ' added you back!');
+        });
         console.log('Request confirmed ' + data);
       }).catch((error) => {
         console.log('Request confirm failed ' + error);
@@ -154,6 +158,28 @@ export default Service.extend({
       })
     });
   },
+  tokens(user) {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref("Tokens/" + user);
+      ref.once('value', (snapshot) => {
+        let tokens = [];
+        snapshot.forEach((data) => {
+          let payload = data.val();
+          payload.id = data.key;
+          tokens.push(payload);
+        });
+        resolve(tokens);
+      }, (error) => {
+        reject(error);
+      })
+    });
+  },
+  updateBadge(user, token, value) {
+    let ref = this.firebaseApp.database().ref("Tokens/" + user + "/" + token);
+    ref.child('badge_count').set(value).then(() => {
+      console.log('badge for ' + user + 'updated to ' + value);
+    })
+  },
   followUser(user) {
 
     this.profile(this.firebaseApp.auth().currentUser.uid).then((profile) => {
@@ -166,12 +192,16 @@ export default Service.extend({
       let ref = this.firebaseApp.database().ref("Users/" + user['id'] + '/Followers/' + this.firebaseApp.auth().currentUser.uid);
       let updates = {};
       updates['Email'] = email;
-      updates['Name'] = name;
+      updates['Name'] = username;
       updates['Username'] = name;
       if (profile['ProfilePic']) {
         updates['ProfilePic'] = profile['ProfilePic'];
       }
-      ref.update(updates);
+      ref.update(updates).then(() => {
+        this.profile(this.myId()).then((myProfile) => {
+          this.get('gcmManager').sendMessage(user['id'], null, myProfile['FirstName'] + ' added you as friend!');
+        });
+      });
 
     })
   },

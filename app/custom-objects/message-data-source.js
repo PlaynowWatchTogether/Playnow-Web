@@ -14,6 +14,9 @@ export default EmberObject.extend({
   videoStateRef: null,
   videoWatchersRef: null,
   typingInterval: null,
+  init() {
+    this.listeners = {};
+  },
   convId() {
     if (this.type === 'one2one') {
       return [this.myId, this.user.id].sort((a, b) => {
@@ -71,13 +74,15 @@ export default EmberObject.extend({
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/videoWatching";
     this.videoWatchersRef = this.db.ref(ref);
-    this.videoWatchersRef.on('value', (snippet) => {
+    let valueListener = (snippet) => {
       let records = [];
       snippet.forEach((item) => {
         records.push(item.val());
       });
       updateCallback(records);
-    })
+    };
+    this.listeners[ref] = valueListener;
+    this.videoWatchersRef.on('value', valueListener)
   },
   updateWatching(videoId, state) {
     let convId = this.convId();
@@ -116,7 +121,7 @@ export default EmberObject.extend({
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/lastMessageSeen";
     this.lastSeenRef = ref;
-    this.db.ref(ref).on('value', (snapshot) => {
+    let valueListener = (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
@@ -124,14 +129,16 @@ export default EmberObject.extend({
         records.push({messageId: mes, userId: id});
       });
       updateCallback(records);
-    })
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener)
   },
   typingIndicator(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/typingIndicator";
     this.typingRef = ref;
-    this.db.ref(ref).on('value', (snapshot) => {
+    let valueListener = (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
@@ -139,7 +146,9 @@ export default EmberObject.extend({
         records.push({messageId: mes, userId: id});
       });
       updateCallback(records);
-    })
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener)
   },
   sendSeen(mesId) {
     let convId = this.convId();
@@ -156,17 +165,18 @@ export default EmberObject.extend({
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/videoState";
     this.videoStateRef = ref;
-    this.db.ref(ref).on('value', (snapshot) => {
+    let valueListener = (snapshot) => {
       updateCallback(snapshot.val());
-    });
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener);
 
   },
-  messages(updateCallback) {
+  messagesOnce(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/Messages";
-    this.messagesRef = ref;
-    this.db.ref(ref).on('value', (snapshot) => {
+    this.db.ref(ref).once('value', (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
@@ -175,6 +185,23 @@ export default EmberObject.extend({
       });
       updateCallback(records);
     })
+  },
+  messages(updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Messages";
+    this.messagesRef = ref;
+    let valueListener = (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let mes = item.val();
+        mes.id = item.key;
+        records.push(mes);
+      });
+      updateCallback(records);
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener)
   },
   profile(user) {
     return new Promise((resolve, reject) => {
@@ -227,7 +254,7 @@ export default EmberObject.extend({
       let path = this.messageRoot();
       let ref = path + "/" + convId + "/Members";
       this.membersRef = ref;
-      this.db.ref(ref).on('value', (snapshot) => {
+      let valueListener = (snapshot) => {
         let records = [];
         snapshot.forEach((item) => {
           let mes = item.val();
@@ -235,24 +262,17 @@ export default EmberObject.extend({
           records.push(mes);
         });
         updateCallback(records);
-      })
+      };
+      this.listeners[ref] = valueListener;
+      this.db.ref(ref).on('value', valueListener)
     }
   },
   stop() {
-    if (this.membersRef) {
-      this.db.ref(this.membersRef).off('value');
-    }
-    if (this.typingRef) {
-      this.db.ref(this.typingRef).off('value');
-    }
-    if (this.messagesRef) {
-      this.db.ref(this.messagesRef).off('value');
-    }
-    if (this.videoStateRef) {
-      this.db.ref(this.videoStateRef).off('value');
-    }
-    if (this.lastSeenRef) {
-      this.db.ref(this.lastSeenRef).off('value');
+    for (let listener in this.listeners) {
+      let value = this.listeners[listener];
+      this.db.ref(listener).off('value', value);
+      console.log('remove listener for ' + value);
+
     }
   },
   sendMessage(text, thumbnail) {

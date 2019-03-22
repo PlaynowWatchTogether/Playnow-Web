@@ -26,18 +26,18 @@ export default Component.extend({
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
   modelObserver(obj) {
-    let ds = this.get('dataSource');
+    let ds = obj.get('dataSource');
     if (ds) {
       ds.stop();
     }
     let newDs = MessageDataSource.create({
       type: 'one2one',
       user: obj.get('model'),
-      myId: this.firebaseApp.auth().currentUser.uid,
-      db: this.firebaseApp.database()
+      myId: obj.firebaseApp.auth().currentUser.uid,
+      db: obj.firebaseApp.database()
     });
-    this.set('dataSource', newDs);
-    newDs.messages((messages) => {
+    obj.set('dataSource', newDs);
+    newDs.messagesOnce((messages) => {
       let sorted = messages.sort(function (a, b) {
         return a['date'] - b['date'];
       });
@@ -47,7 +47,6 @@ export default Component.extend({
           return;
         }
       });
-
     })
   },
   safeProfilePic: computed('model.profilePic', function () {

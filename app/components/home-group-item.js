@@ -58,6 +58,14 @@ export default Component.extend({
       }));
     })
   },
+  profilePicClass: computed('members', function () {
+    let members = this.get('members');
+    if (members) {
+      return 'split-profile-pic' + members.length;
+    } else {
+      return '';
+    }
+  }),
   lastMessageText: computed('lastMessage', function () {
     return this.get('lastMessage.text');
   })

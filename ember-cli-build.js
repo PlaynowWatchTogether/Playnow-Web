@@ -11,9 +11,9 @@ module.exports = function(defaults) {
     //   'node_modules/ntp-time-sync/dist/index.js'
     // ]
   });
-  app.import('node_modules/ntp-time-sync/dist/index.js', {
+  app.import('node_modules/ntp-client/lib/ntp-client.js', {
     using: [
-      {transformation: 'cjs', as: 'ntp-time'}
+      {transformation: 'cjs', as: 'ntp-client'}
     ]
   });
   // app.import('node_modules/moment/moment.js', {

@@ -29,11 +29,13 @@ export default Component.extend({
         if (window.globalPlayer.getDuration) {
           if (window.globalPlayer.getDuration() !== 0) {
             $('#youtubeHolder .controlsOverlay .slider').attr('max', window.globalPlayer.getDuration());
+            $('.youtube-music-holder .slider').attr('max', window.globalPlayer.getDuration());
           }
         }
         if (window.globalPlayer.getCurrentTime) {
           if (this.get('slidingProgress') === 0 || !this.get('slidingProgress')) {
             $('#youtubeHolder .controlsOverlay .slider').val(window.globalPlayer.getCurrentTime());
+            $('.youtube-music-holder .slider').val(window.globalPlayer.getCurrentTime());
           }
         }
       }
@@ -143,7 +145,7 @@ export default Component.extend({
       $('#youtubeHolder .controlsOverlay .play').hide();
       $('#youtubeHolder .controlsOverlay .pause').hide();
     } else if (event.data === 0) {//ended
-
+      window.playerObj.get('onVideoEnd')();
     } else if (event.data === 1) {//playing
       if (window.playerObj.isPrebuffering) {
         window.playerObj.isPrebuffering = false;
@@ -153,16 +155,25 @@ export default Component.extend({
       } else {
         $('#youtubeHolder .controlsOverlay .play').hide();
         $('#youtubeHolder .controlsOverlay .pause').show();
+        $('.youtube-music-holder .controls .play-btn').hide();
+        $('.youtube-music-holder .controls .pause-btn').show();
       }
     } else if (event.data === 2) {//paused
       $('#youtubeHolder .controlsOverlay .play').show();
       $('#youtubeHolder .controlsOverlay .pause').hide();
+      $('.youtube-music-holder .controls .play-btn').show();
+      $('.youtube-music-holder .controls .pause-btn').hide();
     } else if (event.data === 3) {//buffering
       $('#youtubeHolder .controlsOverlay .play').hide();
       $('#youtubeHolder .controlsOverlay .pause').hide();
+      $('.youtube-music-holder .controls .play-btn').hide();
+      $('.youtube-music-holder .controls .pause-btn').hide();
     } else if (event.data === 5) {//queued
       $('#youtubeHolder .controlsOverlay .play').hide();
       $('#youtubeHolder .controlsOverlay .pause').hide();
+
+      $('.youtube-music-holder .controls .play-btn').hide();
+      $('.youtube-music-holder .controls .pause-btn').hide();
       window.playerObj.isPrebuffering = true;
       if (window.playerObj.secondsToPlay === 0.0 || window.playerObj.secondsToPlay === 0) {
         event.target.playVideo();
@@ -185,14 +196,47 @@ export default Component.extend({
         if (val === 1) {
           obj.secondsToPlay = v.seconds;
           player.cueVideoById(v.video['videoId'], v.seconds);
-          $('#youtubeHolder').show();
-          $('#youtubePlaceHolder').show();
-          $('#youtubeHolder .overlay').show();
+          if (v.video.videoType === 'youtubeVideo') {
+            $('.youtube-music-holder').hide();
+            $('#youtubeHolder').show();
+            $('#youtubePlaceHolder').show();
+            $('#youtubeHolder .overlay').show();
+          } else {
+            $('#youtubeHolder').hide();
+            $('.youtube-music-holder').show();
+          }
 
           console.log('video');
         }
       }
     });
-    $('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName'])
+    $('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName']);
+    $('.youtube-music-holder .details .song-name').text(this.songTitle(v.video['videoName']));
+    $('.youtube-music-holder .thumbnail').attr('src', v.video['videoThumbnail']);
+    $('.youtube-music-holder .details .song-artist').text(this.songArtist(v.video['videoName']));
+  },
+  songTitle(title) {
+    let data = [];
+    if (title.includes(' | ')) {
+      data = title.split(' | ')
+    } else if (title.includes(' - ')) {
+      data = title.split(' - ')
+    } else {
+      data.push(title);
+      data.push(title);
+    }
+    return data[1];
+  },
+  songArtist(title) {
+    let data = [];
+    if (title.includes(' | ')) {
+      data = title.split(' | ')
+    } else if (title.includes(' - ')) {
+      data = title.split(' - ')
+
+    } else {
+      data.push('Unknown');
+    }
+    return data[0];
   }
 });

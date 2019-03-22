@@ -1,4 +1,4 @@
-<div class="row chatRoot {{modeClass}} h-100">
+<div class="row chatRoot {{modeClass}} {{videoClass}} h-100">
   <div class="col-8 content h-100">
     {{#file-dropzone classNames='row holder h-100' name="chatPhotos" as |dropzone queue|}}
       {{#if dropzone.active}}
@@ -58,13 +58,14 @@
                                   playerState=(action 'playerStateAction')
                                   isLoading=playerLoading
                                   playerSeconds=playerSeconds
+                                  onVideoEnd=(action 'onVideoEnd')
                                   slidingProgress=slidingProgress}}{{/youtube-video-player}}
           <div class="overlay"></div>
           <div class="controlsOverlay">
             <div class="controlsHolder">
-              <img src="/assets/ic_icon_play_video.png" class="play">
-              <img src="/assets/ic_icon_pause_video.png" class="pause">
-              <img src="/assets/ic_video_close.png" class="close">
+              <img src="/assets/ic_icon_play_video.png" class="play-btn">
+              <img src="/assets/ic_icon_pause_video.png" class="pause-btn">
+              <img src="/assets/ic_video_close.png" class="close-btn">
               <span class="video-title"></span>
               <input type="range" min="1" max="100" value="50" class="slider">
             </div>
@@ -88,6 +89,37 @@
       {{#unless hasPlayer}}
         <div id="youtubePlaceHolder"></div>
       {{/unless}}
+      {{#if hasPlayer}}
+        <div class="youtube-music-holder">
+          <div class="music-player">
+            <div class="watchers {{watchersClass}}">
+              <div class="watchers-streamer">
+                {{#each watchers as |watcher index|}}
+                  {{#watcher-item model=watcher index=index streamer=true}}{{/watcher-item}}
+                {{/each}}
+              </div>
+              <div class="watchers-other">
+                {{#each watchers as |watcher index|}}
+                  {{#watcher-item model=watcher index=index streamer=false}}{{/watcher-item}}
+                {{/each}}
+              </div>
+            </div>
+            <div class="details">
+              <img class="thumbnail"/>
+              <div class="info">
+                <div class="song-name"></div>
+                <div class="song-artist"></div>
+              </div>
+            </div>
+            <div class="controls">
+              <img src="/assets/ic_music_play.png" class="play-btn">
+              <img src="/assets/ic_music_pause.png" class="pause-btn">
+              <img src="/assets/ic_music_close.png" class="close-btn">
+            </div>
+            <input type="range" min="1" max="100" value="50" class="slider">
+          </div>
+        </div>
+      {{/if}}
       <div class="messagesHolder">
         <div class="messagesWrappper">
           {{#each messages as |message|}}

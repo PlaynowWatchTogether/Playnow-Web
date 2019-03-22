@@ -293,17 +293,16 @@ export default Controller.extend({
       obj.set('messages', uiMessages);
       $('.messagesHolder').animate({scrollTop: $('.messagesHolder')[0].scrollHeight})
     });
-    $('#youtubeHolder').on('click', '.controlsOverlay .pause', () => {
+    let pauseAction = () => {
       run(function () {
-
         let vsh = obj.get('videoStateHandler');
         let ds = obj.get('dataSource');
         if (vsh.isMaster || vsh.syncMode === 'awaiting') {
           ds.updateWatchState('pause', window.globalPlayer.getCurrentTime());
         }
       });
-    });
-    $('#youtubeHolder').on('click', ' .controlsOverlay .play', () => {
+    };
+    let playAction = () => {
       run(function () {
 
         let vsh = obj.get('videoStateHandler');
@@ -312,41 +311,45 @@ export default Controller.extend({
           ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
         }
       });
-    });
-    $('#youtubeHolder').on('click', ' .controlsOverlay .close', () => {
+    };
+    let closeAction = () => {
       run(function () {
-        let vsh = obj.get('videoStateHandler');
-        obj.set('hasPlayer', false);
-        vsh.closeVideo();
-        let ds = obj.get('dataSource');
-        if (ds) {
-          obj.set('playerAction', 10);
-          ds.updateWatching('', 'closed');
-          // ds.stop()
-        }
+        obj.closeVideo()
       });
-    });
+    };
+    $('body').on('click', '.youtube-music-holder .controls .play-btn', playAction);
+    $('body').on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
+    $('body').on('click', '.youtube-music-holder .controls .close-btn', closeAction);
+    $('#youtubeHolder').on('click', '.controlsOverlay .pause', pauseAction);
+    $('#youtubeHolder').on('click', ' .controlsOverlay .play', playAction);
+    $('#youtubeHolder').on('click', ' .controlsOverlay .close', closeAction);
 
-    $('#youtubeHolder').on('change', '.controlsOverlay .slider', () => {
+    let slideChange = (event) => {
       run(function () {
         console.log('slider changed');
         let vsh = obj.get('videoStateHandler');
         let ds = obj.get('dataSource');
         if (vsh.isMaster || vsh.syncMode === 'awaiting') {
-          ds.updateWatchState('slide', parseFloat($('#youtubeHolder .controlsOverlay .slider').val()));
+          ds.updateWatchState('slide', parseFloat($(event.target).val()));
         }
         obj.set('slidingProgress', 0);
 
       });
-    })
-    $('#youtubeHolder').on('input', '.controlsOverlay .slider', () => {
+    };
+    let slideInput = () => {
       run(function () {
 
         obj.set('slidingProgress', new Date().getTime());
       });
-    })
+    };
+
+    $('body').on('change', '.youtube-music-holder  .slider', slideChange);
+    $('body').on('input', '.youtube-music-holder  .slider', slideInput);
+    $('#youtubeHolder').on('change', '.controlsOverlay .slider', slideChange);
+    $('#youtubeHolder').on('input', '.controlsOverlay .slider', slideInput);
   },
   reset() {
+    this.set('playerVideo', {});
     this.set('composeChips', []);
     this.set('chatModel', {});
     let ds = this.get('dataSource');
@@ -390,6 +393,18 @@ export default Controller.extend({
     //   });
     // }
   },
+  closeVideo() {
+    let vsh = this.get('videoStateHandler');
+    this.set('hasPlayer', false);
+    vsh.closeVideo();
+    this.set('playerVideo', {});
+    let ds = this.get('dataSource');
+    if (ds) {
+      this.set('playerAction', 10);
+      ds.updateWatching('', 'closed');
+      // ds.stop()
+    }
+  },
   modeClass: computed('model', function () {
     return this.get('model').type;
   }),
@@ -417,7 +432,15 @@ export default Controller.extend({
     }
   }),
   membersClass: computed('hasPlayer', function () {
-    return this.get('hasPlayer') ? '' : 'hidden';
+    return this.get('hasPlayer') ? 'hidden' : '';
+  }),
+  videoClass: computed('playerVideo', function () {
+    let video = this.get('playerVideo');
+    if (video && video.video) {
+      return video.video.videoType;
+    } else {
+      return '';
+    }
   }),
   typingIndicatorProfiles: computed('typingIndicator', 'members', function () {
     let members = this.get('members');
@@ -483,7 +506,9 @@ export default Controller.extend({
     this.set('messageText', '');
   },
   actions: {
-
+    onVideoEnd() {
+      this.closeVideo();
+    },
     playerStateAction(state) {
       run(() => {
         this.set('playerState', state);

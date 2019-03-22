@@ -529,6 +529,7 @@ body.home.chat.room {
         grid-template-columns: 60px auto 80px;
         margin-top: auto;
         margin-bottom: auto;
+
         .searchInput:focus {
           background: none;
           outline: none;
@@ -775,6 +776,7 @@ body.home.chat.room {
             filter: brightness(0) invert(1);
           }
         }
+
         .gear {
           position: relative;
           cursor: pointer;
@@ -1081,6 +1083,7 @@ body.home.chat.room {
             position: relative;
 
           }
+
           .groupIconHolder {
             border-radius: 50%;
             overflow: hidden;
@@ -1190,6 +1193,7 @@ body.home.chat.room {
 
         .group-item.unread {
           font-weight: 900;
+
           .unread-icon {
             width: 33px;
             display: block;
@@ -1280,6 +1284,105 @@ CHAT
         width: 100%;
         height: 360px;
         display: none;
+      }
+
+      .youtube-music-holder {
+        display: none;
+        position: relative;
+        z-index: 20;
+
+        .slider {
+          position: absolute;
+          bottom: 0;
+          grid-column-start: 1;
+          grid-column-end: 6;
+          -webkit-appearance: none;
+          appearance: none;
+          width: 100%;
+          height: 4px;
+          background: #C330FC;
+          outline: none;
+          margin-top: auto;
+        }
+
+        .slider::-webkit-slider-thumb {
+          -webkit-appearance: none; /* Override default look */
+          appearance: none;
+          border-radius: 50%;
+          width: 15px; /* Set a specific slider handle width */
+          height: 15px; /* Slider handle height */
+          background: #C330FC; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+        }
+
+        .slider::-moz-range-thumb {
+          border-radius: 50%;
+          width: 15px; /* Set a specific slider handle width */
+          height: 15px; /* Slider handle height */
+          background: #C330FC; /* Green background */
+          cursor: pointer; /* Cursor on hover */
+        }
+
+        .music-player {
+          background: #a47df330;
+          padding-top: 5px;
+          box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.16);
+          padding-bottom: 5px;
+          display: grid;
+          grid-template-columns: auto 50% 150px;
+
+          .watchers {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: 20px;
+
+            .profilePicWrapper {
+              width: 30px;
+              height: 30px;
+            }
+          }
+
+          .details {
+            display: flex;
+
+            .thumbnail {
+              height: 50px;
+              border-radius: 10px;
+            }
+
+            .info {
+              overflow-wrap: inherit;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              margin-left: 10px;
+
+              .song-artist {
+                overflow-wrap: inherit;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 80%;
+              }
+
+              .song-name {
+                overflow-wrap: inherit;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
+            }
+          }
+
+          .controls {
+            margin: auto 20px auto auto;
+
+            img {
+              width: 30px;
+              cursor: pointer;
+            }
+          }
+        }
       }
 
       #youtubeHolder {
@@ -1435,6 +1538,7 @@ CHAT
       #youtubeHolder.active {
         overflow: hidden;
       }
+
       .back {
         text-align: center;
         margin: auto;
@@ -1455,6 +1559,7 @@ CHAT
           height: 30px;
         }
       }
+
       .titleHolder {
         flex: 0 0 auto;
         height: 50px;
@@ -1663,6 +1768,7 @@ CHAT
               }
             }
           }
+
           .message-video-request {
             background: white;
             padding: 10px;
@@ -1979,6 +2085,12 @@ CHAT
         grid-row-gap: 10px;
       }
     }
+  }
+}
+
+.chatRoot.youtubeMusic {
+  #youtubeHolder {
+    display: none !important;
   }
 }
 
@@ -2556,5 +2668,5 @@ CHAT
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }

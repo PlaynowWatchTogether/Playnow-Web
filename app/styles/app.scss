@@ -742,12 +742,19 @@ body.home.chat.room {
                   }
                 }
 
+                .add:hover {
+                  background: #b939ff;
+                }
                 .cancel {
                   margin: auto;
                   background: #C4C4C4;
                   border-radius: 20px;
                   padding: 5px 20px;
                   color: white;
+                }
+
+                .cancel:hover {
+                  background: #919191;
                 }
               }
             }
@@ -757,6 +764,19 @@ body.home.chat.room {
         .followers, .gear {
           .dropdown-toggle {
             padding: 3px;
+            position: relative;
+          }
+        }
+
+        .followers {
+          .new-requests {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            right: 11px;
+            background: red;
+            top: 2px;
           }
         }
 

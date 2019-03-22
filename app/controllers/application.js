@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import moment from "moment";
 import {computed} from "@ember/object";
+import {set} from "@ember/object";
 import Ember from "ember";
 
 export default Controller.extend({
@@ -67,7 +68,9 @@ export default Controller.extend({
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
   },
-
+  hasNewRequests: computed('followers.@each', function () {
+    return (this.get('followers') || []).length > 0;
+  }),
   actions: {
     onBirthdayDateSet(bd) {
       this.set('form.birthDay', bd);
@@ -98,7 +101,7 @@ export default Controller.extend({
         ref.putString(url, 'data_url').then((snapshot) => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             let form = this.get('form');
-            Ember.set(form, 'ProfilePic', downloadURL);
+            set(form, 'ProfilePic', downloadURL);
             this.set('form', form);
             this.get('db').updateProfilePic(downloadURL);
             console.log('File available at', downloadURL);

@@ -25,6 +25,9 @@
                  aria-expanded="false" data-display="static">
               <img class="friend-requests" src="/assets/ic_friends_add@2x.png"/>
               <img class="chevron" src="/assets/ic_chevron_settings@2x.png"/>
+              {{#if hasNewRequests}}
+                <div class="new-requests"></div>
+              {{/if}}
             </div>
             <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
               <div class="followers-content">

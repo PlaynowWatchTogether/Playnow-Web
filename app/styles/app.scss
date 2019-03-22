@@ -463,7 +463,7 @@ $search-padding: 3px;
   }
 }
 
-body.home.index {
+body.home.index, body.home.create {
   .mainPage {
     .row-friends {
       background: white;
@@ -479,7 +479,7 @@ body.home.index {
 }
 
 
-body.home.chat {
+body.home.chat, body.home.create {
   .mainPage {
     .row-friends {
       background: white;
@@ -2116,6 +2116,127 @@ CHAT
   }
 }
 
+//Create public room
+.create-public-room {
+  background: white;
+  height: 100%;
+  margin-left: 0;
+  box-shadow: $input-shadow;
+  border-radius: 20px 0 0 0;
+
+  .content {
+    display: grid;
+    grid-template-rows: 50px min-content auto;
+    width: 100%;
+
+    .roomsHolder {
+      .public-room-scroll {
+        width: 100%;
+
+        .youtube-items {
+          overflow: scroll;
+          width: 100%;
+          display: grid;
+          grid-template-columns: 20% 20% 20% 20% 20%;
+          grid-row-gap: 10px;
+          padding-top: 10px;
+          padding-left: 20px;
+          padding-right: 20px;
+
+          .youtube-item {
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+
+            img {
+              width: 100%;
+              border-radius: 10px;
+            }
+          }
+
+          .youtube-item:hover {
+            background: rgba(202, 201, 201, 0.59);
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+
+    .title-holder {
+      border-bottom: 1px solid #E6E6E6;
+      height: $header-height;
+      display: grid;
+      grid-template-columns: auto min-content;
+      padding-right: 20px;
+
+      .back {
+        text-align: center;
+        margin: auto;
+      }
+
+      .title {
+        height: 100%;
+        font-size: 130%;
+        color: #88B3F9;
+        margin-left: 20px;
+        display: grid;
+        grid-template-columns: auto;
+
+        span {
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+      }
+    }
+
+    .search-holder {
+
+      .search-wrapper {
+        border-radius: 20px;
+        background: #F0F0F0;
+        border-width: 0;
+        display: grid;
+        margin-top: 3px;
+        padding-top: $search-padding;
+        padding-bottom: $search-padding;
+        margin-left: 20px;
+        margin-right: 20px;
+        grid-template-columns: 60px auto 80px;
+
+        .searchInput:focus {
+          background: none;
+          outline: none;
+        }
+
+        .searchInput {
+          font-size: 100%;
+          height: auto;
+          background: none;
+          border: none;
+          display: block;
+          width: 100%;
+          padding-right: 20px;
+        }
+
+        .icon {
+          width: $search-icon-size;
+          height: $search-icon-size;
+          margin: auto;
+          left: 37px;
+          top: 32px;
+        }
+
+      }
+    }
+
+    .roomsHolder {
+      padding-left: 20px;
+      padding-right: 20px;
+      overflow: scroll;
+    }
+  }
+}
+
 .publicRooms {
   background: white;
   height: 100%;
@@ -2130,6 +2251,40 @@ CHAT
     .title-holder {
       border-bottom: 1px solid #E6E6E6;
       height: $header-height;
+      display: grid;
+      grid-template-columns: auto min-content;
+      padding-right: 20px;
+
+      .create {
+        display: grid;
+        grid-template-columns: max-content auto max-content;
+        margin: auto;
+        width: 100%;
+
+        .button {
+          background: #88B3F9;
+          display: grid;
+          grid-template-columns: min-content auto;
+          border-radius: 20px;
+          width: max-content;
+          padding: 6px;
+          cursor: pointer;
+          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);
+
+          img {
+            width: 20px;
+            height: 20px;
+            margin: auto;
+          }
+
+          div {
+            font-size: 80%;
+            color: white;
+            /* margin: auto; */
+            margin-left: 10px;
+          }
+        }
+      }
 
       .title {
         height: 100%;
@@ -2264,6 +2419,7 @@ CHAT
     padding-left: 20px;
     color: #525252;
   }
+
   .searchResult.rooms {
     padding-left: 20px;
     padding-right: 50px;
@@ -2311,6 +2467,7 @@ CHAT
       padding-left: 20px;
       padding-right: 20px;
     }
+
     .search-user {
       background: #F0F0F0;
       border-radius: 10px;
@@ -2533,7 +2690,7 @@ CHAT
 
 .hoveredBtn:hover {
   //box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.16) !important;
-  background: #28a4ff;
+  background: #28a4ff !important;
 }
 
 .trigger-search:hover {

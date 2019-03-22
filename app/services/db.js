@@ -253,5 +253,22 @@ export default Service.extend({
     }).catch(function (err) {
       console.log(err);
     });
+  },
+  createPublicRoom(video) {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref("channels/channels/" + this.myId());
+      this.profile(this.myId()).then((profile) => {
+        let updates = {};
+        let username = profile['Email'].split('@').firstObject;
+        updates['creatorName'] = username || '';
+        updates['creatorAvatar'] = profile.ProfilePic || '';
+        ref.update(updates).then(() => {
+          resolve(video);
+        }).catch((error) => {
+          reject(error);
+        })
+
+      })
+    })
   }
 });

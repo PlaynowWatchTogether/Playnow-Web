@@ -84,6 +84,14 @@ export default EmberObject.extend({
     this.listeners[ref] = valueListener;
     this.videoWatchersRef.on('value', valueListener)
   },
+  removeWatching() {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoWatching/" + this.myId;
+    this.db.ref(ref).remove().then(() => {
+
+    });
+  },
   updateWatching(videoId, state) {
     let convId = this.convId();
     let path = this.messageRoot();

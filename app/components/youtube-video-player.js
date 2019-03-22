@@ -200,6 +200,8 @@ export default Component.extend({
   },
   videoObserver(obj) {
     let v = obj.get('video');
+    if (!v.video)
+      return;
     let player = obj.get('player');
     window.playerObj.isPlaying = false;
     obj.playerSubj.subscribe({

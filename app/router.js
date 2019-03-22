@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('home', function () {
     this.route('friends');
     this.route('chat', {path: '/chat/:chat_id/:type'});
+    this.route('create');
   });
   this.route('search', {path: '/search/:query'});
   this.route('settings');

@@ -4,6 +4,12 @@
       <div class="title">
         <span class="noselect">Public rooms</span>
       </div>
+      {{#link-to 'home.create' classNames='create' tagName='div'}}
+        <div class="button hoveredBtn">
+          <img src="/assets/ic_plus@2x.png"/>
+          <div>Create Public Room</div>
+        </div>
+      {{/link-to}}
     </div>
     <div class="search-holder">
       <div class="search-wrapper">

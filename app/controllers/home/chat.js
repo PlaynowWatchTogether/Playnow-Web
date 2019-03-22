@@ -11,6 +11,8 @@ export default Controller.extend({
   youtubeSearch: service(),
   db: service(),
   gcmManager: service(),
+  queryParams: ['id'],
+  id: null,
   init() {
     this._super(...arguments);
     this.chatModel = {};
@@ -226,7 +228,6 @@ export default Controller.extend({
     } else {
       obj.set('chatModel', {});
     }
-
   },
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');
@@ -347,6 +348,12 @@ export default Controller.extend({
     $('body').on('input', '.youtube-music-holder  .slider', slideInput);
     $('#youtubeHolder').on('change', '.controlsOverlay .slider', slideChange);
     $('#youtubeHolder').on('input', '.controlsOverlay .slider', slideInput);
+    if (obj.get('id')) {
+      obj.get('youtubeSearch').video(obj.get('id')).then((video) => {
+        obj.shareVideo(video);
+      });
+      console.log('got video in path ' + obj.get('id'));
+    }
   },
   reset() {
     this.set('playerVideo', {});
@@ -355,7 +362,7 @@ export default Controller.extend({
     let ds = this.get('dataSource');
     if (ds) {
       this.set('playerAction', 10);
-      ds.updateWatching('', 'closed');
+      ds.removeWatching();
       ds.stop()
     }
     this.set('hasPlayer', false);
@@ -505,6 +512,11 @@ export default Controller.extend({
     ds.sendMessage(this.get('messageText'));
     this.set('messageText', '');
   },
+  shareVideo(video) {
+    this.set('playerModel', video);
+    let ds = this.get('dataSource');
+    ds.sendVideo(video)
+  },
   actions: {
     onVideoEnd() {
       this.closeVideo();
@@ -573,9 +585,7 @@ export default Controller.extend({
         }
         return;
       }
-      this.set('playerModel', video);
-      let ds = this.get('dataSource');
-      ds.sendVideo(video)
+      this.shareVideo(video);
     },
     musicPick(video) {
       if (this.get('isCompose')) {

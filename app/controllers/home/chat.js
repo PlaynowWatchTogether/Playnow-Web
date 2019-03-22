@@ -321,8 +321,8 @@ export default Controller.extend({
     $('body').on('click', '.youtube-music-holder .controls .play-btn', playAction);
     $('body').on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
     $('body').on('click', '.youtube-music-holder .controls .close-btn', closeAction);
-    $('#youtubeHolder').on('click', '.controlsOverlay .pause', pauseAction);
-    $('#youtubeHolder').on('click', ' .controlsOverlay .play', playAction);
+    $('#youtubeHolder').on('click', '.controlsOverlay .control .pause', pauseAction);
+    $('#youtubeHolder').on('click', ' .controlsOverlay .control .play', playAction);
     $('#youtubeHolder').on('click', ' .controlsOverlay .close', closeAction);
 
     let slideChange = (event) => {
@@ -355,6 +355,13 @@ export default Controller.extend({
       console.log('got video in path ' + obj.get('id'));
     }
   },
+  isMaster: computed('dataSource', function () {
+    let ds = this.get('dataSource');
+    if (ds) {
+      return ds.convId() === this.firebaseApp.auth().currentUser.uid;
+    } else
+      return false;
+  }),
   reset() {
     this.set('playerVideo', {});
     this.set('composeChips', []);
@@ -513,9 +520,20 @@ export default Controller.extend({
     this.set('messageText', '');
   },
   shareVideo(video) {
-    this.set('playerModel', video);
     let ds = this.get('dataSource');
-    ds.sendVideo(video)
+    if (this.get('isMaster')) {
+      this.set('playerModel', video);
+      ds.sendVideo(video)
+    } else {
+      ds.sendMessage('', '', {
+        id: video['id'],
+        title: video['snippet']['title'],
+        channelTitle: video['snippet']['channelTitle'],
+        imageURL: video['snippet']['thumbnails']['medium']['url'],
+        isMusic: video['categoryId'] === '10',
+        videoType: video['categoryId'] === '10' ? 'youtubeMusic' : 'youtubeVideo'
+      })
+    }
   },
   actions: {
     onVideoEnd() {
@@ -646,6 +664,13 @@ export default Controller.extend({
       let m = this.get('messageText');
       let output = [m.slice(0, index), text, m.slice(index)].join('');
       this.set("messageText", output);
+    },
+    onMessageClick(message) {
+      if (this.get('isMaster')) {
+        this.get('youtubeSearch').video(message['video']['id']).then((video) => {
+          this.shareVideo(video);
+        });
+      }
     }
   }
 });

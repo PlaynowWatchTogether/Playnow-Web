@@ -141,22 +141,22 @@ export default Service.extend({
       console.log('Request cancel failed ' + error);
     });
   },
-  rooms() {
-    return new Promise((resolve, reject) => {
-      let ref = this.firebaseApp.database().ref("channels/channels");
-      ref.on('value', (data) => {
-        let records = [];
-        data.forEach((item) => {
-          let payload = item.val();
-          var normalizedData = this.store.normalize('room', payload);
-          normalizedData.data.id = item.key;
-          records.push(this.store.push(normalizedData))
-        });
-        resolve(records);
-      }, (error) => {
-        reject(error);
-      })
-    });
+  rooms(updateCallback) {
+
+    let ref = this.firebaseApp.database().ref("channels/channels");
+    ref.on('value', (data) => {
+      let records = [];
+      data.forEach((item) => {
+        let payload = item.val();
+        payload.id = item.key;
+        records.push(payload);
+
+      });
+      updateCallback(records);
+    }, (error) => {
+
+    })
+
   },
   tokens(user) {
     return new Promise((resolve, reject) => {

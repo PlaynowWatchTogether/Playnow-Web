@@ -6,6 +6,7 @@ export default Component.extend({
   classNameBindings: ['mine'],
   store: Ember.inject.service(),
   auth: Ember.inject.service(),
+
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
   }),
@@ -33,6 +34,9 @@ export default Component.extend({
   requestChannel: computed('model', function () {
     let model = this.get('model');
     return model['video']['title'];
+  }),
+  videoRequestClass: computed('canClick', function () {
+    return this.get('canClick') ? 'clickable' : '';
   }),
   bodyMessage: computed('model', function () {
     let model = this.get('model');
@@ -66,6 +70,11 @@ export default Component.extend({
     }
     return null;
   }),
+  click() {
+    if (this.get('canClick')) {
+      this.get('onClick')(this.model);
+    }
+  },
   actions: {
     clickOnPhoto() {
       this.get('onPhotoSelect')(this.get('model.thumbnail'));

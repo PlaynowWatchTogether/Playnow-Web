@@ -1421,20 +1421,24 @@ CHAT
           position: absolute;
         }
 
-        .play {
-          display: none;
-          width: 80px;
-          height: 80px;
-          margin: auto;
+        .control {
           grid-column-start: 3;
-        }
+          display: flex;
 
-        .pause {
-          display: none;
-          width: 80px;
-          height: 80px;
-          margin: auto;
-          grid-column-start: 3;
+          .play {
+            display: none;
+            width: 80px;
+            height: 80px;
+            margin: auto;
+
+          }
+
+          .pause {
+            display: none;
+            width: 80px;
+            height: 80px;
+            margin: auto;
+          }
         }
 
         .close {
@@ -1807,6 +1811,14 @@ CHAT
               border-radius: 20px;
               width: 200px;
             }
+          }
+        }
+
+        .message-video-request.clickable {
+          cursor: pointer;
+
+          .channel {
+            color: #4573EF;
           }
         }
 
@@ -2245,6 +2257,7 @@ CHAT
   border-radius: 20px 0 0 0;
 
   .content {
+    width: 100%;
     display: grid;
     grid-template-rows: 50px min-content auto;
 

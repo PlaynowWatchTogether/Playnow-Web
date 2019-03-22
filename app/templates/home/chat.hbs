@@ -63,8 +63,10 @@
           <div class="overlay"></div>
           <div class="controlsOverlay">
             <div class="controlsHolder">
-              <img src="/assets/ic_icon_play_video.png" class="play">
-              <img src="/assets/ic_icon_pause_video.png" class="pause">
+              <div class="control">
+                <img src="/assets/ic_icon_play_video.png" class="play">
+                <img src="/assets/ic_icon_pause_video.png" class="pause">
+              </div>
               <img src="/assets/ic_video_close.png" class="close">
               <span class="video-title"></span>
               <input type="range" min="1" max="100" value="50" class="slider">
@@ -125,6 +127,8 @@
           {{#each messages as |message|}}
             {{#if message.isMessage}}
               {{#chat-message-item model=message.message classNames='messageHolder'
+                                   canClick=isMaster
+                                   onClick=(action 'onMessageClick')
                                    displaySender=message.displaySender lastSeen=lastSeenMessage myID=myID
                                    members=members onPhotoSelect=(action 'onPhotoSelect')}}{{/chat-message-item}}
             {{/if}}

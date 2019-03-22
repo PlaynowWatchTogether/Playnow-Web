@@ -283,7 +283,7 @@ export default EmberObject.extend({
 
     }
   },
-  sendMessage(text, thumbnail) {
+  sendMessage(text, thumbnail, video = null) {
     let senderId = this.myId;
     let path = this.messageRoot();
     let convId = this.convId();
@@ -299,6 +299,11 @@ export default EmberObject.extend({
       message['thumbnail'] = thumbnail;
     } else {
       message['type'] = 'text';
+    }
+    if (video) {
+      message['type'] = 'VideoRequest';
+      message['video'] = video;
+      message['isMusic'] = video.isMusic;
     }
     message['userId'] = senderId;
     message['message'] = 'web';

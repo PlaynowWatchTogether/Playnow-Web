@@ -15,7 +15,7 @@ export default Controller.extend({
     arg.store.query('user', {orderBy: 'Email', startAt: arg.get('model.query'), limitToFirst: 10}).then((res) => {
       arg.set('search.users', res);
     })
-    arg.db.rooms().then((res) => {
+    arg.db.roomsOnce().then((res) => {
       arg.set('search.rooms', res.filter((elem) => {
         return elem['videoName'].toLowerCase().includes(arg.get('model.query').toLowerCase())
       }));

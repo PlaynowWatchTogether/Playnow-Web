@@ -20,17 +20,21 @@
         </div>
       </div>
       <div class="col-6 search rooms h-100">
-        <div class="content h-100">
+        <div class="content row h-100">
           <div class="header">
             <span class="noselect">Rooms</span>
           </div>
-          <div class="searchResult rooms row">
-            {{#each search.rooms as |room|}}
-              {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link col-6'}}
-                {{#home-room-item model=room classNames='search-room'
-                                  sent=sentRequests}}{{/home-room-item}}
-              {{/link-to}}
-            {{/each}}
+          <div class="searchResult rooms col-12">
+            <div class="row">
+              {{#each search.rooms as |room|}}
+                <div class="col-6">
+                  {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link'}}
+                    {{#home-room-item model=room classNames='search-room'
+                                      sent=sentRequests}}{{/home-room-item}}
+                  {{/link-to}}
+                </div>
+              {{/each}}
+            </div>
           </div>
         </div>
       </div>

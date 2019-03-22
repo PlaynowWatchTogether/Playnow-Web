@@ -44,6 +44,7 @@ $friends-list-hover-color: #dadada5e;
 $header-height: 45px;
 $search-icon-size: 16px;
 $search-padding: 3px;
+$hover-background: #dadada5e;
 .background_gradient {
   background-image: $primary-gradient
 }
@@ -2403,7 +2404,7 @@ CHAT
       }
 
       .room:hover {
-        background: #dadada5e;
+        background: $hover-background;
         border-radius: 10px;
       }
     }
@@ -2456,7 +2457,7 @@ CHAT
 
     .search-room {
       margin-top: 20px;
-
+      padding: 10px;
       .thumbnail {
         width: 100%;
         border-radius: 20px;
@@ -2476,6 +2477,11 @@ CHAT
         font-size: 17px;
         font-weight: 900;
       }
+    }
+
+    .search-room:hover {
+      background: $hover-background;
+      border-radius: 10px;
     }
   }
 
@@ -2543,6 +2549,10 @@ CHAT
 
       .added {
         background: #5AB9FF;
+      }
+
+      .add:hover {
+        background: #b939ff;
       }
     }
   }

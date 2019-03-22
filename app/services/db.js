@@ -141,6 +141,22 @@ export default Service.extend({
       console.log('Request cancel failed ' + error);
     });
   },
+  roomsOnce() {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref("channels/channels");
+      ref.once('value', (data) => {
+        let records = [];
+        data.forEach((item) => {
+          let payload = item.val();
+          payload.id = item.key;
+          records.push(payload);
+        });
+        resolve(records);
+      }, (error) => {
+        reject(error);
+      })
+    });
+  },
   rooms(updateCallback) {
 
     let ref = this.firebaseApp.database().ref("channels/channels");

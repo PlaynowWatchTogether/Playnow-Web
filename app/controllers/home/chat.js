@@ -10,6 +10,7 @@ export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
   db: service(),
+  ntp: service(),
   gcmManager: service(),
   queryParams: ['id'],
   id: null,
@@ -19,6 +20,7 @@ export default Controller.extend({
     this.messageText = '';
     this.composeChips = [];
     this.videoStateHandler = VideoStateHandler.create({
+      ntp: this.get('ntp'),
       delegate: {
         loadVideo: (video, seconds) => {
           this.set('hasPlayer', true);
@@ -357,8 +359,9 @@ export default Controller.extend({
   },
   isMaster: computed('dataSource', function () {
     let ds = this.get('dataSource');
+    let type = this.get('model').type;
     if (ds) {
-      return ds.convId() === this.firebaseApp.auth().currentUser.uid;
+      return ds.convId() === this.firebaseApp.auth().currentUser.uid || type !== 'room';
     } else
       return false;
   }),

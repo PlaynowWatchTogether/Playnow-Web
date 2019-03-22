@@ -82,7 +82,7 @@ export default EmberObject.extend({
         });
         if (lastWatcher && lastWatcher['userId'] === this.myId) {
           let delay = 2 * 1000;
-          this.delegate.updateState('sync', seconds, new Date().getTime() + delay);
+          this.delegate.updateState('sync', seconds, this.get('ntp').estimatedServerTimeMs() + delay);
         }
       }
     }
@@ -94,20 +94,30 @@ export default EmberObject.extend({
     }
     if (nextState === 'loading') {
       let seconds = newState['seconds'] ? newState['seconds'] : 0.0;
+      console.log('VideoSync: got seconds: ' + seconds);
       let shouldSlide = this.syncMode === 'sliding' && !this.isMaster;
       if (shouldSlide) {
-        let syncAt = newState['syncAt'];
-        let timePassed = new Date().getTime() - syncAt * 1000;
-        seconds += timePassed / 1000 + 5.0;
-        let startTime = 2000 + 40;
+        let syncAt = newState['syncAt'] || 0.0;
+        console.log('VideoSync: got syncAt: ' + syncAt);
+        let timePassed = this.get('ntp').estimatedServerTimeMs() - syncAt * 1000;
+        console.log('VideoSync: timePassed: ' + timePassed);
+
+        let addSeconds = timePassed / 1000 + 5.0;
+        console.log('VideoSync: addSeconds: ' + addSeconds);
+        seconds += addSeconds;
+        let startTime = 5000 + this.get('ntp.offset');
+        console.log('VideoSync: startTime: ' + startTime);
         this.play(startTime)
       }
       this.loadVideo(newState, seconds);
     } else if (nextState === 'syncing') {
       if (this.syncMode === 'awaiting') {
         let syncAt = newState['syncAt'] * 1000;
-        let time = new Date().getTime();
+        console.log('VideoSync: got syncAt = ' + syncAt);
+        let time = this.get('ntp').estimatedServerTimeMs();
+        console.log('VideoSync: currentTime = ' + time);
         let startTime = (syncAt - time);
+        console.log('VideoSync: startTime = ' + startTime);
         this.play(startTime)
       }
     } else if (nextState === 'requestingSync') {
@@ -128,9 +138,9 @@ export default EmberObject.extend({
     this.delegate.updateWatching(this.lastState['videoId'] ? this.lastState['videoId'] : '', this.state);
   },
   play(seconds) {
-    console.log('schedule play after ' + seconds);
+    console.log('VideoSync: schedule play after ' + seconds);
     setTimeout(() => {
-      console.log('scheduled play after ' + seconds + ' with state ' + this.state);
+      console.log('VideoSync: scheduled play after ' + seconds + ' with state ' + this.state);
       if (this.state === 'loading') {
         this.handleNextState('loading', this.lastState);
       } else {

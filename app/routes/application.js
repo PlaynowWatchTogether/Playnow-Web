@@ -5,8 +5,10 @@ export default Route.extend({
   db: service(),
   firebaseApp: service(),
   firebaseMessage: service(),
+  ntp: service(),
   activate() {
     this._super(...arguments);
+    this.get('ntp');
   },
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {

@@ -153,7 +153,30 @@ export default Component.extend({
 
     return 0;
   },
-
+  getCaretPosition() {
+    var caretPos = 0,
+      sel, range;
+    if (window.getSelection) {
+      sel = window.getSelection();
+      if (sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        if (range.commonAncestorContainer.parentNode === this.element) {
+          caretPos = range.endOffset;
+        }
+      }
+    } else if (document.selection && document.selection.createRange) {
+      range = document.selection.createRange();
+      if (range.parentElement() === this.element) {
+        var tempEl = document.createElement("span");
+        this.element.insertBefore(tempEl, this.element.firstChild);
+        var tempRange = range.duplicate();
+        tempRange.moveToElementText(tempEl);
+        tempRange.setEndPoint("EndToEnd", range);
+        caretPos = tempRange.text.length;
+      }
+    }
+    return caretPos;
+  },
   pasteHandler(event) {
     event.preventDefault(); // replace any html formatted text with its plain text equivalent
 
@@ -177,7 +200,7 @@ export default Component.extend({
       }
     }
 
-    this.get('paste')(text);
+    this.get('paste')(this.getCaretPosition(), text);
   },
 
   enter() {

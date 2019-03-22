@@ -631,6 +631,11 @@ export default Controller.extend({
     onPhotoSelect(photo) {
       this.set('selectedPhoto', photo);
       $('#photoPreviewModal').modal('toggle');
+    },
+    onTextPaste(index, text) {
+      let m = this.get('messageText');
+      let output = [m.slice(0, index), text, m.slice(index)].join('');
+      this.set("messageText", output);
     }
   }
 });

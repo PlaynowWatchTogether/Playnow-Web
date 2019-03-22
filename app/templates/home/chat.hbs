@@ -147,7 +147,7 @@
       </div>
       <div class="newMessageHolder">
         {{custom-content-editable value=messageText placeholder="Type a message" classNames="messageContent"
-                                  enter=(action 'onMessageEnterPress') allowNewlines=true}}
+                                  enter=(action 'onMessageEnterPress') paste=(action 'onTextPaste') allowNewlines=true}}
         <div class="imgHolder">
           <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
         </div>

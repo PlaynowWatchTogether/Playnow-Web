@@ -67,9 +67,20 @@ export default Component.extend({
       this.controlHideSubject.next(1);
     });
 
+    $(window).on('resize', function () {
+      $('#youtubeHolder').height($('#youtubeHolder').width() * 0.6);
+      $('#youtubeHolder .overlay').height($('#youtubeHolder').width() * 0.6);
+      $('#youtubeHolder .controlsOverlay').height($('#youtubeHolder').width() * 0.6);
+      $('#youtubeHolder #ytplayer').height($('#youtubeHolder').width() * 0.6);
+      $('#youtubeHolder .watchers-holder').height($('#youtubeHolder').width() * 0.6);
+    });
+    $('#youtubeHolder').height($('#youtubeHolder').width() * 0.6);
+    $('#youtubeHolder .overlay').height($('#youtubeHolder').width() * 0.6);
+    $('#youtubeHolder .controlsOverlay').height($('#youtubeHolder').width() * 0.6);
+    $('#youtubeHolder .watchers-holder').height($('#youtubeHolder').width() * 0.6);
     console.log('Create yt player width ' + $('#youtubeHolder').width());
     window.globalPlayer = new YT.Player('ytplayer', {
-      height: '360',
+      height: $('#youtubeHolder').width() * 0.6,
       width: $('#youtubeHolder').width(),
       playerVars: {
         controls: 0,

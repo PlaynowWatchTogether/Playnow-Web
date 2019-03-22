@@ -41,6 +41,9 @@ body > .ember-view {
 $primary-gradient: linear-gradient(to bottom right, #87B7FA, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 $friends-list-hover-color: #dadada5e;
+$header-height: 45px;
+$search-icon-size: 16px;
+$search-padding: 3px;
 .background_gradient {
   background-image: $primary-gradient
 }
@@ -471,7 +474,7 @@ body.home.index {
   }
 
   .col-child-content {
-    padding-left: 25px;
+    //padding-left: 25px;
   }
 }
 
@@ -506,10 +509,11 @@ body.home.chat.room {
 
     .content {
       display: grid;
-      grid-template-columns: 200px min-content 600px auto auto auto;
+      grid-template-columns: min-content 600px auto auto min-content;
       padding-top: 5px;
       padding-bottom: 5px;
       width: 100%;
+      justify-items: end;
 
       .play-icon {
         margin-top: auto;
@@ -517,10 +521,10 @@ body.home.chat.room {
         width: 30px;
         height: 30px;
         margin-right: 10px;
-        grid-column-start: 2;
       }
 
       .search {
+        width: 100%;
         height: 30px;
         border-radius: 20px;
         background: white;
@@ -572,7 +576,6 @@ body.home.chat.room {
         border-radius: 20px;
         width: fit-content;
         text-align: center;
-        grid-column-start: 5;
         padding: 5px 10px 5px 20px;
         display: grid;
         grid-template-columns: min-content auto;
@@ -869,8 +872,8 @@ body.home.chat.room {
     padding: 10px 20px;
 
     .content {
-      padding-top: 10px;
-      padding-bottom: 10px;
+      padding-top: $search-padding;
+      padding-bottom: $search-padding;
       display: grid;
       grid-template-columns: 60px auto;
       border-radius: 20px;
@@ -894,8 +897,8 @@ body.home.chat.room {
   }
 
   .searchIcon {
-    width: 22px;
-    height: 22px;
+    width: $search-icon-size;
+    height: $search-icon-size;
     margin: auto;
   }
 
@@ -1210,10 +1213,11 @@ body.home.chat.room {
   }
 
   .friendsOutlet {
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
     display: grid;
     overflow: hidden;
-    grid-template-rows: 50px auto;
+    grid-template-rows: $header-height auto;
   }
 }
 
@@ -1560,7 +1564,7 @@ CHAT
 
       .titleHolder {
         flex: 0 0 auto;
-        height: 50px;
+        height: $header-height;
         display: grid;
         grid-template-columns: auto 50px;
         border-bottom: 1px solid #E6E6E6;
@@ -1890,7 +1894,7 @@ CHAT
 
    */
   .media {
-
+    padding-right: 0;
 
     .holder {
       flex-direction: column;
@@ -1903,7 +1907,7 @@ CHAT
       .title {
         width: 100%;
         flex: 0 0 auto;
-        height: 50px;
+        height: $header-height;
         display: grid;
         grid-template-columns: auto;
         border-bottom: 1px solid #E6E6E6;
@@ -1937,8 +1941,8 @@ CHAT
           .searchInput {
             font-size: 100%;
             height: auto;
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding-top: $search-padding;
+            padding-bottom: $search-padding;
 
             background: none;
             border: none;
@@ -1951,8 +1955,8 @@ CHAT
             margin: auto;
             left: 37px;
             top: 32px;
-            width: 22px;
-            height: 22px;
+            width: $search-icon-size;
+            height: $search-icon-size;
           }
 
           .trigger-search {
@@ -2115,6 +2119,7 @@ CHAT
 .publicRooms {
   background: white;
   height: 100%;
+  margin-left: 0;
   box-shadow: $input-shadow;
   border-radius: 20px 0 0 0;
 
@@ -2124,7 +2129,7 @@ CHAT
 
     .title-holder {
       border-bottom: 1px solid #E6E6E6;
-      height: 50px;
+      height: $header-height;
 
       .title {
         height: 100%;
@@ -2148,9 +2153,9 @@ CHAT
         background: #F0F0F0;
         border-width: 0;
         display: grid;
-        margin-top: 10px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        margin-top: 3px;
+        padding-top: $search-padding;
+        padding-bottom: $search-padding;
         margin-left: 20px;
         margin-right: 20px;
         grid-template-columns: 60px auto 80px;
@@ -2171,8 +2176,8 @@ CHAT
         }
 
         .icon {
-          width: 22px;
-          height: 22px;
+          width: $search-icon-size;
+          height: $search-icon-size;
           margin: auto;
           left: 37px;
           top: 32px;
@@ -2246,12 +2251,19 @@ CHAT
     display: grid;
 
     span {
+      font-weight: 800;
       margin-left: 20px;
       margin-top: auto;
       margin-bottom: auto;
     }
   }
 
+  .searching-label {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    color: #525252;
+  }
   .searchResult.rooms {
     padding-left: 20px;
     padding-right: 50px;
@@ -2295,11 +2307,16 @@ CHAT
   .searchResult.users {
     overflow: scroll;
 
-    .search-user {
-      display: grid;
-      grid-template-columns: min-content auto min-content;
+    .search-user-holder {
       padding-left: 20px;
       padding-right: 20px;
+    }
+    .search-user {
+      background: #F0F0F0;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: min-content auto min-content;
+      padding: 10px 20px;
       margin-top: 10px;
       margin-bottom: 10px;
 

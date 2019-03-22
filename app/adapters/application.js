@@ -25,7 +25,12 @@ export default FirestoreAdapter.extend({
   _getCollectionRef(typeClass, id) {
     if (typeClass.modelName === 'friends') {
       let user = this.firebaseApp.auth().currentUser;
-      return this._ref.child('Users/' + user.uid + "/Friends")
+      return this._ref.child('Users/' + user.uid + "/Friends/" + id)
+    }
+    if (typeClass.modelName === 'one2one-message') {
+      if (id) {
+        return this._ref.child('channels/messages/' + id)
+      }
     }
     if (typeClass.modelName === 'user') {
       if (id) {

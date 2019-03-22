@@ -17,6 +17,6 @@ export default DS.Model.extend({
     } else {
       return this.profilePic
     }
-  })
-
+  }),
+  lastMessage: attr('string')
 });

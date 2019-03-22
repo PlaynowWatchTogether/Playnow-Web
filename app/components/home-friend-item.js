@@ -26,28 +26,28 @@ export default Component.extend({
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
   modelObserver(obj) {
-    let ds = obj.get('dataSource');
-    if (ds) {
-      ds.stop();
-    }
-    let newDs = MessageDataSource.create({
-      type: 'one2one',
-      user: obj.get('model'),
-      myId: obj.firebaseApp.auth().currentUser.uid,
-      db: obj.firebaseApp.database()
-    });
-    obj.set('dataSource', newDs);
-    newDs.messagesOnce((messages) => {
-      let sorted = messages.sort(function (a, b) {
-        return a['date'] - b['date'];
-      });
-      sorted.forEach((elem) => {
-        if (elem['text'] && elem['text'].length > 0) {
-          obj.set('lastMessage', elem);
-          return;
-        }
-      });
-    })
+    // let ds = obj.get('dataSource');
+    // if (ds) {
+    //   ds.stop();
+    // }
+    // let newDs = MessageDataSource.create({
+    //   type: 'one2one',
+    //   user: obj.get('model'),
+    //   myId: obj.firebaseApp.auth().currentUser.uid,
+    //   db: obj.firebaseApp.database()
+    // });
+    // obj.set('dataSource', newDs);
+    // newDs.messagesOnce((messages) => {
+    //   let sorted = messages.sort(function (a, b) {
+    //     return a['date'] - b['date'];
+    //   });
+    //   sorted.forEach((elem) => {
+    //     if (elem['text'] && elem['text'].length > 0) {
+    //       obj.set('lastMessage', elem);
+    //       return;
+    //     }
+    //   });
+    // })
   },
   safeProfilePic: computed('model.profilePic', function () {
     let m = this.get('model');
@@ -57,8 +57,8 @@ export default Component.extend({
       return m['profilePic']
     }
   }),
-  lastMessageText: computed('lastMessage', function () {
-    return this.get('lastMessage.text');
+  lastMessageText: computed('model.lastMessage', function () {
+    return this.get('model.lastMessage');
   }),
   didInsertElement() {
     this._super(...arguments);
@@ -67,6 +67,10 @@ export default Component.extend({
 
   },
   willDestroyElement() {
+    let ds = this.get('dataSource');
+    if (ds) {
+      ds.stop();
+    }
     this._super(...arguments);
   }
 });

@@ -30,33 +30,46 @@ export default Component.extend({
   unreadClass: computed('model', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
-  modelObserver(obj) {
-    let ds = obj.get('dataSource');
-    if (ds) {
-      ds.stop();
+  members: computed('model.groupPics', function () {
+    let profilePics = this.get('model.groupPics');
+    if (profilePics) {
+      let urls = profilePics.split(",");
+      return urls.slice(0, 3).map((elem) => {
+        return PicturedObject.create({content: {ProfilePic: elem}});
+      });
+    } else {
+      return [];
     }
-    let newDs = MessageDataSource.create({
-      type: 'group',
-      group: obj.get('model'),
-      myId: obj.firebaseApp.auth().currentUser.uid,
-      db: obj.firebaseApp.database()
-    });
-    newDs.messages((messages) => {
-      let sorted = messages.sort(function (a, b) {
-        return a['date'] - b['date'];
-      });
-      sorted.forEach((elem) => {
-        if (elem['text'] && elem['text'].length > 0) {
-          obj.set('lastMessage', elem);
-          return;
-        }
-      });
-    })
-    newDs.membersOnce().then((members) => {
-      obj.set('members', members.slice(0, 3).map((elem) => {
-        return PicturedObject.create({content: elem});
-      }));
-    })
+  }),
+  modelObserver(obj) {
+
+
+    // let ds = obj.get('dataSource');
+    // if (ds) {
+    //   ds.stop();
+    // }
+    // let newDs = MessageDataSource.create({
+    //   type: 'group',
+    //   group: obj.get('model'),
+    //   myId: obj.firebaseApp.auth().currentUser.uid,
+    //   db: obj.firebaseApp.database()
+    // });
+    // newDs.messages((messages) => {
+    //   let sorted = messages.sort(function (a, b) {
+    //     return a['date'] - b['date'];
+    //   });
+    //   sorted.forEach((elem) => {
+    //     if (elem['text'] && elem['text'].length > 0) {
+    //       obj.set('lastMessage', elem);
+    //       return;
+    //     }
+    //   });
+    // })
+    // newDs.membersOnce().then((members) => {
+    //   obj.set('members', members.slice(0, 3).map((elem) => {
+    //     return PicturedObject.create({content: elem});
+    //   }));
+    // })
   },
   profilePicClass: computed('members', function () {
     let members = this.get('members');
@@ -66,7 +79,7 @@ export default Component.extend({
       return '';
     }
   }),
-  lastMessageText: computed('lastMessage', function () {
-    return this.get('lastMessage.text');
+  lastMessageText: computed('model.lastMessage', function () {
+    return this.get('model.lastMessage');
   })
 });

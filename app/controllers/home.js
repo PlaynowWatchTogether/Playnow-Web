@@ -10,7 +10,7 @@ export default Controller.extend({
       this.transitionToRoute('search', {query: this.get('searchQuery')});
     }
   },
-  contactList: computed('friends', 'groups', function () {
+  contactList: computed('friends.@each.latestMessageDate', 'groups.@each.latestMessageDate', function () {
     let f = (this.get('friends') || []).map((elem) => {
       return FriendListItemObj.create({type: 'friend', model: elem})
     });
@@ -19,7 +19,7 @@ export default Controller.extend({
     });
     return f.concat(g);
   }),
-  sortedFriends: sort('contactList', function (a, b) {
+  sortedFriends: sort('contactList.@each.latestMessageDate', function (a, b) {
     if (a.get('latestMessageDate') > b.get('latestMessageDate')) {
       return -1;
     } else if (a.get('latestMessageDate') < b.get('latestMessageDate')) {

@@ -1,6 +1,6 @@
 <div class="row chatRoot {{modeClass}} {{videoClass}} h-100">
   <div class="col-8 content h-100">
-    {{#file-dropzone classNames='row holder h-100' name="chatPhotos" as |dropzone queue|}}
+    {{#file-dropzone classNames="row holder h-100" name="chatPhotos" as |dropzone|}}
       {{#if dropzone.active}}
         {{#if dropzone.valid}}
           <div class="dropzone">
@@ -17,7 +17,7 @@
         <div class="title">
           {{#if chatModel.hasProfilePic}}
             <div class="profilePicWrapper">
-              <img src="{{chatModel.user.safeProfilePic}}" class="profilePic" alt="ProfilePic">
+              <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
             </div>
           {{else}}
             <div class="profilePicWrapper"></div>
@@ -26,16 +26,16 @@
           <span class="name">{{chatModel.title}}</span>
         </div>
         <div class="back">
-          {{#link-to 'home'}}
-            <img class='back-icon' src="/assets/ic_arrow_back@2x.png">
+          {{#link-to "home"}}
+            <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
           {{/link-to}}
         </div>
       </div>
       {{#if isCompose}}
         <div class="searchHolder">
           <div class="row compose-row">
-            {{#users-chat-compose classNames='col compose-search' chips=composeChips onChipAdd=(action 'onChipAdd')
-                                  onChipClick=(action 'onChipClick')}}
+            {{#users-chat-compose classNames="col compose-search" chips=composeChips onChipAdd=(action "onChipAdd")
+                                  onChipClick=(action "onChipClick")}}
               <div class="error-tip">{{composeError}}</div>
             {{/users-chat-compose}}
           </div>
@@ -45,29 +45,31 @@
           {{#each membersProfiles as |member|}}
             <div class="member {{member.className}}">
               <div class="profilePicWrapper">
-                <img class="profilePic" src="{{member.profilePic}}">
+                <img class="profilePic" src={{member.profilePic}} alt="icon">
               </div>
             </div>
           {{/each}}
         </div>
       {{/if}}
-      <div id="youtubeHolder" class="{{playerLoadingClass}}">
+      <div id="youtubeHolder" class={{playerLoadingClass}}>
         {{#if hasPlayer}}
           {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
-                                  videoLoadedAction=(action 'videoLoaded')
-                                  playerState=(action 'playerStateAction')
+                                  videoLoadedAction=(action "videoLoaded")
+                                  playerState=(action "playerStateAction")
                                   isLoading=playerLoading
                                   playerSeconds=playerSeconds
-                                  onVideoEnd=(action 'onVideoEnd')
-                                  slidingProgress=slidingProgress}}{{/youtube-video-player}}
+                                  onVideoEnd=(action "onVideoEnd")
+                                  slidingProgress=slidingProgress}}
+
+          {{/youtube-video-player}}
           <div class="overlay"></div>
           <div class="controlsOverlay">
             <div class="controlsHolder">
               <div class="control">
-                <img src="/assets/ic_icon_play_video.png" class="play">
-                <img src="/assets/ic_icon_pause_video.png" class="pause">
+                <img src="/assets/ic_icon_play_video.png" class="play" alt="icon">
+                <img src="/assets/ic_icon_pause_video.png" class="pause" alt="icon">
               </div>
-              <img src="/assets/ic_video_close.png" class="close">
+              <img src="/assets/ic_video_close.png" class="close" alt="icon">
               <span class="video-title"></span>
               <input type="range" min="1" max="100" value="50" class="slider">
             </div>
@@ -77,12 +79,16 @@
 
             <div class="watchers-streamer">
               {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=true}}{{/watcher-item}}
+                {{#watcher-item model=watcher index=index streamer=true}}
+
+                {{/watcher-item}}
               {{/each}}
             </div>
             <div class="watchers-other">
               {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=false}}{{/watcher-item}}
+                {{#watcher-item model=watcher index=index streamer=false}}
+
+                {{/watcher-item}}
               {{/each}}
             </div>
           </div>
@@ -97,43 +103,51 @@
             <div class="watchers {{watchersClass}}">
               <div class="watchers-streamer">
                 {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=true}}{{/watcher-item}}
+                  {{#watcher-item model=watcher index=index streamer=true}}
+
+                  {{/watcher-item}}
                 {{/each}}
               </div>
               <div class="watchers-other">
                 {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=false}}{{/watcher-item}}
+                  {{#watcher-item model=watcher index=index streamer=false}}
+
+                  {{/watcher-item}}
                 {{/each}}
               </div>
             </div>
             <div class="details">
-              <img class="thumbnail"/>
+              <img class="thumbnail" src="" alt="icon">
               <div class="info">
                 <div class="song-name"></div>
                 <div class="song-artist"></div>
               </div>
             </div>
             <div class="controls">
-              <img src="/assets/ic_music_play.png" class="play-btn">
-              <img src="/assets/ic_music_pause.png" class="pause-btn">
-              <img src="/assets/ic_music_close.png" class="close-btn">
+              <img src="/assets/ic_music_play.png" class="play-btn" alt="icon">
+              <img src="/assets/ic_music_pause.png" class="pause-btn" alt="icon">
+              <img src="/assets/ic_music_close.png" class="close-btn" alt="icon">
             </div>
             <input type="range" min="1" max="100" value="50" class="slider">
           </div>
         </div>
       {{/if}}
-      <div class="messagesHolder">
+      {{#end-scrollable classNames='messagesHolder'}}
         <div class="messagesWrappper">
           {{#each messages as |message|}}
             {{#if message.isMessage}}
-              {{#chat-message-item model=message.message classNames='messageHolder'
+              {{#chat-message-item model=message.message classNames="messageHolder"
                                    canClick=isMaster
-                                   onClick=(action 'onMessageClick')
+                                   onClick=(action "onMessageClick")
                                    displaySender=message.displaySender lastSeen=lastSeenMessage myID=myID
-                                   members=members onPhotoSelect=(action 'onPhotoSelect')}}{{/chat-message-item}}
+                                   members=members onPhotoSelect=(action "onPhotoSelect")}}
+
+              {{/chat-message-item}}
             {{/if}}
             {{#if message.isDate}}
-              {{#chat-message-time model=message.date}}{{/chat-message-time}}
+              {{#chat-message-time model=message.date}}
+
+              {{/chat-message-time}}
 
             {{/if}}
           {{/each}}
@@ -141,24 +155,24 @@
             {{#each typingIndicatorProfiles as |indicator|}}
               <div class="indicator">
                 <div class="profilePicWrapper">
-                  <img class="profilePic" src="{{indicator.profilePic}}">
+                  <img class="profilePic" src={{indicator.profilePic}} alt="icon">
                 </div>
-                <img src="/assets/ic_typing_indicator.png" class="typing-icon">
+                <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
               </div>
             {{/each}}
           </div>
         </div>
-      </div>
+      {{/end-scrollable}}
       <div class="newMessageHolder">
         {{custom-content-editable value=messageText placeholder="Type a message" classNames="messageContent"
-                                  enter=(action 'onMessageEnterPress') paste=(action 'onTextPaste') allowNewlines=true}}
+                                  enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
         <div class="imgHolder">
-          <img src="/assets/ic_chat_send.png" {{action 'sendMessage'}}/>
+          <img src="/assets/ic_chat_send.png" {{action "sendMessage"}} alt="icon" role="button">
         </div>
         {{#file-upload name="chatPhotos"
                        accept="image/*"
-                       onfileadd=(action "uploadImageToChat") as |queue|}}
-          <img src="/assets/ic_chat_msg_image@2x.png"/>
+                       onfileadd=(action "uploadImageToChat")}}
+          <img src="/assets/ic_chat_msg_image@2x.png" alt="icon">
         {{/file-upload}}
 
       </div>
@@ -175,11 +189,15 @@
         <ul class="nav nav-pills">
           <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
-               aria-selected="true" {{action 'pickVideosSearch'}}>Videos</a>
+               aria-selected="true" {{action "pickVideosSearch"}}>
+              Videos
+            </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
-               aria-selected="true" {{action 'pickSongsSearch'}}>Songs</a>
+               aria-selected="true" {{action "pickSongsSearch"}}>
+              Songs
+            </a>
           </li>
         </ul>
       </div>
@@ -188,23 +206,25 @@
           <div class="col-12">
 
             {{#scroll-with-listener  music=false
-                                     onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.tab-content'
+                                     onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".tab-content"
                                      loading=loadingVideo}}
 
               <div class="searchHolder">
                 <div class="search">
-                  <img src="/assets/search_icon@2x.png" class="icon">
+                  <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                   {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
-                          insert-newline=(action 'triggerSearch')}}
-                  <div class="trigger-search" {{action 'triggerSearch'}}>
-                    <img src="/assets/ic_search_trigger@2x.png" class="icon">
+                          insert-newline=(action "triggerSearch")}}
+                  <div class="trigger-search" {{action "triggerSearch"}} role="button">
+                    <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
                 </div>
               </div>
               <div class="youtube-items">
                 {{#each youtubeVideoItems as |video|}}
-                  {{#youtube-video model=video classNames='youtube-item'
-                                   clickAction=(action 'videoPick')}}{{/youtube-video}}
+                  {{#youtube-video model=video classNames="youtube-item"
+                                   clickAction=(action "videoPick")}}
+
+                  {{/youtube-video}}
 
                 {{/each}}
               </div>
@@ -213,22 +233,24 @@
           </div>
         </div>
         <div class="tab-pane fade" id="music">
-          {{#scroll-with-listener classNames='youtube-items row music' music=false
-                                  onScrolledHalf=(action 'scrolledHalfYoutubeMusic') scrollParent='.tab-content'
+          {{#scroll-with-listener classNames="youtube-items row music" music=false
+                                  onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
                                   loading=loadingMusic}}
             <div class="searchHolder">
               <div class="search">
-                <img src="/assets/search_icon@2x.png" class="icon">
+                <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                 {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
-                        insert-newline=(action 'triggerSearch')}}
-                <div class="trigger-search" {{action 'triggerSearch'}}>
-                  <img src="/assets/ic_search_trigger@2x.png" class="icon">
+                        insert-newline=(action "triggerSearch")}}
+                <div class="trigger-search" {{action "triggerSearch"}} role="button">
+                  <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                 </div>
               </div>
             </div>
             {{#each youtubeMusicItems as |video|}}
-              {{#youtube-music model=video classNames='youtube-item-music col-12'
-                               clickAction=(action 'musicPick')}}{{/youtube-music}}
+              {{#youtube-music model=video classNames="youtube-item-music col-12"
+                               clickAction=(action "musicPick")}}
+
+              {{/youtube-music}}
 
             {{/each}}
           {{/scroll-with-listener}}
@@ -243,6 +265,6 @@
 <div class="modal fade" id="photoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
      aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <img src="{{selectedPhoto}}">
+    <img src={{selectedPhoto}} alt="icon">
   </div>
 </div>

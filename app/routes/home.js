@@ -1,7 +1,8 @@
 import Route from '@ember/routing/route';
-import Ember from 'ember'
 import {inject as service} from '@ember/service';
 import MessageDataSource from "../custom-objects/message-data-source";
+import {hash} from 'rsvp';
+import $ from 'jquery';
 
 export default Route.extend({
   db: service(),
@@ -14,7 +15,7 @@ export default Route.extend({
   },
   beforeModel() {
     this._super(...arguments);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.firebaseApp.auth().onAuthStateChanged((user) => {
         this.set('user', user);
         if (user) {
@@ -27,7 +28,7 @@ export default Route.extend({
     });
   },
   model() {
-    return Ember.RSVP.hash({
+    return hash({
       profile: this.store.find('user', this.get('user').uid)
     });
   },

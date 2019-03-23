@@ -1,4 +1,6 @@
 import Component from '@ember/component';
+import {debug} from "@ember/debug";
+import $ from 'jquery';
 
 export default Component.extend({
   classNameBindings: ['music', 'loading'],
@@ -15,9 +17,7 @@ export default Component.extend({
       if (scrolled > scrollHalf) {
         if (!$(this.element).hasClass('loading')) {
           this.onScrolledHalf();
-          console.log('Scrolled more then half with ' + $(this.element).height() + ' ' + $(this.element).closest(this.get('scrollParent')).height());
-        } else {
-
+          debug('Scrolled more then half with ' + $(this.element).height() + ' ' + $(this.element).closest(this.get('scrollParent')).height());
         }
 
       }

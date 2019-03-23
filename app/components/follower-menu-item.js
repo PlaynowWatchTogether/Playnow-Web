@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import {computed} from "@ember/object";
 import {run} from '@ember/runloop';
+import $ from 'jquery';
+
 export default Component.extend({
   profilePic: computed('model', function () {
     let m = this.get('model');
@@ -19,7 +21,7 @@ export default Component.extend({
     return m['Username'];
   }),
   actions: {
-    confirmRequest(event) {
+    confirmRequest() {
       this.set('isAdded', true);
       setTimeout(() => {
         $(this.element).fadeOut(1000, () => {
@@ -30,7 +32,7 @@ export default Component.extend({
       }, 1000);
       return false;
     },
-    cancelRequest(event) {
+    cancelRequest() {
       this.set('isRemoved', true);
       setTimeout(() => {
         $(this.element).fadeOut(1000, () => {

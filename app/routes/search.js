@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import Ember from "ember";
+import $ from "jquery";
 import AuthRouteMixin from '../mixins/auth-route-mixin'
 
 export default Route.extend(AuthRouteMixin, {

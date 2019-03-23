@@ -1,5 +1,7 @@
 import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
+import {debug} from "@ember/debug";
+
 export default Route.extend({
   auth: service(),
   db: service(),
@@ -15,11 +17,11 @@ export default Route.extend({
       if (user) {
 
         this.db.messaging.requestPermission().then(() => {
-          console.log('Notification permission granted.');
+          debug('Notification permission granted.');
           this.db.messagePermissionsGranted();
 
         }).catch((err) => {
-          console.log('Unable to get permission to notify.', err);
+          debug('Unable to get permission to notify.', err);
         });
         this.db.handleOnline();
         this.db.followers(user.uid, (list) => {
@@ -41,7 +43,7 @@ export default Route.extend({
     });
   },
   model() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.firebaseApp.auth().onAuthStateChanged((user) => {
         if (user) {
           this.store.find('user', user.uid).then((model) => {

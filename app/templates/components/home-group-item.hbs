@@ -13,13 +13,15 @@
     <div class="split-profile-pic {{profilePicClass}}">
       {{#each members as |member index|}}
         {{#group-member-profile-pic classNames="member-icon" model=member index=index
-                                    total=members.length}}{{/group-member-profile-pic}}
+                                    total=members.length}}
+
+        {{/group-member-profile-pic}}
       {{/each}}
     </div>
     <div class="online-icon"></div>
-    <img class="unread-icon" src="/assets/friend_unread@2x.png"/>
-    <img class="playing-video-icon" src="/assets/ic_group_playing_video.png"/>
-    <img class="playing-music-icon" src="/assets/ic_group_playing_sound.png"/>
+    <img class="unread-icon" src="/assets/friend_unread@2x.png" alt="icon">
+    <img class="playing-video-icon" src="/assets/ic_group_playing_video.png" alt="icon">
+    <img class="playing-music-icon" src="/assets/ic_group_playing_sound.png" alt="icon">
   </div>
 
 </div>

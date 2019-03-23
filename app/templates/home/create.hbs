@@ -5,29 +5,31 @@
         <span class="noselect">Create Public Room</span>
       </div>
       <div class="back">
-        {{#link-to 'home'}}
-          <img class="back-icon" src="/assets/ic_arrow_back@2x.png">
+        {{#link-to "home"}}
+          <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
         {{/link-to}}
       </div>
     </div>
     <div class="search-holder">
       <div class="search-wrapper">
 
-        <img src="/assets/search_icon@2x.png" class="icon">
-        {{input value=searchQueryVideo  insert-newline=(action 'triggerSearch') classNames="searchInput"
+        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+        {{input value=searchQueryVideo  insert-newline=(action "triggerSearch") classNames="searchInput"
                 placeholder="Search content"}}
       </div>
     </div>
     <div class="roomsHolder">
       <div class="row">
         {{#scroll-with-listener  music=false
-                                 classNames='public-room-scroll'
-                                 onScrolledHalf=(action 'scrolledHalfYoutubeVideo') scrollParent='.roomsHolder'
+                                 classNames="public-room-scroll"
+                                 onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".roomsHolder"
                                  loading=loadingVideo}}
           <div class="youtube-items">
             {{#each youtubeVideoItems as |video|}}
-              {{#youtube-video model=video classNames='youtube-item'
-                               clickAction=(action 'videoPick')}}{{/youtube-video}}
+              {{#youtube-video model=video classNames="youtube-item"
+                               clickAction=(action "videoPick")}}
+
+              {{/youtube-video}}
 
             {{/each}}
           </div>

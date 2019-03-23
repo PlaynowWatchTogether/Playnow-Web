@@ -1,13 +1,13 @@
 {{#if displaySender}}
   <div class="profilePicWrapper">
-    <img src="{{user.safeProfilePic}}" class="profilePic">
+    <img src={{user.safeProfilePic}} class="profilePic" alt="icon">
   </div>
 {{else}}
-  <div class="profilePicWrapper"/>
+  <div class="profilePicWrapper"></div>
 {{/if}}
 {{#if isPhoto}}
   <div class="message-img">
-    <img src="{{model.thumbnail}}" {{action 'clickOnPhoto'}}/>
+    <img src={{model.thumbnail}} {{action "clickOnPhoto"}} role="button" alt="icon">
   </div>
 {{else}}
   {{#if isVideoRequest}}
@@ -16,7 +16,7 @@
         {{requestTitle}}
       </div>
       <div class="thumbnailHolder">
-        <img src="{{requestThumbnail}}" alt="requestThumbnail"/>
+        <img src={{requestThumbnail}} alt="requestThumbnail">
       </div>
       <div class="channel">
         {{requestChannel}}
@@ -31,7 +31,7 @@
     {{#if isLastSeen}}
       <div class="last-seen">
         <div class="profilePicWrapper">
-          <img src="{{receiver.safeProfilePic}}" class="profilePic">
+          <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
         </div>
       </div>
     {{/if}}

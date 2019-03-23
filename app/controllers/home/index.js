@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object'
-import Ember from 'ember'
+import {get} from '@ember/object';
+
 export default Controller.extend({
   db: service(),
   init() {
@@ -12,7 +13,7 @@ export default Controller.extend({
     return this.get('model').filter((elem) => {
       if (!q || q.length === 0)
         return true;
-      let title = Ember.get(elem, 'videoName');
+      let title = get(elem, 'videoName');
       if (title) {
         return title.toLowerCase().includes(q.toLowerCase());
       } else {

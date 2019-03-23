@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
-import {Subject, from, asyncScheduler} from 'rxjs';
+import {Subject, asyncScheduler} from 'rxjs';
 import {observeOn} from 'rxjs/operators';
+import {debug} from "@ember/debug";
 
 export default EmberObject.extend({
   init() {
@@ -17,7 +18,7 @@ export default EmberObject.extend({
       observeOn(asyncScheduler)
     ).subscribe({
       next: (newState) => {
-        console.log('Got new video state ' + newState.type);
+        debug('Got new video state ' + newState.type);
         let nextState = this.state;
         let shouldSlide = this.syncMode === 'sliding' && !this.isMaster;
         let firebaseState = newState['type'];
@@ -89,35 +90,35 @@ export default EmberObject.extend({
   },
   handleNextState(nextState, newState) {
     if (!this.canChangeState(nextState)) {
-      console.log('Cannot chage state from ' + this.state + " to " + nextState);
+      debug('Cannot chage state from ' + this.state + " to " + nextState);
       return;
     }
     if (nextState === 'loading') {
       let seconds = newState['seconds'] ? newState['seconds'] : 0.0;
-      console.log('VideoSync: got seconds: ' + seconds);
+      debug('VideoSync: got seconds: ' + seconds);
       let shouldSlide = this.syncMode === 'sliding' && !this.isMaster;
       if (shouldSlide) {
         let syncAt = newState['syncAt'] || 0.0;
-        console.log('VideoSync: got syncAt: ' + syncAt);
+        debug('VideoSync: got syncAt: ' + syncAt);
         let timePassed = this.get('ntp').estimatedServerTimeMs() - syncAt * 1000;
-        console.log('VideoSync: timePassed: ' + timePassed);
+        debug('VideoSync: timePassed: ' + timePassed);
 
         let addSeconds = timePassed / 1000 + 5.0;
-        console.log('VideoSync: addSeconds: ' + addSeconds);
+        debug('VideoSync: addSeconds: ' + addSeconds);
         seconds += addSeconds;
         let startTime = 5000 + this.get('ntp.offset');
-        console.log('VideoSync: startTime: ' + startTime);
+        debug('VideoSync: startTime: ' + startTime);
         this.play(startTime)
       }
       this.loadVideo(newState, seconds);
     } else if (nextState === 'syncing') {
       if (this.syncMode === 'awaiting') {
         let syncAt = newState['syncAt'] * 1000;
-        console.log('VideoSync: got syncAt = ' + syncAt);
+        debug('VideoSync: got syncAt = ' + syncAt);
         let time = this.get('ntp').estimatedServerTimeMs();
-        console.log('VideoSync: currentTime = ' + time);
+        debug('VideoSync: currentTime = ' + time);
         let startTime = (syncAt - time);
-        console.log('VideoSync: startTime = ' + startTime);
+        debug('VideoSync: startTime = ' + startTime);
         this.play(startTime)
       }
     } else if (nextState === 'requestingSync') {
@@ -126,21 +127,20 @@ export default EmberObject.extend({
       this.delegate.play();
     } else if (nextState === 'paused') {
       this.delegate.pause();
-    } else if (nextState === 'loaded') {
+      //} else if (nextState === 'loaded') {
 
-    } else if (nextState === 'closed') {
-
+      //} else if (nextState === 'closed') {
     } else if (nextState === 'resyncing') {
       this.delegate.slideVideo()
     }
-    console.log('update current ' + this.state + ' to ' + nextState);
+    debug('update current ' + this.state + ' to ' + nextState);
     this.state = nextState;
     this.delegate.updateWatching(this.lastState['videoId'] ? this.lastState['videoId'] : '', this.state);
   },
   play(seconds) {
-    console.log('VideoSync: schedule play after ' + seconds);
+    debug('VideoSync: schedule play after ' + seconds);
     setTimeout(() => {
-      console.log('VideoSync: scheduled play after ' + seconds + ' with state ' + this.state);
+      debug('VideoSync: scheduled play after ' + seconds + ' with state ' + this.state);
       if (this.state === 'loading') {
         this.handleNextState('loading', this.lastState);
       } else {

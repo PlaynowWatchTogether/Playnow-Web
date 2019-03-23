@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
-
-import Ember from 'ember'
+import {debug} from '@ember/debug';
+import $ from 'jquery';
 
 export default Component.extend({
   firebaseApp: service(),
@@ -42,12 +42,12 @@ export default Component.extend({
     } else {
       profilePic = data['profilePic']
     }
-    return '<div class="suggestion-item">' + '<div class="profilePicWrapper"><img class="profilePic" src="' + profilePic + '"></div> <div class="name">' + data['firstName'] + ' ' + data['lastName'] + '</div></div>'
+    return '<div class="suggestion-item">' + '<div class="profilePicWrapper"><img alt="icon" class="profilePic" src="' + profilePic + '"></div> <div class="name">' + data['firstName'] + ' ' + data['lastName'] + '</div></div>'
   },
   actions: {
     updateTerm(term) {
       this.set('results', this.get('friends'));
-      console.log('term updated to ' + term);
+      debug('term updated to ' + term);
     },
     selectFriend(result) {
       $('#typeahead-compose').val('');

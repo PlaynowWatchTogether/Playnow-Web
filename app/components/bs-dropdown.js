@@ -1,17 +1,18 @@
 import Component from '@ember/component';
-import Ember from 'ember';
+import {debug} from "@ember/debug";
+import $ from 'jquery';
 
 export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
-    $(this.element).find('.dropdown-toggle').on('click', function (event) {
+    $(this.element).find('.dropdown-toggle').on('click', function () {
       // $(this).parent().toggleClass('open');
     });
-    $(this.element).find('.actionItem').click(function (e) {
+    $(this.element).find('.actionItem').click(function () {
       // e.stopPropagation();
     });
-    $(this.element).on('show.bs.dropdown', function (e) {
-      console.log('shown dropdown');
+    $(this.element).on('show.bs.dropdown', function () {
+      debug('shown dropdown');
       // if (!$(this).find('.dropdown-menu').is(e.target)
       //   && $(this).find('.dropdown-menu').has(e.target).length === 0
       //   && $(this).find('.show').has(e.target).length === 0

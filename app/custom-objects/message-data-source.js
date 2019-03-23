@@ -1,6 +1,6 @@
 import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
-
+import {debug} from "@ember/debug";
 export default EmberObject.extend({
   gcmManager: service(),
   type: 'one2one',
@@ -49,7 +49,7 @@ export default EmberObject.extend({
     values['syncAt'] = syncAt == null ? new Date().getTime() / 1000.0 : syncAt / 1000;
     values['type'] = state;
     values['seconds'] = seconds;
-    console.log('updateWatchState ' + JSON.stringify(values));
+    debug('updateWatchState ' + JSON.stringify(values));
     this.db.ref(ref).update(values);
   },
   sendVideo(video, mode = 'youtubeVideo') {
@@ -66,7 +66,7 @@ export default EmberObject.extend({
     values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
     values['senderId'] = this.myId;
     values['seconds'] = 0;
-    console.log('sendVideo ' + JSON.stringify(values));
+    debug('sendVideo ' + JSON.stringify(values));
     this.db.ref(ref).update(values);
   },
   videoWatchers(updateCallback) {
@@ -101,7 +101,7 @@ export default EmberObject.extend({
     values['userId'] = this.myId;
     values['updatedAt'] = new Date().getTime() / 1000.0;
     values['state'] = state;
-    console.log('updateWatching ' + JSON.stringify(values));
+    debug('updateWatching ' + JSON.stringify(values));
     this.db.ref(ref).onDisconnect().remove();
     this.db.ref(ref).update(values);
   },
@@ -279,7 +279,7 @@ export default EmberObject.extend({
     for (let listener in this.listeners) {
       let value = this.listeners[listener];
       this.db.ref(listener).off('value', value);
-      console.log('remove listener for ' + value);
+      debug('remove listener for ' + value);
 
     }
   },

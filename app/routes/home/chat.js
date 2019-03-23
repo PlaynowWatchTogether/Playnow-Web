@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import Ember from "ember";
+import $ from "jquery";
 import AuthRouteMixin from '../../mixins/auth-route-mixin'
 
 export default Route.extend(AuthRouteMixin, {
@@ -12,17 +12,19 @@ export default Route.extend(AuthRouteMixin, {
   },
   deactivate() {
     this._super(...arguments);
-    $('body').removeClass('chat');
-    $('body').removeClass('room');
+    let body = $('body');
+    body.removeClass('chat');
+    body.removeClass('room');
   },
   afterModel(model) {
+    let body = $('body');
     if (model.type === 'room') {
-      $('body').addClass('room');
+      body.addClass('room');
     } else {
-      $('body').removeClass('room');
+      body.removeClass('room');
     }
   },
-  resetController(controller, isExiting, transition) {
+  resetController(controller) {
     controller.reset()
   }
 });

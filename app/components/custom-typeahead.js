@@ -1,15 +1,20 @@
-import Component from '@ember/component';
-import Ember from 'ember'
+import TextField from '@ember/component/text-field';
+import {computed} from '@ember/object';
+import {bind} from '@ember/runloop';
+import {get} from '@ember/object';
+import {A} from '@ember/array';
+import $ from 'jquery';
+import {assert} from '@ember/debug';
 
-export default Ember.TextField.extend({
+export default TextField.extend({
   classNames: ['form-control'],
   limit: 5,
   didInsertElement() {
-    (true && !(typeof this.$().typeahead === 'function') && Ember.assert('typeahead.js has to be loaded', typeof this.$().typeahead === 'function'));
+    (true && !(typeof this.$().typeahead === 'function') && assert('typeahead.js has to be loaded', typeof this.$().typeahead === 'function'));
 
 
     if (this.get('tokenized')) {
-      (true && !(typeof this.$().tokenfield === 'function') && Ember.assert('bootstrap-tokenfield has to be loaded', typeof this.$().tokenfield === 'function'));
+      (true && !(typeof this.$().tokenfield === 'function') && assert('bootstrap-tokenfield has to be loaded', typeof this.$().tokenfield === 'function'));
 
 
       this.$().tokenfield({
@@ -17,7 +22,7 @@ export default Ember.TextField.extend({
           minLength: 0,
           limit: this.get('limit'),
           displayKey: 'value',
-          source: Ember.run.bind(this, (query, cb) => {
+          source: bind(this, (query, cb) => {
             const content = this.get('tokenContent');
             if (!query || query === '*') {
               return cb(content);
@@ -26,7 +31,7 @@ export default Ember.TextField.extend({
           }),
           templates: {
             suggestion: this.get('suggestionTemplate'),
-            footer: Ember.run.bind(this, object => {
+            footer: bind(this, object => {
               var footerTemplate = this.get('footerTemplate');
               var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
@@ -38,17 +43,17 @@ export default Ember.TextField.extend({
                 return footerTemplate;
               }
             }),
-            empty: Ember.run.bind(this, () => {
+            empty: bind(this, () => {
               return this.get('emptyTemplate');
             })
           }
         }]
-      }).on('tokenfield:createtoken', Ember.run.bind(this, event => {
+      }).on('tokenfield:createtoken', bind(this, event => {
         // remove the token from the list
         const tokenContent = this.get('tokenContent');
         const token = tokenContent.findBy('value', event.attrs.value);
         tokenContent.removeObject(token);
-      })).on('tokenfield:removetoken', Ember.run.bind(this, event => {
+      })).on('tokenfield:removetoken', bind(this, event => {
         // add the token back to the list
         let tokenContent = this.get('tokenContent');
         const token = {value: event.attrs.value};
@@ -60,10 +65,10 @@ export default Ember.TextField.extend({
       this.$().typeahead({}, {
         minLength: 0,
         limit: this.get('limit'),
-        displayKey: Ember.run.bind(this, object => {
-          return Ember.get(object, this.get('displayKey'));
+        displayKey: bind(this, object => {
+          return get(object, this.get('displayKey'));
         }),
-        source: Ember.run.bind(this, (query, cb) => {
+        source: bind(this, (query, cb) => {
           const content = this.get('content');
           if (!query || query === '*') {
             return cb(content);
@@ -72,7 +77,7 @@ export default Ember.TextField.extend({
         }),
         templates: {
           suggestion: this.get('suggestionTemplate'),
-          footer: Ember.run.bind(this, object => {
+          footer: bind(this, object => {
             var footerTemplate = this.get('footerTemplate');
             var emptyFooterTemplate = this.get('emptyFooterTemplate');
 
@@ -84,20 +89,16 @@ export default Ember.TextField.extend({
               return footerTemplate;
             }
           }),
-          empty: Ember.run.bind(this, () => {
+          empty: bind(this, () => {
             return this.get('emptyTemplate');
           })
         }
-      }).on('typeahead:select typeahead:autocomplete', Ember.run.bind(this, (e, obj) => {
-        // this.set('selection', obj);
-      })).on('typeahead:select', Ember.run.bind(this, (e, obj) => {
-        // this.set('selection', obj);
+      }).on('typeahead:select typeahead:autocomplete', bind(this, () => {
+
+      })).on('typeahead:select', bind(this, (e, obj) => {
         this.$().typeahead('val', '');
-        // let valueToken = this.get('selectionToken');
-        // let value = this.get(`selection.${valueToken}`);
-        // if (value) {
-        this.sendAction('onSelectAction', obj);
-        // }
+        this.onSelectAction(obj);
+
       }));
     }
   },
@@ -125,7 +126,7 @@ export default Ember.TextField.extend({
   focusOut() {
     const query = this.$().typeahead('val');
     const results = this._filterContent(query, this.get('valueToken'), this.get('content'));
-    if (Ember.$.trim(query).length) {
+    if ($.trim(query).length) {
       this.set('selection', results[0]);
     }
   },
@@ -139,11 +140,11 @@ export default Ember.TextField.extend({
     const fuzzyRegex = new RegExp(query, 'i');
 
     const exactMatches = content.filter(thing => {
-      return exactRegex.test(Ember.get(thing, valueKey));
+      return exactRegex.test(get(thing, valueKey));
     });
 
-    const fuzzyMatches = Ember.A(content.filter(thing => {
-      return fuzzyRegex.test(Ember.get(thing, valueKey));
+    const fuzzyMatches = A(content.filter(thing => {
+      return fuzzyRegex.test(get(thing, valueKey));
     }));
 
     return exactMatches.concat(fuzzyMatches.removeObject(exactMatches[0]));
@@ -152,7 +153,7 @@ export default Ember.TextField.extend({
   // Massage the content of typeahead into a format
   // bootstrap-tokenfield can work woth
   // e.g. [{ value: 'foo'}, { value: 'bar'}]
-  tokenContent: Ember.computed('content.[]', function () {
+  tokenContent: computed('content.[]', function () {
     const content = this.get('content');
     const valueToken = this.get('valueToken');
 

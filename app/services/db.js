@@ -1,5 +1,6 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
+import {debug} from "@ember/debug";
 
 export default Service.extend({
   firebaseApp: service(),
@@ -8,7 +9,6 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.messaging = this.get('firebaseApp').messaging();
-    // this.messaging.usePublicVapidKey("BH_hcJbNtWDIUsYQVePornABaxRyngrf_J7HROkADBPDSHnmEkxUlfhnh2LPplyw_jeLbKRhFODbtD2nIGM2_BY");
   },
   friends(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
@@ -98,7 +98,7 @@ export default Service.extend({
 
       });
       resolve(records)
-    }, (error) => {
+    }, () => {
 
     });
   },
@@ -113,19 +113,16 @@ export default Service.extend({
     myValues['Username'] = model['Username'];
     otherValues['Username'] = this.firebaseApp.auth().currentUser.email;
     this.profile(myId).then((profile) => {
-      // let myName = profile['FirstName'] + " " + profile['LastName'];
       Promise.all([
         myFollower.remove(),
         otherFollower.remove(),
         myFriend.update(myValues),
         otherFriend.update(otherValues)
       ]).then((data) => {
-        this.profile(myId).then((myProfile) => {
-          this.get('gcmManager').sendMessage(model['id'], null, profile['FirstName'] + ' added you back!');
-        });
-        console.log('Request confirmed ' + data);
+        this.get('gcmManager').sendMessage(model['id'], null, profile['FirstName'] + ' added you back!');
+        debug('Request confirmed ' + data);
       }).catch((error) => {
-        console.log('Request confirm failed ' + error);
+        debug('Request confirm failed ' + error);
 
       });
 
@@ -136,9 +133,9 @@ export default Service.extend({
     let myId = this.firebaseApp.auth().currentUser.uid;
     let myFollower = this.firebaseApp.database().ref("Users/" + myId + "/Followers/" + model['id']);
     myFollower.remove().then(() => {
-      console.log('Request cancelled ');
+      debug('Request cancelled ');
     }).catch((error) => {
-      console.log('Request cancel failed ' + error);
+      debug('Request cancel failed ' + error);
     });
   },
   roomsOnce() {
@@ -169,7 +166,7 @@ export default Service.extend({
 
       });
       updateCallback(records);
-    }, (error) => {
+    }, () => {
 
     })
 
@@ -193,7 +190,7 @@ export default Service.extend({
   updateBadge(user, token, value) {
     let ref = this.firebaseApp.database().ref("Tokens/" + user + "/" + token);
     ref.child('badge_count').set(value).then(() => {
-      console.log('badge for ' + user + 'updated to ' + value);
+      debug('badge for ' + user + 'updated to ' + value);
     })
   },
   followUser(user) {
@@ -246,28 +243,28 @@ export default Service.extend({
   messagePermissionsGranted() {
     this.get('messaging').getToken().then((currentToken) => {
       if (currentToken) {
-        console.log('Token received ' + currentToken);
+        debug('Token received ' + currentToken);
         let id = this.myId();
         let ref = this.get('firebaseApp').database().ref("/Tokens/" + id);
         ref.once('value', (tokens) => {
-          let tokensValues = []
+          let tokensValues = [];
           tokens.forEach((elem) => {
             tokensValues.push(elem.child("token_id").val());
           });
           let exists = tokensValues.includes(currentToken);
           if (!exists) {
-            var newTokenRef = ref.push();
+            let newTokenRef = ref.push();
             newTokenRef.child("token_id").set(currentToken);
 
           }
         })
       } else {
         // Show permission request.
-        console.log('No Instance ID token available. Request permission to generate one.');
+        debug('No Instance ID token available. Request permission to generate one.');
 
       }
     }).catch(function (err) {
-      console.log(err);
+      debug(err);
     });
   },
   createPublicRoom(video) {

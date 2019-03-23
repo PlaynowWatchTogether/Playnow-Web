@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-
+import {bind} from '@ember/runloop';
 export default Component.extend({
   classNames: ['ember-content-editable'],
   classNameBindings: ['clearPlaceholderOnFocus:clear-on-focus'],
@@ -20,7 +20,7 @@ export default Component.extend({
       39, // right arrow
       40 // down arrow
     ]);
-    this._pasteHandler = Ember.run.bind(this, this.pasteHandler);
+    this._pasteHandler = bind(this, this.pasteHandler);
   },
   setEndOfContenteditable() {
     var range, selection;
@@ -44,7 +44,7 @@ export default Component.extend({
     this._super(...arguments);
 
     this.updateDom();
-    this._mutationObserver = new MutationObserver(Ember.run.bind(this, this.domChanged));
+    this._mutationObserver = new MutationObserver(bind(this, this.domChanged));
 
     this._mutationObserver.observe(this.element, {
       attributes: false,

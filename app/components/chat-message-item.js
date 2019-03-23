@@ -1,11 +1,11 @@
-import Ember from 'ember';
 import Component from '@ember/component';
-import EmberObject, {computed} from '@ember/object';
+import {inject as service} from '@ember/service'
+import {computed} from '@ember/object'
 
 export default Component.extend({
   classNameBindings: ['mine'],
-  store: Ember.inject.service(),
-  auth: Ember.inject.service(),
+  store: service(),
+  auth: service(),
 
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);

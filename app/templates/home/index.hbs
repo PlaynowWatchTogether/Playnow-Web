@@ -4,9 +4,9 @@
       <div class="title">
         <span class="noselect">Public rooms</span>
       </div>
-      {{#link-to 'home.create' classNames='create' tagName='div'}}
+      {{#link-to "home.create" classNames="create" tagName="div"}}
         <div class="button hoveredBtn">
-          <img src="/assets/ic_plus@2x.png"/>
+          <img src="/assets/ic_plus@2x.png" alt="icon">
           <div>Create Public Room</div>
         </div>
       {{/link-to}}
@@ -14,7 +14,7 @@
     <div class="search-holder">
       <div class="search-wrapper">
 
-        <img src="/assets/search_icon@2x.png" class="icon">
+        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
         {{input value=roomQuery classNames="searchInput" placeholder="Search for Rooms"}}
       </div>
     </div>
@@ -24,8 +24,10 @@
           Loading
         {{/if}}
         {{#each filteredModel as |room|}}
-          {{#link-to 'home.chat' room.id 'room' classNames='room-chat-link col-3'}}
-            {{#home-room-item model=room classNames='room'}}{{/home-room-item}}
+          {{#link-to "home.chat" room.id "room" classNames="room-chat-link col-3"}}
+            {{#home-room-item model=room classNames="room"}}
+
+            {{/home-room-item}}
           {{/link-to}}
         {{/each}}
       </div>

@@ -1,6 +1,6 @@
 <div class="friendsHeader">
   <div class="friendsCompose col">
-    <img src="/assets/friends_compose@2x.png" class="composeIcon"/>
+    <img src="/assets/friends_compose@2x.png" class="composeIcon" alt="icon">
   </div>
   <div class="friendsTitle">
     <span class="friends noselect">Friends</span>
@@ -9,7 +9,7 @@
 </div>
 
 <div class="friendsSearchHolder">
-  <img src="/assets/search_icon@2x.png" class="searchIcon">
+  <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
   {{input value=query classNames="friendsSearch" placeholder="Search in messaging"}}
 </div>
 <div class="friendsList">
@@ -28,12 +28,12 @@
       </div>
 
       <div class="profilePicHolder">
-        <img class="profilePic" src="{{friend.safeProfilePic}}"/>
+        <img class="profilePic" src={{friend.safeProfilePic}} alt="icon">
         {{#if friend.isOnline}}
           <div class="online"></div>
         {{/if}}
         {{#if friend.hasNewMessages}}
-          <img class="unread" src="/assets/friend_unread@2x.png"/>
+          <img class="unread" src="/assets/friend_unread@2x.png" alt="icon">
         {{/if}}
 
       </div>

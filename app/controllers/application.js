@@ -3,7 +3,7 @@ import {inject as service} from '@ember/service';
 import moment from "moment";
 import {computed} from "@ember/object";
 import {set} from "@ember/object";
-import Ember from "ember";
+import {debug} from "@ember/debug";
 
 export default Controller.extend({
   auth: service(),
@@ -104,7 +104,7 @@ export default Controller.extend({
             set(form, 'ProfilePic', downloadURL);
             this.set('form', form);
             this.get('db').updateProfilePic(downloadURL);
-            console.log('File available at', downloadURL);
+            debug('File available at', downloadURL);
           });
         });
       });

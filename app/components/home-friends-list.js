@@ -5,7 +5,7 @@ export default Component.extend({
 
   queriedModel: computed('model', 'friendsQuery', function () {
     if (!this.get('friendsQuery') || this.get('friendsQuery').length === 0) {
-      return this.get('model').filter((elem) => {
+      return this.get('model').filter(() => {
         return true;
       })
     }

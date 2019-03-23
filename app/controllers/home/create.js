@@ -51,7 +51,7 @@ export default Controller.extend({
       });
     },
     videoPick(video) {
-      this.db.createPublicRoom(video).then((vid) => {
+      this.db.createPublicRoom(video).then(() => {
         this.transitionToRoute('home.chat', this.db.myId(), 'room', {queryParams: {id: video.id}})
       })
     }

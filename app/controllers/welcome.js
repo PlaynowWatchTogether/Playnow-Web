@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
-import Ember from "ember";
 import moment from "moment";
+import {debug} from '@ember/debug';
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -20,16 +20,16 @@ export default Controller.extend({
   },
   userCreated() {
     const auth = this.get('firebaseApp').auth();
-    Ember.Logger.debug("Created user with " + auth.currentUser.uid);
+    debug("Created user with " + auth.currentUser.uid);
     this.transitionToRoute("home");
   },
   async loginWithEmail(email, password) {
     const auth = await this.get('firebaseApp').auth();
     auth.signInWithEmailAndPassword(email, password).then(() => {
-      Ember.Logger.debug('signed in');
+      debug('signed in');
       this.userCreated()
     }).catch((error) => {
-      Ember.Logger.debug(error);
+      debug(error);
       this.set('error', "Login failed");
       this.clearError();
     })
@@ -128,7 +128,7 @@ export default Controller.extend({
 
       }
       this.findUser(register.username).then((ret) => {
-        Ember.Logger.debug("User found: " + ret);
+        debug("User found: " + ret);
         if (ret === 0) {
           this.set('form.register.error.username', 'Username already taken');
           this.clearError();
@@ -147,7 +147,7 @@ export default Controller.extend({
               return this.addDefaultFriend();
             }).then(() => {
               this.userCreated();
-            }, (error) => {
+            }, () => {
               this.userCreated()
             })
           }, (error) => {
@@ -161,7 +161,7 @@ export default Controller.extend({
           })
         }
       }, (error) => {
-        Ember.Logger.debug(error);
+        debug(error);
       });
     },
     async loginAction() {
@@ -183,11 +183,11 @@ export default Controller.extend({
           }
           this.loginWithEmail(userEmail, password)
         }, (error) => {
-          Ember.Logger.debug(error)
+          debug(error);
           this.set('error', "Login failed");
           this.clearError();
         });
-        Ember.Logger.debug('w/o @')
+        debug('w/o @')
       }
 
     }

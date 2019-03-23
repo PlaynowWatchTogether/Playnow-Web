@@ -3,8 +3,10 @@ import MessageDataSource from '../../custom-objects/message-data-source';
 import VideoStateHandler from '../../custom-objects/video-state-handler';
 import PicturedObject from '../../custom-objects/pictured-object';
 import {inject as service} from '@ember/service';
-import EmberObject, {computed} from '@ember/object';
+import {computed} from '@ember/object';
 import {run} from '@ember/runloop';
+import {debug} from "@ember/debug";
+import $ from 'jquery';
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -23,35 +25,51 @@ export default Controller.extend({
       ntp: this.get('ntp'),
       delegate: {
         loadVideo: (video, seconds) => {
-          this.set('hasPlayer', true);
-          this.set('playerAction', 0);
-          this.set('playerVideo', {video: video, seconds: seconds});
+          run(() => {
+            this.set('hasPlayer', true);
+            this.set('playerAction', 0);
+            this.set('playerVideo', {video: video, seconds: seconds});
+          });
         },
         updateState: (state, seconds = 0, syncAt = null) => {
-          let ds = this.get('dataSource');
-          ds.updateWatchState(state, seconds, syncAt);
+          run(() => {
+            let ds = this.get('dataSource');
+            ds.updateWatchState(state, seconds, syncAt);
+          });
         },
         playVideo: () => {
-          this.set('playerAction', 1);
+          run(() => {
+            this.set('playerAction', 1);
+          });
         },
         updateWatching: (videoId, state) => {
-          let ds = this.get('dataSource');
-          ds.updateWatching(videoId, state);
+          run(() => {
+            let ds = this.get('dataSource');
+            ds.updateWatching(videoId, state);
+          });
         },
         seekVideo: (seconds) => {
-          this.set('playerSeconds', seconds);
-          this.set('playerAction', 5);
+          run(() => {
+            this.set('playerSeconds', seconds);
+            this.set('playerAction', 5);
+          });
         },
         slideVideo: () => {
-          this.set('playerAction', 2);
-          let ds = this.get('dataSource');
-          ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+          run(() => {
+            this.set('playerAction', 2);
+            let ds = this.get('dataSource');
+            ds.updateWatchState('slide', window.globalPlayer.getCurrentTime());
+          });
         },
         play: () => {
-          this.set('playerAction', 3);
+          run(() => {
+            this.set('playerAction', 3);
+          });
         },
         pause: () => {
-          this.set('playerAction', 4);
+          run(() => {
+            this.set('playerAction', 4);
+          });
         }
       }
     });
@@ -80,7 +98,7 @@ export default Controller.extend({
     return ''
   }),
   loadingOverlayClass: computed('playerState', function () {
-    console.log(JSON.stringify(this.get('playerState')));
+    debug(JSON.stringify(this.get('playerState')));
     return 'loading'
   }),
   watchersClass: computed('playerState', function () {
@@ -156,7 +174,7 @@ export default Controller.extend({
     });
   },
   messageTextObserver: (obj) => {
-    console.log('typing ' + obj.get('messageText'));
+    debug('typing ' + obj.get('messageText'));
     let ds = obj.get('dataSource');
     if (ds) {
       ds.typing(obj.get('messageText'));
@@ -248,8 +266,11 @@ export default Controller.extend({
       }
     });
     ds.videoState((vs) => {
-      if (vs)
-        obj.videoStateHandler.handleVideoState(vs);
+      if (vs) {
+        run(() => {
+          obj.videoStateHandler.handleVideoState(vs);
+        });
+      }
     });
     ds.lastMessageSeen((lastSeen) => {
       if (ds.type === 'one2one') {
@@ -294,7 +315,6 @@ export default Controller.extend({
         lastDate = mesDate
       });
       obj.set('messages', uiMessages);
-      $('.messagesHolder').animate({scrollTop: $('.messagesHolder')[0].scrollHeight})
     });
     let pauseAction = () => {
       run(function () {
@@ -329,7 +349,7 @@ export default Controller.extend({
 
     let slideChange = (event) => {
       run(function () {
-        console.log('slider changed');
+        debug('slider changed');
         let vsh = obj.get('videoStateHandler');
         let ds = obj.get('dataSource');
         if (vsh.isMaster || vsh.syncMode === 'awaiting') {
@@ -354,7 +374,7 @@ export default Controller.extend({
       obj.get('youtubeSearch').video(obj.get('id')).then((video) => {
         obj.shareVideo(video);
       });
-      console.log('got video in path ' + obj.get('id'));
+      debug('got video in path ' + obj.get('id'));
     }
   },
   isMaster: computed('dataSource', function () {
@@ -395,20 +415,8 @@ export default Controller.extend({
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
   },
-  searchModeObserver: (obj) => {
-    // let music = obj.get('searchMode') === 'music';
-    // obj.set('searchQuery', music ? obj.get('searchQueryMusic') : obj.get('searchQueryVideo'));
-    // let q = obj.get('searchQuery');
-    // obj.set('youtubeItems', []);
-    // if (q.length === 0) {
-    //   obj.get('youtubeSearch').trending(music).then((data) => {
-    //     obj.set('youtubeItems', data.items);
-    //   });
-    // } else {
-    //   obj.get('youtubeSearch').search(q, music).then((data) => {
-    //     obj.set('youtubeItems', data.items);
-    //   });
-    // }
+  searchModeObserver: () => {
+
   },
   closeVideo() {
     let vsh = this.get('videoStateHandler');
@@ -586,7 +594,7 @@ export default Controller.extend({
             let ds = this.get('dataSource');
             ds.sendMessage('', downloadURL);
 
-            console.log('File available at', downloadURL);
+            debug('File available at', downloadURL);
           });
         });
       });
@@ -656,7 +664,7 @@ export default Controller.extend({
       this.get('composeChips').removeObject(data);
       this.notifyPropertyChange('composeChips');
     },
-    onMessageEnterPress(event) {
+    onMessageEnterPress() {
       this.performSendMessage();
     },
     onPhotoSelect(photo) {

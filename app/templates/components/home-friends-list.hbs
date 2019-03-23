@@ -1,7 +1,7 @@
 <div class="friendsHeader">
   <div class="friendsCompose">
-    {{#link-to 'home.chat' 'compose' 'group'}}
-      <img src="/assets/friends_compose@2x.png" class="composeIcon"/>
+    {{#link-to "home.chat" "compose" "group"}}
+      <img src="/assets/friends_compose@2x.png" class="composeIcon" alt="icon">
     {{/link-to}}
   </div>
   <div class="friendsTitle">
@@ -11,7 +11,7 @@
 <div class="friendsList">
   <div class="friendsSearchHolder">
     <div class="content">
-      <img src="/assets/search_icon@2x.png" class="searchIcon">
+      <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
       {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
     </div>
   </div>
@@ -23,12 +23,12 @@
   {{/if}}
   {{#each queriedModel as |friend|}}
     {{#if friend.isFriend}}
-      {{#link-to 'home.chat' friend.id 'one2one' classNames='friend-chat-link'}}
-        {{#home-friend-item model=friend.model classNames='friend'}}{{/home-friend-item}}
+      {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}
+        {{#home-friend-item model=friend.model classNames="friend"}}{{/home-friend-item}}
       {{/link-to}}
     {{else}}
-      {{#link-to 'home.chat' friend.id 'group' classNames='friend-group-link'}}
-        {{#home-group-item model=friend.model classNames='group'}}{{/home-group-item}}
+      {{#link-to "home.chat" friend.id "group" classNames="friend-group-link"}}
+        {{#home-group-item model=friend.model classNames="group"}}{{/home-group-item}}
       {{/link-to}}
     {{/if}}
   {{/each}}

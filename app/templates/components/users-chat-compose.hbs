@@ -5,7 +5,9 @@
     <div class="chips-wrapper">
 
       {{#each chips as |chip|}}
-        {{#compose-chip model=chip classNames="chip" onChipClick=(action 'onChipClick')}}{{/compose-chip}}
+        {{#compose-chip model=chip classNames="chip" onChipClick=(action "onChipClick")}}
+
+        {{/compose-chip}}
       {{/each}}
     </div>
   </div>
@@ -21,5 +23,7 @@
   suggestionTemplate=suggestionTemplate
   emptyTemplate=emptyTemplate
   limit=numberofresultstodisplay
-  onSelectAction="selectFriend"}}{{/custom-typeahead}}
+  onSelectAction="selectFriend"}}
+
+{{/custom-typeahead}}
 {{yield}}

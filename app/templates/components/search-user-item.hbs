@@ -1,18 +1,18 @@
 <div class="profilePicWrapper">
-<img class="profilePic" src="{{model.safeProfilePic}}"/>
+  <img class="profilePic" src={{model.safeProfilePic}} alt="icon">
 </div>
 <div class="firstName">{{model.FirstName}} {{model.LastName}}</div>
 <div class="addHolder">
   {{#if isAdded}}
     <div class="added">
-      <img src="/assets/ic_friend_added.png"/>
+      <img src="/assets/ic_friend_added.png" alt="icon">
       <div class="label">
         Added
       </div>
     </div>
   {{else}}
-    <div class="add" {{action 'addFriend'}}>
-      <img src="/assets/ic_add_friend.png"/>
+    <div class="add" {{action "addFriend"}} role="button">
+      <img src="/assets/ic_add_friend.png" alt="icon">
       <div class="label">
         Add
       </div>

@@ -1,6 +1,4 @@
 import Controller from '@ember/controller';
-// import {computed, on} from '@ember/object'
-import Ember from 'ember'
 import {inject as service} from '@ember/service';
 
 export default Controller.extend({
@@ -14,7 +12,7 @@ export default Controller.extend({
   modelObserver(arg) {
     arg.store.query('user', {orderBy: 'Email', startAt: arg.get('model.query'), limitToFirst: 10}).then((res) => {
       arg.set('search.users', res);
-    })
+    });
     arg.db.roomsOnce().then((res) => {
       arg.set('search.rooms', res.filter((elem) => {
         return elem['videoName'].toLowerCase().includes(arg.get('model.query').toLowerCase())

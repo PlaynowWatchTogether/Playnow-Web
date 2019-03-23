@@ -1,8 +1,11 @@
 import Component from '@ember/component';
-import EmberObject, {computed} from '@ember/object';
-import {Subject, BehaviorSubject, from, interval} from 'rxjs';
+import {Subject, BehaviorSubject, interval} from 'rxjs';
 import {debounce} from 'rxjs/operators';
 import {timer} from 'rxjs';
+import {debug} from "@ember/debug";
+
+import $ from 'jquery';
+import {run} from '@ember/runloop';
 
 export default Component.extend({
   classNameBindings: ['isLoading:loading'],
@@ -18,13 +21,13 @@ export default Component.extend({
     this.isPrebuffering = true;
     this.controlHideSubject = new Subject();
     this.controlHideSubject.pipe(debounce(() => interval(2000))).subscribe({
-      next: (newState) => {
+      next: () => {
         $('#youtubeHolder .controlsOverlay').hide();
       }
     });
     const source = timer(1000, 1000);
 
-    const subscribe = source.subscribe(val => {
+    source.subscribe(() => {
       if (window.globalPlayer) {
         if (window.globalPlayer.getDuration) {
           if (window.globalPlayer.getDuration() !== 0) {
@@ -48,7 +51,7 @@ export default Component.extend({
     $('#youtubeHolder .overlay').hide();
     let player = this.get('player');
     this.playerSubj.subscribe({
-      next: (val) => {
+      next: () => {
         player.destroy();
       }
     });
@@ -63,8 +66,10 @@ export default Component.extend({
     // window.onYouTubePlayerAPIReady = this.onYouTubePlayerAPIReady;
     window.playerObj = this;
     $('#youtubeHolder .overlay').on('click', () => {
-      $('#youtubeHolder .controlsOverlay').show();
-      this.controlHideSubject.next(1);
+      run(() => {
+        $('#youtubeHolder .controlsOverlay').show();
+        this.controlHideSubject.next(1);
+      });
     });
 
     $(window).on('resize', function () {
@@ -78,7 +83,7 @@ export default Component.extend({
     $('#youtubeHolder .overlay').height($('#youtubeHolder').width() * 0.6);
     $('#youtubeHolder .controlsOverlay').height($('#youtubeHolder').width() * 0.6);
     $('#youtubeHolder .watchers-holder').height($('#youtubeHolder').width() * 0.6);
-    console.log('Create yt player width ' + $('#youtubeHolder').width());
+    debug('Create yt player width ' + $('#youtubeHolder').width());
     window.globalPlayer = new YT.Player('ytplayer', {
       height: $('#youtubeHolder').width() * 0.6,
       width: $('#youtubeHolder').width(),
@@ -101,36 +106,40 @@ export default Component.extend({
     obj.controlHideSubject.next(2)
   },
   actionObserver(obj) {
+
     let player = obj.get('player');
     let action = obj.get('playerAction');
 
     obj.playerSubj.subscribe({
       next: (val) => {
-        if (val === 1) {
-          if (action === 1) {
-            window.playerObj.isPlaying = true;
-            player.playVideo();
-          } else if (action === 2) {
-            player.pauseVideo();
-          } else if (action === 3) {
-            window.playerObj.isPlaying = true;
-            player.playVideo();
-          } else if (action === 4) {
-            player.pauseVideo();
-          } else if (action === 10) {
-            // player.stopVideo()
-          } else if (action === 5) {
-            player.seekVideo(this.get('playerSeconds'))
-          } else {
-            return;
+        run(() => {
+          if (val === 1) {
+            if (action === 1) {
+              window.playerObj.isPlaying = true;
+              player.playVideo();
+            } else if (action === 2) {
+              player.pauseVideo();
+            } else if (action === 3) {
+              window.playerObj.isPlaying = true;
+              player.playVideo();
+            } else if (action === 4) {
+              player.pauseVideo();
+            } else if (action === 10) {
+              // player.stopVideo()
+            } else if (action === 5) {
+              player.seekVideo(this.get('playerSeconds'))
+            } else {
+              return;
+            }
+            this.set('playerAction', 0);
+            window.playerObj.playerState({
+              state: window.playerObj.lastState,
+              buffering: window.playerObj.isPrebuffering,
+              playing: window.playerObj.isPlaying
+            });
           }
-          this.set('playerAction', 0);
-          window.playerObj.playerState({
-            state: window.playerObj.lastState,
-            buffering: window.playerObj.isPrebuffering,
-            playing: window.playerObj.isPlaying
-          });
-        }
+        });
+
       }
     });
 
@@ -139,13 +148,13 @@ export default Component.extend({
     let pl = obj.get('player');
     pl.addEventListener('onStateChange', this.playerStateChanged);
     pl.addEventListener('onReady', this.playerReady);
-    console.log('playerChanged');
+    debug('playerChanged');
   },
-  playerReady(event) {
+  playerReady() {
     window.playerObj.playerSubj.next(1);
   },
   playerStateChanged(event) {
-    console.log('playerStateChanged ' + event.data);
+    debug('playerStateChanged ' + event.data);
     window.playerObj.lastState = event.data;
     window.playerObj.playerState({
       state: event.data,
@@ -195,8 +204,8 @@ export default Component.extend({
     }
 
   },
-  modelObserver(obj) {
-    console.log('model');
+  modelObserver() {
+    debug('model');
   },
   videoObserver(obj) {
     let v = obj.get('video');
@@ -219,7 +228,7 @@ export default Component.extend({
             $('.youtube-music-holder').show();
           }
 
-          console.log('video');
+          debug('video');
         }
       }
     });

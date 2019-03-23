@@ -5,7 +5,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each monthDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action 'onMonthPick' month.id}}>{{month.title}}</a>
+      <a class="dropdown-item" href="#" {{action "onMonthPick" month.id}}>{{month.title}}</a>
     {{/each}}
   </div>
 </div>
@@ -17,7 +17,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each dateDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action 'onDayPick' month.id}}>{{month.title}}</a>
+      <a class="dropdown-item" href="#" {{action "onDayPick" month.id}}>{{month.title}}</a>
     {{/each}}
   </div>
 </div>
@@ -29,7 +29,7 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each yearDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action 'onYearPick' month.id}}>{{month.title}}</a>
+      <a class="dropdown-item" href="#" {{action "onYearPick" month.id}}>{{month.title}}</a>
     {{/each}}
   </div>
 </div>

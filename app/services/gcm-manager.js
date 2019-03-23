@@ -1,9 +1,11 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
+import {debug} from '@ember/debug';
+import $ from 'jquery';
 
 export default Service.extend({
   db: service(),
-  sendMessage(receiverId, actualMessage, message, text) {
+  sendMessage(receiverId, actualMessage, message) {
     this.get('db').tokens(receiverId).then((tokens) => {
       tokens.forEach((token) => {
         let badge = parseInt(token['badge_count'] || '0');
@@ -37,11 +39,11 @@ export default Service.extend({
             'Authorization': 'key=AAAAcmEF2mM:APA91bH2adEb-c3jH7XRQg0GnZKigvH8cKK6I9LnOOmU4Zfcq_tqQXBWiwf4IwPIEPqi6W-mBzUFBTFKt_5S5MWDmYwKAkndF9lk5u_0ZxHkY7GTrfK5HdmTDz9TDi5WjrRMHjS5_-fp',
           },
           data: JSON.stringify(body),
-          success: (data, xhr, response) => {
-            console.log('ok');
+          success: () => {
+            debug('ok');
           },
-          failure: (error, k, d) => {
-            console.log('fail');
+          failure: () => {
+            debug('fail');
           }
         })
 

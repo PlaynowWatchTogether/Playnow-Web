@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
-import Ember from 'ember'
 import AuthRouteMixin from '../../mixins/auth-route-mixin'
 import {inject as service} from '@ember/service';
 import ArrayProxy from '@ember/array/proxy';
+import $ from 'jquery';
 
 export default Route.extend(AuthRouteMixin, {
   db: service(),

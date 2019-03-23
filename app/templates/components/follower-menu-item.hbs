@@ -1,5 +1,5 @@
 <div class="profilePicWrapper">
-  <img src="{{profilePic}}" class="profilePic"/>
+  <img src={{profilePic}} class="profilePic" alt="icon">
 </div>
 <div class="name">
   <div class="username">
@@ -13,7 +13,7 @@
 <div class="follow-controls">
   {{#if isAdded}}
     <div class="added">
-      <img src="/assets/ic_friend_added.png"/>
+      <img src="/assets/ic_friend_added.png" alt="icon">
       <div class="label">
         Added
       </div>
@@ -26,13 +26,13 @@
         </div>
       </div>
     {{else}}
-      {{#clickable-div classNames="add actionItem" clickAction=(action 'confirmRequest')}}
-        <img src="/assets/ic_add_friend.png"/>
+      {{#clickable-div classNames="add actionItem" clickAction=(action "confirmRequest")}}
+        <img src="/assets/ic_add_friend.png" alt="icon">
         <div class="label">
           Add
         </div>
       {{/clickable-div}}
-      {{#clickable-div classNames="cancel actionItem" clickAction=(action 'cancelRequest')}}
+      {{#clickable-div classNames="cancel actionItem" clickAction=(action "cancelRequest")}}
         Delete
       {{/clickable-div}}
     {{/if}}

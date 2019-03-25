@@ -2,9 +2,9 @@
   {{#if model}}
     <header class="home navbar navbar-default navbar-fixed-top row justify-content-md-center">
       <div class="content col-10">
-        {{#link-to "home" classNames="play-icon"}}
-          <img src="/assets/welcome_icon.png" class="play-icon" alt="icon">
-        {{/link-to}}
+        <a class="play-icon" href="/home">
+          <img src="/assets/welcome_icon@2x.png" class="play-icon" alt="icon">
+        </a>
         <div class="search">
           <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
           {{input value=searchQuery classNames="searchInput" placeholder="Search"

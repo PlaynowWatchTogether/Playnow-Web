@@ -65,28 +65,36 @@ export default Component.extend({
 
     // window.onYouTubePlayerAPIReady = this.onYouTubePlayerAPIReady;
     window.playerObj = this;
-    $('#youtubeHolder .overlay').on('click', () => {
+    $('#youtubeHolder .overlay').on('mouseenter', () => {
       run(() => {
         $('#youtubeHolder .controlsOverlay').show();
         this.controlHideSubject.next(1);
       });
     });
-
-    $(window).on('resize', function () {
-      $('#youtubeHolder').height($('#youtubeHolder').width() * 0.6);
-      $('#youtubeHolder .overlay').height($('#youtubeHolder').width() * 0.6);
-      $('#youtubeHolder .controlsOverlay').height($('#youtubeHolder').width() * 0.6);
-      $('#youtubeHolder #ytplayer').height($('#youtubeHolder').width() * 0.6);
-      $('#youtubeHolder .watchers-holder').height($('#youtubeHolder').width() * 0.6);
+    $('#youtubeHolder .overlay').on('mousemove', () => {
+      run(() => {
+        this.controlHideSubject.next(1);
+      });
     });
-    $('#youtubeHolder').height($('#youtubeHolder').width() * 0.6);
-    $('#youtubeHolder .overlay').height($('#youtubeHolder').width() * 0.6);
-    $('#youtubeHolder .controlsOverlay').height($('#youtubeHolder').width() * 0.6);
-    $('#youtubeHolder .watchers-holder').height($('#youtubeHolder').width() * 0.6);
+
+    let holder = $('#youtubeHolder');
+    $(window).on('resize', function () {
+      let height = 9 * holder.width() / 16;
+      holder.height(height);
+      $('#youtubeHolder .overlay').height(height);
+      $('#youtubeHolder .controlsOverlay').height(height);
+      $('#youtubeHolder #ytplayer').height(height);
+      $('#youtubeHolder .watchers-holder').height(height);
+    });
+    let height = 9 * holder.width() / 16;
+    holder.height(height);
+    $('#youtubeHolder .overlay').height(height);
+    $('#youtubeHolder .controlsOverlay').height(height);
+    $('#youtubeHolder .watchers-holder').height(height);
     debug('Create yt player width ' + $('#youtubeHolder').width());
     window.globalPlayer = new YT.Player('ytplayer', {
-      height: $('#youtubeHolder').width() * 0.6,
-      width: $('#youtubeHolder').width(),
+      height: height,
+      width: holder.width(),
       playerVars: {
         controls: 0,
         modestbranding: 1,

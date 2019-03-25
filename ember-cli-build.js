@@ -11,11 +11,9 @@ module.exports = function(defaults) {
     //   'node_modules/ntp-time-sync/dist/index.js'
     // ]
   });
-  app.import('node_modules/ntp-client/lib/ntp-client.js', {
-    using: [
-      {transformation: 'cjs', as: 'ntp-client'}
-    ]
-  });
+  app.import('node_modules/bootstrap/dist/css/bootstrap.css');
+  app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
+  // app.import('node_modules/bootstrap/dist/js/bootstrap.js');
   // app.import('node_modules/moment/moment.js', {
   //   using: [
   //     { transformation: 'amd', as: 'moment' }

@@ -7,7 +7,9 @@
 {{/if}}
 {{#if isPhoto}}
   <div class="message-img">
-    <img src={{model.thumbnail}} {{action "clickOnPhoto"}} role="button" alt="icon">
+    <a rel={{model.thumbnail}} href={{model.thumbnail}} data-lightbox={{model.thumbnail}} >
+      <img rel={{model.thumbnail}} src={{model.thumbnail}} class="img-fluid">
+    </a>
   </div>
 {{else}}
   {{#if isVideoRequest}}

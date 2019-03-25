@@ -15,7 +15,6 @@ export default Route.extend({
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
-
         this.db.messaging.requestPermission().then(() => {
           debug('Notification permission granted.');
           this.db.messagePermissionsGranted();
@@ -46,11 +45,10 @@ export default Route.extend({
     return new Promise((resolve) => {
       this.firebaseApp.auth().onAuthStateChanged((user) => {
         if (user) {
-          this.store.find('user', user.uid).then((model) => {
-            // let controller = this.controllerFor('application');
-            // controller.set('user',model)
+          this.db.profile(user.uid).then((model) => {
             resolve(model);
-          });
+          })
+
 
         } else {
           resolve()

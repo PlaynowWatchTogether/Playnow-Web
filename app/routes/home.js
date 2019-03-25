@@ -43,7 +43,8 @@ export default Route.extend({
         gcmManager: this.gcmManager,
         group: friend,
         myId: this.firebaseApp.auth().currentUser.uid,
-        db: this.firebaseApp.database()
+        db: this.firebaseApp.database(),
+        auth: this.auth
       });
       mds.membersOnce().then((members) => {
         let pics = members.slice(0, 3).map((elem) => {
@@ -57,6 +58,7 @@ export default Route.extend({
         let sorted = groupMessages.sort(function (a, b) {
           return b['date'] - a['date'];
         });
+
         let notEmpty = sorted.filter((elem) => {
           return elem['text'] && elem['text'].length > 0
         });
@@ -87,7 +89,8 @@ export default Route.extend({
           type: 'one2one',
           user: friend,
           myId: this.firebaseApp.auth().currentUser.uid,
-          db: this.firebaseApp.database()
+          db: this.firebaseApp.database(),
+          auth: this.auth
         });
         mds.messagesOnce((messages) => {
 

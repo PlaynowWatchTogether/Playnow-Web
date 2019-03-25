@@ -75,6 +75,9 @@ export default Component.extend({
       this.get('onClick')(this.model);
     }
   },
+  didInsertElement() {
+    this._super(...arguments);
+  },
   actions: {
     clickOnPhoto() {
       this.get('onPhotoSelect')(this.get('model.thumbnail'));

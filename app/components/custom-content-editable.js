@@ -1,5 +1,7 @@
 import Component from '@ember/component';
 import {bind} from '@ember/runloop';
+import $ from 'jquery';
+
 export default Component.extend({
   classNames: ['ember-content-editable'],
   classNameBindings: ['clearPlaceholderOnFocus:clear-on-focus'],
@@ -21,6 +23,13 @@ export default Component.extend({
       40 // down arrow
     ]);
     this._pasteHandler = bind(this, this.pasteHandler);
+    this.addObserver('model', this, 'onValueChanged')
+  },
+  onValueChanged(obj) {
+    let div = $(obj.element);
+    setTimeout(function () {
+      div.focus();
+    }, 1000);
   },
   setEndOfContenteditable() {
     var range, selection;
@@ -56,8 +65,13 @@ export default Component.extend({
     if (this.get('autofocus')) {
       this.element.focus();
     }
+    let div = $(this.element);
+    setTimeout(function () {
+      div.focus();
+    }, 1000);
 
     this.element.addEventListener('paste', this._pasteHandler);
+
   },
 
   willDestroyElement() {

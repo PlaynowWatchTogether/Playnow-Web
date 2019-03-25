@@ -14,22 +14,42 @@
       {{/if}}
 
       <div class="titleHolder">
-        <div class="title">
-          {{#if chatModel.hasProfilePic}}
-            <div class="profilePicWrapper">
-              <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
-            </div>
-          {{else}}
-            <div class="profilePicWrapper"></div>
-          {{/if}}
+        {{#if isRoom}}
+          <div class="back">
+            {{#link-to "home"}}
+              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+            {{/link-to}}
+          </div>
+          <div class="title">
+            {{#if chatModel.hasProfilePic}}
+              <div class="profilePicWrapper">
+                <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
+              </div>
+            {{else}}
+              <div class="profilePicWrapper"></div>
+            {{/if}}
 
-          <span class="name">{{chatModel.title}}</span>
-        </div>
-        <div class="back">
-          {{#link-to "home"}}
-            <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
-          {{/link-to}}
-        </div>
+            <span class="name">{{chatModel.title}}</span>
+          </div>
+        {{else}}
+          <div class="title">
+            {{#if chatModel.hasProfilePic}}
+              <div class="profilePicWrapper">
+                <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
+              </div>
+            {{else}}
+              <div class="profilePicWrapper"></div>
+            {{/if}}
+
+            <span class="name">{{chatModel.title}}</span>
+          </div>
+          <div class="back">
+            {{#link-to "home"}}
+              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+            {{/link-to}}
+          </div>
+        {{/if}}
+
       </div>
       {{#if isCompose}}
         <div class="searchHolder">
@@ -164,7 +184,7 @@
         </div>
       {{/end-scrollable}}
       <div class="newMessageHolder">
-        {{custom-content-editable value=messageText placeholder="Type a message" classNames="messageContent"
+        {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
         <div class="imgHolder">
           <img src="/assets/ic_chat_send.png" {{action "sendMessage"}} alt="icon" role="button">

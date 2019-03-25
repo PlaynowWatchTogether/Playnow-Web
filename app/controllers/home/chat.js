@@ -12,6 +12,7 @@ export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
   db: service(),
+  auth: service(),
   ntp: service(),
   gcmManager: service(),
   queryParams: ['id'],
@@ -86,6 +87,9 @@ export default Controller.extend({
   },
   isCompose: computed('model', function () {
     return this.get('model.chat_id') === 'compose'
+  }),
+  isRoom: computed('model', function () {
+    return this.get('model.type') === 'room'
   }),
   playerLoadingClass: computed('playerState', function () {
     let l = this.get('playerState');
@@ -199,7 +203,9 @@ export default Controller.extend({
           type: 'one2one',
           user: friend,
           myId: obj.firebaseApp.auth().currentUser.uid,
-          db: obj.firebaseApp.database()
+          db: obj.firebaseApp.database(),
+          fb: obj.firebaseApp,
+          auth: obj.auth
         }));
         obj.set('chatModel', {
           hasProfilePic: true,
@@ -216,7 +222,9 @@ export default Controller.extend({
           gcmManager: obj.gcmManager,
           room: room,
           myId: obj.firebaseApp.auth().currentUser.uid,
-          db: obj.firebaseApp.database()
+          db: obj.firebaseApp.database(),
+          fb: obj.firebaseApp,
+          auth: obj.auth
         }));
         obj.set('chatModel', {
           hasProfilePic: false,
@@ -234,7 +242,9 @@ export default Controller.extend({
           gcmManager: obj.gcmManager,
           group: group,
           myId: obj.firebaseApp.auth().currentUser.uid,
-          db: obj.firebaseApp.database()
+          db: obj.firebaseApp.database(),
+          fb: obj.firebaseApp,
+          auth: obj.auth
         }));
         obj.set('chatModel', {
           hasProfilePic: false,
@@ -293,12 +303,13 @@ export default Controller.extend({
       let sorted = messages.sort(function (a, b) {
         return a['date'] - b['date'];
       });
+      sorted.forEach((message) => {
+        debug('Got message ' + message.id + " text: " + message['text'] + " with ts: " + message['date']);
+      });
       if (sorted.length > 0) {
         let lastRecord = null;
         sorted.forEach((elem) => {
-          // if (elem.senderId !== obj.get('db').myId()){
           lastRecord = elem;
-          // }
         });
         if (lastRecord) {
           ds.sendSeen(lastRecord.uid);
@@ -306,7 +317,7 @@ export default Controller.extend({
       }
       sorted.forEach(function (mes, index) {
         let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
-        let mesDate = new Date(mes.date * 1000);
+        let mesDate = new Date(mes.date);
         let diff = lastDate.getTime() - mesDate.getTime();
         if (Math.abs(diff) > one_day) {
           uiMessages.push({isDate: true, date: mesDate});
@@ -340,12 +351,14 @@ export default Controller.extend({
         obj.closeVideo()
       });
     };
-    $('body').on('click', '.youtube-music-holder .controls .play-btn', playAction);
-    $('body').on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
-    $('body').on('click', '.youtube-music-holder .controls .close-btn', closeAction);
-    $('#youtubeHolder').on('click', '.controlsOverlay .control .pause', pauseAction);
-    $('#youtubeHolder').on('click', ' .controlsOverlay .control .play', playAction);
-    $('#youtubeHolder').on('click', ' .controlsOverlay .close', closeAction);
+    let body = $('body');
+    body.on('click', '.youtube-music-holder .controls .play-btn', playAction);
+    body.on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
+    body.on('click', '.youtube-music-holder .controls .close-btn', closeAction);
+    let holder = $('#youtubeHolder');
+    holder.on('click', '.controlsOverlay .control .pause', pauseAction);
+    holder.on('click', ' .controlsOverlay .control .play', playAction);
+    holder.on('click', ' .controlsOverlay .close', closeAction);
 
     let slideChange = (event) => {
       run(function () {
@@ -366,10 +379,10 @@ export default Controller.extend({
       });
     };
 
-    $('body').on('change', '.youtube-music-holder  .slider', slideChange);
-    $('body').on('input', '.youtube-music-holder  .slider', slideInput);
-    $('#youtubeHolder').on('change', '.controlsOverlay .slider', slideChange);
-    $('#youtubeHolder').on('input', '.controlsOverlay .slider', slideInput);
+    body.on('change', '.youtube-music-holder  .slider', slideChange);
+    body.on('input', '.youtube-music-holder  .slider', slideInput);
+    holder.on('change', '.controlsOverlay .slider', slideChange);
+    holder.on('input', '.controlsOverlay .slider', slideInput);
     if (obj.get('id')) {
       obj.get('youtubeSearch').video(obj.get('id')).then((video) => {
         obj.shareVideo(video);
@@ -677,10 +690,12 @@ export default Controller.extend({
       this.set("messageText", output);
     },
     onMessageClick(message) {
-      if (this.get('isMaster')) {
-        this.get('youtubeSearch').video(message['video']['id']).then((video) => {
-          this.shareVideo(video);
-        });
+      if (message['type'] === 'VideoRequest') {
+        if (this.get('isMaster')) {
+          this.get('youtubeSearch').video(message['video']['id']).then((video) => {
+            this.shareVideo(video);
+          });
+        }
       }
     }
   }

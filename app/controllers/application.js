@@ -23,9 +23,8 @@ export default Controller.extend({
     form.username = m['Username'];
     if (email && email.includes('@g2z4oldenfingers.com')) {
       form.username = email.split("@")[0];
-    } else {
-      form.email = m['Email'];
     }
+    form.email = m['ActualEmail'] || m['Email'];
     form.firstName = m['FirstName'];
     form.lastName = m['LastName'];
     form.birthDay = moment(m['BirthDate']);
@@ -113,7 +112,7 @@ export default Controller.extend({
       let form = this.get('form');
       if (form.firstName.length !== 0 &&
         form.lastName.length !== 0) {
-        this.get('db').updateProfile(form.firstName, form.lastName, form.birthDay.format("YYYY-MM-DD"))
+        this.get('db').updateProfile(form.firstName, form.lastName, form.birthDay.format("YYYY-MM-DD"), form.email)
       }
       this.set('isDisabled', true);
     },
@@ -129,9 +128,8 @@ export default Controller.extend({
       form.username = m['Username'];
       if (email && email.includes('@g2z4oldenfingers.com')) {
         form.username = email.split("@")[0];
-      } else {
-        form.email = m['Email'];
       }
+      form.email = m['ActualEmail'] || m['Email'];
       form.firstName = m['FirstName'];
       form.lastName = m['LastName'];
       form.birthDay = moment(m['BirthDate']);

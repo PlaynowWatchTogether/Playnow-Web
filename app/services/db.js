@@ -50,14 +50,26 @@ export default Service.extend({
       }
     });
   },
-  updateProfile(firstName, lastName, bd) {
+  updateProfile(firstName, lastName, bd, email) {
     let uid = this.firebaseApp.auth().currentUser.uid;
     let ref = this.firebaseApp.database().ref("Users/" + uid);
     let updates = {};
     updates['BirthDate'] = bd;
     updates['FirstName'] = firstName;
     updates['LastName'] = lastName;
-    ref.update(updates)
+    ref.update(updates);
+    this.firebaseApp.auth().currentUser.updateEmail(email).then(function () {
+      let uid = this.firebaseApp.auth().currentUser.uid;
+      let ref = this.firebaseApp.database().ref("Users/" + uid);
+      let updates = {};
+      updates['ActualEmail'] = email;
+      ref.update(updates);
+    }).catch(function (error) {
+
+
+    });
+
+
   },
   updateProfilePic(pic) {
     let uid = this.firebaseApp.auth().currentUser.uid;

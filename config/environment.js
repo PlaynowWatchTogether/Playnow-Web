@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'web',
     environment,
@@ -20,6 +20,21 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+    },
+    'ember-cli-lightbox': {
+      lightboxOptions: {
+        alwaysShowNavOnTouchDevices: false,
+        albumLabel: "Image %1 of %2",
+        disableScrolling: false,
+        fadeDuration: 500,
+        fitImagesInViewport: true,
+        maxWidth: 1000,
+        maxHeight: 1000,
+        positionFromTop: 50,
+        resizeDuration: 700,
+
+        showImageNumberLabel: true
+      }
     },
     firebase: {
       apiKey: "AIzaSyB2wa-7D0HZTsSwFNXkUSWs7o-kGl0ku-0",

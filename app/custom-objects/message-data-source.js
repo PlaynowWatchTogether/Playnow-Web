@@ -14,6 +14,7 @@ export default EmberObject.extend({
   videoStateRef: null,
   videoWatchersRef: null,
   typingInterval: null,
+  auth: null,
   init() {
     this.listeners = {};
   },
@@ -194,7 +195,7 @@ export default EmberObject.extend({
       updateCallback(records);
     })
   },
-  messages(updateCallback) {
+  messages(updateCallback, offset = 0, limit = 5) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/Messages";
@@ -204,6 +205,9 @@ export default EmberObject.extend({
       snapshot.forEach((item) => {
         let mes = item.val();
         mes.id = item.key;
+        if (mes['date'] % 1 !== 0) {
+          mes['date'] = mes['date'] * 1000;
+        }
         records.push(mes);
       });
       updateCallback(records);
@@ -290,10 +294,10 @@ export default EmberObject.extend({
     let msgUid = new Date().getTime().toString() + senderId;
     let message = {};
     message['uid'] = msgUid;
-    message['date'] = new Date().getTime() / 1000.0;
+    message['date'] = new Date().getTime().toString() / 1000;
     message['convoId'] = convId;
     message['senderId'] = senderId;
-    message['senderName'] = 'Test sender';
+    message['senderName'] = this.auth.current.get('userName');
     if (thumbnail) {
       message['type'] = 'photo';
       message['thumbnail'] = thumbnail;

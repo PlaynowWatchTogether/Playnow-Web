@@ -11,7 +11,7 @@ export default Component.extend({
     this._super(...arguments);
     if ($(this.element)[0].scrollHeight !== this.lastHeight) {
       this.lastHeight = $(this.element)[0].scrollHeight;
-      $(this.element).animate({scrollTop: this.lastHeight});
+      $(this.element).scrollTop(this.lastHeight);
     }
   },
   didInsertElement() {
@@ -27,7 +27,7 @@ export default Component.extend({
   domChanged() {
     if ($(this.element)[0].scrollHeight !== this.lastHeight) {
       this.lastHeight = $(this.element)[0].scrollHeight;
-      $(this.element).animate({scrollTop: this.lastHeight});
+      $(this.element).scrollTop(this.lastHeight);
     }
   }
 });

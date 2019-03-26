@@ -8,7 +8,7 @@
     <span class="friends noselect">Friends</span>
   </div>
 </div>
-<div class="friendsList">
+<div class="friendsList" data-total-friends={{totalFriends}} data-limit={{limit}}>
   <div class="friendsSearchHolder">
     <div class="content">
       <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
@@ -32,5 +32,9 @@
       {{/link-to}}
     {{/if}}
   {{/each}}
+  {{#if hasMoreFriends}}
+    <div class="load-more" role="button" {{action 'loadMore'}}>Show more</div>
+  {{/if}}
 
 </div>
+

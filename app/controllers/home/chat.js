@@ -398,6 +398,14 @@ export default Controller.extend({
     } else
       return false;
   }),
+  convId: computed('dataSource', function () {
+    let ds = this.get('dataSource');
+    if (ds) {
+      return ds.convId();
+    } else {
+      return '';
+    }
+  }),
   reset() {
     this.set('playerVideo', {});
     this.set('composeChips', []);

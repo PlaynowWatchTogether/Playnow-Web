@@ -18,6 +18,7 @@ export default Controller.extend({
     let m = obj.get('model');
     if (!m)
       return;
+    obj.set('userId', m['id']);
     let form = {};
     let email = m['Email'];
     form.username = m['Username'];

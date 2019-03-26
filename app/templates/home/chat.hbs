@@ -1,4 +1,4 @@
-<div class="row chatRoot {{modeClass}} {{videoClass}} h-100">
+<div class="row chatRoot {{modeClass}} {{videoClass}} h-100" data-conv-id={{convId}}>
   <div class="col-8 content h-100">
     {{#file-dropzone classNames="row holder h-100" name="chatPhotos" as |dropzone|}}
       {{#if dropzone.active}}

@@ -2,12 +2,15 @@ import Component from '@ember/component';
 import {computed} from '@ember/object'
 
 export default Component.extend({
-
-  queriedModel: computed('model', 'friendsQuery', function () {
+  init() {
+    this._super(...arguments);
+    this.limit = 10;
+  },
+  queriedModel: computed('model', 'friendsQuery', 'limit', function () {
     if (!this.get('friendsQuery') || this.get('friendsQuery').length === 0) {
       return this.get('model').filter(() => {
         return true;
-      })
+      }).slice(0, this.get('limit'))
     }
     let query = this.get('friendsQuery');
     return this.get('model').filter((elem) => {
@@ -22,7 +25,17 @@ export default Component.extend({
       } else {
         return false
       }
-    })
-  })
-
+    }).slice(0, this.get('limit'));
+  }),
+  totalFriends: computed('model', function () {
+    return this.get('model').length;
+  }),
+  hasMoreFriends: computed('model', 'limit', function () {
+    return this.get('model').length >= this.limit;
+  }),
+  actions: {
+    loadMore() {
+      this.set('limit', this.get('limit') + 10);
+    }
+  }
 });

@@ -5,6 +5,9 @@ import {computed} from '@ember/object';
 import FriendListItemObj from '../custom-objects/friend-list-item-obj'
 export default Controller.extend({
   db: service(),
+  init() {
+    this._super(...arguments);
+  },
   actions: {
     triggerSearch() {
       this.transitionToRoute('search', {query: this.get('searchQuery')});
@@ -17,7 +20,7 @@ export default Controller.extend({
     let g = (this.get('groups') || []).map((elem) => {
       return FriendListItemObj.create({type: 'group', model: elem})
     });
-    return f.concat(g);
+    return f.concat(g)
   }),
   sortedFriends: sort('contactList.@each.latestMessageDate', function (a, b) {
     if (a.get('latestMessageDate') > b.get('latestMessageDate')) {

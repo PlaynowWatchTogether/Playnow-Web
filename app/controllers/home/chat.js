@@ -22,6 +22,7 @@ export default Controller.extend({
     this.chatModel = {};
     this.messageText = '';
     this.composeChips = [];
+    this.limit = 100;
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
       delegate: {
@@ -325,6 +326,7 @@ export default Controller.extend({
         uiMessages.push({isMessage: true, message: mes, displaySender: displaySender});
         lastDate = mesDate
       });
+      obj.set('blockAutoscroll', false);
       obj.set('messages', uiMessages);
     });
     let pauseAction = () => {
@@ -407,6 +409,7 @@ export default Controller.extend({
     }
   }),
   reset() {
+    this.set('limit', 100);
     this.set('playerVideo', {});
     this.set('composeChips', []);
     this.set('chatModel', {});
@@ -425,6 +428,20 @@ export default Controller.extend({
     this.set('searchQueryMusic', '');
     this.set('messages', []);
   },
+  filteredMessages: computed('messages', 'limit', function () {
+    let messages = (this.get('messages') || []);
+    let length = messages.length;
+    let limit = this.get('limit');
+    return messages.slice(Math.max(0, length - limit), length);
+  }),
+  hasMoreMessages: computed('messages', 'limit', function () {
+    let messages = (this.get('messages') || []);
+    let length = messages.length;
+    return this.get('limit') <= length;
+  }),
+  totalMessages: computed('messages', function () {
+    return (this.get('messages') || []).length;
+  }),
   generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -568,6 +585,10 @@ export default Controller.extend({
     }
   },
   actions: {
+    loadMore() {
+      this.set('blockAutoscroll', true);
+      this.set('limit', this.get('limit') + 100);
+    },
     onVideoEnd() {
       this.closeVideo();
     },

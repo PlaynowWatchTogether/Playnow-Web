@@ -152,9 +152,12 @@
           </div>
         </div>
       {{/if}}
-      {{#end-scrollable classNames='messagesHolder'}}
-        <div class="messagesWrappper">
-          {{#each messages as |message|}}
+      {{#end-scrollable classNames='messagesHolder' blockScroll=blockAutoscroll}}
+        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
+          {{#if hasMoreMessages}}
+            <div class="load-more" role="button" {{action 'loadMore'}}>Show more</div>
+          {{/if}}
+          {{#each filteredMessages as |message|}}
             {{#if message.isMessage}}
               {{#chat-message-item model=message.message classNames="messageHolder"
                                    canClick=isMaster

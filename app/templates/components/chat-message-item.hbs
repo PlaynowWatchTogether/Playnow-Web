@@ -25,17 +25,34 @@
       </div>
     </div>
   {{else}}
-    <div class="message-text">
-      <div class="text">
-        {{{bodyMessage}}}
-      </div>
-    </div>
-    {{#if isLastSeen}}
-      <div class="last-seen">
-        <div class="profilePicWrapper">
-          <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
+    {{#if isVideo}}
+      <div class="message-video" role="button">
+        {{#if hasVideoThumbnail}}
+          <img src={{videoThumbnail}} alt="video" class="video-thumbnail">
+        {{else}}
+          <div class="video-thumbnail"></div>
+        {{/if}}
+        <div class="control-holder">
+          <div class="control-wrapper">
+
+            <img src="/assets/ic_icon_play_video.png" alt="play" class="video-play">
+          </div>
         </div>
       </div>
+    {{else}}
+
+      <div class="message-text">
+        <div class="text">
+          {{{bodyMessage}}}
+        </div>
+      </div>
+      {{#if isLastSeen}}
+        <div class="last-seen">
+          <div class="profilePicWrapper">
+            <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
+          </div>
+        </div>
+      {{/if}}
     {{/if}}
 
   {{/if}}

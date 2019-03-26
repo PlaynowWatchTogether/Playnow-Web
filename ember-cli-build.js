@@ -13,12 +13,6 @@ module.exports = function(defaults) {
   });
   app.import('node_modules/bootstrap/dist/css/bootstrap.css');
   app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
-  // app.import('node_modules/bootstrap/dist/js/bootstrap.js');
-  // app.import('node_modules/moment/moment.js', {
-  //   using: [
-  //     { transformation: 'amd', as: 'moment' }
-  //   ]
-  // });
 
 
   // Use `app.import` to add additional libraries to the generated

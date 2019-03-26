@@ -1866,6 +1866,40 @@ CHAT
               width: 200px;
             }
           }
+
+          .message-video {
+            cursor: pointer;
+            grid-column-start: 2;
+            justify-self: end;
+            width: 50%;
+            position: relative;
+            height: 200px;
+
+            .video-thumbnail {
+              position: absolute;
+              width: 100%;
+              height: 150px;
+              border-radius: 20px;
+            }
+
+            .control-holder {
+              background: rgba(0, 0, 0, 0.1);
+              border-radius: 20px;
+              height: 150px;
+
+              .control-wrapper {
+                height: 100%;
+                width: 100%;
+                display: grid;
+
+                img {
+                  width: 40px;
+                  height: 40px;
+                  margin: auto;
+                }
+              }
+            }
+          }
         }
 
         .message-video-request.clickable {

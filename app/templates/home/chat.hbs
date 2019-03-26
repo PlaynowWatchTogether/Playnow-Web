@@ -190,7 +190,7 @@
           <img src="/assets/ic_chat_send.png" {{action "sendMessage"}} alt="icon" role="button">
         </div>
         {{#file-upload name="chatPhotos"
-                       accept="image/*"
+                       accept="image/*, video/*"
                        onfileadd=(action "uploadImageToChat")}}
           <img src="/assets/ic_chat_msg_image@2x.png" alt="icon">
         {{/file-upload}}
@@ -282,9 +282,9 @@
   </div>
 </div>
 
-<div class="modal fade" id="photoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
+<div class="modal fade" id="videoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
      aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <img src={{selectedPhoto}} alt="icon">
+    {{ivy-videojs src=videoPlayerUrl ready="videoPlayerReady" }}
   </div>
 </div>

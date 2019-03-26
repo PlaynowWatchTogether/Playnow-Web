@@ -18,6 +18,23 @@ export default Component.extend({
     let type = model['type'];
     return type === 'photo';
   }),
+  isVideo: computed('model', function () {
+    let model = this.get('model');
+    let type = model['type'];
+    return type === 'Video';
+  }),
+  videoSrc: computed('model', function () {
+    let model = this.get('model');
+    return model['media'];
+  }),
+  videoThumbnail: computed('model', function () {
+    let model = this.get('model');
+    return model['media_thumbnail'];
+  }),
+  hasVideoThumbnail: computed('model', function () {
+    let model = this.get('model');
+    return model['media_thumbnail'] && model['media_thumbnail'].length > 0;
+  }),
   isVideoRequest: computed('model', function () {
     let model = this.get('model');
     let type = model['type'];

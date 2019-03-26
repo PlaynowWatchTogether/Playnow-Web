@@ -598,19 +598,31 @@ export default Controller.extend({
         }
         return;
       }
-
-      file.readAsDataURL().then((url) => {
-        let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
-
-        ref.putString(url, 'data_url').then((snapshot) => {
+      if (file.type.includes('video/')) {
+        let ref = this.firebaseApp.storage().ref('Media/Videos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
+        ref.put(file.blob).then((snapshot) => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             let ds = this.get('dataSource');
-            ds.sendMessage('', downloadURL);
+            ds.sendMessage('', downloadURL, null, true);
 
             debug('File available at', downloadURL);
           });
         });
-      });
+      } else if (file.type.includes('image/')) {
+        file.readAsDataURL().then((url) => {
+
+          let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
+
+          ref.putString(url, 'data_url').then((snapshot) => {
+            snapshot.ref.getDownloadURL().then((downloadURL) => {
+              let ds = this.get('dataSource');
+              ds.sendMessage('', downloadURL);
+
+              debug('File available at', downloadURL);
+            });
+          });
+        });
+      }
     },
     sendMessage() {
       this.performSendMessage();
@@ -681,8 +693,7 @@ export default Controller.extend({
       this.performSendMessage();
     },
     onPhotoSelect(photo) {
-      this.set('selectedPhoto', photo);
-      $('#photoPreviewModal').modal('toggle');
+
     },
     onTextPaste(index, text) {
       let m = this.get('messageText');
@@ -697,6 +708,14 @@ export default Controller.extend({
           });
         }
       }
+      if (message['type'] === 'Video') {
+        this.set('videoPlayerUrl', message['media']);
+        $('#videoPreviewModal').modal();
+      }
+    },
+    videoPlayerReady(player, component) {
+      this.playerComponent = component;
+      this.playerPlayer = player;
     }
   }
 });

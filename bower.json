@@ -3,6 +3,7 @@
   "dependencies": {
     "typeahead.js": "~0.11.1",
     "bootstrap-tokenfield": "~0.12.1",
-    "handlebars": "~3.0.3"
+    "handlebars": "~3.0.3",
+    "video.js": "~5.12"
   }
 }

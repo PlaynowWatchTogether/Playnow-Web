@@ -287,14 +287,14 @@ export default EmberObject.extend({
 
     }
   },
-  sendMessage(text, thumbnail, video = null) {
+  sendMessage(text, thumbnail, video = null, videoFile = false) {
     let senderId = this.myId;
     let path = this.messageRoot();
     let convId = this.convId();
     let msgUid = new Date().getTime().toString() + senderId;
     let message = {};
     message['uid'] = msgUid;
-    message['date'] = new Date().getTime().toString() / 1000;
+    message['date'] = new Date().getTime() / 1000;
     message['convoId'] = convId;
     message['senderId'] = senderId;
     message['senderName'] = this.auth.current.get('userName');
@@ -308,6 +308,11 @@ export default EmberObject.extend({
       message['type'] = 'VideoRequest';
       message['video'] = video;
       message['isMusic'] = video.isMusic;
+    }
+    if (videoFile) {
+      message['type'] = 'Video';
+      message['media'] = thumbnail;
+      message['media_thumbnail'] = "";
     }
     message['userId'] = senderId;
     message['message'] = 'web';

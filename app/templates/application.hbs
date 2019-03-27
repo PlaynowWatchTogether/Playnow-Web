@@ -13,12 +13,12 @@
             <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
           </div>
         </div>
-        <div class="profile">
+        {{#user-profile-view model=model classNames="profile"}}
           <span class="name">{{model.FirstName}}</span>
           <div class="profilePicWrapper">
             <img class="profilePic" src={{profilePic}} alt="icon">
           </div>
-        </div>
+        {{/user-profile-view}}
         <div class="controls">
           {{#bs-dropdown classNames="dropdown followers"}}
             <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
@@ -73,6 +73,38 @@
   {{/if}}
   {{outlet}}
 </div>
+<div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModal"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="settings-root modal-content">
+      <div class="account-root">
+        <div class="title">
+          <div>Profile</div>
+        </div>
+        <div class="profile-content user">
+          <div class="profilePicWrapper">
+            <img class="profilePic" alt="profilePic">
+          </div>
+          <div class="username-holder">
+            <div class="username">{{selectedProfile.username}}</div>
+            <div class="friends"><span class="number"></span><span class="text"> friends</span></div>
+            <div class="name">{{selectedProfile.name}}</div>
+          </div>
+          <div class="add-holder">
+            <div class="add">
+              <img src="/assets/ic_add_friend@2x.png" alt="icon">
+              <div class="label">
+                Add Friend
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModal"
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

@@ -4,7 +4,7 @@
 </div>
 
 <div class="profilePicHolder {{playingClass}} {{onlineClass}} {{unreadClass}}">
-  <div class="content">
+  {{#user-profile-view classNames="content" model=model.id}}
     <div class="playing"></div>
     <div class="playing2"></div>
     <div class="profilePicWrapper">
@@ -12,5 +12,5 @@
     </div>
     <div class="online-icon"></div>
     <img class="unread-icon" src="/assets/friend_unread@2x.png" alt="icon">
-  </div>
+  {{/user-profile-view}}
 </div>

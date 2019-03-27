@@ -1674,24 +1674,24 @@ CHAT
         }
 
         .compose-search {
-          display: grid;
-          grid-template-columns: min-content auto;
-          grid-row-gap: 5px;
+          display: flex;
           padding-top: 5px;
 
+          .twitter-typeahead {
+            flex: 1 1 auto;
+          }
           .twitter-typeahead:nth-child(3) {
-            grid-column-start: 1;
-            grid-column-end: 3;
+            position: relative;
+            display: inline-block;
+            flex: 1 0 25%;
           }
 
           .chips-holder {
             overflow-y: hidden;
             padding-left: 10px;
-
+            flex: 0 0 auto;
             .chips-wrapper {
-              display: grid;
-              grid-template-columns: repeat(auto-fill, 130px);
-              grid-row-gap: 5px;
+              display: flex;
 
               .chip {
                 cursor: pointer;

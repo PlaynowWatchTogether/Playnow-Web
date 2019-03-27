@@ -747,8 +747,9 @@ export default Controller.extend({
         this.notifyPropertyChange('composeChips');
       }
     },
-    onChipClick(data) {
-      this.get('composeChips').removeObject(data);
+    onChipClick() {
+      let chips = this.get('composeChips');
+      chips.removeObject(chips.lastObject);
       this.notifyPropertyChange('composeChips');
     },
     onMessageEnterPress() {

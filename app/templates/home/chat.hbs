@@ -20,7 +20,7 @@
               <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
             {{/link-to}}
           </div>
-          <div class="title">
+          <div class="title noselect">
             {{#if chatModel.hasProfilePic}}
               <div class="profilePicWrapper">
                 <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
@@ -32,7 +32,7 @@
             <span class="name">{{chatModel.title}}</span>
           </div>
         {{else}}
-          <div class="title">
+          <div class="title noselect">
             {{#if chatModel.hasProfilePic}}
               <div class="profilePicWrapper">
                 <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">

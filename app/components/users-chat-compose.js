@@ -53,8 +53,11 @@ export default Component.extend({
       $('#typeahead-compose').val('');
       this.get('onChipAdd')(result);
     },
+    onBackspaceEmpty() {
+      this.get('onChipClick')()
+    },
     onChipClick(chip) {
-      this.get('onChipClick')(chip);
+      // this.get('onChipClick')(chip);
     }
   }
 });

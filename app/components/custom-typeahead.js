@@ -114,7 +114,13 @@ export default TextField.extend({
     }
   },
 
+  keyDown(event) {
+    if (event.which === 8 && this.$().val() === '') {
+      this.get('onBackspaceEmpty')();
+    }
+  },
   keyUp(event) {
+
     if (this.get('selectOnEnter') === true && event.which === 13) {
       // on RETURN key
       const $dropdownMenu = this.$().siblings('.tt-menu');

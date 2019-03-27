@@ -1612,6 +1612,7 @@ CHAT
         }
 
         .profilePicWrapper {
+          cursor: pointer;
           width: 30px;
           height: 30px;
         }
@@ -1860,7 +1861,7 @@ CHAT
 
             img {
               border-radius: 20px;
-              width: 200px;
+              height: 300px;
             }
           }
 
@@ -1900,6 +1901,7 @@ CHAT
           grid-template-columns: auto 80%;
 
           .message-video {
+            justify-content: end;
             justify-self: end;
 
             .video-holder {

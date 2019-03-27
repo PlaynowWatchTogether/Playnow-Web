@@ -22,7 +22,7 @@ export default Component.extend({
   unread: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages');
   }),
-  unreadClass: computed('model', function () {
+  unreadClass: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
   modelObserver() {

@@ -6,9 +6,12 @@ export default Component.extend({
   classNameBindings: ['mine'],
   store: service(),
   auth: service(),
-
+  attributeBindings: ['data-uid:messageUid'],
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
+  }),
+  messageUid: computed('model', function () {
+    return this.get('model.uid');
   }),
   mine: computed('model', 'auth.uid', function () {
     return this.get('model').senderId === this.auth.get('uid')

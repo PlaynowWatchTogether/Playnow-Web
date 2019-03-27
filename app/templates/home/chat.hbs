@@ -17,7 +17,7 @@
         {{#if isRoom}}
           <div class="back">
             {{#link-to "home"}}
-              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+              <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
             {{/link-to}}
           </div>
           <div class="title">
@@ -64,9 +64,9 @@
         <div class="chat-members {{membersClass}}">
           {{#each membersProfiles as |member|}}
             <div class="member {{member.className}}">
-              <div class="profilePicWrapper">
+              {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
                 <img class="profilePic" src={{member.profilePic}} alt="icon">
-              </div>
+              {{/user-profile-view}}
             </div>
           {{/each}}
         </div>
@@ -152,10 +152,11 @@
           </div>
         </div>
       {{/if}}
-      {{#end-scrollable classNames='messagesHolder' blockScroll=blockAutoscroll}}
+      {{#end-scrollable classNames="messagesHolder" blockScroll=blockAutoscroll onScrolledHalf=(action "loadMore")
+                        scrollChild=".messagesWrappper"}}
         <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
           {{#if hasMoreMessages}}
-            <div class="load-more" role="button" {{action 'loadMore'}}>Show more</div>
+            <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
           {{/if}}
           {{#each filteredMessages as |message|}}
             {{#if message.isMessage}}

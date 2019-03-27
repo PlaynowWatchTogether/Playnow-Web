@@ -260,10 +260,14 @@ export default EmberObject.extend({
         this.membersRef = ref;
         this.db.ref(ref).once('value', (snapshot) => {
           let records = [];
+          debug('Got values for ref' + ref);
           snapshot.forEach((item) => {
             let mes = item.val();
-            mes.id = item.key;
-            records.push(mes);
+            debug('Got member item for ref' + ref);
+            if (typeof mes === 'object') {
+              mes.id = item.key;
+              records.push(mes);
+            }
           });
           resolve(records);
         }, (error) => {
@@ -286,8 +290,11 @@ export default EmberObject.extend({
         let records = [];
         snapshot.forEach((item) => {
           let mes = item.val();
-          mes.id = item.key;
-          records.push(mes);
+          if (typeof mes === 'object') {
+
+            mes.id = item.key;
+            records.push(mes);
+          }
         });
         updateCallback(records);
       };

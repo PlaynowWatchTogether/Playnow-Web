@@ -8,33 +8,37 @@
     <span class="friends noselect">Friends</span>
   </div>
 </div>
-<div class="friendsList" data-total-friends={{totalFriends}} data-limit={{limit}}>
-  <div class="friendsSearchHolder">
-    <div class="content">
-      <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
-      {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
+{{#end-scrollable classNames="friendsList" onScrolledHalf=(action "loadMore") scrollChild=".friends-wrapper"
+                  handleEnd=true blockScroll=true}}
+  <div class="friends-wrapper">
+    <div class="friendsSearchHolder">
+      <div class="content">
+        <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
+        {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
+      </div>
     </div>
-  </div>
-  {{#if loading}}
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
-  {{/if}}
-  {{#each queriedModel as |friend|}}
-    {{#if friend.isFriend}}
-      {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}
-        {{#home-friend-item model=friend.model classNames="friend"}}{{/home-friend-item}}
-      {{/link-to}}
-    {{else}}
-      {{#link-to "home.chat" friend.id "group" classNames="friend-group-link"}}
-        {{#home-group-item model=friend.model classNames="group"}}{{/home-group-item}}
-      {{/link-to}}
+    {{#if loading}}
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
     {{/if}}
-  {{/each}}
-  {{#if hasMoreFriends}}
-    <div class="load-more" role="button" {{action 'loadMore'}}>Show more</div>
-  {{/if}}
+    {{#each queriedModel as |friend|}}
+      {{#if friend.isFriend}}
+        {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}
+          {{#home-friend-item model=friend.model classNames="friend"}}{{/home-friend-item}}
+        {{/link-to}}
+      {{else}}
+        {{#link-to "home.chat" friend.id "group" classNames="friend-group-link"}}
+          {{#home-group-item model=friend.model classNames="group"}}{{/home-group-item}}
+        {{/link-to}}
+      {{/if}}
+    {{/each}}
+    {{#if hasMoreFriends}}
+      <div class="load-more" role="button" {{action 'loadMore'}}>Show more</div>
+    {{/if}}
 
-</div>
+  </div>
 
+
+{{/end-scrollable}}

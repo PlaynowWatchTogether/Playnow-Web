@@ -26,7 +26,7 @@ export default Component.extend({
   onlineClass: computed('model.isOnline', function () {
     return this.get('model.isOnline') ? 'online' : '';
   }),
-  unreadClass: computed('model', function () {
+  unreadClass: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
   members: computed('model.groupPics', function () {

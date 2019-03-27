@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
+
 export default EmberObject.extend({
   gcmManager: service(),
   type: 'one2one',
@@ -189,13 +190,22 @@ export default EmberObject.extend({
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
-        mes.id = item.key;
-        records.push(mes);
+        if (typeof mes === 'object') {
+          mes.id = item.key;
+          if (mes['serverDate']) {
+            mes['date'] = mes['serverDate']
+          } else {
+            if (mes['date'] % 1 !== 0) {
+              mes['date'] = mes['date'] * 1000;
+            }
+          }
+          records.push(mes);
+        }
       });
       updateCallback(records);
     })
   },
-  messages(updateCallback, offset = 0, limit = 5) {
+  messages(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/Messages";
@@ -204,11 +214,17 @@ export default EmberObject.extend({
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
-        mes.id = item.key;
-        if (mes['date'] % 1 !== 0) {
-          mes['date'] = mes['date'] * 1000;
+        if (typeof mes === 'object') {
+          mes.id = item.key;
+          if (mes['serverDate']) {
+            mes['date'] = mes['serverDate']
+          } else {
+            if (mes['date'] % 1 !== 0) {
+              mes['date'] = mes['date'] * 1000;
+            }
+          }
+          records.push(mes);
         }
-        records.push(mes);
       });
       updateCallback(records);
     };
@@ -295,6 +311,7 @@ export default EmberObject.extend({
     let message = {};
     message['uid'] = msgUid;
     message['date'] = new Date().getTime() / 1000;
+    message['serverDate'] = this.fb.firebase_.database.ServerValue.TIMESTAMP;
     message['convoId'] = convId;
     message['senderId'] = senderId;
     message['senderName'] = this.auth.current.get('userName');

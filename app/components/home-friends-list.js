@@ -5,6 +5,10 @@ export default Component.extend({
   init() {
     this._super(...arguments);
     this.limit = 10;
+    this.addObserver('friendsQuery', this, 'onQueryChanged')
+  },
+  onQueryChanged(obj) {
+    obj.set('limit', 10);
   },
   queriedModel: computed('model', 'friendsQuery', 'limit', function () {
     if (!this.get('friendsQuery') || this.get('friendsQuery').length === 0) {
@@ -27,11 +31,11 @@ export default Component.extend({
       }
     }).slice(0, this.get('limit'));
   }),
-  totalFriends: computed('model', function () {
-    return this.get('model').length;
+  totalFriends: computed('queriedModel.@each.id', function () {
+    return this.get('queriedModel').length;
   }),
-  hasMoreFriends: computed('model', 'limit', function () {
-    return this.get('model').length >= this.limit;
+  hasMoreFriends: computed('queriedModel.@each.id', 'limit', function () {
+    return this.get('queriedModel').length >= this.limit;
   }),
   actions: {
     loadMore() {

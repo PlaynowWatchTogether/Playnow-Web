@@ -7,6 +7,9 @@ import {computed} from '@ember/object';
 import {run} from '@ember/runloop';
 import {debug} from "@ember/debug";
 import $ from 'jquery';
+import ArrayProxy from '@ember/array/proxy';
+import ObjectProxy from '@ember/object/proxy';
+import MessageObject from '../../custom-objects/message-object';
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -23,6 +26,7 @@ export default Controller.extend({
     this.messageText = '';
     this.composeChips = [];
     this.limit = 100;
+    this.messages = ArrayProxy.create({content: []});
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
       delegate: {
@@ -321,13 +325,40 @@ export default Controller.extend({
         let mesDate = new Date(mes.date);
         let diff = lastDate.getTime() - mesDate.getTime();
         if (Math.abs(diff) > one_day) {
-          uiMessages.push({isDate: true, date: mesDate});
+          let dateContent = {isDate: true, date: mesDate, id: '' + mesDate.getTime()};
+          let normalizedData = obj.store.normalize('thread-message', {
+            id: '' + mesDate.getTime(),
+            convoId: ds.convId(),
+            content: JSON.stringify({isDate: true, date: mesDate.getTime()})
+          });
+
+          obj.store.push(normalizedData);
+          uiMessages.push(MessageObject.create({content: dateContent}));
         }
-        uiMessages.push({isMessage: true, message: mes, displaySender: displaySender});
+        let mesCntent = {
+          isMessage: true,
+          message: mes,
+          displaySender: displaySender,
+          id: mes['id']
+        };
+        let normalizedData = obj.store.normalize('thread-message', {
+          id: mes['id'],
+          convoId: ds.convId(),
+          content: JSON.stringify(mesCntent)
+        });
+
+        obj.store.push(normalizedData);
+
+        uiMessages.push(MessageObject.create({
+          content: mesCntent
+        }));
         lastDate = mesDate
       });
       obj.set('blockAutoscroll', false);
-      obj.set('messages', uiMessages);
+      obj.messages.setObjects(uiMessages);
+
+      // obj.notifyPropertyChange('messages');
+      // obj.set('messages', uiMessages);
     });
     let pauseAction = () => {
       run(function () {
@@ -426,15 +457,17 @@ export default Controller.extend({
     }
     this.set('searchQueryVideo', '');
     this.set('searchQueryMusic', '');
-    this.set('messages', []);
+    this.messages.setObjects([]);
   },
-  filteredMessages: computed('messages', 'limit', function () {
+  filteredMessages: computed('messages.@each.id', 'limit', function () {
     let messages = (this.get('messages') || []);
     let length = messages.length;
     let limit = this.get('limit');
-    return messages.slice(Math.max(0, length - limit), length);
+    return this.store.peekAll('thread-message').filter((elem) => {
+      return elem.get('convoId') === this.get('dataSource').convId();
+    }).slice(Math.max(0, length - limit), length);
   }),
-  hasMoreMessages: computed('messages', 'limit', function () {
+  hasMoreMessages: computed('messages.@each.id', 'limit', function () {
     let messages = (this.get('messages') || []);
     let length = messages.length;
     return this.get('limit') <= length;
@@ -738,8 +771,8 @@ export default Controller.extend({
         }
       }
       if (message['type'] === 'Video') {
-        this.set('videoPlayerUrl', message['media']);
-        $('#videoPreviewModal').modal();
+        // this.set('videoPlayerUrl', message['media']);
+        // $('#videoPreviewModal').modal();
       }
     },
     videoPlayerReady(player, component) {

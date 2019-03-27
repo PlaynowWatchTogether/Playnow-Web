@@ -1028,7 +1028,6 @@ body.home.chat.room {
         width: 60px;
         height: 60px;
         margin: auto;
-        z-index: 40;
 
         .profilePic {
 
@@ -1044,7 +1043,7 @@ body.home.chat.room {
         border: solid white 1px;
         display: none;
         position: absolute;
-        z-index: 40;
+        z-index: 1;
         top: -5px;
         right: -5px;
       }
@@ -1066,7 +1065,6 @@ body.home.chat.room {
         display: none;
         border-radius: 50%;
         background: $primary-gradient;
-        z-index: 21;
       }
 
       .playing2 {
@@ -1078,7 +1076,6 @@ body.home.chat.room {
         display: none;
         border-radius: 50%;
         background: #fff;
-        z-index: 22;
       }
     }
 
@@ -1870,34 +1867,23 @@ CHAT
           .message-video {
             cursor: pointer;
             grid-column-start: 2;
-            justify-self: end;
             width: 50%;
             position: relative;
             height: 200px;
+            border-radius: 20px;
+            display: grid;
 
-            .video-thumbnail {
-              position: absolute;
-              width: 100%;
-              height: 150px;
+            .video-holder {
+              width: min-content;
               border-radius: 20px;
+              overflow: hidden;
+              box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
+
             }
 
-            .control-holder {
-              background: rgba(0, 0, 0, 0.1);
-              border-radius: 20px;
-              height: 150px;
-
-              .control-wrapper {
-                height: 100%;
-                width: 100%;
-                display: grid;
-
-                img {
-                  width: 40px;
-                  height: 40px;
-                  margin: auto;
-                }
-              }
+            video {
+              height: 200px;
+              margin-left: auto;
             }
           }
         }
@@ -1913,6 +1899,13 @@ CHAT
         .messageHolder.mine {
           grid-template-columns: auto 80%;
 
+          .message-video {
+            justify-self: end;
+
+            .video-holder {
+              margin-left: auto;
+            }
+          }
           .profilePic {
             display: none;
           }

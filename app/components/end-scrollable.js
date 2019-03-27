@@ -10,9 +10,15 @@ export default Component.extend({
   didRender() {
     this._super(...arguments);
     if ($(this.element)[0].scrollHeight !== this.lastHeight) {
-      this.lastHeight = $(this.element)[0].scrollHeight;
-      if (!this.get('blockAutoscroll')) {
+      let newHeight = $(this.element)[0].scrollHeight;
+      let diff = newHeight - this.lastHeight;
+      this.lastHeight = newHeight;
+      if (!this.get('blockScroll')) {
         $(this.element).scrollTop(this.lastHeight);
+      } else {
+        if (diff > 0) {
+          $(this.element).scrollTop(diff);
+        }
       }
     }
   },
@@ -29,7 +35,7 @@ export default Component.extend({
   domChanged() {
     if ($(this.element)[0].scrollHeight !== this.lastHeight) {
       this.lastHeight = $(this.element)[0].scrollHeight;
-      if (!this.get('blockAutoscroll')) {
+      if (!this.get('blockScroll')) {
         $(this.element).scrollTop(this.lastHeight);
       }
     }

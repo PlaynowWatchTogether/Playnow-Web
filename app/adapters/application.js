@@ -21,6 +21,9 @@ export default FirestoreAdapter.extend({
   //   payload['LastActiveDate'] = payload['Last Active Date'];
   //   return payload
   // }
+  recordWasPushed(store, modelName, record) {
+    return true;
+  },
   _getCollectionRef(typeClass, id) {
     if (typeClass.modelName === 'friends') {
       let user = this.firebaseApp.auth().currentUser;

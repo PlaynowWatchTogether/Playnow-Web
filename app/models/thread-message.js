@@ -1,15 +1,23 @@
 import DS from 'ember-data';
-
+import moment from 'moment';
+import {computed} from '@ember/object';
 const {attr} = DS;
 export default DS.Model.extend({
   convoId: attr('string'),
-  date: attr('number'),
-  message: attr('string'),
-  senderId: attr('string'),
-  senderName: attr('string'),
-  text: attr('string'),
-  thumbnail: attr('string'),
-  type: attr('string'),
-  uid: attr('string'),
-  userId: attr('string'),
+  content: attr('string'),
+  message: computed('json.message', function () {
+    return this.get('json.message')
+  }),
+  isMessage: computed('json.isMessage', function () {
+    return this.get('json.isMessage');
+  }),
+  isDate: computed('json.isDate', function () {
+    return this.get('json.isDate');
+  }),
+  json: computed('content', function () {
+    return JSON.parse(this.get('content'));
+  }),
+  date: computed('json.date', function () {
+    return new Date(this.get('json.date'))
+  })
 });

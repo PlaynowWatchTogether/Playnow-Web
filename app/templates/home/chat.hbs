@@ -91,15 +91,16 @@
               </div>
               <img src="/assets/ic_video_close.png" class="close" alt="icon">
               <span class="video-title"></span>
-              <div class="switch-holder">
-                <div class="label">Auto play</div>
-                <label class="switch">
-                  <input type="checkbox" id="autoplay-checkbox">
-                  <span class="switcher round"></span>
+              {{#if canAutoplay}}
+                <div class="switch-holder">
+                  <div class="label">Auto play</div>
+                  <label class="switch">
+                    <input type="checkbox" id="autoplay-checkbox">
+                    <span class="switcher round"></span>
 
-                </label>
-              </div>
-
+                  </label>
+                </div>
+              {{/if}}
               <input type="range" min="1" max="100" value="50" class="slider">
             </div>
           </div>

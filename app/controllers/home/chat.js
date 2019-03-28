@@ -645,6 +645,17 @@ export default Controller.extend({
       })
     }
   },
+  canAutoplay: computed('playerVideo', 'videoStateHandler', function () {
+    let vsh = this.get('videoStateHandler');
+    if (!vsh)
+      return false;
+    let master = vsh.isMaster;
+    let senderId = this.get('playerVideo.video.senderId');
+    if (!senderId)
+      return false;
+
+    return (master || senderId === this.db.myId());
+  }),
   actions: {
     loadMore() {
       this.set('blockAutoscroll', true);
@@ -654,7 +665,8 @@ export default Controller.extend({
       if ($('#autoplay-checkbox')[0].checked) {
         let vsh = this.get('videoStateHandler');
         let master = vsh.isMaster;
-        if (this.get('playerVideo.video.videoType') === 'youtubeVideo' && master) {
+        let senderId = this.get('playerVideo.video.senderId');
+        if (this.get('playerVideo.video.videoType') === 'youtubeVideo' && (master || senderId === this.db.myId())) {
           this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
             this.shareVideo(video);
           });

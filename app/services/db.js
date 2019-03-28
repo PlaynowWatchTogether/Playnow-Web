@@ -190,8 +190,10 @@ export default Service.extend({
         let tokens = [];
         snapshot.forEach((data) => {
           let payload = data.val();
-          payload.id = data.key;
-          tokens.push(payload);
+          if (typeof payload === 'object') {
+            payload.id = data.key;
+            tokens.push(payload);
+          }
         });
         resolve(tokens);
       }, (error) => {
@@ -214,7 +216,13 @@ export default Service.extend({
       if (email && email.includes('@')) {
         username = email.split("@")[0]
       }
-      let ref = this.firebaseApp.database().ref("Users/" + user['id'] + '/Followers/' + this.firebaseApp.auth().currentUser.uid);
+      let id = '';
+      if (typeof user === 'object') {
+        id = user['id'];
+      } else {
+        id = user
+      }
+      let ref = this.firebaseApp.database().ref("Users/" + id + '/Followers/' + this.firebaseApp.auth().currentUser.uid);
       let updates = {};
       updates['Email'] = email;
       updates['Name'] = username;
@@ -224,7 +232,7 @@ export default Service.extend({
       }
       ref.update(updates).then(() => {
         this.profile(this.myId()).then((myProfile) => {
-          this.get('gcmManager').sendMessage(user['id'], null, myProfile['FirstName'] + ' added you as friend!');
+          this.get('gcmManager').sendMessage(id, null, myProfile['FirstName'] + ' added you as friend!');
         });
       });
 

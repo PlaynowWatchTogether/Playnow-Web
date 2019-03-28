@@ -34,9 +34,9 @@
         {{else}}
           <div class="title noselect">
             {{#if chatModel.hasProfilePic}}
-              <div class="profilePicWrapper">
+              {{#user-profile-view classNames="profilePicWrapper" model=chatModel.user.id}}
                 <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
-              </div>
+              {{/user-profile-view}}
             {{else}}
               <div class="profilePicWrapper"></div>
             {{/if}}
@@ -155,6 +155,14 @@
       {{#end-scrollable classNames="messagesHolder" blockScroll=blockAutoscroll onScrolledHalf=(action "loadMore")
                         scrollChild=".messagesWrappper"}}
         <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
+          {{#if isLoadingMessages}}
+            <div class="loading-holder h-100">
+              <div class="lds-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          {{/if}}
           {{#if hasMoreMessages}}
             <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
           {{/if}}
@@ -238,18 +246,25 @@
                   <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                   {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
                           insert-newline=(action "triggerSearch")}}
-                  <div class="trigger-search" {{action "triggerSearch"}} role="button">
+                  <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
                     <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
                 </div>
               </div>
               <div class="youtube-items">
+                {{#if isLoadingVideo}}
+                  <div class="loading-holder h-100">
+                    <div class="lds-ripple">
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                {{/if}}
                 {{#each youtubeVideoItems as |video|}}
                   {{#youtube-video model=video classNames="youtube-item"
                                    clickAction=(action "videoPick")}}
 
                   {{/youtube-video}}
-
                 {{/each}}
               </div>
 
@@ -265,11 +280,19 @@
                 <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                 {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
                         insert-newline=(action "triggerSearch")}}
-                <div class="trigger-search" {{action "triggerSearch"}} role="button">
+                <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
                   <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                 </div>
               </div>
             </div>
+            {{#if isLoadingMusic}}
+              <div class="loading-holder h-100">
+                <div class="lds-ripple">
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            {{/if}}
             {{#each youtubeMusicItems as |video|}}
               {{#youtube-music model=video classNames="youtube-item-music col-12"
                                clickAction=(action "musicPick")}}

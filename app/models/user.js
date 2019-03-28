@@ -16,6 +16,9 @@ export default DS.Model.extend({
     } else {
       return this.ProfilePic
     }
+  }),
+  displayName: computed('Username', 'FirstName', function () {
+    return this.get('Username') || this.get('FirstName');
   })
 
 });

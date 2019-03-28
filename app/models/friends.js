@@ -5,6 +5,7 @@ const {attr} = DS;
 export default DS.Model.extend({
   profilePic: attr('string'),
   Username: attr('string'),
+  Email: attr('string'),
   firstName: attr('string'),
   lastName: attr('string'),
   videoIsPlaying: attr('boolean'),
@@ -18,5 +19,8 @@ export default DS.Model.extend({
       return this.profilePic
     }
   }),
-  lastMessage: attr('string')
+  lastMessage: attr('string'),
+  displayName: computed('Username', 'firstName', function () {
+    return this.get('Username') || this.get('firstName');
+  })
 });

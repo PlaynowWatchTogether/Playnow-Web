@@ -79,7 +79,9 @@ export default Route.extend({
     let ctrl = this.controllerFor('home');
     ctrl.set('friends', this.store.peekAll('friends'));
     ctrl.set('groups', this.store.peekAll('group'));
+    ctrl.set('loading', true);
     this.get('db').friends((friends) => {
+
       friends.forEach((friend) => {
         let normalizedData = this.store.normalize('friends', friend);
         this.store.push(normalizedData);
@@ -111,6 +113,7 @@ export default Route.extend({
 
 
       });
+      ctrl.set('loading', false);
 
     }, () => {
 
@@ -122,8 +125,7 @@ export default Route.extend({
         this.store.push(normalizedData);
       });
       this.handleGroupMessages(friends);
-      // let ctrl = this.controllerFor('home');
-      // ctrl.set('groups', friends);
+      ctrl.set('loading', false);
     }, () => {
 
     });

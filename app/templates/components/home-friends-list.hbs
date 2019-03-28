@@ -17,12 +17,7 @@
         {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging"}}
       </div>
     </div>
-    {{#if loading}}
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-    {{/if}}
+    {{yield}}
     {{#each queriedModel as |friend|}}
       {{#if friend.isFriend}}
         {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}

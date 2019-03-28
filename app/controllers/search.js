@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import $ from 'jquery';
+
 export default Controller.extend({
   db: service(),
   init() {
@@ -17,7 +18,7 @@ export default Controller.extend({
     });
     arg.db.roomsOnce().then((res) => {
       arg.set('search.rooms', res.filter((elem) => {
-        return elem['videoName'].toLowerCase().includes(arg.get('model.query').toLowerCase())
+        return (elem['videoName'] || '').toLowerCase().includes(arg.get('model.query').toLowerCase())
       }));
     })
   },

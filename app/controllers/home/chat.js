@@ -83,15 +83,21 @@ export default Controller.extend({
     this.addObserver('dataSource', this, 'dataSourceObserver');
     this.addObserver('messageText', this, 'messageTextObserver');
     this.addObserver('searchMode', this, 'searchModeObserver');
-    this.set('searchMode', 'video');
     this.searchModeObserver(this);
     this.set('playerState', {});
+    this.set('searchMode', 'video');
 
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
   },
   isCompose: computed('model', function () {
     return this.get('model.chat_id') === 'compose'
+  }),
+  loadingVideoClass: computed('isLoadingVideo', function () {
+    return this.get('isLoadingVideo') ? 'active' : '';
+  }),
+  loadingMusicClass: computed('isLoadingMusic', function () {
+    return this.get('isLoadingMusic') ? 'active' : '';
   }),
   isRoom: computed('model', function () {
     return this.get('model.type') === 'room'
@@ -125,6 +131,9 @@ export default Controller.extend({
       let q = this.get('searchQueryMusic');
       let page = this.get('youtubeMusicItemsPage');
       if (reset) {
+        this.set('isLoadingMusic', true);
+      }
+      if (reset) {
         this.set('youtubeMusicItems', []);
       }
       if (!q || q.length === 0) {
@@ -135,6 +144,7 @@ export default Controller.extend({
           } else {
             this.get('youtubeMusicItems').pushObjects(data.items);
           }
+          this.set('isLoadingMusic', false);
           resolve();
         });
       } else {
@@ -145,6 +155,7 @@ export default Controller.extend({
           } else {
             this.get('youtubeMusicItems').pushObjects(data.items);
           }
+          this.set('isLoadingMusic', false);
           resolve();
         });
       }
@@ -153,6 +164,9 @@ export default Controller.extend({
   },
   queryYoutubeVideos(reset) {
     return new Promise((resolve) => {
+      if (reset) {
+        this.set('isLoadingVideo', true);
+      }
       let q = this.get('searchQueryVideo');
       let page = this.get('youtubeVideoItemsPage');
       if (reset) {
@@ -166,6 +180,7 @@ export default Controller.extend({
           } else {
             this.get('youtubeVideoItems').pushObjects(data.items);
           }
+          this.set('isLoadingVideo', false);
           resolve();
         });
       } else {
@@ -176,6 +191,7 @@ export default Controller.extend({
           } else {
             this.get('youtubeVideoItems').pushObjects(data.items);
           }
+          this.set('isLoadingVideo', false);
           resolve();
         });
       }
@@ -202,7 +218,7 @@ export default Controller.extend({
       return;
     }
     if ('one2one' === type) {
-      obj.store.find('user', convId).then((friend) => {
+      obj.store.find('friends', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
           gcmManager: obj.gcmManager,
           type: 'one2one',
@@ -214,7 +230,7 @@ export default Controller.extend({
         }));
         obj.set('chatModel', {
           hasProfilePic: true,
-          title: friend.get('FirstName'),
+          title: friend.get('displayName'),
           user: friend
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
@@ -302,6 +318,7 @@ export default Controller.extend({
       });
       obj.set('typingIndicator', filtered);
     });
+    obj.set('isLoadingMessages', true);
     ds.messages((messages) => {
       let uiMessages = [];
       let lastDate = new Date(0);
@@ -355,6 +372,7 @@ export default Controller.extend({
         lastDate = mesDate
       });
       obj.set('blockAutoscroll', false);
+      obj.set('isLoadingMessages', false);
       obj.messages.setObjects(uiMessages);
 
       // obj.notifyPropertyChange('messages');
@@ -389,9 +407,9 @@ export default Controller.extend({
     body.on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
     body.on('click', '.youtube-music-holder .controls .close-btn', closeAction);
     let holder = $('#youtubeHolder');
-    holder.on('click', '.controlsOverlay .control .pause', pauseAction);
-    holder.on('click', ' .controlsOverlay .control .play', playAction);
-    holder.on('click', ' .controlsOverlay .close', closeAction);
+    body.on('click', '#youtubeHolder .controlsOverlay .control .pause', pauseAction);
+    body.on('click', '#youtubeHolder .controlsOverlay .control .play', playAction);
+    body.on('click', '#youtubeHolder .controlsOverlay .close', closeAction);
 
     let slideChange = (event) => {
       run(function () {
@@ -440,10 +458,21 @@ export default Controller.extend({
     }
   }),
   reset() {
+    this.set('youtubeVideoItemsPage', null);
+    this.set('youtubeMusicItemsPage', null);
+    this.set('messageText', '');
     this.set('limit', 100);
     this.set('playerVideo', {});
     this.set('composeChips', []);
     this.set('chatModel', {});
+
+    this.set('searchMode', 'video');
+    this.set('searchQueryVideo', '');
+    this.set('searchQueryMusic', '');
+    this.set('isLoadingMessages', false);
+    this.queryYoutubeVideos(true);
+    this.queryYoutubeMusic(true);
+
     let ds = this.get('dataSource');
     if (ds) {
       this.set('playerAction', 10);
@@ -455,8 +484,7 @@ export default Controller.extend({
     if (vsh) {
       vsh.closeVideo();
     }
-    this.set('searchQueryVideo', '');
-    this.set('searchQueryMusic', '');
+
     this.messages.setObjects([]);
   },
   filteredMessages: computed('messages.@each.id', 'limit', function () {

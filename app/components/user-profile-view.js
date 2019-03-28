@@ -14,13 +14,23 @@ export default Component.extend({
     let email = get(profile, 'Email');
     profileModal.find('.username')[0].innerText = (email || '').split('@')[0];
     profileModal.find('.name')[0].innerText = get(profile, 'FirstName') + ' ' + get(profile, 'LastName');
-    if (Object.keys(get(profile, 'Friends')).includes(this.db.myId()) || profile['id'] === this.db.myId()) {
+    let friends = Object.keys(get(profile, 'Friends') || {});
+    let followers = Object.keys(get(profile, 'Followers') || {});
+    if (friends.includes(this.db.myId()) || followers.includes(this.db.myId()) || profile['id'] === this.db.myId()) {
       profileModal.find('.add-holder').hide();
+      profileModal.find('.added-holder').show();
     } else {
-      profileModal.find('.add-holder').hide();
-      // profileModal.find('.add-holder').show();
+      let addHolder = profileModal.find('.add-holder');
+      addHolder.show();
+      addHolder.attr('data-user-id', profile['id']);
+      addHolder.on('click', () => {
+        this.db.followUser(addHolder.attr('data-user-id'));
+        addHolder.hide();
+        profileModal.find('.added-holder').show();
+      });
+      profileModal.find('.added-holder').hide();
     }
-    profileModal.find('.friends .number')[0].innerText = Object.keys(get(profile, 'Friends')).length;
+    profileModal.find('.friends .number')[0].innerText = friends.length;
 
     profileModal.modal();
   },

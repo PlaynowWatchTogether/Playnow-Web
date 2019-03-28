@@ -1,7 +1,7 @@
 {{#if displaySender}}
-  <div class="profilePicWrapper">
+  {{#user-profile-view classNames="profilePicWrapper" model=user.id}}
     <img src={{user.safeProfilePic}} class="profilePic" alt="icon">
-  </div>
+  {{/user-profile-view}}
 {{else}}
   <div class="profilePicWrapper"></div>
 {{/if}}

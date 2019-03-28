@@ -27,7 +27,12 @@ export default Service.extend({
         debug(data);
         resolve({
           nextPage: data['nextPageToken'],
-          items: data['items'],
+          items: data['items'].map((elem) => {
+            return {
+              id: elem['id']['videoId'],
+              snippet: elem['snippet']
+            }
+          }),
           pageInfo: data['pageInfo']
         });
       })

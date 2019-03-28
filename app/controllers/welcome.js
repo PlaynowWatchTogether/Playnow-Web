@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import moment from "moment";
 import {debug} from '@ember/debug';
+import {computed} from '@ember/object';
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -18,7 +19,14 @@ export default Controller.extend({
     this.error = ''
 
   },
+  signupBtnClass: computed('signupLoading', function () {
+    return this.get('signupLoading') ? 'active' : '';
+  }),
+  loginBtnClass: computed('loginLoading', function () {
+    return this.get('loginLoading') ? 'active' : '';
+  }),
   userCreated() {
+    this.set('signupLoading', false);
     const auth = this.get('firebaseApp').auth();
     debug("Created user with " + auth.currentUser.uid);
     this.transitionToRoute("home");
@@ -27,9 +35,11 @@ export default Controller.extend({
     const auth = await this.get('firebaseApp').auth();
     auth.signInWithEmailAndPassword(email, password).then(() => {
       debug('signed in');
-      this.userCreated()
+      this.userCreated();
+      this.set('loginLoading', false);
     }).catch((error) => {
       debug(error);
+      this.set('loginLoading', false);
       this.set('error', "Login failed");
       this.clearError();
     })
@@ -73,6 +83,7 @@ export default Controller.extend({
   },
   clearError() {
     setTimeout(() => {
+      this.set('signupLoading', false);
       this.set('form.register.error', {});
       this.set('error', '');
     }, 2000);
@@ -83,6 +94,7 @@ export default Controller.extend({
       this.set('form.register.birthDate', dateMoment);
     },
     async signUpAction() {
+      this.set('signupLoading', true);
       let register = this.get('form.register');
       this.set('form.register.error', {});
       if (this.isEmpty(register.firstName)) {
@@ -165,6 +177,7 @@ export default Controller.extend({
       });
     },
     async loginAction() {
+      this.set('loginLoading', true);
       this.set('error', "");
       const db = await this.get('firebaseApp').database();
       let username = this.form.username;
@@ -184,6 +197,7 @@ export default Controller.extend({
           this.loginWithEmail(userEmail, password)
         }, (error) => {
           debug(error);
+          this.set('loginLoading', false);
           this.set('error', "Login failed");
           this.clearError();
         });

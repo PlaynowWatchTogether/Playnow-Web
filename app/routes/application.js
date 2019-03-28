@@ -18,6 +18,19 @@ export default Route.extend({
         this.db.messaging.requestPermission().then(() => {
           debug('Notification permission granted.');
           this.db.messagePermissionsGranted();
+          this.db.messaging.onMessage((message) => {
+            debug('Message received ' + message);
+          });
+          this.db.messaging.setBackgroundMessageHandler(function (payload) {
+            debug('[firebase-messaging-sw.js] Received background message ', payload);
+            self.clients.matchAll({includeUncontrolled: true}).then(function (clients) {
+              debug.log(clients);
+              //you can see your main window client in this list.
+              clients.forEach(function (client) {
+                client.postMessage('YOUR_MESSAGE_HERE');
+              })
+            })
+          });
 
         }).catch((err) => {
           debug('Unable to get permission to notify.', err);

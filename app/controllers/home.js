@@ -3,6 +3,7 @@ import {inject as service} from '@ember/service';
 import {sort} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import FriendListItemObj from '../custom-objects/friend-list-item-obj'
+import $ from "jquery";
 export default Controller.extend({
   db: service(),
   init() {
@@ -10,15 +11,16 @@ export default Controller.extend({
   },
   actions: {
     triggerSearch() {
+      $('.trigger-search').addClass('active');
       this.transitionToRoute('search', {query: this.get('searchQuery')});
     }
   },
   contactList: computed('friends.@each.latestMessageDate', 'groups.@each.latestMessageDate', function () {
     let f = (this.get('friends') || []).map((elem) => {
-      return FriendListItemObj.create({type: 'friend', model: elem})
+      return FriendListItemObj.create({type: 'friend', content: elem})
     });
     let g = (this.get('groups') || []).map((elem) => {
-      return FriendListItemObj.create({type: 'group', model: elem})
+      return FriendListItemObj.create({type: 'group', content: elem})
     });
     return f.concat(g)
   }),

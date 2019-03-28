@@ -164,6 +164,10 @@ $bold-font: 'Conv_Segoe UI Bold';
     padding: 2px 20px;
   }
 
+  .loginBtn.active {
+    background: #28a4ff !important;
+  }
+
   .welcomeIconHolder {
     text-align: center;
     padding-right: 200px;
@@ -483,6 +487,10 @@ $bold-font: 'Conv_Segoe UI Bold';
     border-radius: 20px;
     margin-left: 60px;
   }
+
+  .signUpBtn.active {
+    background: #28a4ff !important;
+  }
 }
 
 body.home.index, body.home.create {
@@ -580,12 +588,17 @@ body.home.chat.room {
         }
 
         .trigger-search {
+
           cursor: pointer;
           display: grid;
           width: 100%;
           height: 100%;
           background: #BCD7FD;
           border-radius: 20px;
+        }
+
+        .trigger-search.active {
+          background: #28a4ff !important;
         }
       }
 

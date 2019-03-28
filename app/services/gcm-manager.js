@@ -15,7 +15,7 @@ export default Service.extend({
           to: token['token_id'],
           priority: 'high',
           content_available: true,
-          badge: newBadge,
+          badge: newBadge + '',
           sound: 'NotificationTone.mp3',
         };
         let notification = {};

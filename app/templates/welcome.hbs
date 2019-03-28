@@ -26,7 +26,7 @@
             </div>
           </div>
           <div class="loginHolder">
-            <button {{action "loginAction"}} class="loginBtn hoveredBtn">Log In</button>
+            <button {{action "loginAction"}} class="loginBtn hoveredBtn {{loginBtnClass}}">Log In</button>
           </div>
         </div>
       </div>
@@ -94,7 +94,7 @@
             </div>
             <p class="termsText">By clicking Sign Up, you agree to the Terms and Policy.</p>
             <div class="signUpHolder">
-              <button {{action "signUpAction"}} class="signUpBtn hoveredBtn">Sign Up</button>
+              <button {{action "signUpAction"}} class="signUpBtn hoveredBtn {{signupBtnClass}}">Sign Up</button>
               <span class="error-tip">{{form.register.error.global}}</span>
             </div>
           </div>

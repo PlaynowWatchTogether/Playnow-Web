@@ -26,11 +26,11 @@
     {{#each queriedModel as |friend|}}
       {{#if friend.isFriend}}
         {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}
-          {{#home-friend-item model=friend.model classNames="friend"}}{{/home-friend-item}}
+          {{#home-friend-item model=friend classNames="friend"}}{{/home-friend-item}}
         {{/link-to}}
       {{else}}
         {{#link-to "home.chat" friend.id "group" classNames="friend-group-link"}}
-          {{#home-group-item model=friend.model classNames="group"}}{{/home-group-item}}
+          {{#home-group-item model=friend classNames="group"}}{{/home-group-item}}
         {{/link-to}}
       {{/if}}
     {{/each}}

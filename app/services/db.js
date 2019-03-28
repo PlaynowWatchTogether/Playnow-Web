@@ -201,7 +201,7 @@ export default Service.extend({
   },
   updateBadge(user, token, value) {
     let ref = this.firebaseApp.database().ref("Tokens/" + user + "/" + token);
-    ref.child('badge_count').set(value).then(() => {
+    ref.child('badge_count').set(value + '').then(() => {
       debug('badge for ' + user + 'updated to ' + value);
     })
   },

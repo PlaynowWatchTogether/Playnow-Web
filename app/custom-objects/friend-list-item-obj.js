@@ -1,19 +1,27 @@
-import EmberObject from '@ember/object';
+import ObjectProxy from '@ember/object/proxy';
 import {computed} from '@ember/object';
 
-export default EmberObject.extend({
-  model: null,
+export default ObjectProxy.extend({
   type: '',
-  latestMessageDate: computed('model', function () {
-    return this.get('model.latestMessageDate');
+  profilePic: computed('content.ProfilePic', function () {
+    return this.get('content.profilePic');
   }),
-  id: computed('model', function () {
-    return this.get('model.id');
+  latestMessageDate: computed('content.latestMessageDate', function () {
+    let local = this.get('content.latestMessageDate');
+    if (!local)
+      return 0;
+    if (local % 1 !== 0) {
+      return local * 1000;
+    }
+    return local;
   }),
-  isFriend: computed('model', function () {
+  id: computed('content', function () {
+    return this.get('content.id');
+  }),
+  isFriend: computed('content', function () {
     return this.type === 'friend'
   }),
-  filterTitle: computed('model', function () {
+  filterTitle: computed('content', function () {
     if (this.type === 'friend') {
       return this.get('firstName') + ' ' + this.get('lastName');
     } else {

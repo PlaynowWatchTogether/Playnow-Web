@@ -1,29 +1,28 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object'
+import {debug} from '@ember/debug';
 
 export default Component.extend({
   init() {
     this._super(...arguments);
-    this.limit = 10;
+    this.limit = 30;
     this.addObserver('friendsQuery', this, 'onQueryChanged')
   },
   onQueryChanged(obj) {
-    obj.set('limit', 10);
+    obj.set('limit', 30);
   },
-  queriedModel: computed('model', 'friendsQuery', 'limit', function () {
+  queriedModel: computed('model.@each.latestMessageDate', 'friendsQuery', 'limit', function () {
     if (!this.get('friendsQuery') || this.get('friendsQuery').length === 0) {
-      return this.get('model').filter(() => {
+      return this.get('model').sort((a, b) => {
+        debug('compare ' + b.get('filterTitle') + ':' + b.get('latestMessageDate') + ' and ' + a.get('filterTitle') + ':' + a.get('latestMessageDate'));
+        return b.get('latestMessageDate') - a.get('latestMessageDate')
+      }).filter(() => {
         return true;
       }).slice(0, this.get('limit'))
     }
     let query = this.get('friendsQuery');
     return this.get('model').filter((elem) => {
-      let title = '';
-      if (elem.get('type') === 'friend') {
-        title = elem.get('model.firstName') + ' ' + this.get('model.lastName');
-      } else {
-        title = elem.get('model.GroupName');
-      }
+      let title = elem.get('filterTitle');
       if (title) {
         return title.toLowerCase().includes(query.toLowerCase());
       } else {

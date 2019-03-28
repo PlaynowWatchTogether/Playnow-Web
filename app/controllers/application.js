@@ -4,6 +4,7 @@ import moment from "moment";
 import {computed} from "@ember/object";
 import {set} from "@ember/object";
 import {debug} from "@ember/debug";
+import $ from "jquery";
 
 export default Controller.extend({
   auth: service(),
@@ -77,6 +78,7 @@ export default Controller.extend({
     },
 
     triggerSearch() {
+      $('.trigger-search').addClass('active');
       let q = this.get('searchQuery');
       if (q.length !== 0) {
         this.transitionToRoute('search', {query: q});

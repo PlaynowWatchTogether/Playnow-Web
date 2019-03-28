@@ -19,6 +19,19 @@ export default Service.extend({
 
     })
   },
+  related(videoId) {
+    return new Promise((resolve, reject) => {
+      $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=2&relatedToVideoId=' + videoId, null, (data) => {
+        debug(data);
+        let elem = data['items'][0];
+        let video = {
+          id: elem['id']['videoId'],
+          snippet: elem['snippet']
+        };
+        resolve(video);
+      })
+    })
+  },
   search(q, music, page) {
     return new Promise((resolve) => {
       let category = music ? "&videoCategoryId=10" : '';

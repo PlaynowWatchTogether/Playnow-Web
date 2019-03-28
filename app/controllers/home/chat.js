@@ -432,8 +432,8 @@ export default Controller.extend({
 
     body.on('change', '.youtube-music-holder  .slider', slideChange);
     body.on('input', '.youtube-music-holder  .slider', slideInput);
-    holder.on('change', '.controlsOverlay .slider', slideChange);
-    holder.on('input', '.controlsOverlay .slider', slideInput);
+    body.on('change', '.controlsOverlay .slider', slideChange);
+    body.on('input', '.controlsOverlay .slider', slideInput);
     if (obj.get('id')) {
       obj.get('youtubeSearch').video(obj.get('id')).then((video) => {
         obj.shareVideo(video);
@@ -651,7 +651,19 @@ export default Controller.extend({
       this.set('limit', this.get('limit') + 100);
     },
     onVideoEnd() {
-      this.closeVideo();
+      if ($('#autoplay-checkbox')[0].checked) {
+        let vsh = this.get('videoStateHandler');
+        let master = vsh.isMaster;
+        if (this.get('playerVideo.video.videoType') === 'youtubeVideo' && master) {
+          this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
+            this.shareVideo(video);
+          });
+        } else {
+          this.closeVideo();
+        }
+      } else {
+        this.closeVideo();
+      }
     },
     playerStateAction(state) {
       run(() => {

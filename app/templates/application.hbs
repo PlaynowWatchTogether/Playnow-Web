@@ -8,7 +8,7 @@
         <div class="search">
           <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
           {{input value=searchQuery classNames="searchInput" placeholder="Search"
-                  insert-newline=(action "triggerSearch")}}
+                  insert-newline=(action "triggerSearch") autocomplete='off'}}
           <div class="trigger-search" {{action "triggerSearch"}} role="button">
             <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
           </div>
@@ -117,7 +117,7 @@
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="settings-root modal-content">
-      <div class="account-root">
+      <div class="account-root modal-body">
         <div class="title">
           <div>Settings</div>
         </div>

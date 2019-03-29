@@ -85,12 +85,18 @@
           <div class="overlay"></div>
           <div class="controlsOverlay">
             <div class="controlsHolder">
-              <div class="control">
-                <img src="/assets/ic_icon_play_video.png" class="play" alt="icon">
-                <img src="/assets/ic_icon_pause_video.png" class="pause" alt="icon">
-              </div>
               <img src="/assets/ic_video_close.png" class="close" alt="icon">
-              <span class="video-title"></span>
+              <div class="pause-control"></div>
+              <div class="control">
+                <div class="play">
+                  <img src="/assets/ic_icon_play_video.png" alt="icon">
+                </div>
+                <div class="pause">
+                  <img src="/assets/ic_icon_pause_video.png" alt="icon">
+                </div>
+              </div>
+
+              <span class="video-title noselect"></span>
               {{#if canAutoplay}}
                 <div class="switch-holder">
                   <div class="label">Auto play</div>
@@ -146,7 +152,7 @@
                 {{/each}}
               </div>
             </div>
-            <div class="details">
+            <div class="details noselect">
               <img class="thumbnail" src="" alt="icon">
               <div class="info">
                 <div class="song-name"></div>
@@ -193,16 +199,18 @@
 
             {{/if}}
           {{/each}}
-          <div class="typing-indicators">
-            {{#each typingIndicatorProfiles as |indicator|}}
-              <div class="indicator">
-                <div class="profilePicWrapper">
-                  <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+          {{#unless isLoadingMessages}}
+            <div class="typing-indicators">
+              {{#each typingIndicatorProfiles as |indicator|}}
+                <div class="indicator">
+                  <div class="profilePicWrapper">
+                    <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+                  </div>
+                  <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
                 </div>
-                <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
-              </div>
-            {{/each}}
-          </div>
+              {{/each}}
+            </div>
+          {{/unless}}
         </div>
       {{/end-scrollable}}
       <div class="newMessageHolder">
@@ -255,13 +263,13 @@
                 <div class="search">
                   <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                   {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
-                          insert-newline=(action "triggerSearch")}}
+                          insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
                   <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
                     <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
                 </div>
               </div>
-              <div class="youtube-items">
+              <div class="youtube-items noselect">
                 {{#if isLoadingVideo}}
                   <div class="loading-holder h-100">
                     <div class="lds-ripple">
@@ -282,14 +290,14 @@
           </div>
         </div>
         <div class="tab-pane fade" id="music">
-          {{#scroll-with-listener classNames="youtube-items row music" music=false
+          {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
                                   onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
                                   loading=loadingMusic}}
             <div class="searchHolder">
               <div class="search">
                 <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                 {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
-                        insert-newline=(action "triggerSearch")}}
+                        insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
                 <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
                   <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                 </div>

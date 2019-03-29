@@ -403,6 +403,14 @@ export default Controller.extend({
       });
     };
     let body = $('body');
+    body.on('click', '#youtubeHolder .pause-control', () => {
+      let state = $('#youtubeHolder .controlsOverlay').attr('play-state');
+      if (state === '1') {
+        pauseAction();
+      } else if (state === '2') {
+        playAction();
+      }
+    });
     body.on('click', '.youtube-music-holder .controls .play-btn', playAction);
     body.on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
     body.on('click', '.youtube-music-holder .controls .close-btn', closeAction);

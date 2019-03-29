@@ -20,7 +20,7 @@ export default Component.extend({
     this.secondsToPlay = 0.0;
     this.isPrebuffering = true;
     this.controlHideSubject = new Subject();
-    this.controlHideSubject.pipe(debounce(() => interval(2000))).subscribe({
+    this.controlHideSubject.pipe(debounce(() => interval(3000))).subscribe({
       next: () => {
         $('#youtubeHolder .controlsOverlay').hide();
       }
@@ -65,14 +65,9 @@ export default Component.extend({
 
     // window.onYouTubePlayerAPIReady = this.onYouTubePlayerAPIReady;
     window.playerObj = this;
-    $('#youtubeHolder .overlay').on('mouseenter', () => {
-      run(() => {
-        $('#youtubeHolder .controlsOverlay').show();
-        this.controlHideSubject.next(1);
-      });
-    });
     $('#youtubeHolder .overlay').on('mousemove', () => {
       run(() => {
+        $('#youtubeHolder .controlsOverlay').show();
         this.controlHideSubject.next(1);
       });
     });
@@ -169,6 +164,7 @@ export default Component.extend({
       buffering: window.playerObj.isPrebuffering,
       playing: window.playerObj.isPlaying
     });
+    $('#youtubeHolder .controlsOverlay').attr('play-state', event.data);
     if (event.data === -1) {//unstarted
       $('#youtubeHolder .controlsOverlay .play').hide();
       $('#youtubeHolder .controlsOverlay .pause').hide();

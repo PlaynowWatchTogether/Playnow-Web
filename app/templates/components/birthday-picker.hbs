@@ -1,7 +1,13 @@
 <div class="dropdown months">
   <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{currentMonth}}
+    <div class="label">
+      {{currentMonth}}
+    </div>
+    <div class="controls">
+      <div class="up"></div>
+      <div class="down"></div>
+    </div>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each monthDropdown as |month|}}
@@ -13,7 +19,13 @@
 <div class="dropdown days">
   <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{currentDate}}
+    <div class="label">
+      {{currentDate}}
+    </div>
+    <div class="controls">
+      <div class="up"></div>
+      <div class="down"></div>
+    </div>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each dateDropdown as |month|}}
@@ -25,7 +37,13 @@
 <div class="dropdown year">
   <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {{currentYear}}
+    <div class="label">
+      {{currentYear}}
+    </div>
+    <div class="controls">
+      <div class="up"></div>
+      <div class="down"></div>
+    </div>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     {{#each yearDropdown as |month|}}

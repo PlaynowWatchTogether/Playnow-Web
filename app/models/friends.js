@@ -20,7 +20,20 @@ export default DS.Model.extend({
     }
   }),
   lastMessage: attr('string'),
-  displayName: computed('Username', 'firstName', function () {
-    return this.get('Username') || this.get('firstName');
+  displayName: computed('Username', 'firstName', 'lastName', function () {
+
+    let username = this.get('Username');
+    let firstName = this.get('firstName');
+    let lastName = this.get('lastName');
+
+    if (!username) {
+      return [firstName, lastName].join(" ");
+    }
+
+    if (username.includes('@')) {
+      return username.split('@')[0];
+    }
+
+    return username;
   })
 });

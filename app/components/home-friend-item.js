@@ -25,10 +25,13 @@ export default Component.extend({
   unreadClass: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
-  displayName: computed('model.Username', function () {
+  displayName: computed('model.Username', 'model.firstName', 'model.lastName', function () {
     let username = this.get('model.Username');
+    let firstName = this.get('model.firstName');
+    let lastName = this.get('model.lastName');
+
     if (!username) {
-      return '';
+      return [firstName, lastName].join(" ");
     }
     if (username.includes('@')) {
       return username.split('@')[0]

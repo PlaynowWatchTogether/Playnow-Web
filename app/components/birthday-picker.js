@@ -49,7 +49,7 @@ export default Component.extend({
     })
   }),
   dateDropdown: computed('pickedDate', function () {
-    let start = moment(this.get('selectedDate')).daysInMonth();
+    let start = moment(this.get('selectedDate')).daysInMonth() || 31;
     let i = 0;
     let records = [];
     while (i < start) {

@@ -90,6 +90,35 @@ export default Controller.extend({
 
   },
   actions: {
+    forgotAction() {
+      this.set('forgotBtnClass', 'active');
+      let email = this.get('forgotEmail');
+      if (!email || email.length === 0) {
+        this.set('forgotBtnClass', '');
+        this.set('forgotError', 'Email should not be empty');
+        setTimeout(() => {
+          this.set('forgotError', '');
+        }, 2000);
+      } else {
+        this.get('firebaseApp').auth().sendPasswordResetEmail(email).then(() => {
+          this.set('forgotBtnClass', '');
+          this.set('forgotEmail', '');
+          this.set('showForgot', false);
+        }).catch(() => {
+          this.set('forgotBtnClass', '');
+          this.set('forgotError', 'Failed to send reset password');
+          setTimeout(() => {
+            this.set('forgotError', '');
+          }, 2000);
+        });
+      }
+    },
+    openForgot() {
+      this.set('showForgot', true);
+    },
+    forgotCancel() {
+      this.set('showForgot', false);
+    },
     onDateSet(dateMoment) {
       this.set('form.register.birthDate', dateMoment);
     },

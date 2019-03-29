@@ -10,24 +10,42 @@
       </div>
       <div class="col-5">
         <div class="row headerLoginControls">
-          <div>
-            <div class="welcomeHeaderUsername">
-              <span class="usernameLabel">Username or email</span>
-              {{input value=form.username classNames="username"}}
-              <span class="error-tip">{{error}}</span>
+          {{#if showForgot}}
+            <div class="forgot-holder">
+              <div class="welcomeHeaderUsername forgotPassword">
+                <span class="usernameLabel">email</span>
+                {{input value=forgotEmail classNames="username" insert-newline=(action "forgotAction")}}
+                <span class="error-tip">{{forgotError}}</span>
+              </div>
             </div>
+            <div class="loginHolder">
+              <div {{action "forgotAction"}} class="loginBtn hoveredBtn {{forgotBtnClass}}">Reset</div>
+            </div>
+            <div class="loginHolder">
+              <div {{action "forgotCancel"}} class="cancelBtn">Cancel</div>
+            </div>
+          {{else}}
 
-          </div>
-          <div>
-            <div class="welcomeHeaderPassword">
-              <span class="passwordLabel">Password</span>
-              {{input value=form.password classNames="password" type="password" insert-newline=(action "loginAction")}}
-              {{#link-to 'forgot' classNames="forgotPassword"}}Forgot Password?{{/link-to}}
+            <div>
+              <div class="welcomeHeaderUsername">
+                <span class="usernameLabel">Username or email</span>
+                {{input value=form.username classNames="username"}}
+                <span class="error-tip">{{error}}</span>
+              </div>
+
             </div>
-          </div>
-          <div class="loginHolder">
-            <button {{action "loginAction"}} class="loginBtn hoveredBtn {{loginBtnClass}}">Log In</button>
-          </div>
+            <div>
+              <div class="welcomeHeaderPassword">
+                <span class="passwordLabel">Password</span>
+                {{input value=form.password classNames="password" type="password"
+                        insert-newline=(action "loginAction")}}
+                <span class="forgotPassword" {{action "openForgot"}}>Forgot Password?</span>
+              </div>
+            </div>
+            <div class="loginHolder">
+              <div {{action "loginAction"}} class="loginBtn hoveredBtn {{loginBtnClass}}">Log In</div>
+            </div>
+          {{/if}}
         </div>
       </div>
     </div>

@@ -93,6 +93,7 @@ $bold-font: 'Conv_Segoe UI Bold';
 
   .welcomeHeaderUsername {
     position: relative;
+    padding-bottom: 20px;
 
     .error-tip {
       right: auto;
@@ -139,6 +140,7 @@ $bold-font: 'Conv_Segoe UI Bold';
 
   .welcomeHeader .forgotPassword {
     display: block;
+    cursor: pointer;
     color: #D5AFED;
     font-size: 15px;
     margin-left: 10px;
@@ -149,21 +151,44 @@ $bold-font: 'Conv_Segoe UI Bold';
     vertical-align: middle;
     align-self: center;
     margin-left: 10px;
+    display: grid;
   }
 
-  .loginBtn:focus {
+  cancelBtn:focus, .loginBtn:focus {
     outline: none;
   }
 
   .loginBtn {
+    cursor: pointer;
     box-shadow: $input-shadow;
     color: white;
     background: #71C3FF;
     border-width: 0;
     border-radius: 10px;
     padding: 2px 20px;
+    margin: auto;
   }
 
+  .cancelBtn {
+    cursor: pointer;
+    box-shadow: $input-shadow;
+    color: white;
+    background: #c7c8ca;
+    border-width: 0;
+    border-radius: 10px;
+    padding: 2px 20px;
+    margin: auto;
+  }
+
+  .cancelBtn:hover {
+    background: #606163 !important;
+  }
+
+  .forgotPassword {
+    .error-tip {
+      width: max-content !important;
+    }
+  }
   .loginBtn.active {
     background: #28a4ff !important;
   }
@@ -335,6 +360,13 @@ $bold-font: 'Conv_Segoe UI Bold';
 
   .headerLoginControls {
     padding-left: 40px;
+    display: grid;
+    height: 70px;
+    grid-template-columns: max-content max-content max-content;
+
+    .forgot-holder {
+      margin: auto;
+    }
   }
 
   .registerEdit {

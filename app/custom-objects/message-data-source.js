@@ -41,7 +41,17 @@ export default EmberObject.extend({
       return 'channels/Groups';
     }
   },
+  sendVideoEnd(video) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/videoEnd";
+    let values = {}
+    values['videoId'] = video['id'];
+    values['videoName'] = video['snippet']['title'];
+    values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
 
+    this.db.ref(ref).update(values);
+  },
   updateWatchState(state, seconds, syncAt = null) {
     let convId = this.convId();
     let path = this.messageRoot();
@@ -62,8 +72,8 @@ export default EmberObject.extend({
     values['type'] = 'new';
     values['syncAt'] = new Date().getTime() / 1000.0;
     values['updatedAt'] = new Date().getTime() / 1000.0;
-    values['videoId'] = video['id'];
     values['videoType'] = mode;
+    values['videoId'] = video['id'];
     values['videoName'] = video['snippet']['title'];
     values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
     values['senderId'] = this.myId;

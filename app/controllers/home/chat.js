@@ -534,7 +534,6 @@ export default Controller.extend({
     if (ds) {
       this.set('playerAction', 10);
       ds.updateWatching('', 'closed');
-      // ds.stop()
     }
   },
   modeClass: computed('model', function () {
@@ -670,7 +669,7 @@ export default Controller.extend({
       this.set('limit', this.get('limit') + 100);
     },
     onVideoEnd() {
-      if ($('#autoplay-checkbox')[0].checked) {
+      if ($('#autoplay-checkbox')[0] && $('#autoplay-checkbox')[0].checked) {
         let vsh = this.get('videoStateHandler');
         let master = vsh.isMaster;
         let senderId = this.get('playerVideo.video.senderId');
@@ -682,6 +681,14 @@ export default Controller.extend({
           this.closeVideo();
         }
       } else {
+        let ds = this.get('dataSource');
+        if (ds) {
+          this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
+            ds.sendVideoEnd(video)
+          });
+
+
+        }
         this.closeVideo();
       }
     },

@@ -32,17 +32,24 @@
             <span class="name">{{chatModel.title}}</span>
           </div>
         {{else}}
-          <div class="title noselect">
-            {{#if chatModel.hasProfilePic}}
-              {{#user-profile-view classNames="profilePicWrapper" model=chatModel.user.id}}
-                <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
-              {{/user-profile-view}}
-            {{else}}
+          {{#if chatModel.group}}
+            <div class="title noselect">
               <div class="profilePicWrapper"></div>
-            {{/if}}
+              <span class="name">{{chatModel.title}}</span>
+            </div>
+          {{else}}
+            {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
+              {{#if chatModel.hasProfilePic}}
+                <div class="profilePicWrapper">
+                  <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
+                </div>
+              {{else}}
+                <div class="profilePicWrapper"></div>
+              {{/if}}
 
-            <span class="name">{{chatModel.title}}</span>
-          </div>
+              <span class="name">{{chatModel.title}}</span>
+            {{/user-profile-view}}
+          {{/if}}
           <div class="back">
             {{#link-to "home"}}
               <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
@@ -99,7 +106,7 @@
               <span class="video-title noselect"></span>
               {{#if canAutoplay}}
                 <div class="switch-holder">
-                  <div class="label">Auto play</div>
+                  <div class="label noselect">Auto play</div>
                   <label class="switch">
                     <input type="checkbox" id="autoplay-checkbox">
                     <span class="switcher round"></span>

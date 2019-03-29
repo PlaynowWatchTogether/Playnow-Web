@@ -1,7 +1,9 @@
 {{#user-profile-view classNames="profilePicWrapper" model=model.id}}
   <img class="profilePic" src={{model.safeProfilePic}} alt="icon">
 {{/user-profile-view}}
-<div class="firstName">{{model.FirstName}} {{model.LastName}}</div>
+{{#user-profile-view classNames="firstName" model=model.id}}
+  {{model.FirstName}} {{model.LastName}}
+{{/user-profile-view}}
 <div class="addHolder">
   {{#if isAdded}}
     <div class="added">

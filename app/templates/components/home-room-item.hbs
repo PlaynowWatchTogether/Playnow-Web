@@ -1,6 +1,24 @@
 <span class="creator">@{{model.creatorName}}'s room</span>
-<span class="watchers">Now watching: {{model.viewersCount}}</span>
+<div class="members-holder">
+  <div class="members">
+    {{#each members as |member|}}
+      <div class="member {{member.className}}">
+        {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
+          <img class="profilePic" src={{member.profilePic}} alt="icon">
+        {{/user-profile-view}}
+      </div>
+    {{/each}}
+  </div>
+  <div class="viewers">
+    <img src="/assets/ic_eye@2x.png" alt="eye" class="icn">
+    <div class="label">
+      {{model.viewersCount}}
+    </div>
+  </div>
+</div>
+<span class="watchers">{{videoState}}</span>
 <span class="title">{{model.videoName}}</span>
-<img class="thumbnail" src={{model.videoThumbnail}} alt="icon">
-
+<div class="thumbnail-holder">
+  <img class="thumbnail" src={{model.videoThumbnail}} alt="icon">
+</div>
 {{yield}}

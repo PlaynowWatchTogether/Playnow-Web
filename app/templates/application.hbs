@@ -14,7 +14,7 @@
           </div>
         </div>
         {{#user-profile-view model=model classNames="profile"}}
-          <span class="name">{{model.FirstName}}</span>
+          <span class="name noselect">{{model.FirstName}}</span>
           <div class="profilePicWrapper">
             <img class="profilePic" src={{profilePic}} alt="icon">
           </div>
@@ -117,7 +117,7 @@
      aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="settings-root modal-content">
-      <div class="account-root modal-body">
+      <div class="account-root modal-body noselect">
         <div class="title">
           <div>Settings</div>
         </div>

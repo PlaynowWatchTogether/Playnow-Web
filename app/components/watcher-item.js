@@ -19,7 +19,7 @@ export default Component.extend({
   }),
   myStyle: computed('index', function () {
     let index = this.get('index');
-    return htmlSafe("z-index: " + (10 - index) + '; margin-left: ' + (0 - index * 10) + 'px;');
+    return htmlSafe("z-index: " + (10 - index) + '; margin-left: ' + (-10) + 'px;');
   }),
   display: computed('model', 'streamer', function () {
     if (this.get('streamer')) {

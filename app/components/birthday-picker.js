@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import moment from 'moment'
+import $ from 'jquery';
 
 export default Component.extend({
 
@@ -79,6 +80,26 @@ export default Component.extend({
     } else {
       return moment()
     }
+  },
+  didInsertElement() {
+    this._super(...arguments);
+    let _this = this;
+    _this.set('pickedMonth', $(this.element).find('.select-month ').val());
+    _this.set('pickedDate', $(this.element).find('.select-date ').val());
+    _this.set('pickedYear', $(this.element).find('.select-year').val());
+    _this.get('onDateSet')(_this.getFullDate());
+    $(this.element).find('.select-month ').on('change', function () {
+      _this.set('pickedMonth', $(this).val());
+      _this.get('onDateSet')(_this.getFullDate());
+    });
+    $(this.element).find('.select-date ').on('change', function () {
+      _this.set('pickedDate', $(this).val());
+      _this.get('onDateSet')(_this.getFullDate());
+    });
+    $(this.element).find('.select-year').on('change', function () {
+      _this.set('pickedYear', $(this).val());
+      _this.get('onDateSet')(_this.getFullDate());
+    });
   },
   actions: {
     onMonthPick(month) {

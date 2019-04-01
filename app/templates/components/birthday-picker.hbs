@@ -1,55 +1,25 @@
 <div class="dropdown months">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentMonth}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <select class="registerEdit select-month  {{disabledClass}}">
     {{#each monthDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onMonthPick" month.id}}>{{month.title}}</a>
+      <option value={{month.id}}>{{month.title}}</option>
     {{/each}}
-  </div>
+  </select>
 </div>
 
 <div class="dropdown days">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentDate}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <select class="registerEdit select-date  {{disabledClass}}">
     {{#each dateDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onDayPick" month.id}}>{{month.title}}</a>
+      <option value={{month.id}}>{{month.title}}</option>
     {{/each}}
-  </div>
+  </select>
 </div>
 
 <div class="dropdown year">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentYear}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <select class="registerEdit select-year {{disabledClass}}">
     {{#each yearDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onYearPick" month.id}}>{{month.title}}</a>
+      <option value={{month.id}}>{{month.title}}</option>
     {{/each}}
-  </div>
+  </select>
 </div>
 
 {{yield}}

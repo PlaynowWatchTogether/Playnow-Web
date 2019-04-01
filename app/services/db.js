@@ -9,6 +9,7 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.messaging = this.get('firebaseApp').messaging();
+    this.listeners = {};
   },
   friends(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
@@ -92,8 +93,12 @@ export default Service.extend({
       let ref = this.firebaseApp.database().ref("Users/" + user);
       ref.once('value').then((snapshot) => {
         let payload = snapshot.val();
-        payload['id'] = snapshot.key;
-        resolve(payload);
+        if (payload) {
+          payload['id'] = snapshot.key;
+          resolve(payload);
+        } else {
+          resolve({id: user});
+        }
       }).catch((error) => {
         reject(error);
       })
@@ -166,10 +171,15 @@ export default Service.extend({
       })
     });
   },
+  roomsOff() {
+    let ref = this.firebaseApp.database().ref("channels/channels");
+    ref.off('value', this.listeners["channels/channels"]);
+  },
   rooms(updateCallback) {
 
     let ref = this.firebaseApp.database().ref("channels/channels");
-    ref.on('value', (data) => {
+
+    let clb = (data) => {
       let records = [];
       data.forEach((item) => {
         let payload = item.val();
@@ -178,9 +188,9 @@ export default Service.extend({
 
       });
       updateCallback(records);
-    }, () => {
-
-    })
+    };
+    this.listeners["channels/channels"] = clb;
+    ref.on('value', clb);
 
   },
   tokens(user) {

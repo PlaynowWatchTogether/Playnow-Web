@@ -1,23 +1,37 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import PicturedObject from "../custom-objects/pictured-object";
-
+import {inject as service} from '@ember/service';
 export default Component.extend({
-  members: computed('model', function () {
-    let members = this.get('model.Members');
-    return Object.keys(members).map((key, index) => {
-      let elem = members[key];
-      elem.id = key;
-      elem.className = 'z' + (members.length - index);
-      return PicturedObject.create({content: elem})
-    });
-  }),
+  db: service(),
+  init() {
+    this._super(...arguments);
+    let watchers = this.get('model.videoWatching');
+    if (watchers) {
+      Promise.all(Object.keys(watchers).map((elem) => {
+        return this.db.profile(elem)
+      })).then((members) => {
+        this.set('members', members.map((elem, index) => {
+          elem.className = 'z' + (members.length - index);
+          return PicturedObject.create({content: elem})
+        }));
+      })
+    }
+  },
+  // members: computed('model', function () {
+  //   let members = this.get('model.Members');
+  //   return Object.keys(members).map((key, index) => {
+  //
+  //   });
+  // }),
   videoState: computed('model', function () {
     let watchers = this.get('model.videoWatching');
     let any = false;
-    Object.keys(watchers).forEach((elem) => {
-      any |= watchers[elem]['state'] === 'playing';
-    });
+    if (watchers) {
+      Object.keys(watchers).forEach((elem) => {
+        any |= watchers[elem]['state'] === 'playing';
+      });
+    }
 
     return any ? 'Now playing' : 'Not playing';
   })

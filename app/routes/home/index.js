@@ -18,7 +18,9 @@ export default Route.extend(AuthRouteMixin, {
     // let ctrl = this.controllerFor('home/index');
     // ctrl.set('model', arProxy);
     this.get('db').rooms((rooms) => {
-      this.arProxy.setObjects(rooms);
+      this.arProxy.setObjects(rooms.filter((elem) => {
+        return elem['videoThumbnail'] && elem['videoThumbnail'].length > 0
+      }));
     }, () => {
     });
     this._super(...arguments);
@@ -27,5 +29,6 @@ export default Route.extend(AuthRouteMixin, {
   deactivate() {
     this._super(...arguments);
     $('body').removeClass('index');
+    this.get('db').roomsOff();
   }
 });

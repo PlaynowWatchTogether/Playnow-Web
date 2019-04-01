@@ -289,7 +289,9 @@ export default Controller.extend({
         obj.videoStateHandler.updateWatchers(watchers, 0);
         let watcherProfiles = [];
         watchers.forEach((elem) => {
-          watcherProfiles.push(obj.db.profile(elem['userId']))
+          if (elem['state'] === 'playing') {
+            watcherProfiles.push(obj.db.profile(elem['userId']))
+          }
         });
         Promise.all(watcherProfiles).then((profiles) => {
           obj.set('watchers', profiles);

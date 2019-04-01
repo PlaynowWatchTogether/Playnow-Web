@@ -21,7 +21,7 @@ export default Service.extend({
   },
   related(videoId) {
     return new Promise((resolve, reject) => {
-      $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=2&relatedToVideoId=' + videoId, null, (data) => {
+      $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=25&relatedToVideoId=' + videoId, null, (data) => {
         debug(data);
         let elem = data['items'][0];
         let video = {

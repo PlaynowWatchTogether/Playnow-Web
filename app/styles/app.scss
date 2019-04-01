@@ -1729,9 +1729,10 @@ CHAT
         }
 
         .watchers-holder {
+          pointer-events: none;
           position: absolute;
           display: flex;
-          padding-left: 10px;
+          padding-left: 20px;
           padding-top: 10px;
           width: 80%;
 
@@ -1869,7 +1870,8 @@ CHAT
         }
 
         .compose-search {
-          display: flex;
+          display: grid;
+          grid-template-columns: min-content minmax(auto, min-content) minmax(auto, 350px);
           padding-top: 5px;
 
           .twitter-typeahead {
@@ -2719,7 +2721,7 @@ CHAT
 
         .members-holder {
           display: grid;
-
+          height: 30px;
           grid-template-columns: auto max-content;
 
           .viewers {

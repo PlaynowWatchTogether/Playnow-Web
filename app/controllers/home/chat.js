@@ -90,6 +90,7 @@ export default Controller.extend({
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
   },
+
   isCompose: computed('model', function () {
     return this.get('model.chat_id') === 'compose'
   }),
@@ -279,7 +280,21 @@ export default Controller.extend({
     } else {
       obj.set('chatModel', {});
     }
+
   },
+  sliderClass: computed('videoStateHandler', 'dataSource', function () {
+    let vsh = this.get('videoStateHandler');
+    let ds = this.get('dataSource');
+    if (vsh && ds) {
+      if (vsh.isMaster || vsh.syncMode === 'awaiting') {
+        return '';
+      } else {
+        return 'not-responsive'
+      }
+    } else {
+      return 'not-responsive'
+    }
+  }),
   dataSourceObserver: (obj) => {
     let ds = obj.get('dataSource');
     ds.updateWatching('', 'closed');
@@ -321,6 +336,11 @@ export default Controller.extend({
       obj.set('typingIndicator', filtered);
     });
     obj.set('isLoadingMessages', true);
+    if (obj.get('messageToSend') && obj.get('dataSource')) {
+      obj.get('dataSource').sendMessage(obj.get('messageToSend'));
+      obj.set('messageToSend', null);
+    }
+
     ds.messages((messages) => {
       let uiMessages = [];
       let lastDate = new Date(0);
@@ -344,7 +364,7 @@ export default Controller.extend({
         let mesDate = new Date(mes.date);
         let diff = lastDate.getTime() - mesDate.getTime();
         if (Math.abs(diff) > one_day) {
-          let dateContent = {isDate: true, date: mesDate, id: '' + mesDate.getTime()};
+          let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: '' + mesDate.getTime()};
           let normalizedData = obj.store.normalize('thread-message', {
             id: '' + mesDate.getTime(),
             convoId: ds.convId(),
@@ -380,6 +400,7 @@ export default Controller.extend({
       // obj.notifyPropertyChange('messages');
       // obj.set('messages', uiMessages);
     });
+
     let pauseAction = () => {
       run(function () {
         let vsh = obj.get('videoStateHandler');
@@ -416,7 +437,7 @@ export default Controller.extend({
     body.on('click', '.youtube-music-holder .controls .play-btn', playAction);
     body.on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
     body.on('click', '.youtube-music-holder .controls .close-btn', closeAction);
-    let holder = $('#youtubeHolder');
+    // let holder = $('#youtubeHolder');
     body.on('click', '#youtubeHolder .controlsOverlay .control .pause', pauseAction);
     body.on('click', '#youtubeHolder .controlsOverlay .control .play', playAction);
     body.on('click', '#youtubeHolder .controlsOverlay .close', closeAction);
@@ -503,7 +524,7 @@ export default Controller.extend({
     let limit = this.get('limit');
     return this.store.peekAll('thread-message').filter((elem) => {
       return elem.get('convoId') === this.get('dataSource').convId();
-    }).slice(Math.max(0, length - limit), length);
+    }).slice(Math.max(0, length - limit), length + 1);
   }),
   hasMoreMessages: computed('messages.@each.id', 'limit', function () {
     let messages = (this.get('messages') || []);
@@ -611,13 +632,29 @@ export default Controller.extend({
         let refName = groupName + "@" + db.myId();
         db.createGroup(groupName, this.get('composeChips')).then(() => {
           this.transitionToRoute('home.chat', refName, 'group');
-          resolve()
+          resolve(refName)
         }).catch((error) => {
           reject(error);
         });
       });
 
     });
+  },
+  composeMessage() {
+    let chips = this.get('composeChips');
+    if (chips.length === 1) {
+      let f = chips.firstObject;
+      this.transitionToRoute('home.chat', f['id'], 'one2one');
+      this.set('messageToSend', this.get('messageText'));
+      this.set('messageText', '')
+
+    } else {
+      this.set('messageToSend', this.get('messageText'));
+      this.set('messageText', '')
+      this.createGroup().then(() => {
+
+      });
+    }
   },
   performSendMessage() {
     if (this.get('messageText').length === 0) {
@@ -630,7 +667,8 @@ export default Controller.extend({
           this.set('composeError', '');
         }, 2000);
       } else {
-        this.createGroup();
+
+        this.composeMessage();
       }
       return;
     }
@@ -648,7 +686,7 @@ export default Controller.extend({
         id: video['id'],
         title: video['snippet']['title'],
         channelTitle: video['snippet']['channelTitle'],
-        imageURL: video['snippet']['thumbnails']['medium']['url'],
+        imageURL: video['snippet']['thumbnails']['high']['url'],
         isMusic: video['categoryId'] === '10',
         videoType: video['categoryId'] === '10' ? 'youtubeMusic' : 'youtubeVideo'
       })
@@ -766,7 +804,7 @@ export default Controller.extend({
             this.set('composeError', '');
           }, 2000);
         } else {
-          this.createGroup();
+          this.composeMessage();
         }
         return;
       }
@@ -780,7 +818,7 @@ export default Controller.extend({
             this.set('composeError', '');
           }, 2000);
         } else {
-          this.createGroup();
+          this.composeMessage();
         }
         return;
       }

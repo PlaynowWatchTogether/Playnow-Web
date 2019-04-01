@@ -20,7 +20,14 @@ export default Controller.extend({
       arg.set('search.rooms', res.filter((elem) => {
         return (elem['videoName'] || '').toLowerCase().includes(arg.get('model.query').toLowerCase())
       }));
-    })
+    });
+    let friends = this.get('profile.Friends');
+    this.get('sentRequests').addObjects(Object.keys(friends).map((friend) => {
+      let payload = friends[friend];
+      payload['id'] = friend;
+      return payload;
+    }));
+    this.notifyPropertyChange('sentRequests');
   },
   actions: {
     followUser(user) {

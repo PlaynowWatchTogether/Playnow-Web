@@ -630,7 +630,7 @@ body.home.chat.room {
         background: white;
         border-width: 0;
         display: grid;
-        grid-template-columns: 60px auto 80px;
+        grid-template-columns: 60px auto 40px 80px;
         margin-top: auto;
         margin-bottom: auto;
 
@@ -1003,7 +1003,7 @@ body.home.chat.room {
       padding-top: $search-padding;
       padding-bottom: $search-padding;
       display: grid;
-      grid-template-columns: 60px auto;
+      grid-template-columns: 60px auto 50px;
       border-radius: 20px;
       background: #F0F0F0;
       border-width: 0;
@@ -1265,7 +1265,29 @@ body.home.chat.room {
             position: relative;
           }
 
+          .playing {
+            width: 74px;
+            height: 74px;
+            position: absolute;
+            left: 13px;
+            top: -7px;
+            display: none;
+            border-radius: 50%;
+            background: $primary-gradient;
+          }
+
+          .playing2 {
+            width: 66px;
+            height: 66px;
+            position: absolute;
+            left: 17px;
+            top: -3px;
+            display: none;
+            border-radius: 50%;
+            background: #fff;
+          }
           .online-icon {
+            z-index: 2;
             top: 0px;
             right: 15px;
             width: 20px;
@@ -1297,6 +1319,9 @@ body.home.chat.room {
         }
 
         .group-item.playing-video {
+          .playing, .playing2 {
+            display: block;
+          }
           .playing-video-icon {
             display: block;
           }
@@ -1307,6 +1332,9 @@ body.home.chat.room {
         }
 
         .group-item.playing-music {
+          .playing, .playing2 {
+            display: block;
+          }
           .playing-music-icon {
             display: block;
           }
@@ -1318,6 +1346,7 @@ body.home.chat.room {
 
         .group-item.online {
           .online-icon {
+
             display: block;
           }
         }
@@ -1698,6 +1727,7 @@ CHAT
         }
 
         .slider {
+          cursor: pointer;
           grid-row-start: 4;
           grid-column-start: 1;
           grid-column-end: 6;
@@ -1866,15 +1896,15 @@ CHAT
         .who {
           margin-top: auto;
           margin-bottom: auto;
-          margin-left: 20px;
+          margin-right: 10px;
         }
 
         .compose-search {
-          display: grid;
-          grid-template-columns: min-content minmax(auto, min-content) minmax(auto, 350px);
+          display: flex;
           padding-top: 5px;
 
           .twitter-typeahead {
+            margin-bottom: 5px;
             flex: 1 1 auto;
           }
 
@@ -1890,14 +1920,19 @@ CHAT
           }
 
           .chips-holder {
-            overflow-y: hidden;
+            display: block;
+            flex-wrap: wrap;
+            width: 100%;
+            overflow: unset;
             padding-left: 10px;
             flex: 0 0 auto;
 
             .chips-wrapper {
               display: flex;
-
+              flex-wrap: wrap;
               .chip {
+                margin-top: 5px;
+                margin-bottom: 5px;
                 cursor: pointer;
                 margin-right: 5px;
                 display: grid;
@@ -1968,7 +2003,6 @@ CHAT
         padding-bottom: 20px;
 
         .messagesWrappper {
-          height: 100%;
           display: grid;
           grid-template-columns: auto;
           grid-row-gap: 5px;
@@ -2240,7 +2274,7 @@ CHAT
           background: #F0F0F0;
           border-width: 0;
           display: grid;
-          grid-template-columns: 60px auto 80px;
+          grid-template-columns: 60px auto 40px 80px;
 
           .searchInput:focus {
             background: none;
@@ -2460,6 +2494,7 @@ CHAT
     width: 100%;
 
     .roomsHolder {
+
       .public-room-scroll {
         width: 100%;
 
@@ -2677,6 +2712,21 @@ CHAT
       padding-right: 20px;
       overflow-y: auto;
 
+      .rooms-wrapper {
+        display: grid;
+        grid-template-columns: 33.3% 33.3% 33.3%;
+      }
+
+      @media screen and (min-width: 1600px) {
+        .rooms-wrapper {
+          grid-template-columns: 25% 25% 25% 25%;
+        }
+      }
+      @media screen and (min-width: 2000px) {
+        .rooms-wrapper {
+          grid-template-columns: 20% 20% 20% 20% 20%;
+        }
+      }
       .room-chat-link {
         text-decoration: none;
         color: black;
@@ -2695,8 +2745,11 @@ CHAT
         overflow: hidden;
 
         .thumbnail {
+          background-position: center;
+          height: 11vw;
           width: 100%;
           border-radius: 20px;
+          background-size: cover;
         }
 
         .title {
@@ -3365,6 +3418,7 @@ CHAT
   background-position: center;
   background-size: cover;
   width: 100%;
+  z-index: 1;
   height: 100%;
 }
 
@@ -3377,4 +3431,15 @@ CHAT
   padding-bottom: 10px;
 }
 
+
+.close-search {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  margin: auto;
+}
+
+.not-responsive {
+  pointer-events: none;
+}
 

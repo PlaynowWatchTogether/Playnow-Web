@@ -85,7 +85,7 @@ export default Controller.extend({
       }
     },
     logout() {
-      this.get('auth').logout();
+      this.transitionToRoute('logout');
     },
     followerAction(action, model) {
       if (action === 1) {

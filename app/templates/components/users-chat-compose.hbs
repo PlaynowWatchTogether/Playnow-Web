@@ -1,28 +1,27 @@
-<div class="who noselect">Who:</div>
 
   <div class="chips-holder">
     <div class="chips-wrapper">
-
+      <div class="who noselect">Who:</div>
       {{#each chips as |chip|}}
         {{#compose-chip model=chip classNames="chip" onChipClick=(action "onChipClick") selectedChip=selectedChip}}
 
         {{/compose-chip}}
       {{/each}}
+      {{#custom-typeahead
+        id="typeahead-compose"
+        content=friends
+        displayKey="firstName"
+        valueToken="firstName"
+        placeholder="Type the username of the person"
+        class="form-control"
+        selectOnEnter=true
+        suggestionTemplate=suggestionTemplate
+        emptyTemplate=emptyTemplate
+        limit=numberofresultstodisplay
+        onSelectAction=(action "selectFriend")
+        onBackspaceEmpty=(action "onBackspaceEmpty")}}
+
+      {{/custom-typeahead}}
     </div>
   </div>
-{{#custom-typeahead
-  id="typeahead-compose"
-  content=friends
-  displayKey="firstName"
-  valueToken="firstName"
-  placeholder="Type the username of the person"
-  class="form-control"
-  selectOnEnter=true
-  suggestionTemplate=suggestionTemplate
-  emptyTemplate=emptyTemplate
-  limit=numberofresultstodisplay
-  onSelectAction=(action "selectFriend")
-  onBackspaceEmpty=(action "onBackspaceEmpty")}}
-
-{{/custom-typeahead}}
 {{yield}}

@@ -108,13 +108,13 @@
                 <div class="switch-holder">
                   <div class="label noselect">Auto play</div>
                   <label class="switch">
-                    <input type="checkbox" id="autoplay-checkbox">
+                    <input type="checkbox" id="autoplay-checkbox" checked>
                     <span class="switcher round"></span>
 
                   </label>
                 </div>
               {{/if}}
-              <input type="range" min="1" max="100" value="50" class="slider">
+              <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
             </div>
           </div>
           <div class="loading-overlay {{loadingOverlayClass}}"></div>
@@ -171,21 +171,21 @@
               <img src="/assets/ic_music_pause.png" class="pause-btn" alt="icon">
               <img src="/assets/ic_music_close.png" class="close-btn" alt="icon">
             </div>
-            <input type="range" min="1" max="100" value="50" class="slider">
+            <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
           </div>
         </div>
       {{/if}}
       {{#end-scrollable classNames="messagesHolder" blockScroll=blockAutoscroll onScrolledHalf=(action "loadMore")
                         scrollChild=".messagesWrappper"}}
-        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
-          {{#if isLoadingMessages}}
-            <div class="loading-holder h-100">
-              <div class="lds-ripple">
-                <div></div>
-                <div></div>
-              </div>
+        {{#if isLoadingMessages}}
+          <div class="loading-holder h-100">
+            <div class="lds-ripple">
+              <div></div>
+              <div></div>
             </div>
-          {{/if}}
+          </div>
+        {{/if}}
+        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
           {{#if hasMoreMessages}}
             <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
           {{/if}}
@@ -267,14 +267,16 @@
                                      loading=loadingVideo}}
 
               <div class="searchHolder">
-                <div class="search">
+                {{#search-holder classNames="search" }}
+
                   <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                   {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
                           insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+                  <img src="/assets/ic_music_close.png" class="close-search" alt="close">
                   <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
                     <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
-                </div>
+                {{/search-holder}}
               </div>
               <div class="youtube-items noselect">
                 {{#if isLoadingVideo}}
@@ -301,14 +303,15 @@
                                   onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
                                   loading=loadingMusic}}
             <div class="searchHolder">
-              <div class="search">
+              {{#search-holder classNames="search" }}
                 <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                 {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
                         insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
+                <img src="/assets/ic_music_close.png" class="close-search" alt="close">
                 <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
                   <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                 </div>
-              </div>
+              {{/search-holder}}
             </div>
             {{#if isLoadingMusic}}
               <div class="loading-holder h-100">

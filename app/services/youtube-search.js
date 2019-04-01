@@ -23,7 +23,9 @@ export default Service.extend({
     return new Promise((resolve, reject) => {
       $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=25&relatedToVideoId=' + videoId, null, (data) => {
         debug(data);
-        let elem = data['items'][0];
+        let items = data['items'];
+        let index = Math.floor(Math.random() * items.length)
+        let elem = data['items'][index];
         let video = {
           id: elem['id']['videoId'],
           snippet: elem['snippet']

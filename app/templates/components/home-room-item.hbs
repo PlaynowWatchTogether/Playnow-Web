@@ -19,6 +19,6 @@
 <span class="watchers">{{videoState}}</span>
 <span class="title">{{model.videoName}}</span>
 <div class="thumbnail-holder">
-  <img class="thumbnail" src={{model.videoThumbnail}} alt="icon">
+  {{thumbnail-background model=model.videoThumbnail classNames="thumbnail"}}
 </div>
 {{yield}}

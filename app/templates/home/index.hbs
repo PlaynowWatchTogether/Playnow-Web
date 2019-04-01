@@ -12,19 +12,21 @@
       {{/link-to}}
     </div>
     <div class="search-holder">
-      <div class="search-wrapper">
+      {{#search-holder classNames="search-wrapper" }}
 
         <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+
         {{input value=roomQuery classNames="searchInput" placeholder="Search for Rooms" autocomplete='off'}}
-      </div>
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+      {{/search-holder}}
     </div>
     <div class="roomsHolder">
-      <div class="row">
+      <div class="rooms-wrapper">
         {{#if loading}}
           Loading
         {{/if}}
         {{#each filteredModel as |room|}}
-          {{#link-to "home.chat" room.id "room" classNames="room-chat-link col-4"}}
+          {{#link-to "home.chat" room.id "room" classNames="room-chat-link"}}
             {{#home-room-item model=room classNames="room"}}
 
             {{/home-room-item}}

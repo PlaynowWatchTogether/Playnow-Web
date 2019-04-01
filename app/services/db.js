@@ -252,15 +252,19 @@ export default Service.extend({
     return this.firebaseApp.auth().currentUser.uid
   },
   createGroup(name, members) {
-    let refName = name + "@" + this.myId();
-    let update = {};
-    members.forEach((member) => {
-      update["/channels/Groups/" + refName + "/Members/" + member["id"] + "/Name"] = member['firstName'] + ' ' + member['lastName'];
-      update["/Users/" + member['id'] + "/Groups/" + refName + "/GroupName"] = name;
+    return this.profile(this.myId()).then((profile) => {
+      let refName = name + "@" + this.myId();
+      let update = {};
+      members.forEach((member) => {
+        update["/channels/Groups/" + refName + "/Members/" + member["id"] + "/Name"] = member['firstName'] + ' ' + member['lastName'];
+        update["/Users/" + member['id'] + "/Groups/" + refName + "/GroupName"] = name;
+      });
+      update["/channels/Groups/" + refName + "/Members/" + this.myId() + "/Name"] = profile['firstName'] + ' ' + profile['lastName'];
+      update["/Users/" + this.myId() + "/Groups/" + refName + "/GroupName"] = name;
+      let ref = this.firebaseApp.database().ref();
+      return ref.update(update);
+
     });
-    update["/Users/" + this.myId() + "/Groups/" + refName + "/GroupName"] = name;
-    let ref = this.firebaseApp.database().ref();
-    return ref.update(update);
 
 
   },

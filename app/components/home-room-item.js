@@ -8,8 +8,14 @@ export default Component.extend({
     this._super(...arguments);
     let watchers = this.get('model.videoWatching');
     if (watchers) {
-      Promise.all(Object.keys(watchers).map((elem) => {
-        return this.db.profile(elem)
+      Promise.all(Object.keys(watchers).filter((elem) => {
+        return watchers[elem]['state'] === 'playing'
+      }).map((elem) => {
+        if (elem === 'playnow') {
+          return this.db.profile('IZ3cAldc41PsvRnppzngv85utJf2')
+        } else {
+          return this.db.profile(elem)
+        }
       })).then((members) => {
         this.set('members', members.map((elem, index) => {
           elem.className = 'z' + (members.length - index);
@@ -18,6 +24,7 @@ export default Component.extend({
       })
     }
   },
+
   // members: computed('model', function () {
   //   let members = this.get('model.Members');
   //   return Object.keys(members).map((key, index) => {

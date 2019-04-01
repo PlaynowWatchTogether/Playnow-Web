@@ -16,7 +16,10 @@ export default Component.extend({
     profileModal.find('.name')[0].innerText = get(profile, 'FirstName') + ' ' + get(profile, 'LastName');
     let friends = Object.keys(get(profile, 'Friends') || {});
     let followers = Object.keys(get(profile, 'Followers') || {});
-    if (friends.includes(this.db.myId()) || followers.includes(this.db.myId()) || profile['id'] === this.db.myId()) {
+    if (profile['id'] === this.db.myId()) {
+      profileModal.find('.add-holder').hide();
+      profileModal.find('.added-holder').hide();
+    } else if (friends.includes(this.db.myId()) || followers.includes(this.db.myId())) {
       profileModal.find('.add-holder').hide();
       profileModal.find('.added-holder').show();
     } else {
@@ -24,7 +27,12 @@ export default Component.extend({
       addHolder.show();
       addHolder.attr('data-user-id', profile['id']);
       addHolder.on('click', () => {
-        this.db.followUser(addHolder.attr('data-user-id'));
+        if (this.get('onRequestSent')) {
+          this.get('onRequestSent')(profile);
+        } else {
+          this.db.followUser(addHolder.attr('data-user-id'));
+
+        }
         addHolder.hide();
         profileModal.find('.added-holder').show();
       });

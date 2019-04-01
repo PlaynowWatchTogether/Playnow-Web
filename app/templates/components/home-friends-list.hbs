@@ -12,10 +12,12 @@
                   handleEnd=true blockScroll=true}}
   <div class="friends-wrapper">
     <div class="friendsSearchHolder">
-      <div class="content">
+      {{#search-holder classNames="content" searchSelector="input" closeSelector=".close-search"}}
+
         <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
         {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging" autocomplete='off'}}
-      </div>
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+      {{/search-holder}}
     </div>
     {{yield}}
     {{#each queriedModel as |friend|}}

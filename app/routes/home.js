@@ -121,6 +121,7 @@ export default Route.extend({
     this.get('db').groups((friends) => {
 
       friends.forEach((friend) => {
+        friend['videoType'] = friend['videoType'] || '';
         let normalizedData = this.store.normalize('group', friend);
         this.store.push(normalizedData);
       });

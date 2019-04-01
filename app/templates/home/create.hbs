@@ -10,14 +10,16 @@
         {{/link-to}}
       </div>
     </div>
-    <div class="search-holder">
-      <div class="search-wrapper">
+    {{#search-holder classNames="search-holder" }}
+
+      {{#autofocus-view classNames="search-wrapper" focusSelector="input"}}
 
         <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
         {{input value=searchQueryVideo  insert-newline=(action "triggerSearch") classNames="searchInput"
                 placeholder="Search content" autocomplete='off'}}
-      </div>
-    </div>
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+      {{/autofocus-view}}
+    {{/search-holder}}
     <div class="roomsHolder">
       <div class="row">
         {{#scroll-with-listener  music=false

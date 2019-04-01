@@ -5,14 +5,15 @@
         <a class="play-icon" href="/home">
           <img src="/assets/welcome_icon@2x.png" class="play-icon" alt="icon">
         </a>
-        <div class="search">
+        {{#search-holder classNames="search" }}
           <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
           {{input value=searchQuery classNames="searchInput" placeholder="Search"
                   insert-newline=(action "triggerSearch") autocomplete='off'}}
+          <img src="/assets/ic_music_close.png" class="close-search" alt="close">
           <div class="trigger-search" {{action "triggerSearch"}} role="button">
             <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
           </div>
-        </div>
+        {{/search-holder}}
         {{#user-profile-view model=model classNames="profile"}}
           <span class="name noselect">{{model.FirstName}}</span>
           <div class="profilePicWrapper">

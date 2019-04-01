@@ -19,6 +19,8 @@ export default Controller.extend({
       } else {
         return false;
       }
+    }).sort((a, b) => {
+      return b.viewersCount - a.viewersCount;
     })
   })
 });

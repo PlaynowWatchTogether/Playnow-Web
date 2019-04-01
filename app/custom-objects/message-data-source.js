@@ -48,7 +48,7 @@ export default EmberObject.extend({
     let values = {}
     values['videoId'] = video['id'];
     values['videoName'] = video['snippet']['title'];
-    values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
+    values['videoThumbnail'] = video['snippet']['thumbnails']['high']['url'];
 
     this.db.ref(ref).update(values);
   },
@@ -62,7 +62,9 @@ export default EmberObject.extend({
     values['type'] = state;
     values['seconds'] = seconds;
     debug('updateWatchState ' + JSON.stringify(values));
-    this.db.ref(ref).update(values);
+    this.db.ref(ref).update(values).catch(() => {
+      debug(`Failed to update videoState on path ${ref} to ${JSON.stringify(values)}`);
+    });
   },
   sendVideo(video, mode = 'youtubeVideo') {
     let convId = this.convId();
@@ -75,11 +77,15 @@ export default EmberObject.extend({
     values['videoType'] = mode;
     values['videoId'] = video['id'];
     values['videoName'] = video['snippet']['title'];
-    values['videoThumbnail'] = video['snippet']['thumbnails']['medium']['url'];
+    values['videoThumbnail'] = video['snippet']['thumbnails']['high']['url'];
     values['senderId'] = this.myId;
     values['seconds'] = 0;
     debug('sendVideo ' + JSON.stringify(values));
-    this.db.ref(ref).update(values);
+    this.db.ref(ref).update(values).then((resolve) => {
+
+    }).catch(() => {
+      debug(`Failed to update videoState on path ${ref} to ${JSON.stringify(values)}`);
+    });
   },
   videoWatchers(updateCallback) {
     let convId = this.convId();
@@ -353,7 +359,7 @@ export default EmberObject.extend({
     message['text'] = text;
     let ref = path + "/" + convId + "/Messages/" + msgUid;
     this.db.ref(ref).update(message).then(() => {
-      if (this.gcmManager) {
+      if (this.gcmManager && this.type !== 'room') {
         this.profile(this.myId).then((myProfile) => {
           this.membersOnce().then((members) => {
             members.forEach((member) => {

@@ -26,8 +26,10 @@ export default Service.extend({
     });
   },
   logout() {
-    this.firebaseApp.auth().signOut().then(() => {
-      location.reload();
+    return new Promise((resolve) => {
+      this.firebaseApp.auth().signOut().then(() => {
+        resolve();
+      });
     });
   },
   setUID(id) {

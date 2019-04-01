@@ -236,10 +236,16 @@ export default Component.extend({
         }
       }
     });
-    $('#youtubeHolder .controlsHolder .video-title').text(v.video['videoName']);
-    $('.youtube-music-holder .details .song-name').text(this.songTitle(v.video['videoName']));
-    $('.youtube-music-holder .thumbnail').attr('src', v.video['videoThumbnail']);
-    $('.youtube-music-holder .details .song-artist').text(this.songArtist(v.video['videoName']));
+    let name = v.video['videoName'];
+    let thumbnail = v.video['videoThumbnail'];
+    if (name) {
+      $('#youtubeHolder .controlsHolder .video-title').text(name);
+      $('.youtube-music-holder .details .song-name').text(this.songTitle(name));
+      $('.youtube-music-holder .details .song-artist').text(this.songArtist(name));
+    }
+    if (thumbnail) {
+      $('.youtube-music-holder .thumbnail').attr('src', thumbnail);
+    }
   },
   songTitle(title) {
     let data = [];

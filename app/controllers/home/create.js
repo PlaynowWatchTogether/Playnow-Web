@@ -6,7 +6,17 @@ export default Controller.extend({
   db: service(),
   init() {
     this._super(...arguments);
+  },
+  activated() {
+    this.set('searchQueryVideo', '');
+    this.set('youtubeVideoItemsPage', '');
+    this.set('youtubeVideoItems', []);
     this.queryYoutubeVideos(true);
+  },
+  reset() {
+    this.set('searchQueryVideo', '');
+    this.set('youtubeVideoItemsPage', '');
+    this.set('youtubeVideoItems', []);
   },
   queryYoutubeVideos(reset) {
     return new Promise((resolve) => {

@@ -3,7 +3,7 @@ import {inject as service} from '@ember/service';
 import MessageDataSource from "../custom-objects/message-data-source";
 import {hash} from 'rsvp';
 import $ from 'jquery';
-
+import {Promise} from 'rsvp';
 export default Route.extend({
   db: service(),
   firebaseApp: service(),

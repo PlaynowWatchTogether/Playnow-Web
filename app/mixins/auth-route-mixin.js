@@ -1,6 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import {inject as service} from '@ember/service';
-
+import {Promise} from 'rsvp';
 export default Mixin.create({
   firebaseApp: service(),
   beforeModel() {

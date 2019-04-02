@@ -3,7 +3,7 @@ import {inject as service} from '@ember/service';
 import moment from "moment";
 import {debug} from '@ember/debug';
 import {computed} from '@ember/object';
-
+import {Promise} from 'rsvp';
 export default Controller.extend({
   firebaseApp: service(),
   init() {

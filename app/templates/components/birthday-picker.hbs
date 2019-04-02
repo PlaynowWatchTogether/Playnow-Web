@@ -1,25 +1,17 @@
 <div class="dropdown months">
-  <select class="registerEdit select-month  {{disabledClass}}">
-    {{#each monthDropdown as |month|}}
-      <option value={{month.id}}>{{month.title}}</option>
-    {{/each}}
-  </select>
+  {{custom-select model=monthDropdown selected=pickedMonth classNames="registerEdit select-month" disabled=isDisabled
+                  onChange=(action 'onMonthPick')}}
 </div>
 
 <div class="dropdown days">
-  <select class="registerEdit select-date  {{disabledClass}}">
-    {{#each dateDropdown as |month|}}
-      <option value={{month.id}}>{{month.title}}</option>
-    {{/each}}
-  </select>
+  {{custom-select model=dateDropdown selected=pickedDate classNames="registerEdit select-date" disabled=isDisabled
+                  onChange=(action 'onDayPick')}}
+
 </div>
 
 <div class="dropdown year">
-  <select class="registerEdit select-year {{disabledClass}}">
-    {{#each yearDropdown as |month|}}
-      <option value={{month.id}}>{{month.title}}</option>
-    {{/each}}
-  </select>
+  {{custom-select model=yearDropdown selected=pickedYear classNames="registerEdit select-year" disabled=isDisabled
+                  onChange=(action 'onYearPick')}}
 </div>
 
 {{yield}}

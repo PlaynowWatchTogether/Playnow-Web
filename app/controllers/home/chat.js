@@ -489,6 +489,7 @@ export default Controller.extend({
     }
   }),
   reset() {
+    this.set('id', null);
     this.set('youtubeVideoItemsPage', null);
     this.set('youtubeMusicItemsPage', null);
     this.set('messageText', '');

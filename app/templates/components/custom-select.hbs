@@ -1,0 +1,7 @@
+{{#each selectedModel as |month|}}
+  {{#if month.isSelected}}
+    <option value={{month.id}} selected>{{month.title}}</option>
+  {{else}}
+    <option value={{month.id}}>{{month.title}}</option>
+  {{/if}}
+{{/each}}

@@ -13,6 +13,7 @@ export default Controller.extend({
       username: '',
       password: '',
       register: {
+        birthDate: moment().subtract(13, 'years'),
         error: {}
       }
     };

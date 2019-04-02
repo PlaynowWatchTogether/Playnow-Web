@@ -8,9 +8,16 @@ export default Component.extend({
     this._super(...arguments);
     this.db.profile(this.get('model').id).then((profile) => {
       let followers = Object.keys(profile['Followers'] || {});
+      let friends = Object.keys(profile['Friends'] || {});
       if (followers.includes(this.db.myId())) {
         this.set('added', true);
+        this.set('addedTitle', 'Added');
       }
+      if (friends.includes(this.db.myId())) {
+        this.set('added', true);
+        this.set('addedTitle', 'Friends');
+      }
+
 
     });
   },

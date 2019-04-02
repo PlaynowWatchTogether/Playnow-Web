@@ -2196,7 +2196,7 @@ CHAT
           overflow-y: auto;
           flex: 1 1 auto;
           width: 100%;
-          max-width: 100vh;
+          max-width: 75vh;
           min-height: 40px;
           outline: none;
           font-size: 20px;
@@ -3029,8 +3029,12 @@ CHAT
 
       }
 
+      .birthday-input-holder.disabled {
+        pointer-events: none;
+      }
+
       .registerEdit {
-        min-height: 44px;
+        height: 44px;
         min-width: 60px;
         border: 1px #DDDDDD;
         background: #F5F4F4;

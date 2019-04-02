@@ -5,7 +5,7 @@ const API_KEY = 'key=AIzaSyAC97r5YG4QYJfVwHXusD8YbhWrycChPqM';
 const VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos';
 const SEARCH_URL = 'https://www.googleapis.com/youtube/v3/search';
 import {debug} from "@ember/debug";
-
+import {Promise} from 'rsvp';
 export default Service.extend({
   video(id) {
     return new Promise((resolve) => {

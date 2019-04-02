@@ -32,8 +32,9 @@ export default Controller.extend({
     form.birthDay = moment(m['BirthDate']);
     form.ProfilePic = m['ProfilePic'];
     obj.set('form', form);
+    obj.notifyPropertyChange('form.birthDate');
   },
-  date: computed('form', {
+  date: computed('form.birthDate', {
     get() {
       let m = this.get('form');
       if (!m)

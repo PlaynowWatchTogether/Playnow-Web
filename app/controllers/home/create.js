@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
-
+import {Promise} from 'rsvp';
 export default Controller.extend({
   youtubeSearch: service(),
   db: service(),

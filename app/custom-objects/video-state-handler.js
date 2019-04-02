@@ -69,7 +69,7 @@ export default EmberObject.extend({
       if (this.syncMode === 'sliding' && this.isMaster) {
         let syncAt = new Date().getTime() + 2000;
         this.play(2 + 0.5);
-        this.delegate.updateState('sync', seconds, syncAt);
+        this.delegate.updateState('sync', this.lastState.seconds, syncAt);
       } else if (this.syncMode === 'awaiting' && allready) {
         let lastWatcher = null;
         watchers.forEach((watcher) => {

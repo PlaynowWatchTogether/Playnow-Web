@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
-
+import {Promise} from 'rsvp';
 export default Route.extend({
   auth: service(),
   db: service(),

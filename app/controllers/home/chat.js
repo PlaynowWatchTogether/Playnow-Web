@@ -10,7 +10,7 @@ import $ from 'jquery';
 import ArrayProxy from '@ember/array/proxy';
 import ObjectProxy from '@ember/object/proxy';
 import MessageObject from '../../custom-objects/message-object';
-
+import {Promise} from 'rsvp';
 export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
@@ -489,6 +489,7 @@ export default Controller.extend({
     }
   }),
   reset() {
+    this.set('id', null);
     this.set('youtubeVideoItemsPage', null);
     this.set('youtubeMusicItemsPage', null);
     this.set('messageText', '');

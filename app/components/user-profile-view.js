@@ -20,6 +20,12 @@ export default Component.extend({
       profileModal.find('.add-holder').hide();
       profileModal.find('.added-holder').hide();
     } else if (friends.includes(this.db.myId()) || followers.includes(this.db.myId())) {
+      if (friends.includes(this.db.myId())) {
+        profileModal.find('.added-holder .label')[0].innerText = 'Friends';
+      } else {
+        profileModal.find('.added-holder .label')[0].innerText = 'Added';
+
+      }
       profileModal.find('.add-holder').hide();
       profileModal.find('.added-holder').show();
     } else {

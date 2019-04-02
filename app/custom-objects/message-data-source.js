@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
-
+import {Promise} from 'rsvp';
 export default EmberObject.extend({
   gcmManager: service(),
   type: 'one2one',

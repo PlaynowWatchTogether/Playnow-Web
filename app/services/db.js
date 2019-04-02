@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
-
+import {Promise} from 'rsvp';
 export default Service.extend({
   firebaseApp: service(),
   store: service(),

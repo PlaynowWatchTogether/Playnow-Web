@@ -2,7 +2,7 @@ import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {storageFor} from 'ember-local-storage';
 import ProfileObject from '../custom-objects/profile-object';
-
+import {Promise} from 'rsvp';
 export default Service.extend({
   uid: null,
   localStore: storageFor('user-session'),

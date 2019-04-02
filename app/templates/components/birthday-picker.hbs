@@ -1,55 +1,17 @@
 <div class="dropdown months">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentMonth}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {{#each monthDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onMonthPick" month.id}}>{{month.title}}</a>
-    {{/each}}
-  </div>
+  {{custom-select model=monthDropdown selected=pickedMonth classNames="registerEdit select-month" disabled=isDisabled
+                  onChange=(action 'onMonthPick')}}
 </div>
 
 <div class="dropdown days">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentDate}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {{#each dateDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onDayPick" month.id}}>{{month.title}}</a>
-    {{/each}}
-  </div>
+  {{custom-select model=dateDropdown selected=pickedDate classNames="registerEdit select-date" disabled=isDisabled
+                  onChange=(action 'onDayPick')}}
+
 </div>
 
 <div class="dropdown year">
-  <button class="registerEdit dropdown-toggle  {{disabledClass}}" type="button" id="dropdownMenuButton"
-          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <div class="label">
-      {{currentYear}}
-    </div>
-    <div class="controls">
-      <div class="up"></div>
-      <div class="down"></div>
-    </div>
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {{#each yearDropdown as |month|}}
-      <a class="dropdown-item" href="#" {{action "onYearPick" month.id}}>{{month.title}}</a>
-    {{/each}}
-  </div>
+  {{custom-select model=yearDropdown selected=pickedYear classNames="registerEdit select-year" disabled=isDisabled
+                  onChange=(action 'onYearPick')}}
 </div>
 
 {{yield}}

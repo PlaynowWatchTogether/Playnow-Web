@@ -53,6 +53,8 @@
     "ember-qunit": "^3.4.1",
     "ember-resolver": "^5.0.1",
     "ember-rx": "^0.6.0",
+    "ember-select": "^0.7.2",
+    "ember-select-box": "^3.0.7",
     "ember-service-worker-emberfire-messaging": "^0.2.0",
     "ember-source": "~3.4.0",
     "ember-typeahead": "^0.5.0",

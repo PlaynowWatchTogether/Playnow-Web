@@ -1,13 +1,15 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import moment from 'moment'
+import $ from 'jquery';
 
 export default Component.extend({
-
+  classNameBindings: ['isDisabled:disabled'],
   init() {
     this._super(...arguments);
 
     this.addObserver('model', this, 'modelObserver');
+    this.addObserver('value', this, 'modelObserver');
     this.modelObserver(this);
   },
   modelObserver(obj) {
@@ -21,13 +23,6 @@ export default Component.extend({
   },
   disabledClass: computed('disabled', function () {
     return this.get('disabled') ? 'disabled' : '';
-  }),
-  currentMonth: computed('pickedMonth', function () {
-    let model = this.get('pickedMonth');
-    if (model) {
-      return moment().month(model - 1).format("MMM")
-    }
-    return ' '
   }),
   currentDate: computed('pickedDate', function () {
     let model = this.get('pickedDate');
@@ -43,13 +38,13 @@ export default Component.extend({
     }
     return ' '
   }),
-  monthDropdown: computed('pickedDate', function () {
+  monthDropdown: computed('selectedDate', function () {
     return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((elem, index) => {
       return {id: index + 1, title: elem}
     })
   }),
-  dateDropdown: computed('pickedDate', function () {
-    let start = moment(this.get('selectedDate')).daysInMonth() || 31;
+  dateDropdown: computed('selectedDate', function () {
+    let start = 31;
     let i = 0;
     let records = [];
     while (i < start) {
@@ -60,7 +55,7 @@ export default Component.extend({
       return {id: index + 1, title: elem}
     })
   }),
-  yearDropdown: computed('pickedDate', function () {
+  yearDropdown: computed('selectedDate', function () {
     let end = moment().year();
     let i = end;
     let records = [];
@@ -79,6 +74,26 @@ export default Component.extend({
     } else {
       return moment()
     }
+  },
+  didInsertElement() {
+    this._super(...arguments);
+    // let _this = this;
+    // _this.set('pickedMonth', $(this.element).find('.select-month ').val());
+    // _this.set('pickedDate', $(this.element).find('.select-date ').val());
+    // _this.set('pickedYear', $(this.element).find('.select-year').val());
+    // // _this.get('onDateSet')(_this.getFullDate());
+    // $(this.element).find('.select-month ').on('change', function () {
+    //   _this.set('pickedMonth', $(this).val());
+    //   _this.get('onDateSet')(_this.getFullDate());
+    // });
+    // $(this.element).find('.select-date ').on('change', function () {
+    //   _this.set('pickedDate', $(this).val());
+    //   _this.get('onDateSet')(_this.getFullDate());
+    // });
+    // $(this.element).find('.select-year').on('change', function () {
+    //   _this.set('pickedYear', $(this).val());
+    //   _this.get('onDateSet')(_this.getFullDate());
+    // });
   },
   actions: {
     onMonthPick(month) {

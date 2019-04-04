@@ -104,7 +104,12 @@ export default Controller.extend({
         this.get('firebaseApp').auth().sendPasswordResetEmail(email).then(() => {
           this.set('forgotBtnClass', '');
           this.set('forgotEmail', '');
-          this.set('showForgot', false);
+          this.set('forgotMessage', 'We\'ve sent you an Email to reset password');
+          setTimeout(() => {
+            this.set('showForgot', false);
+            this.set('forgotMessage', '');
+          }, 2000);
+
         }).catch(() => {
           this.set('forgotBtnClass', '');
           this.set('forgotError', 'Failed to send reset password');

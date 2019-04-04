@@ -5,24 +5,27 @@
       <div class="col-7 welcomeIconHolder">
         <a href="/" class="welcome-icon-a">
           <span class="header_title">Playnow</span>
-          <img src="/assets/welcome_icon.png" class="welcome_icon" alt="Icon">
+          <img src="/assets/Favicon.png" class="welcome_icon" alt="Icon">
         </a>
       </div>
-      <div class="col-5">
+      <div class="col-5 welcome-login-holder">
         <div class="row headerLoginControls">
           {{#if showForgot}}
             <div class="forgot-holder">
+
+
               <div class="welcomeHeaderUsername forgotPassword">
-                <span class="usernameLabel">email</span>
+                <span class="forgot-email-label">email</span>
                 {{input value=forgotEmail classNames="username" insert-newline=(action "forgotAction")}}
                 <span class="error-tip">{{forgotError}}</span>
+                <span class="message-tip">{{forgotMessage}}</span>
               </div>
             </div>
             <div class="loginHolder">
               <div {{action "forgotAction"}} class="loginBtn hoveredBtn {{forgotBtnClass}}">Reset</div>
             </div>
             <div class="loginHolder">
-              <div {{action "forgotCancel"}} class="cancelBtn">Cancel</div>
+              <div {{action "forgotCancel"}} class="cancelBtn">Back</div>
             </div>
           {{else}}
 
@@ -53,7 +56,7 @@
 
   {{#welcome-body classNames="container-fluid welcomeBody" tagName="section" minHeight=0 useFooter=0.4}}
     <div class="row welcomeContent h-100">
-      <div class="col-6 welcomeLeft">
+      <div class="col-7 welcomeLeft">
         <div class="content">
 
           <img src="/assets/welcome_img.png" class="welcome-img" alt="icon">
@@ -77,11 +80,11 @@
           </div>
         </div>
       </div>
-      <div class="col-6 welcomeRight">
+      <div class="col-5 welcomeRight">
         <div class="content row">
           <div class="col-12">
             <p class="title">Create a New Account</p>
-            <p class="subTitle">Text and watch together</p>
+            <p class="subTitle">Text and watch together!</p>
             <div class="firstLastName">
 
               <div class="registerFirstName">

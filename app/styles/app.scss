@@ -32,6 +32,7 @@ img, a {
 
 
 body, html {
+  min-width: 1200px;
   overflow-x: auto;
   height: 100%;
   font-family: 'Conv_Segoe UI', Sans-Serif;
@@ -50,7 +51,7 @@ body > .ember-view {
 }
 
 //Variables
-$primary-gradient: linear-gradient(to bottom right, #87B7FA, #C837EA);
+$primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 $friends-list-hover-color: #dadada5e;
 $header-height: 45px;
@@ -58,32 +59,47 @@ $search-icon-size: 16px;
 $search-padding: 3px;
 $hover-background: #dadada5e;
 $bold-font: 'Conv_Segoe UI Bold';
+$btn-blue: #71C3FF;
 
 .background_gradient {
   background-image: $primary-gradient
 }
 
 .welcomePage {
+  margin-left: -15px;
+  margin-right: -15px;
   .header_title {
-    font-size: 30px;
+    font-weight: 900;
+    font-stretch: 12%;
+    letter-spacing: 1px;
+    font-size: 230%;
     color: white;
     vertical-align: middle;
   }
 
   .welcome_icon {
+    margin-top: 5px;
     width: 40px;
     height: 40px;
   }
 
   .welcomeHeader .usernameLabel {
     color: white;
-    font-size: 100%;
+    font-size: 80%;
     margin-left: 10px;
+  }
+
+  .forgot-holder {
+    .forgot-email-label {
+      color: white;
+      font-size: 80%;
+      margin-left: 10px;
+    }
   }
 
   .welcomeHeader .passwordLabel {
     color: white;
-    font-size: 100%;
+    font-size: 80%;
     margin-left: 10px;
   }
 
@@ -108,8 +124,8 @@ $bold-font: 'Conv_Segoe UI Bold';
     border-radius: 20px;
     background: white;
     border-width: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    font-size: 80%;
+    padding: 5px 10px;
     box-shadow: $input-shadow;
   }
 
@@ -126,8 +142,8 @@ $bold-font: 'Conv_Segoe UI Bold';
     border-radius: 20px;
     background: white;
     border-width: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    font-size: 80%;
+    padding: 5px 10px;
     box-shadow: $input-shadow;
   }
 
@@ -140,9 +156,9 @@ $bold-font: 'Conv_Segoe UI Bold';
 
   .welcomeHeader .forgotPassword {
     display: block;
+    font-size: 80%;
     cursor: pointer;
     color: #D5AFED;
-    font-size: 15px;
     margin-left: 10px;
   }
 
@@ -159,13 +175,15 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .loginBtn {
+    font-family: $bold-font;
     cursor: pointer;
     box-shadow: $input-shadow;
     color: white;
-    background: #71C3FF;
+    font-size: 70%;
+    background: $btn-blue;
     border-width: 0;
-    border-radius: 10px;
-    padding: 2px 20px;
+    border-radius: 15px;
+    padding: 7px 20px;
     margin: auto;
   }
 
@@ -176,8 +194,10 @@ $bold-font: 'Conv_Segoe UI Bold';
     background: #c7c8ca;
     border-width: 0;
     border-radius: 10px;
-    padding: 2px 20px;
+    padding: 6px 20px;
     margin: auto;
+    font-size: 80%;
+    font-family: $bold-font;
   }
 
   .cancelBtn:hover {
@@ -188,14 +208,28 @@ $bold-font: 'Conv_Segoe UI Bold';
     .error-tip {
       width: max-content !important;
     }
+
+    .message-tip {
+      left: 100%;
+      top: 12px;
+      width: max-content !important;
+    }
   }
   .loginBtn.active {
     background: #28a4ff !important;
   }
 
   .welcomeIconHolder {
+    margin: auto;
     text-align: center;
+    flex: 0 0 57%;
+    max-width: 57%;
     padding-right: 200px;
+  }
+
+  .welcome-login-holder {
+    flex: 0 0 43%;
+    max-width: 43%;
   }
 
   .welcomeBody {
@@ -204,11 +238,13 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .welcomeHeader {
-    padding-top: 20px;
+    padding-top: 10px;
     width: 100%;
   }
 
   .welcomeLeft {
+    flex: 0 0 57%;
+    max-width: 57%;
     height: 100%;
     //padding-right: 10px;
   }
@@ -225,6 +261,7 @@ $bold-font: 'Conv_Segoe UI Bold';
     grid-template-rows: auto;
 
     .welcome-text {
+      font-family: $bold-font;
       font-size: 200%;
       font-weight: 900;
     }
@@ -235,8 +272,9 @@ $bold-font: 'Conv_Segoe UI Bold';
     }
 
     .welcome-img {
-      width: 250px;
-      margin: auto;
+
+      width: 290px;
+      margin: auto 0 auto auto;
       grid-column-start: 2;
     }
 
@@ -254,7 +292,8 @@ $bold-font: 'Conv_Segoe UI Bold';
 
   .welcomeRight {
     height: 100%;
-
+    flex: 0 0 43%;
+    max-width: 43%;
   }
 
   .welcomeRight .content {
@@ -265,6 +304,8 @@ $bold-font: 'Conv_Segoe UI Bold';
     border: 0;
     border-radius: 20px 0 0 20px;
     height: 100%;
+    align-content: center;
+    display: grid;
     box-shadow: $input-shadow;
   }
 
@@ -299,10 +340,14 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   footer {
-
+    padding-bottom: 30px;
     .holder {
       display: grid;
-      grid-template-columns: auto auto auto auto auto 40%;
+      grid-template-columns: 10% auto auto auto auto 43%
+    }
+
+    .item {
+
     }
 
     /* Set the fixed height of the footer here */
@@ -340,13 +385,15 @@ $bold-font: 'Conv_Segoe UI Bold';
     width: 100%;
     bottom: 0;
     color: white;
+    font-size: 76%;
   }
 
 
   .footerColumnHeader {
+    font-family: $bold-font;
     padding-top: 20px;
     color: white;
-    font-size: 12px;
+    font-size: 100%;
     font-weight: 900;
   }
 
@@ -355,11 +402,11 @@ $bold-font: 'Conv_Segoe UI Bold';
     padding-top: 5px;
     padding-bottom: 5px;
     color: white;
-    font-size: 12px;
+    font-size: 80%;
   }
 
   .headerLoginControls {
-    padding-left: 40px;
+    padding-left: 35px;
     display: grid;
     height: 70px;
     grid-template-columns: max-content max-content max-content;
@@ -370,43 +417,59 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .registerEdit {
-    border: 1px #DDDDDD;
+    border: 1px solid #DDDDDD;
+    padding: 7px 20px;
     background: #F5F4F4;
     border-radius: 20px;
-    padding: 10px 20px;
     font-size: 100%;
   }
 
+  .registerEdit::placeholder {
+    color: #9F9F9F;
+  }
+
   .welcomeRight .content .title {
+    font-weight: 800;
     padding-top: 20px;
-    font-size: 120%;
+    font-size: 230%;
     padding-bottom: 0;
     margin-bottom: 5px;
   }
 
   .welcomeRight .content .subTitle {
-    font-size: 70%;
+    font-size: 100%;
     margin-top: 0;
   }
 
   .firstLastName {
+    margin-top: 30px;
     display: inline-block;
   }
 
   .registerFirstName {
     display: inline-block;
     position: relative;
+    width: 160px;
+
+    input {
+      width: 100%;
+    }
   }
 
   .registerLastName {
-    margin-left: 20px;
+    width: 160px;
+    margin-left: 10px;
     display: inline-block;
     position: relative;
+
+    input {
+      width: 100%;
+    }
   }
 
   .addFriend {
-    font-size: 80%;
-    margin-left: 20px;
+    font-size: 100%;
+    margin-left: 10px;
     margin-bottom: 5px;
     margin-top: 10px;
   }
@@ -422,8 +485,8 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .registerUsername input {
-    width: 50%;
-    padding: 10px 20px;
+    width: 335px;
+    padding: 7px 20px;
   }
 
   .registerPassword {
@@ -438,24 +501,27 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .registerPassword input {
-    width: 50%;
-    padding: 10px 20px;
+    width: 335px;
+    padding: 7px 20px;
   }
 
   .birthdayLabel {
-    margin-left: 20px;
+    margin-left: 10px;
     margin-bottom: 5px;
     margin-top: 10px;
-    font-size: 80%;
+    font-size: 100%;
   }
 
   .registerBirthday {
+    display: grid;
+    grid-template-columns: min-content min-content;
     position: relative;
 
     .registerEdit {
-      height: 44px;
+      height: 32px;
+      font-size: 80%;
       width: 60px;
-      min-height: 44px;
+      min-height: 32px;
       min-width: 60px;
     }
 
@@ -528,12 +594,13 @@ $bold-font: 'Conv_Segoe UI Bold';
   }
 
   .bdHint {
+    margin: auto;
+    margin-left: 10px;
     display: inline-block;
     width: 200px;
     font-size: 10px;
     vertical-align: middle;
     padding-bottom: 0px;
-    margin-bottom: 0;
     color: #009DFF;
   }
 
@@ -553,11 +620,12 @@ $bold-font: 'Conv_Segoe UI Bold';
   .signUpBtn {
     box-shadow: $input-shadow;
     color: white;
-    background: #71C3FF;
+    background: $btn-blue;
     border-width: 0;
-    padding: 7px 30px;
+    padding: 10px 50px;
+    font-family: $bold-font;
     border-radius: 20px;
-    margin-left: 60px;
+    margin-left: 100px;
   }
 
   .signUpBtn.active {
@@ -3284,6 +3352,47 @@ CHAT
 
 // end .error-tip
 .error-tip:not(:empty) {
+  display: inline;
+}
+
+.message-tip {
+  display: none;
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  right: -100%;
+  background-color: #00fc53;
+  border: 1px solid #00fc53;
+  border-radius: 7px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  color: #000000;
+  float: left;
+  font-weight: bold;
+  line-height: 24px;
+  padding: 7px 11px 4px;
+  margin-left: 17px;
+  // Left Arrow Styling Starts Here
+  &:after, &:before {
+    content: '';
+    border: 7px solid transparent;
+    position: absolute;
+    top: 11px;
+  }
+
+  &:after {
+    border-right: 7px solid #00fc53;
+    left: -14px;
+  }
+
+  &:before {
+    border-right: 7px solid #00fc53;
+    left: -15px;
+  }
+}
+
+// end .error-tip
+.message-tip:not(:empty) {
   display: inline;
 }
 

@@ -99,9 +99,12 @@ export default Controller.extend({
     },
     uploadImage(file) {
       file.readAsDataURL().then((url) => {
+        let metadata = {
+          cacheControl: 'public,max-age=86400'
+        };
         let ref = this.firebaseApp.storage().ref('Media/ProfilePic/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
 
-        ref.putString(url, 'data_url').then((snapshot) => {
+        ref.putString(url, 'data_url', metadata).then((snapshot) => {
           snapshot.ref.getDownloadURL().then((downloadURL) => {
             let form = this.get('form');
             set(form, 'ProfilePic', downloadURL);

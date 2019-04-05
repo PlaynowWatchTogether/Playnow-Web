@@ -8,9 +8,15 @@ export default Route.extend({
   firebaseApp: service(),
   firebaseMessage: service(),
   ntp: service(),
+  isMobile: service(),
   activate() {
     this._super(...arguments);
     this.get('ntp');
+  },
+  beforeModel() {
+    if (this.get('isMobile.any')) {
+      this.transitionTo('mobile')
+    }
   },
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {

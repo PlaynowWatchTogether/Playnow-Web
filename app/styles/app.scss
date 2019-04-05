@@ -30,14 +30,44 @@ img, a {
   font-style: normal;
 }
 
+html {
+  overflow-x: auto;
+  height: 100%;
+  font-family: 'Conv_Segoe UI', Sans-Serif;
+}
 
-body, html {
+body {
   min-width: 1200px;
   overflow-x: auto;
   height: 100%;
   font-family: 'Conv_Segoe UI', Sans-Serif;
 }
 
+.mobile-holder {
+  display: grid;
+  grid-template-rows: 50% 40px 40px;
+  height: 100%;
+  align-items: center;
+  vertical-align: middle;
+  grid-row-gap: 10px;
+
+  .logo {
+    width: 100px;
+    margin: auto;
+  }
+
+  a {
+    margin: auto;
+  }
+
+  .gplay {
+    height: 40px;
+  }
+}
+
+body.mobile {
+  min-width: unset;
+}
 body > .ember-view {
   height: 100%;
 }
@@ -285,7 +315,7 @@ $btn-blue: #71C3FF;
     a {
 
       img.gplay {
-        height: 60px;
+        height: 40px;
       }
     }
   }

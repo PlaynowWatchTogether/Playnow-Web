@@ -15,6 +15,7 @@ Router.map(function() {
     this.route('create');
   });
   this.route('search', {path: '/search/:query'});
+  this.route('mobile');
 });
 
 export default Router;

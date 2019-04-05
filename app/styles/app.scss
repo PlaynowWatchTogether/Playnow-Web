@@ -678,6 +678,15 @@ body.home.index, body.home.create {
   }
 }
 
+body {
+  .mainPage.loading {
+    pointer-events: none;
+
+    .close-search {
+      visibility: hidden;
+    }
+  }
+}
 
 body.home.chat, body.home.create {
   .mainPage {

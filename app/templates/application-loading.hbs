@@ -1,6 +1,76 @@
-<div class="loading-holder background_gradient h-100">
-  <div class="lds-ripple">
-    <div></div>
-    <div></div>
-  </div>
+<div class="mainPage container-fluid background_gradient h-100 loading">
+  <header class="home navbar navbar-default navbar-fixed-top row justify-content-md-center">
+    <div class="content col-10">
+      <a class="play-icon" href="/home">
+        <img src="/assets/Favicon.png" class="play-icon" alt="icon">
+      </a>
+      <div class="search">
+        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+        <div class="searchInput"></div>
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+        <div class="trigger-search" role="button">
+          <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+        </div>
+      </div>
+      <div class="profile">
+
+      </div>
+      <div class="controls">
+        <div class="followers">
+          <div>
+            <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
+            <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
+          </div>
+        </div>
+        <div class="gear dropdown">
+          <div>
+            <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
+            <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="chevron">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  {{#welcome-body classNames="row root h-100" tagName="section" minHeight=0}}
+    <div class="col-sm-3 col-friends h-100">
+      <div class="row row-friends h-100">
+        <div class="col h100 friendsOutlet">
+          <div class="friendsHeader">
+            <div class="friendsCompose">
+
+            </div>
+            <div class="friendsTitle">
+              <span class="friends noselect"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-9 col-child-content h-100">
+      <div class="publicRooms row">
+        <div class="content h-100">
+          <div class="title-holder">
+            <div class="title">
+
+            </div>
+            <div class="create noselect">
+
+            </div>
+          </div>
+          <div class="search-holder">
+
+          </div>
+          <div class="roomsHolder">
+            <div class="rooms-wrapper">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  {{/welcome-body}}
+  <footer></footer>
 </div>

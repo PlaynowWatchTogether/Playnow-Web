@@ -12,7 +12,13 @@ export default Controller.extend({
   },
   modelObserver(arg) {
     $('.trigger-search').addClass('active');
-    arg.store.query('user', {orderBy: 'Email', startAt: arg.get('model.query'), limitToFirst: 10}).then((res) => {
+    let q = arg.get('model.query')
+    arg.store.query('user', {
+      orderBy: 'Email',
+      startAt: q.toUpperCase(),
+      endAt: q.toLowerCase(),
+      limitToFirst: 10
+    }).then((res) => {
       arg.set('search.users', res);
       $('.trigger-search').removeClass('active');
     });

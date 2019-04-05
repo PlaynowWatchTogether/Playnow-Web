@@ -15,7 +15,7 @@ export default Controller.extend({
       this.transitionToRoute('search', {query: this.get('searchQuery')});
     }
   },
-  contactList: computed('friends.@each.latestMessageDate', 'groups.@each.latestMessageDate', function () {
+  contactList: computed('friends.@each.{latestMessageDate,FirstName,LastName,profilePic,isOnline,videoIsPlaying}', 'groups.@each.{latestMessageDate,videoType}', function () {
     let f = (this.get('friends') || []).map((elem) => {
       return FriendListItemObj.create({type: 'friend', content: elem})
     });
@@ -24,7 +24,7 @@ export default Controller.extend({
     });
     return f.concat(g)
   }),
-  sortedFriends: sort('contactList.@each.latestMessageDate', function (a, b) {
+  sortedFriends: sort('contactList.@each.{latestMessageDate,FirstName,LastName,profilePic,videoType,}', function (a, b) {
     if (a.get('latestMessageDate') > b.get('latestMessageDate')) {
       return -1;
     } else if (a.get('latestMessageDate') < b.get('latestMessageDate')) {

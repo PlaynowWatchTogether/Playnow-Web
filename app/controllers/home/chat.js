@@ -8,7 +8,7 @@ import {run} from '@ember/runloop';
 import {debug} from "@ember/debug";
 import $ from 'jquery';
 import ArrayProxy from '@ember/array/proxy';
-import ObjectProxy from '@ember/object/proxy';
+import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
 export default Controller.extend({
@@ -218,6 +218,8 @@ export default Controller.extend({
       });
       return;
     }
+    obj.set('isChatOnline', false);
+    obj.set('onlineText', '');
     if ('one2one' === type) {
       obj.store.find('friends', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({
@@ -236,6 +238,15 @@ export default Controller.extend({
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+        obj.get('db').profileObserver(convId, (profile) => {
+          obj.set('isChatOnline', true);
+          if (profile['Last Active Date'] === 'online') {
+            obj.set('onlineText', 'online');
+          } else {
+            obj.set('onlineText', moment.unix(profile['Last Active Date']).fromNow());
+          }
+          debug('one2one profile updated');
+        })
       });
     } else if ('room' === type) {
       obj.store.find('room', convId).then((room) => {
@@ -303,13 +314,28 @@ export default Controller.extend({
       if (watchers) {
         obj.videoStateHandler.updateWatchers(watchers, 0);
         let watcherProfiles = [];
+        let allWatcherProfiles = [];
         watchers.forEach((elem) => {
-          if (elem['state'] === 'playing') {
+          if (elem['state'] !== 'closed') {
             watcherProfiles.push(obj.db.profile(elem['userId']))
           }
+          allWatcherProfiles.push(obj.db.profile(elem['userId']))
         });
         Promise.all(watcherProfiles).then((profiles) => {
-          obj.set('watchers', profiles);
+          let senders = [];
+          let others = [];
+          let sender = obj.get('videoStateHandler').lastState.senderId;
+          profiles.forEach((item) => {
+            if (sender === item['id']) {
+              senders.push(item);
+            } else {
+              others.push(item)
+            }
+          });
+          obj.set('watchers', senders.concat(others));
+        })
+        Promise.all(allWatcherProfiles).then((profiles) => {
+          obj.set('allWatchers', profiles);
         })
       }
     });
@@ -575,8 +601,8 @@ export default Controller.extend({
   myID: computed('model', function () {
     return this.get('db').myId();
   }),
-  membersProfiles: computed('watchers', function () {
-    let members = this.get('watchers');
+  membersProfiles: computed('allWatchers', function () {
+    let members = this.get('allWatchers');
     if (members) {
       return members.map((elem, index) => {
         elem.className = 'z' + (members.length - index);

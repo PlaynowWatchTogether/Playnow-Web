@@ -11,16 +11,20 @@ export default Route.extend(AuthRouteMixin, {
     this.arProxy = ArrayProxy.create({content: []});
   },
   model() {
-    return this.arProxy;
+    return this.store.peekAll('room');
   },
   activate() {
 
     // let ctrl = this.controllerFor('home/index');
     // ctrl.set('model', arProxy);
     this.get('db').rooms((rooms) => {
-      this.arProxy.setObjects(rooms.filter((elem) => {
-        return elem['videoThumbnail'] && elem['videoThumbnail'].length > 0
-      }));
+      rooms.forEach((room) => {
+        room['rawData'] = JSON.stringify(room);
+        room['lastUpdate'] = new Date().getUTCMilliseconds();
+        let normalizedData = this.store.normalize('room', room);
+        this.store.push(normalizedData);
+      });
+
     }, () => {
     });
     this._super(...arguments);

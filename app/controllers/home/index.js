@@ -8,7 +8,7 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
   },
-  filteredModel: computed('model.@each', 'roomQuery', function () {
+  filteredModel: computed('model.@each.lastUpdate', 'roomQuery', function () {
     let q = this.get('roomQuery');
     return this.get('model').filter((elem) => {
       if (!q || q.length === 0)

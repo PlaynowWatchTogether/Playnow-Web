@@ -2,7 +2,7 @@
   <img class="profilePic" src={{model.safeProfilePic}} alt="icon">
 {{/user-profile-view}}
 {{#user-profile-view classNames="firstName" model=model.id onRequestSent=(action 'onRequestSent')}}
-  {{model.FirstName}} {{model.LastName}}
+  {{displayName}}
 {{/user-profile-view}}
 <div class="addHolder">
   {{#if isAdded}}

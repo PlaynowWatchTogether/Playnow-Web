@@ -68,6 +68,7 @@ body {
 body.mobile {
   min-width: unset;
 }
+
 body > .ember-view {
   height: 100%;
 }
@@ -98,6 +99,7 @@ $btn-blue: #71C3FF;
 .welcomePage {
   margin-left: -15px;
   margin-right: -15px;
+
   .header_title {
     font-weight: 900;
     font-stretch: 12%;
@@ -245,6 +247,7 @@ $btn-blue: #71C3FF;
       width: max-content !important;
     }
   }
+
   .loginBtn.active {
     background: #28a4ff !important;
   }
@@ -371,6 +374,7 @@ $btn-blue: #71C3FF;
 
   footer {
     padding-bottom: 30px;
+
     .holder {
       display: grid;
       grid-template-columns: 10% auto auto auto auto 43%
@@ -713,6 +717,10 @@ body.home.chat.room {
 }
 
 .mainPage {
+  .col-child-content {
+    padding-left: 10px;
+  }
+
   .navbar {
     padding: 0;
 
@@ -914,7 +922,7 @@ body.home.chat.room {
                   background: #5AB9FF;
                   margin: auto;
                   grid-column-start: 2;
-                  padding: 5px 20px 5px 20px;
+                  padding: 5px 10px 5px 10px;
                   border-radius: 20px;
                   grid-template-columns: auto auto;
 
@@ -933,7 +941,7 @@ body.home.chat.room {
                   margin: auto;
                   background: #C4C4C4;
                   border-radius: 20px;
-                  padding: 5px 20px;
+                  padding: 5px 10px;
                   color: white;
                   grid-column-start: 2;
                 }
@@ -942,16 +950,19 @@ body.home.chat.room {
                   display: grid;
                   background: #CF77FF;
                   margin: auto;
-                  padding: 5px 20px 5px 20px;
+                  padding: 5px 10px 5px 10px;
                   border-radius: 20px;
                   grid-template-columns: auto auto;
 
                   img {
                     margin: auto;
+                    width: 19px;
+                    height: 19px;
                   }
 
                   .label {
                     margin-top: auto;
+                    margin-bottom: auto;
                     margin-left: 10px;
                     color: white;
                   }
@@ -965,7 +976,7 @@ body.home.chat.room {
                   margin: auto;
                   background: #C4C4C4;
                   border-radius: 20px;
-                  padding: 5px 20px;
+                  padding: 5px 10px;
                   color: white;
                 }
 
@@ -1075,6 +1086,8 @@ body.home.chat.room {
   }
 
   .friendsHeader {
+    margin-left: -15px;
+    margin-right: -15px;
     display: grid;
     grid-template-columns: 80px auto;
     border-bottom: 1px solid #E6E6E6;
@@ -1298,6 +1311,8 @@ body.home.chat.room {
   }
 
   .friendsList {
+    margin-left: -15px;
+    margin-right: -15px;
     overflow-y: auto;
     clear: both;
     text-align: center;
@@ -1395,6 +1410,7 @@ body.home.chat.room {
             border-radius: 50%;
             background: #fff;
           }
+
           .online-icon {
             z-index: 2;
             top: 0px;
@@ -1431,6 +1447,7 @@ body.home.chat.room {
           .playing, .playing2 {
             display: block;
           }
+
           .playing-video-icon {
             display: block;
           }
@@ -1444,6 +1461,7 @@ body.home.chat.room {
           .playing, .playing2 {
             display: block;
           }
+
           .playing-music-icon {
             display: block;
           }
@@ -1487,8 +1505,6 @@ body.home.chat.room {
   }
 
   .friendsOutlet {
-    padding-left: 0;
-    padding-right: 0;
     display: grid;
     overflow: hidden;
     grid-template-rows: $header-height auto;
@@ -1694,6 +1710,7 @@ CHAT
             grid-column-end: 6;
             grid-row-start: 2;
           }
+
           .switch-holder {
             grid-column-start: 5;
             grid-row-start: 3;
@@ -1701,6 +1718,7 @@ CHAT
             grid-template-columns: auto auto;
             margin-left: auto;
             margin-right: 20px;
+
             .label {
               margin-right: 10px;
               color: white;
@@ -1875,11 +1893,33 @@ CHAT
           padding-top: 10px;
           width: 80%;
 
+          .watcher {
+            position: relative;
+
+            .profile-back {
+              position: absolute;
+              top: -2px;
+              left: -2px;
+              background: #fff;
+              width: 34px;
+              height: 34px;
+              border-radius: 50%;
+              box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+            }
+          }
+
+          .watchers-streamer {
+            .profile-back {
+              background: $primary-gradient;
+            }
+          }
           .watchers-other {
             display: flex;
             width: 100%;
           }
+
           .profilePicWrapper {
+            z-index: 1;
             width: 30px;
             height: 30px;
           }
@@ -1897,12 +1937,24 @@ CHAT
             grid-row-start: 2;
             margin: auto;
 
-            .profilePicWrapper {
-              width: 140px;
-              height: 140px;
+            .watcher {
               animation-name: pulse;
               animation-duration: 1s;
               animation-iteration-count: infinite;
+            }
+
+            .profile-back {
+
+              width: 148px;
+              height: 148px;
+              top: -4px;
+              left: -4px;
+              background: $primary-gradient;
+            }
+            .profilePicWrapper {
+              width: 140px;
+              height: 140px;
+
             }
 
             @keyframes pulse {
@@ -1941,11 +1993,27 @@ CHAT
         top: 60px;
         left: 10px;
 
+        .member {
+          position: relative;
+
+          .profile-back {
+            position: absolute;
+            top: -2px;
+            background: #fff;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            left: -2px;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+          }
+        }
+
         .member:not(:first-child) {
           margin-left: -10px;
         }
 
         .profilePicWrapper {
+          z-index: 1;
           cursor: pointer;
           width: 30px;
           height: 30px;
@@ -1956,7 +2024,7 @@ CHAT
         flex: 0 0 auto;
         height: $header-height;
         display: grid;
-        grid-template-columns: auto 50px;
+        grid-template-columns: auto 80px;
         border-bottom: 1px solid #E6E6E6;
 
         .title {
@@ -1968,13 +2036,28 @@ CHAT
           margin: auto;
         }
 
+        .title-holder {
+          height: 44px;
+          margin: auto;
+          display: grid;
+        }
+
         .name {
           margin: auto auto auto 10px;
+        }
+
+        .online {
+          color: #A5A5A5;
+          text-align: center;
+          width: 100%;
+          font-size: 80%;
+          display: block;
         }
 
         .profilePicWrapper {
           width: 30px;
           height: 30px;
+          margin: auto;
         }
 
         .divider {
@@ -2039,6 +2122,7 @@ CHAT
             .chips-wrapper {
               display: flex;
               flex-wrap: wrap;
+
               .chip {
                 margin-top: 5px;
                 margin-bottom: 5px;
@@ -2114,7 +2198,6 @@ CHAT
         .messagesWrappper {
           display: grid;
           grid-template-columns: auto;
-          grid-row-gap: 5px;
 
           .typing-indicators {
             .indicator {
@@ -2137,8 +2220,8 @@ CHAT
         .messageTime {
           color: #E3D636;
           text-align: center;
-          padding-top: 10px;
-          padding-bottom: 10px;
+          padding-top: 5px;
+          padding-bottom: 5px;
         }
 
         .messageHolder {
@@ -2155,11 +2238,12 @@ CHAT
           .message-text {
             width: fit-content;
             background: white;
-            padding: 10px;
+            padding: 5px 15px;
+            font-size: 90%;
             border-radius: 14px;
             box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);
             display: block;
-            margin-top: auto;
+            margin-top: 5px;
           }
 
           .last-seen {
@@ -2181,13 +2265,13 @@ CHAT
 
           .message-video-request {
             background: white;
-            padding: 10px;
             border-radius: 20px;
             box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
-            margin-top: auto;
             display: grid;
             width: 100%;
-            grid-template-rows: 30px 100px 0px;
+            margin-top: 10px;
+            padding: 5px 10px;
+            grid-template-rows: min-content 100px 0px;
             grid-template-columns: min-content auto;
 
             .title {
@@ -2253,6 +2337,7 @@ CHAT
           grid-template-columns: auto 80%;
 
           .message-video {
+            margin-top: 5px;
             justify-content: end;
             justify-self: end;
 
@@ -2299,15 +2384,16 @@ CHAT
         }
 
         .messageContent {
+
           max-height: 150px;
           overflow-y: auto;
           flex: 1 1 auto;
           width: 100%;
-          max-width: 75vh;
+          //max-width: 75vh;
           min-height: 40px;
           outline: none;
-          font-size: 20px;
-          padding: 5px 10px;
+          font-size: 90%;
+          padding: 12px 10px 5px;
         }
 
         textarea {
@@ -2346,15 +2432,19 @@ CHAT
 
    */
   .media {
-    padding-right: 0;
 
     .holder {
       flex-direction: column;
-      width: 100%;
-      background: #fff;
-      box-shadow: $input-shadow;
-      border-radius: 20px 0 0 0;
-      margin-left: 0;
+      padding-left: 10px;
+
+      .media-wrapper {
+        display: flex;
+        flex-direction: column;
+        height: 100% !important;
+        background: #fff;
+        box-shadow: $input-shadow;
+        border-radius: 20px 0 0 0;
+      }
 
       .title {
         width: 100%;
@@ -2622,6 +2712,16 @@ CHAT
             width: 100%;
             padding: 10px;
 
+            .videoTitle {
+              font-family: $bold-font;
+
+            }
+
+            .channel-title, .channel-desc {
+              font-size: 80%;
+              color: #696969;
+            }
+
             img {
               width: 100%;
               border-radius: 10px;
@@ -2836,6 +2936,7 @@ CHAT
           grid-template-columns: 20% 20% 20% 20% 20%;
         }
       }
+
       .room-chat-link {
         text-decoration: none;
         color: black;
@@ -2907,9 +3008,28 @@ CHAT
             margin-right: 20px;
             margin-left: 20px;
             display: flex;
-            overflow: hidden;
+            height: 35px;
+            padding-top: 2.5px;
+            padding-left: 3px;
+
+            .member {
+
+              position: relative;
+
+              .profile-back {
+                background: #fff;
+                box-shadow: $input-shadow;
+                width: 35px;
+                position: absolute;
+                left: -3px;
+                top: -2.5px;
+                height: 35px;
+                border-radius: 50%;
+              }
+            }
 
             .profilePicWrapper {
+              z-index: 1;
               cursor: pointer;
               width: 30px;
               height: 30px;
@@ -2922,7 +3042,12 @@ CHAT
         }
 
         .watchers, .title, .thumbnail-holder {
+          margin-top: 10px;
           margin-left: 20px;
+        }
+
+        .watchers, .title {
+
         }
       }
 
@@ -2938,7 +3063,7 @@ CHAT
   background: #fff;
   border-radius: 20px 20px 0 0;
   display: grid;
-  grid-template-rows: 50px auto;
+  grid-template-rows: 50px min-content auto;
 
   .header {
     margin-top: auto;
@@ -3211,11 +3336,11 @@ CHAT
         grid-column-end: 6;
         background: #9FC2FA;
         color: white;
-        padding-top: 10px;
-        padding-bottom: 10px;
+
         border-radius: 30px;
         font-size: 24px;
-        margin: 30px;
+        width: 150px;
+        margin: auto auto 30px;
       }
 
       button:focus, .btn-edit:focus, .btn-cancel:focus, .btn-submit:focus {
@@ -3227,11 +3352,11 @@ CHAT
         grid-column-end: 5;
         background: #9FC2FA;
         color: white;
-        padding-top: 10px;
-        padding-bottom: 10px;
+
         border-radius: 30px;
         font-size: 24px;
-        margin: 30px;
+        width: 150px;
+        margin: auto auto 30px;
       }
 
       .btn-cancel {
@@ -3239,11 +3364,10 @@ CHAT
         grid-column-end: 7;
         background: #c7c8ca;
         color: white;
-        padding-top: 10px;
-        padding-bottom: 10px;
         border-radius: 30px;
         font-size: 24px;
-        margin: 30px;
+        width: 150px;
+        margin: auto auto 30px;
       }
     }
 

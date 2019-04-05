@@ -24,8 +24,8 @@ export default Service.extend({
       $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=25&relatedToVideoId=' + videoId, null, (data) => {
         debug(data);
         let items = data['items'];
-        let index = Math.floor(Math.random() * items.length)
-        let elem = data['items'][index];
+        // let index = Math.floor(Math.random() * items.length)
+        let elem = items[0];
         let video = {
           id: elem['id']['videoId'],
           snippet: elem['snippet']

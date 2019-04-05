@@ -49,9 +49,15 @@ export default Component.extend({
       range.select();//Select the range (make it the visible selection
     }
   },
+  handleSize() {
+
+    let width = $(this.element).parent().width() - 100;
+    $(this.element).css('max-width', width);
+  },
   didInsertElement() {
     this._super(...arguments);
-
+    $(window).on('resize', this.handleSize.bind(this));
+    this.handleSize();
     this.updateDom();
     this._mutationObserver = new MutationObserver(bind(this, this.domChanged));
 

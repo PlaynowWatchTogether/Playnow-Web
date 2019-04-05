@@ -30,6 +30,7 @@
             {{/if}}
 
             <span class="name">{{chatModel.title}}</span>
+
           </div>
         {{else}}
           {{#if chatModel.group}}
@@ -46,8 +47,12 @@
               {{else}}
                 <div class="profilePicWrapper"></div>
               {{/if}}
-
-              <span class="name">{{chatModel.title}}</span>
+              <div class="title-holder">
+                <span class="name">{{chatModel.title}}</span>
+                {{#if isChatOnline}}
+                  <span class="online">{{onlineText}}</span>
+                {{/if}}
+              </div>
             {{/user-profile-view}}
           {{/if}}
           <div class="back">
@@ -74,6 +79,7 @@
               {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
                 <img class="profilePic" src={{member.profilePic}} alt="icon">
               {{/user-profile-view}}
+              <div class="profile-back"></div>
             </div>
           {{/each}}
         </div>
@@ -122,14 +128,14 @@
 
             <div class="watchers-streamer">
               {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=true}}
+                {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
 
                 {{/watcher-item}}
               {{/each}}
             </div>
             <div class="watchers-other">
               {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=false}}
+                {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
 
                 {{/watcher-item}}
               {{/each}}
@@ -223,112 +229,114 @@
       <div class="newMessageHolder">
         {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-        <div class="imgHolder">
-          <img src="/assets/ic_chat_send.png" {{action "sendMessage"}} alt="icon" role="button">
-        </div>
         {{#file-upload name="chatPhotos"
                        accept="image/*, video/mp4"
                        onfileadd=(action "uploadImageToChat")}}
-          <img src="/assets/ic_chat_msg_image@2x.png" alt="icon">
+          <img src="/assets/attachment.png" alt="icon">
         {{/file-upload}}
 
+        <div class="imgHolder">
+          <img src="/assets/send.png" {{action "sendMessage"}} alt="icon" role="button">
+        </div>
       </div>
     {{/file-dropzone}}
   </div>
   <div class="col-4 media">
     <div class="row holder h-100">
-      <div class="title">
-        <div>
-          <span class="noselect">Trending</span>
+      <div class="media-wrapper">
+        <div class="title">
+          <div>
+            <span class="noselect">Trending</span>
+          </div>
         </div>
-      </div>
-      <div class="tabs">
-        <ul class="nav nav-pills">
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
-               aria-selected="true" {{action "pickVideosSearch"}}>
-              Videos
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
-               aria-selected="true" {{action "pickSongsSearch"}}>
-              Songs
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div class="tab-content col-12">
-        <div class="tab-pane row fade show active" id="videos">
-          <div class="col-12">
+        <div class="tabs">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+                 aria-selected="true" {{action "pickVideosSearch"}}>
+                Videos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
+                 aria-selected="true" {{action "pickSongsSearch"}}>
+                Songs
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content col-12">
+          <div class="tab-pane row fade show active" id="videos">
+            <div class="col-12">
 
-            {{#scroll-with-listener  music=false
-                                     onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".tab-content"
-                                     loading=loadingVideo}}
+              {{#scroll-with-listener  music=false
+                                       onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".tab-content"
+                                       loading=loadingVideo}}
 
+                <div class="searchHolder">
+                  {{#search-holder classNames="search" }}
+
+                    <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+                    {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
+                            insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+                    <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+                    <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
+                      <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+                    </div>
+                  {{/search-holder}}
+                </div>
+                <div class="youtube-items noselect">
+                  {{#if isLoadingVideo}}
+                    <div class="loading-holder h-100">
+                      <div class="lds-ripple">
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                  {{/if}}
+                  {{#each youtubeVideoItems as |video|}}
+                    {{#youtube-video model=video classNames="youtube-item"
+                                     clickAction=(action "videoPick")}}
+
+                    {{/youtube-video}}
+                  {{/each}}
+                </div>
+
+              {{/scroll-with-listener}}
+            </div>
+          </div>
+          <div class="tab-pane fade" id="music">
+            {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
+                                    onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
+                                    loading=loadingMusic}}
               <div class="searchHolder">
                 {{#search-holder classNames="search" }}
-
                   <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-                  {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
-                          insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+                  {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
+                          insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
                   <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-                  <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
+                  <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
                     <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
                 {{/search-holder}}
               </div>
-              <div class="youtube-items noselect">
-                {{#if isLoadingVideo}}
-                  <div class="loading-holder h-100">
-                    <div class="lds-ripple">
-                      <div></div>
-                      <div></div>
-                    </div>
+              {{#if isLoadingMusic}}
+                <div class="loading-holder h-100">
+                  <div class="lds-ripple">
+                    <div></div>
+                    <div></div>
                   </div>
-                {{/if}}
-                {{#each youtubeVideoItems as |video|}}
-                  {{#youtube-video model=video classNames="youtube-item"
-                                   clickAction=(action "videoPick")}}
+                </div>
+              {{/if}}
+              {{#each youtubeMusicItems as |video|}}
+                {{#youtube-music model=video classNames="youtube-item-music col-12"
+                                 clickAction=(action "musicPick")}}
 
-                  {{/youtube-video}}
-                {{/each}}
-              </div>
+                {{/youtube-music}}
 
+              {{/each}}
             {{/scroll-with-listener}}
           </div>
-        </div>
-        <div class="tab-pane fade" id="music">
-          {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
-                                  onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
-                                  loading=loadingMusic}}
-            <div class="searchHolder">
-              {{#search-holder classNames="search" }}
-                <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-                {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
-                        insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
-                <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-                <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
-                  <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-                </div>
-              {{/search-holder}}
-            </div>
-            {{#if isLoadingMusic}}
-              <div class="loading-holder h-100">
-                <div class="lds-ripple">
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
-            {{/if}}
-            {{#each youtubeMusicItems as |video|}}
-              {{#youtube-music model=video classNames="youtube-item-music col-12"
-                               clickAction=(action "musicPick")}}
-
-              {{/youtube-music}}
-
-            {{/each}}
-          {{/scroll-with-listener}}
         </div>
       </div>
 

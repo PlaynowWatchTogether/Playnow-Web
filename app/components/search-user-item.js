@@ -21,6 +21,13 @@ export default Component.extend({
 
     });
   },
+  displayName: computed('model', function () {
+    let email = this.get('model.Email');
+    if (email && email.includes('@')) {
+      return email.split('@')[0]
+    }
+    return email;
+  }),
   isAdded: computed('model', 'sent', 'added', function () {
     let res = false;
     let model = this.get('model');

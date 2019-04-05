@@ -200,8 +200,9 @@ export default Controller.extend({
           }, (error) => {
             if (error.code === 'auth/weak-password') {
               this.set('form.register.error.password', error.message);
+            } else if (error.code === 'auth/email-already-in-use') {
+              this.set('form.register.error.username', 'Username already taken');
             } else {
-
               this.set('form.register.error.global', 'Sign up failed');
               this.clearError();
             }

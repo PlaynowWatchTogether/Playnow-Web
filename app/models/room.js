@@ -9,6 +9,11 @@ export default DS.Model.extend({
   rawData: attr('string'),
   lastUpdate: attr('number'),
   videoWatching: computed('rawData', function () {
-    return JSON.parse(this.get('rawData'))['videoWatching']
+    let rawData = this.get('rawData');
+    if (rawData) {
+      return JSON.parse(rawData)['videoWatching']
+    } else {
+      return null;
+    }
   })
 });

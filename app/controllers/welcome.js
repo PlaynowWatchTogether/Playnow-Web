@@ -228,7 +228,9 @@ export default Controller.extend({
             emails.push(item.child("Email").val())
           });
           if (emails.length > 0) {
-            userEmail = emails[0] ? emails[0] : ''
+            if (emails[0]) {
+              userEmail = emails[0];
+            }
           }
           this.loginWithEmail(userEmail, password)
         }, (error) => {

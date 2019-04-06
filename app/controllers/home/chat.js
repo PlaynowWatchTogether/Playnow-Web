@@ -210,7 +210,8 @@ export default Controller.extend({
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
     obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
-
+    obj.set('isChatOnline', false);
+    obj.set('onlineText', '');
     if ('compose' === convId) {
       obj.set('chatModel', {
         hasProfilePic: false,
@@ -218,8 +219,7 @@ export default Controller.extend({
       });
       return;
     }
-    obj.set('isChatOnline', false);
-    obj.set('onlineText', '');
+
     if ('one2one' === type) {
       obj.store.find('friends', convId).then((friend) => {
         obj.set('dataSource', MessageDataSource.create({

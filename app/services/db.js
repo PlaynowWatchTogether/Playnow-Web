@@ -82,11 +82,16 @@ export default Service.extend({
   profileObserver(user, updateCallback) {
 
     let ref = this.firebaseApp.database().ref("Users/" + user);
-    ref.on('value', (snapshot) => {
+    let clb = (snapshot) => {
       let payload = snapshot.val();
       payload['id'] = snapshot.key;
       updateCallback(payload);
-    })
+    };
+    ref.on('value', clb)
+  },
+  offProfileObserver(user, clb) {
+    let ref = this.firebaseApp.database().ref("Users/" + user);
+    ref.off('value', clb)
   },
   profile(user) {
     return new Promise((resolve, reject) => {

@@ -1,11 +1,13 @@
 import {get} from '@ember/object';
 import Component from '@ember/component';
 import $ from 'jquery';
+import {debug} from '@ember/debug';
 import PicturedObject from '../custom-objects/pictured-object'
 import {inject as service} from '@ember/service';
 
 export default Component.extend({
   db: service(),
+
   displayProfile(profile) {
     let pictured = PicturedObject.create({content: profile});
     let profileModal = $('#profileModal');
@@ -14,6 +16,20 @@ export default Component.extend({
     let email = get(profile, 'Email');
     profileModal.find('.username')[0].innerText = (email || '').split('@')[0];
     profileModal.find('.name')[0].innerText = get(profile, 'FirstName') + ' ' + get(profile, 'LastName');
+    if (profile['id'] !== this.db.myId()) {
+      profileModal.find('.profilePicChange input').attr('disabled', 'true');
+    } else {
+      let offClb = this.db.profileObserver(this.db.myId(), (profile) => {
+        let pictured = PicturedObject.create({content: profile});
+        profileModal.find('.profilePic').attr('src', pictured.get('profilePic'));
+      });
+      profileModal.on('hidden.bs.modal', () => {
+        this.db.offProfileObserver(this.db.myId(), offClb);
+        debug('Profile modal hidden')
+      });
+      profileModal.find('.profilePicChange input').attr('disabled', null);
+
+    }
     let friends = Object.keys(get(profile, 'Friends') || {});
     let followers = Object.keys(get(profile, 'Followers') || {});
     if (profile['id'] === this.db.myId()) {
@@ -47,6 +63,7 @@ export default Component.extend({
     profileModal.find('.friends .number')[0].innerText = friends.length;
 
     profileModal.modal();
+
   },
   click() {
 

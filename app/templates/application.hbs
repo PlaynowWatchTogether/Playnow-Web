@@ -84,7 +84,12 @@
         </div>
         <div class="profile-content user">
           <div class="profilePicWrapper">
-            <img class="profilePic" alt="profilePic">
+            {{#file-upload name="profile"
+                           accept="image/*"
+                           onfileadd=(action "uploadProfileImage")
+                           classNames="profilePicChange"}}
+              <img class="profilePic" alt="profilePic">
+            {{/file-upload}}
           </div>
           <div class="username-holder">
             <div class="username">{{selectedProfile.username}}</div>

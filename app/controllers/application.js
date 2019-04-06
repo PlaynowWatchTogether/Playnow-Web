@@ -97,6 +97,24 @@ export default Controller.extend({
         this.get('db').cancelRequest(model);
       }
     },
+    uploadProfileImage(file) {
+      file.readAsDataURL().then((url) => {
+        let metadata = {
+          cacheControl: 'public,max-age=86400'
+        };
+        let ref = this.firebaseApp.storage().ref('Media/ProfilePic/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
+
+        ref.putString(url, 'data_url', metadata).then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {
+            let form = this.get('form');
+            set(form, 'ProfilePic', downloadURL);
+            this.set('form', form);
+            this.get('db').updateProfilePic(downloadURL);
+            debug('File available at', downloadURL);
+          });
+        });
+      });
+    },
     uploadImage(file) {
       file.readAsDataURL().then((url) => {
         let metadata = {

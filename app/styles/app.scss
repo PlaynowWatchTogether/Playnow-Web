@@ -703,7 +703,7 @@ body.home.chat, body.home.create {
   }
 
   .col-child-content {
-    padding-left: 15px;
+    padding-left: 10px;
   }
 }
 
@@ -947,6 +947,8 @@ body.home.chat.room {
                 }
 
                 .add {
+                  width: 80px;
+                  text-align: center;
                   display: grid;
                   background: #CF77FF;
                   margin: auto;
@@ -973,6 +975,8 @@ body.home.chat.room {
                 }
 
                 .cancel {
+                  width: 80px;
+                  text-align: center;
                   margin: auto;
                   background: #C4C4C4;
                   border-radius: 20px;
@@ -2029,7 +2033,6 @@ CHAT
 
         .title {
           cursor: pointer;
-          text-align: center;
           vertical-align: middle;
           display: grid;
           grid-template-columns: 30px auto;
@@ -2038,17 +2041,17 @@ CHAT
 
         .title-holder {
           height: 44px;
-          margin: auto;
+          margin: auto auto auto 10px;
           display: grid;
         }
 
         .name {
-          margin: auto auto auto 10px;
+          margin-top: auto;
+          margin-bottom: auto;
         }
 
         .online {
           color: #A5A5A5;
-          text-align: center;
           width: 100%;
           font-size: 80%;
           display: block;
@@ -3332,6 +3335,7 @@ CHAT
       }
 
       .btn-edit {
+        margin-top: 20px;
         grid-column-start: 3;
         grid-column-end: 6;
         background: #9FC2FA;

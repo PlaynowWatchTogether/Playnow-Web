@@ -17,6 +17,12 @@ export default Service.extend({
           content_available: true,
           badge: newBadge + '',
           sound: 'NotificationTone.mp3',
+          link: 'https://playnows.com',
+          webpush: {
+            fcm_options: {
+              link: "https://playnows.com"
+            }
+          }
         };
         let notification = {};
         if (!actualMessage) {
@@ -30,6 +36,8 @@ export default Service.extend({
           notification['badge'] = newBadge;
           notification['sound'] = 'NotificationTone.mp3';
         }
+        notification['icon'] = '/assets/main.png';
+        notification['click_action'] = 'https://playnows.com';
         body['notification'] = notification;
         $.ajax({
           url: 'https://fcm.googleapis.com/fcm/send',

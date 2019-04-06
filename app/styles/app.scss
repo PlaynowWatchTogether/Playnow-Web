@@ -692,7 +692,7 @@ body {
   }
 }
 
-body.home.chat, body.home.create {
+body.home.chat {
   .mainPage {
     .row-friends {
       background: white;
@@ -703,7 +703,7 @@ body.home.chat, body.home.create {
   }
 
   .col-child-content {
-    padding-left: 10px;
+    //padding-left: 10px;
   }
 }
 
@@ -718,7 +718,7 @@ body.home.chat.room {
 
 .mainPage {
   .col-child-content {
-    padding-left: 10px;
+    //padding-left: 10px;
   }
 
   .navbar {
@@ -2437,18 +2437,25 @@ CHAT
   .media {
 
     .holder {
+      flex: 1 1 100%;
       flex-direction: column;
       padding-left: 10px;
-
       .media-wrapper {
         display: flex;
         flex-direction: column;
-        height: 100% !important;
         background: #fff;
-        box-shadow: $input-shadow;
         border-radius: 20px 0 0 0;
+        height: 100%;
+        width: 100%;
       }
 
+      .media-bg-wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        box-shadow: $input-shadow;
+      }
       .title {
         width: 100%;
         flex: 0 0 auto;
@@ -2672,11 +2679,12 @@ CHAT
   }
 
   .media {
-    border-radius: 0;
-    padding-left: 0;
-    border-left: 1px solid #D5D3D3;
-
     .holder {
+      padding-left: 0;
+      border-left: 1px solid #D5D3D3;
+    }
+
+    .media-wrapper {
       border-radius: 0;
     }
   }
@@ -2684,17 +2692,17 @@ CHAT
 
 //Create public room
 .create-public-room {
-  background: white;
   height: 100%;
-  margin-left: 0;
-  box-shadow: $input-shadow;
-  border-radius: 20px 0 0 0;
+
 
   .content {
     display: grid;
     grid-template-rows: 50px min-content auto;
     width: 100%;
-
+    background: white;
+    box-shadow: $input-shadow;
+    border-radius: 20px 0 0 0;
+    margin-left: 10px;
     .roomsHolder {
 
       .public-room-scroll {
@@ -2815,14 +2823,15 @@ CHAT
 }
 
 .publicRooms {
-  background: white;
+
   height: 100%;
-  margin-left: 0;
-  box-shadow: $input-shadow;
-  border-radius: 20px 0 0 0;
 
   .content {
     width: 100%;
+    background: white;
+    box-shadow: $input-shadow;
+    border-radius: 20px 0 0 0;
+    margin-left: 10px;
     display: grid;
     grid-template-rows: 50px min-content auto;
 

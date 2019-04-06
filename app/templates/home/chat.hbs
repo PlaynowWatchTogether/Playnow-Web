@@ -244,48 +244,49 @@
   <div class="col-4 media">
     <div class="row holder h-100">
       <div class="media-wrapper">
-        <div class="title">
-          <div>
-            <span class="noselect">Trending</span>
+        <div class="media-bg-wrapper">
+
+          <div class="title">
+            <div>
+              <span class="noselect">Trending</span>
+            </div>
           </div>
-        </div>
-        <div class="tabs">
-          <ul class="nav nav-pills">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
-                 aria-selected="true" {{action "pickVideosSearch"}}>
-                Videos
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
-                 aria-selected="true" {{action "pickSongsSearch"}}>
-                Songs
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="tab-content col-12">
-          <div class="tab-pane row fade show active" id="videos">
-            <div class="col-12">
+          <div class="tabs">
+            <ul class="nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+                   aria-selected="true" {{action "pickVideosSearch"}}>
+                  Videos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#music" role="tab" aria-controls="music"
+                   aria-selected="true" {{action "pickSongsSearch"}}>
+                  Songs
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-content col-12">
+            <div class="tab-pane row fade show active" id="videos">
+              <div class="col-12">
 
-              {{#scroll-with-listener  music=false
-                                       onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".tab-content"
-                                       loading=loadingVideo}}
+                {{#scroll-with-listener  music=false
+                                         onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=".tab-content"
+                                         loading=loadingVideo}}
 
-                <div class="searchHolder">
-                  {{#search-holder classNames="search" }}
+                  <div class="searchHolder">
+                    {{#search-holder classNames="search" }}
 
-                    <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-                    {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
-                            insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
-                    <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-                    <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
-                      <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-                    </div>
-                  {{/search-holder}}
-                </div>
-                <div class="youtube-items noselect">
+                      <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+                      {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
+                              insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+                      <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+                      <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
+                        <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+                      </div>
+                    {{/search-holder}}
+                  </div>
                   {{#if isLoadingVideo}}
                     <div class="loading-holder h-100">
                       <div class="lds-ripple">
@@ -294,48 +295,50 @@
                       </div>
                     </div>
                   {{/if}}
-                  {{#each youtubeVideoItems as |video|}}
-                    {{#youtube-video model=video classNames="youtube-item"
-                                     clickAction=(action "videoPick")}}
+                  <div class="youtube-items noselect">
+                    {{#each youtubeVideoItems as |video|}}
+                      {{#youtube-video model=video classNames="youtube-item"
+                                       clickAction=(action "videoPick")}}
 
-                    {{/youtube-video}}
-                  {{/each}}
+                      {{/youtube-video}}
+                    {{/each}}
+                  </div>
+
+                {{/scroll-with-listener}}
+              </div>
+            </div>
+            <div class="tab-pane fade" id="music">
+              {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
+                                      onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
+                                      loading=loadingMusic}}
+                <div class="searchHolder">
+                  {{#search-holder classNames="search" }}
+                    <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+                    {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
+                            insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
+                    <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+                    <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
+                      <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+                    </div>
+                  {{/search-holder}}
                 </div>
+                {{#if isLoadingMusic}}
+                  <div class="loading-holder h-100">
+                    <div class="lds-ripple">
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                {{/if}}
+                {{#each youtubeMusicItems as |video|}}
+                  {{#youtube-music model=video classNames="youtube-item-music col-12"
+                                   clickAction=(action "musicPick")}}
 
+                  {{/youtube-music}}
+
+                {{/each}}
               {{/scroll-with-listener}}
             </div>
-          </div>
-          <div class="tab-pane fade" id="music">
-            {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
-                                    onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
-                                    loading=loadingMusic}}
-              <div class="searchHolder">
-                {{#search-holder classNames="search" }}
-                  <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-                  {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
-                          insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
-                  <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-                  <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
-                    <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-                  </div>
-                {{/search-holder}}
-              </div>
-              {{#if isLoadingMusic}}
-                <div class="loading-holder h-100">
-                  <div class="lds-ripple">
-                    <div></div>
-                    <div></div>
-                  </div>
-                </div>
-              {{/if}}
-              {{#each youtubeMusicItems as |video|}}
-                {{#youtube-music model=video classNames="youtube-item-music col-12"
-                                 clickAction=(action "musicPick")}}
-
-                {{/youtube-music}}
-
-              {{/each}}
-            {{/scroll-with-listener}}
           </div>
         </div>
       </div>

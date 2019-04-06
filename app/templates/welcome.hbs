@@ -32,7 +32,7 @@
             <div>
               <div class="welcomeHeaderUsername">
                 <span class="usernameLabel">Username or email</span>
-                {{input value=form.username classNames="username"}}
+                {{input value=form.username classNames="username" insert-newline=(action "loginAction")}}
                 <span class="error-tip">{{error}}</span>
               </div>
 

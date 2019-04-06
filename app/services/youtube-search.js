@@ -38,7 +38,7 @@ export default Service.extend({
     return new Promise((resolve) => {
       let category = music ? "&videoCategoryId=10" : '';
       let pageQ = page ? '&pageToken=' + page : '';
-      $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&maxResults=25&q=' + q + category + pageQ, null, (data) => {
+      $.getJSON(SEARCH_URL + '?' + API_KEY + '&part=id,snippet,statistics&type=video&videoEmbeddable=true&maxResults=25&q=' + q + category + pageQ, null, (data) => {
         debug(data);
         resolve({
           nextPage: data['nextPageToken'],
@@ -57,7 +57,7 @@ export default Service.extend({
     return new Promise((resolve) => {
       let category = music ? "&videoCategoryId=10" : '';
       let pageQ = page ? '&pageToken=' + page : '';
-      $.getJSON(VIDEOS_URL + '?' + API_KEY + '&part=id,snippet&type=video&videoEmbeddable=true&chart=mostPopular&maxResults=25' + category + pageQ, null, (data) => {
+      $.getJSON(VIDEOS_URL + '?' + API_KEY + '&part=id,snippet,statistics&type=video&videoEmbeddable=true&chart=mostPopular&maxResults=25' + category + pageQ, null, (data) => {
         debug(data);
         resolve({
           nextPage: data['nextPageToken'],

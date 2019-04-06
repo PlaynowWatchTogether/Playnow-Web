@@ -82,7 +82,7 @@
         <div class="title">
           <div>Profile</div>
         </div>
-        <div class="profile-content user">
+        <div class="user-profile-content user">
           <div class="profilePicWrapper">
             {{#file-upload name="profile"
                            accept="image/*"
@@ -96,19 +96,21 @@
             <div class="friends"><span class="number"></span><span class="text"> friends</span></div>
             <div class="name">{{selectedProfile.name}}</div>
           </div>
-          <div class="add-holder">
-            <div class="add noselect">
-              <img src="/assets/ic_add_friend@2x.png" alt="icon">
-              <div class="label">
-                Add Friend
+          <div class="controls-holder">
+            <div class="add-holder">
+              <div class="add noselect">
+                <img src="/assets/ic_add_friend@2x.png" alt="icon">
+                <div class="label">
+                  Add Friend
+                </div>
               </div>
             </div>
-          </div>
-          <div class="added-holder">
-            <div class="added noselect">
-              <img src="/assets/ic_friend_added.png" alt="icon">
-              <div class="label">
-                Added
+            <div class="added-holder">
+              <div class="added noselect">
+                <img src="/assets/ic_friend_added.png" alt="icon">
+                <div class="label">
+                  Added
+                </div>
               </div>
             </div>
           </div>
@@ -127,43 +129,58 @@
         <div class="title">
           <div>Settings</div>
         </div>
-        <div class="profile-content">
-          <div class="profilePicWrapper">
-            <img src={{profilePic}} class="profilePic" alt="profilePic">
-          </div>
-          <div class="username-holder">
-            <div class="username">{{form.username}}</div>
-            {{#file-upload name="photos"
-                           accept="image/*"
-                           onfileadd=(action "uploadImage")}}
-              <a class="change-pic">Change Profile Pic</a>
-            {{/file-upload}}
+        <div class="profile-wrapper">
+          <div class="profile-content">
+            <div class="profile-value-content">
+              <div class="profilePicWrapper">
+                <img src={{profilePic}} class="profilePic" alt="profilePic">
+              </div>
+              <div class="username-holder">
+                <div class="username">{{form.username}}</div>
+                {{#file-upload name="photos"
+                               accept="image/*"
+                               onfileadd=(action "uploadImage")}}
+                  <a class="change-pic">Change Profile Pic</a>
+                {{/file-upload}}
+
+              </div>
+            </div>
+            <div class="profile-value-content">
+
+              <div class="first-name-label label">First Name</div>
+              <div class="input">
+                {{input value=form.firstName classNames="first-name-input" disabled=isDisabled}}
+              </div>
+            </div>
+            <div class="profile-value-content">
+              <div class="last-name-label label">Last Name</div>
+              <div class="input">
+                {{input value=form.lastName classNames="first-name-input" disabled=isDisabled}}
+              </div>
+            </div>
+            <div class="profile-value-content">
+              <div class="birthdate-label label">Birthday</div>
+              <div class="input">
+                {{birthday-picker value=form.birthDay classNames="birthday-input-holder" isDisabled=isDisabled
+                                  onDateSet=(action "onBirthdayDateSet")}}
+              </div>
+            </div>
+            <div class="profile-value-content">
+              <div class="email-label label">Email</div>
+              <div class="input">
+                {{input value=form.email classNames="email-input" disabled=isDisabled}}
+              </div>
+            </div>
+            <div class="controls">
+              {{#if isDisabled}}
+                <button class="btn-edit" {{action "edit"}}>Edit</button>
+              {{else}}
+                <button class="btn-submit" {{action "updateProfile"}}>Submit</button>
+                <button class="btn-cancel" {{action "cancelUpdate"}}>Cancel</button>
+              {{/if}}
+            </div>
 
           </div>
-          <div class="first-name-label label">First Name</div>
-          <div class="input">
-            {{input value=form.firstName classNames="first-name-input" disabled=isDisabled}}
-          </div>
-          <div class="last-name-label label">Last Name</div>
-          <div class="input">
-            {{input value=form.lastName classNames="first-name-input" disabled=isDisabled}}
-          </div>
-          <div class="birthdate-label label">Birthday</div>
-          <div class="input">
-            {{birthday-picker value=form.birthDay classNames="birthday-input-holder" isDisabled=isDisabled
-                              onDateSet=(action "onBirthdayDateSet")}}
-          </div>
-          <div class="email-label label">Email</div>
-          <div class="input">
-            {{input value=form.email classNames="email-input" disabled=isDisabled}}
-          </div>
-          {{#if isDisabled}}
-            <button class="btn-edit" {{action "edit"}}>Edit</button>
-          {{else}}
-            <button class="btn-submit" {{action "updateProfile"}}>Submit</button>
-            <button class="btn-cancel" {{action "cancelUpdate"}}>Cancel</button>
-          {{/if}}
-
         </div>
       </div>
     </div>

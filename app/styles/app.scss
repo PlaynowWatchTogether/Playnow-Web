@@ -3238,6 +3238,7 @@ CHAT
   border-radius: 20px;
 
   .account-root {
+    width: 100%;
     grid-template-rows: 50px auto;
     background: #fff;
     border-radius: 20px;
@@ -3260,18 +3261,33 @@ CHAT
       }
     }
 
+    .profile-wrapper {
+      margin: auto;
+    }
     .profile-content {
-      grid-template-columns: 100px 100px 100px 100px 100px 200px;
-      grid-template-rows: 100px auto;
+      padding-bottom: 30px;
       display: grid;
       grid-row-gap: 20px;
       padding-top: 20px;
 
+      .profile-value-content {
+        display: grid;
+        grid-template-columns: 150px max-content;
+        width: max-content;
+        grid-column-gap: 30px;
+      }
       .birthday-input-holder {
         display: grid;
         grid-template-columns: min-content min-content min-content;
         grid-column-gap: 10px;
 
+      }
+
+      .controls {
+        margin: auto;
+        display: grid;
+        grid-template-columns: min-content min-content;
+        grid-column-gap: 20px;
       }
 
       .birthday-input-holder.disabled {
@@ -3289,17 +3305,18 @@ CHAT
       }
 
       .profilePicWrapper {
-        grid-column-start: 3;
+
         position: relative;
         width: 93px;
         height: 93px;
         overflow: hidden;
         border-radius: 50%;
+        margin-left: auto;
+        margin-right: 20px;
       }
 
       .username-holder {
-        grid-column-start: 4;
-        grid-column-end: 7;
+
         margin-top: auto;
         margin-bottom: auto;
 
@@ -3312,8 +3329,7 @@ CHAT
       .label {
         font-weight: 700;
         font-size: 24px;
-        grid-column-start: 2;
-        grid-column-end: 4;
+
         text-align: right;
         padding-right: 20px;
         margin-top: auto;
@@ -3321,8 +3337,7 @@ CHAT
       }
 
       .input {
-        grid-column-start: 4;
-        grid-column-end: 6;
+
         margin-top: auto;
         margin-bottom: auto;
 
@@ -3346,8 +3361,8 @@ CHAT
 
       .btn-edit {
         margin-top: 20px;
-        grid-column-start: 3;
-        grid-column-end: 6;
+        grid-column-start: 1;
+        grid-column-end: 3;
         background: #9FC2FA;
         color: white;
 
@@ -3362,8 +3377,7 @@ CHAT
       }
 
       .btn-submit {
-        grid-column-start: 1;
-        grid-column-end: 5;
+
         background: #9FC2FA;
         color: white;
 
@@ -3374,8 +3388,7 @@ CHAT
       }
 
       .btn-cancel {
-        grid-column-start: 5;
-        grid-column-end: 7;
+
         background: #c7c8ca;
         color: white;
         border-radius: 30px;
@@ -3385,19 +3398,19 @@ CHAT
       }
     }
 
-    .profile-content.user {
-      grid-template-columns: auto 100px 100px 100px 100px auto 100px;
-      grid-template-rows: min-content auto;
+    .user-profile-content {
+      display: grid;
+      grid-template-rows: min-content min-content min-content;
+      grid-row-gap: 20px;
 
+      .controls-holder {
+        margin: auto;
+      }
       .username-holder {
-        margin-left: 0;
-        grid-column-start: 3;
         text-align: center;
       }
 
       .profilePicWrapper {
-        grid-column-start: 1;
-        grid-column-end: 8;
         width: 250px;
         height: 250px;
         margin: auto;
@@ -3411,15 +3424,10 @@ CHAT
 
       .add-holder {
         margin: auto;
-        grid-row-start: 3;
-        grid-column-start: 1;
-        grid-column-end: 8;
 
         .add {
           margin: auto;
-          grid-row-start: 3;
-          grid-column-start: 1;
-          grid-column-end: 8;
+          grid-template-columns: min-content max-content;
           display: grid;
           background: #CF77FF;
           border-radius: 10px;
@@ -3437,22 +3445,16 @@ CHAT
       }
 
       .added-holder {
-        margin: auto;
-        grid-row-start: 3;
-        grid-column-start: 1;
-        grid-column-end: 8;
 
         .added {
           margin: auto;
-          grid-row-start: 3;
-          grid-column-start: 1;
-          grid-column-end: 8;
           display: grid;
           background: #5AB9FF;
           border-radius: 10px;
           padding: 5px 10px;
           color: white;
           grid-column-gap: 10px;
+          grid-template-columns: min-content max-content;
 
           img {
             width: 20px;

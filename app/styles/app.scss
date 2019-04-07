@@ -1537,7 +1537,7 @@ body.home.chat.room {
 
 .lds-ripple div {
   position: absolute;
-  border: 4px solid #f00;
+  border: 4px solid #5CD9FD;
   opacity: 1;
   border-radius: 50%;
   animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
@@ -2653,9 +2653,11 @@ CHAT
 
           .title-holder {
             padding-right: 10px;
+            padding-top: 4px;
+            padding-bottom: 4px;
           }
           .videoTitle {
-            font-size: 75%;
+            font-size: 80%;
             font-family: $medium-font;
             margin-bottom: 0;
             //margin-right: 10px;
@@ -2670,8 +2672,10 @@ CHAT
 
 
           .thumbnail {
+            background-position: center;
+            background-size: cover;
             width: 100%;
-            border-radius: 15px;
+            border-radius: $video-round-corner;
           }
         }
       }
@@ -2749,21 +2753,36 @@ CHAT
           .youtube-item {
             cursor: pointer;
             width: 100%;
-            padding: 10px;
+            margin-top: 10px;
+            padding: 5px;
+            display: grid;
+            grid-template-rows: max-content auto max-content max-content;
+            grid-row-gap: 2px;
 
+            .title-holder {
+              padding-right: 10px;
+              padding-top: 4px;
+              padding-bottom: 4px;
+            }
             .videoTitle {
-              font-family: $bold-font;
+              font-family: $medium-font;
+              font-size: 80%;
+              margin-bottom: 0;
 
             }
 
             .channel-title, .channel-desc {
-              font-size: 80%;
+              font-size: 65%;
               color: #696969;
             }
 
-            img {
+            .thumbnail {
+              background-position: center;
+              background-size: cover;
               width: 100%;
-              border-radius: 10px;
+              border-radius: $video-round-corner;
+              font-size: 65%;
+              color: #696969;
             }
           }
 
@@ -2775,7 +2794,7 @@ CHAT
       }
     }
 
-    .title-holder {
+    .room-title-holder {
       border-bottom: 1px solid #E6E6E6;
       height: $header-height;
       display: grid;
@@ -2863,7 +2882,7 @@ CHAT
     display: grid;
     grid-template-rows: 50px min-content auto;
 
-    .title-holder {
+    .room-title-holder {
       border-bottom: 1px solid #E6E6E6;
       height: $header-height;
       display: grid;

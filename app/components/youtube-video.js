@@ -21,7 +21,12 @@ export default Component.extend({
   }),
   viewsCount: computed('model', function () {
     let m = this.get('model');
-    return this.nFormat(m['statistics']['viewCount'])
+    let stats = m['statistics'];
+    if (stats) {
+      return `${this.nFormat(m['statistics']['viewCount'])} views.`
+    } else {
+      return ''
+    }
   }),
   click() {
     this.clickAction(this.get('model'));

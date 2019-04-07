@@ -45,7 +45,9 @@ module.exports = function (environment) {
       messagingSenderId: "491254045283"
     }
   };
-
+  ENV.googleAnalytics = {
+    webPropertyId: 'UA-137856845-1'
+  };
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

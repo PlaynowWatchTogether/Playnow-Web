@@ -18,6 +18,15 @@ export default Route.extend(AuthRouteMixin, {
     // let ctrl = this.controllerFor('home/index');
     // ctrl.set('model', arProxy);
     this.get('db').rooms((rooms) => {
+      let ids = rooms.map((elem) => {
+        return elem['id'];
+      });
+      let localRooms = this.store.peekAll('room');
+      localRooms.forEach((room) => {
+        if (!ids.includes(room.get('id'))) {
+          room.unloadRecord();
+        }
+      });
       rooms.forEach((room) => {
         room['rawData'] = JSON.stringify(room);
         room['lastUpdate'] = new Date().getUTCMilliseconds();

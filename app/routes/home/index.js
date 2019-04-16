@@ -28,10 +28,12 @@ export default Route.extend(AuthRouteMixin, {
         }
       });
       rooms.forEach((room) => {
-        room['rawData'] = JSON.stringify(room);
-        room['lastUpdate'] = new Date().getUTCMilliseconds();
-        let normalizedData = this.store.normalize('room', room);
-        this.store.push(normalizedData);
+        if (room['videoState']){
+          room['rawData'] = JSON.stringify(room);
+          room['lastUpdate'] = new Date().getUTCMilliseconds();
+          let normalizedData = this.store.normalize('room', room);
+          this.store.push(normalizedData);
+        }
       });
 
     }, () => {

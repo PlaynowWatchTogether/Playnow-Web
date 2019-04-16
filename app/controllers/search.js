@@ -15,8 +15,7 @@ export default Controller.extend({
     let q = arg.get('model.query')
     arg.store.query('user', {
       orderBy: 'Email',
-      startAt: q.toUpperCase(),
-      endAt: q.toLowerCase(),
+      startAt: q,      
       limitToFirst: 10
     }).then((res) => {
       arg.set('search.users', res);

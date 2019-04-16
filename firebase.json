@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "firebase":"goldenfingers1-b95ba",
     "public": "dist",
     "ignore": [
       "firebase.json",

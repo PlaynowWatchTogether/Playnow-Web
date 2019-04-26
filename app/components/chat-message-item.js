@@ -78,6 +78,13 @@ export default Component.extend({
     }
     return ret;
   }),
+  tooltipPlacement: computed('model', 'auth.uid', function(){
+    if (this.get('model').senderId === this.auth.get('uid')){
+      return 'right';
+    }else{
+      return 'left';
+    }
+  }),
   tooltipValue: computed('model', function(){
     let mesDate = this.get('model.date')
     if (this.get('model.serverDate')) {
@@ -110,11 +117,14 @@ export default Component.extend({
   },
   didInsertElement() {
     this._super(...arguments);
-    $(this.element).find('.with-tooltip').tooltip();
+    $(this.element).find('.with-tooltip').tooltip({container: 'body',boundary: 'window'});
   },
   actions: {
     clickOnPhoto() {
       this.get('onPhotoSelect')(this.get('model.thumbnail'));
+    },
+    reply(){
+      this.get('onReplyTo')(this.get('model'));
     }
   }
 

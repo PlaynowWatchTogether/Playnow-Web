@@ -731,6 +731,12 @@ export default Controller.extend({
     return (master || senderId === this.db.myId());
   }),
   actions: {
+    onReplyTo(message){
+      this.set('inReplyTo', message);
+    },
+    clearInReplyTo(){
+      this.set('inReplyTo', null);
+    },
     loadMore() {
       this.set('blockAutoscroll', true);
       this.set('limit', this.get('limit') + 100);

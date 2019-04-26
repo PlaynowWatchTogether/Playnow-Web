@@ -201,7 +201,9 @@
                                    canClick=isMaster
                                    onClick=(action "onMessageClick")
                                    displaySender=message.displaySender lastSeen=lastSeenMessage myID=myID
-                                   members=members onPhotoSelect=(action "onPhotoSelect")}}
+                                   members=members 
+                                   onPhotoSelect=(action "onPhotoSelect")
+                                   onReplyTo=(action "onReplyTo")}}
 
               {{/chat-message-item}}
             {{/if}}
@@ -226,7 +228,16 @@
           {{/unless}}
         </div>
       {{/end-scrollable}}
-      <div class="newMessageHolder">
+      {{#if inReplyTo}}
+          <div class="in-reply-to">
+            <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
+            <div class="reply-text">{{inReplyTo.text}}</div>
+            <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
+              <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png"/>
+            </div>
+          </div>
+      {{/if}}
+      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}}">        
         {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
         {{#file-upload name="chatPhotos"

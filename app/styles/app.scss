@@ -2244,7 +2244,11 @@ CHAT
           padding-top: 5px;
           padding-bottom: 5px;
         }
-
+        .messageHolder:hover{
+          .reply-holder{
+            display: inline-block;
+          }
+        }
         .messageHolder {
           display: grid;
           grid-template-columns: 50px 70%;
@@ -2257,16 +2261,26 @@ CHAT
           }
 
           .message-text {
+
             width: fit-content;
             background: white;
             padding: 5px 15px;
             font-size: 90%;
             border-radius: 14px;
             box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);
-            display: block;
+            display: inline-block;
             margin-top: 5px;
           }
 
+          .reply-holder{
+            display: none;
+            margin-left: 10px;
+            cursor: pointer;
+            img{
+              width: 23px;
+              height: 23px;
+            }
+          }
           .last-seen {
             text-align: right;
             grid-column-start: 2;
@@ -2371,11 +2385,17 @@ CHAT
             display: none;
           }
 
-          .message-text {
-            grid-column-start: 2;
-            justify-self: end;
+          .message-text-holder{
+              grid-column-start: 2;
+              justify-self: end;
+          }
+          .reply-holder{
+              display: none;
+              margin-right: 5px;
+          }
+          .message-text {            
             background: #F0F0F0;
-
+            display: inline-block;
             .text {
               word-break: break-word;
             }
@@ -2386,8 +2406,45 @@ CHAT
             justify-self: end;
           }
         }
+        .messageHolder.mine:hover{
+          .reply-holder{
+            cursor: pointer;
+            display: inline-block;
+          }
+        }
       }
-
+      .in-reply-to{
+        display: grid;
+        grid-template-columns: auto min-content;
+        grid-template-rows: min-content min-content;
+        border-top: 1px solid #E6E6E6;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        .reply-name {
+          margin-left: 10px;
+          font-size: 80%;
+        }
+        .reply-text {
+          grid-row-start: 2;
+          margin-left: 10px;
+          color: #969494;
+          font-size: 80%;
+          border-left: 4px solid #969494;
+          padding-left: 5px;
+        }
+        .reply-close {
+          grid-column-start: 2;
+          grid-row-start: 1;
+          grid-row-end: 3;
+          margin: auto;
+          cursor: pointer;
+          img{
+            width: 23px;
+            height: 23px;
+            margin-right: 20px;
+          }
+        }
+      }
       .newMessageHolder {
         border-top: 1px solid #E6E6E6;
         display: flex;
@@ -2444,6 +2501,9 @@ CHAT
           width: 31px;
           height: 31px;
         }
+      }
+      .newMessageHolder.has-in-reply{
+        border-top: none;
       }
     }
   }

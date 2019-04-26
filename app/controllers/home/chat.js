@@ -700,7 +700,9 @@ export default Controller.extend({
       return;
     }
     let ds = this.get('dataSource');
-    ds.sendMessage(this.get('messageText'));
+    let reply = this.get('inReplyTo');
+    ds.sendMessage(this.get('messageText'), null, null,false, reply);
+    this.set('inReplyTo', null);
     this.set('messageText', '');
   },
   shareVideo(video) {

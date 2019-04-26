@@ -2259,7 +2259,16 @@ CHAT
             margin-top: auto;
             margin-bottom: auto;
           }
-
+          .message-text-holder{
+            .in-reply-to-message{
+              border-left: 4px solid #969494;
+              padding-left: 5px;
+              color: #ADADAD;
+              font-size: 95%;
+              margin-top: 5px;
+              margin-bottom: 5px;
+            }
+          }
           .message-text {
 
             width: fit-content;

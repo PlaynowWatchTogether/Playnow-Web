@@ -326,7 +326,7 @@ export default EmberObject.extend({
 
     }
   },
-  sendMessage(text, thumbnail, video = null, videoFile = false) {
+  sendMessage(text, thumbnail, video = null, videoFile = false, inReplyTo = null) {
     let senderId = this.myId;
     let path = this.messageRoot();
     let convId = this.convId();
@@ -353,6 +353,9 @@ export default EmberObject.extend({
       message['type'] = 'Video';
       message['media'] = thumbnail;
       message['media_thumbnail'] = "";
+    }
+    if (inReplyTo){
+      message['inReplyTo'] = inReplyTo;
     }
     message['userId'] = senderId;
     message['message'] = 'web';

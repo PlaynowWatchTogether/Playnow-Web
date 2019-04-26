@@ -18,6 +18,9 @@ export default Component.extend({
   mine: computed('model', 'auth.uid', function () {
     return this.get('model').senderId === this.auth.get('uid')
   }),
+  inReplyTo: computed('model', function(){
+    return this.get('model.inReplyTo');
+  }),
   isPhoto: computed('model', function () {
     let model = this.get('model');
     let type = model['type'];

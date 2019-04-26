@@ -17,7 +17,8 @@ Router.map(function() {
   });
   this.route('search', {path: '/search/:query'});
   this.route('mobile');
-  this.route('notfound', { path: '/*path' });
+  this.route('404');
+  // this.route('notfound', { path: '/*path' });
 });
 
 export default Router;

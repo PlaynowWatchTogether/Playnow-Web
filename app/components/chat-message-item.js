@@ -1,6 +1,8 @@
 import Component from '@ember/component';
-import {inject as service} from '@ember/service'
-import {computed} from '@ember/object'
+import {inject as service} from '@ember/service';
+import {computed} from '@ember/object';
+import $ from 'jquery';
+import moment from 'moment';
 
 export default Component.extend({
   classNameBindings: ['mine'],
@@ -76,6 +78,17 @@ export default Component.extend({
     }
     return ret;
   }),
+  tooltipValue: computed('model', function(){
+    let mesDate = this.get('model.date')
+    if (this.get('model.serverDate')) {
+      mesDate = this.get('model.serverDate');
+    } else {
+      if (this.get('model.date') % 1 !== 0) {
+        mesDate = this.get('model.date') * 1000;
+      }
+    }
+    return moment(mesDate).format("ddd, hh:mm A")
+  }),
   receiver: computed('model', 'members', function () {
     let members = this.get('members');
     let model = this.get('model');
@@ -97,6 +110,7 @@ export default Component.extend({
   },
   didInsertElement() {
     this._super(...arguments);
+    $(this.element).find('.with-tooltip').tooltip();
   },
   actions: {
     clickOnPhoto() {

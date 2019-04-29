@@ -28,6 +28,7 @@ export default Controller.extend({
     this.messageText = '';
     this.composeChips = [];
     this.limit = 100;
+    this.memberColors={};
     this.messages = ArrayProxy.create({content: []});
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
@@ -208,6 +209,10 @@ export default Controller.extend({
       ds.typing(obj.get('messageText'));
     }
   },
+  isNotOne2One: computed('model', function(){
+    let type = this.get('model').type;
+    return type!=='one2one';
+  }),  
   modelObserver: (obj) => {
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;

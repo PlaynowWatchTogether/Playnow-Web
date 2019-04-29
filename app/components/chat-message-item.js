@@ -9,6 +9,7 @@ export default Component.extend({
   store: service(),
   auth: service(),
   attributeBindings: ['data-uid:messageUid'],
+
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
   }),
@@ -29,6 +30,30 @@ export default Component.extend({
   isLoading: computed('model', function(){
     let model = this.get('model');
     return model['isLoading'];
+  }),
+  senderName: computed('model', function(){
+    return this.get('model.senderName');
+  }),
+  randomColor(){
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  },
+  textAuthorClass: computed('model','members', function(){
+    let members = this.get('members');
+    let model = this.get('model');    
+    if (members && model){
+       var clr = this.get('memberColors')[model.senderId];
+       if (clr)
+          return `color: ${clr}`;
+        clr = this.randomColor();
+        this.get('memberColors')[model.senderId] = clr;
+        return `color: ${clr}`;
+    }
+    return '';
   }),
   photoThumbnail: computed('model', function(){
       let model = this.get('model');

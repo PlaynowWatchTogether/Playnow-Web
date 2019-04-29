@@ -200,8 +200,12 @@
               {{#chat-message-item model=message.message classNames="messageHolder"
                                    canClick=isMaster
                                    onClick=(action "onMessageClick")
-                                   displaySender=message.displaySender lastSeen=lastSeenMessage myID=myID
-                                   members=members 
+                                   displaySender=message.displaySender 
+                                   lastSeen=lastSeenMessage 
+                                   myID=myID
+                                   displaySenderName=isNotOne2One
+                                   members=members
+                                   memberColors=memberColors 
                                    onPhotoSelect=(action "onPhotoSelect")
                                    onReplyTo=(action "onReplyTo")}}
 

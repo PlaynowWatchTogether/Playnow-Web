@@ -11,6 +11,8 @@ import ArrayProxy from '@ember/array/proxy';
 import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
+import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
+
 export default Controller.extend({
   firebaseApp: service(),
   youtubeSearch: service(),
@@ -549,9 +551,13 @@ export default Controller.extend({
     let messages = (this.get('messages') || []);
     let length = messages.length;
     let limit = this.get('limit');
-    return this.store.peekAll('thread-message').filter((elem) => {
+    let fltrMessages = this.store.peekAll('thread-message').filter((elem) => {
       return elem.get('convoId') === this.get('dataSource').convId();
     }).slice(Math.max(0, length - limit), length + 1);
+    fltrMessages.forEach((message)=>{
+      debug(`${message.id} ${message.isLoading}`);
+    });
+    return fltrMessages;
   }),
   hasMoreMessages: computed('messages.@each.id', 'limit', function () {
     let messages = (this.get('messages') || []);
@@ -733,6 +739,15 @@ export default Controller.extend({
     return (master || senderId === this.db.myId());
   }),
   actions: {
+    toggleEmoji(){
+      this.toggleProperty('displayEmoji');
+    },
+    selectEmoji(emoji){
+      let msg = this.get('messageText');
+      msg = msg + ' ' + emoji;
+      this.set('messageText', msg);
+      this.toggleProperty('displayEmoji');
+    },
     onReplyTo(message){
       this.set('inReplyTo', message);
     },
@@ -802,31 +817,46 @@ export default Controller.extend({
         }
         return;
       }
-      if (file.type.includes('video/')) {
-        let ref = this.firebaseApp.storage().ref('Media/Videos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
-        ref.put(file.blob).then((snapshot) => {
-          snapshot.ref.getDownloadURL().then((downloadURL) => {
-            let ds = this.get('dataSource');
-            ds.sendMessage('', downloadURL, null, true);
-
-            debug('File available at', downloadURL);
-          });
+      let ds = this.get('dataSource');
+      let id = ds.generateMessageId();
+      let mesCntent = {
+          isLoading: true,                    
+          id: id
+        };
+        let normalizedData = this.store.normalize('thread-message', {
+          id: id,
+          convoId: ds.convId(),
+          content: JSON.stringify(mesCntent)
         });
-      } else if (file.type.includes('image/')) {
-        file.readAsDataURL().then((url) => {
 
-          let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
-
-          ref.putString(url, 'data_url').then((snapshot) => {
-            snapshot.ref.getDownloadURL().then((downloadURL) => {
-              let ds = this.get('dataSource');
-              ds.sendMessage('', downloadURL);
-
-              debug('File available at', downloadURL);
-            });
+      this.store.push(normalizedData);
+      this.notifyPropertyChange('limit');
+      let ref = this.firebaseApp.storage().ref('Media/Files/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
+      ref.put(file.blob).then((snapshot) => {
+          snapshot.ref.getDownloadURL().then((downloadURL) => {            
+            // ds.sendMessage('', downloadURL, null, true);
+            ds.sendAttachment(file, downloadURL, id);
+            debug(`File available at ${downloadURL}`);
           });
-        });
-      }
+      });
+      // if (file.type.includes('video/')) {
+        
+        
+      // } else if (file.type.includes('image/')) {
+      //   file.readAsDataURL().then((url) => {
+
+      //     let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
+
+      //     ref.putString(url, 'data_url').then((snapshot) => {
+      //       snapshot.ref.getDownloadURL().then((downloadURL) => {
+      //         let ds = this.get('dataSource');
+      //         ds.sendMessage('', downloadURL);
+
+      //         debug('File available at', downloadURL);
+      //       });
+      //     });
+      //   });
+      // }
     },
     sendMessage() {
       this.performSendMessage();

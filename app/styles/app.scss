@@ -2260,6 +2260,7 @@ CHAT
             margin-bottom: auto;
           }
           .message-text-holder{
+            display: flex;            
             .in-reply-to-message{
               border-left: 4px solid #969494;
               padding-left: 5px;
@@ -2282,6 +2283,8 @@ CHAT
           }
 
           .reply-holder{
+            margin-top: auto;
+            margin-bottom: auto;
             display: none;
             margin-left: 10px;
             cursor: pointer;
@@ -2395,6 +2398,7 @@ CHAT
           }
 
           .message-text-holder{
+              display: flex;
               grid-column-start: 2;
               justify-self: end;
           }
@@ -2454,12 +2458,55 @@ CHAT
           }
         }
       }
+      //Loading chat message
+      .chat-message-loading{
+        display: flex;
+        flex-direction: row-reverse;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        .loading-wrapper {
+          display: flex;
+          width: 200px;
+          height: 100px;
+          background: #F0F0F0;
+          border-radius: 10px;
+          box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);          
+          .lds-ripple{
+            margin: auto;
+          }
+        }
+      }
+      .message-attachment-holder {
+        display: flex;
+        justify-content: end;
+        justify-self: end;
+        .message-attachment-link {
+          display: block;
+          cursor: pointer;
+        }
+        .message-attachment-wrapper {
+          margin-top: 5px;
+          margin-bottom: 5px;
+          background: #dedede;
+          border-radius: 10px;
+          width: 300px;
+          padding: 10px;
+          display: flex;
+        }
+        .message-attachment-name{
+            margin: auto;
+        }
+      }
       .newMessageHolder {
         border-top: 1px solid #E6E6E6;
         display: flex;
         grid-template-columns: minmax(0, auto) 50px 50px;
         flex: 0 0 auto;
         min-height: 50px;
+        .show-emoji{          
+          margin: auto;
+          margin-left: 5px;
+        }
         .messageContent:focus {
           outline: none;
 
@@ -3895,4 +3942,25 @@ CHAT
 
 .block-with-text {
   @include multiLineEllipsis($lineHeight: 1.2em, $lineCount: 2, $bgColor: white, $hoverColor: rgba(202, 201, 201, 0.59));
+}
+
+.ember-emoji.emoji-picker{
+  position: absolute;
+  bottom: 60px;
+  width: 360px;
+  left: 10px;
+  background: #fff;
+  .emoji-category-selector{
+    height: 60px;
+    .category-icon {
+      width: 40px;
+      height: 35px;
+    }
+  }
+  .emoji-grid {
+    height: calc(100% - 60px);
+    .emoji{
+      margin: 5px;
+    }
+  }
 }

@@ -21,19 +21,60 @@ export default Component.extend({
   inReplyTo: computed('model', function(){
     return this.get('model.inReplyTo');
   }),
+  isAttachment: computed('model', function(){
+    let model = this.get('model');
+    let type = model['type'];
+    return type === 'attachment' || type === 'photo' || type === 'Video';
+  }),
+  isLoading: computed('model', function(){
+    let model = this.get('model');
+    return model['isLoading'];
+  }),
+  photoThumbnail: computed('model', function(){
+      let model = this.get('model');
+      if (model.type === 'photo'){
+        return this.get('model.thumbnail');
+      }else if (model.type === 'attachment'){
+        return model.attachment.url;
+      }else {
+        return '';
+      }
+  }),
   isPhoto: computed('model', function () {
     let model = this.get('model');
     let type = model['type'];
-    return type === 'photo';
+    if (type === 'photo'){
+      return true;
+    }
+    if (type === 'attachment'){
+      return model.attachment.type.startsWith('image/');
+    }
+    return false;
   }),
   isVideo: computed('model', function () {
     let model = this.get('model');
     let type = model['type'];
-    return type === 'Video';
+    if (type === 'Video'){
+      return true;
+    }
+    if (type === 'attachment'){
+      return model.attachment.type === 'video/mp4' || model.attachment.type==='video/quicktime';
+    }
+    return false;
+  }),
+  attachmentName: computed('model', function(){
+    let model = this.get('model');
+    return model.attachment.name;
   }),
   videoSrc: computed('model', function () {
     let model = this.get('model');
-    return model['media'];
+    if (model.type === 'Video'){
+      return model['media'];
+    }
+    if (model.type === 'attachment'){
+      return model.attachment.url;
+    }
+    return '';
   }),
   videoThumbnail: computed('model', function () {
     let model = this.get('model');
@@ -42,6 +83,10 @@ export default Component.extend({
   hasVideoThumbnail: computed('model', function () {
     let model = this.get('model');
     return model['media_thumbnail'] && model['media_thumbnail'].length > 0;
+  }),
+  attachmentUrl: computed('model', function(){
+    let model = this.get('model');
+    return model.attachment.url;
   }),
   isVideoRequest: computed('model', function () {
     let model = this.get('model');

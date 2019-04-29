@@ -292,6 +292,7 @@ export default EmberObject.extend({
       });
     }
   },
+  
   members(updateCallback) {
     if (this.type === 'one2one') {
       this.profile(this.get('user.id')).then((profile) => {
@@ -325,6 +326,45 @@ export default EmberObject.extend({
       debug('remove listener for ' + value);
 
     }
+  },
+  generateMessageId(){
+    let senderId = this.myId;
+    let msgUid = new Date().getTime().toString() + senderId;
+    return msgUid;
+  },
+  sendAttachment(file, url, msgUid){
+    let senderId = this.myId;
+    let path = this.messageRoot();
+    let convId = this.convId();    
+    let message = {};
+    message['uid'] = msgUid;
+    message['date'] = new Date().getTime() / 1000;
+    message['serverDate'] = this.fb.firebase_.database.ServerValue.TIMESTAMP;
+    message['convoId'] = convId;
+    message['senderId'] = senderId;
+    message['senderName'] = this.auth.current.get('userName');
+    message['type'] = 'attachment';
+    message['userId'] = senderId;
+    message['message'] = 'web';
+    message['text'] = '';    
+    message['attachment']={
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      url: url
+    };
+    let ref = path + "/" + convId + "/Messages/" + msgUid;
+    this.db.ref(ref).update(message).then(() => {
+      if (this.gcmManager && this.type !== 'room') {
+        this.profile(this.myId).then((myProfile) => {
+          this.membersOnce().then((members) => {
+            members.forEach((member) => {
+              this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
+            });
+          });
+        });
+      }
+    });
   },
   sendMessage(text, thumbnail, video = null, videoFile = false, inReplyTo = null) {
     let senderId = this.myId;

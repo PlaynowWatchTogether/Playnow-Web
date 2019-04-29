@@ -5,24 +5,13 @@
 {{else}}
   <div class="profilePicWrapper"></div>
 {{/if}}
-{{#if isPhoto}}
-  <div class="message-img">
-    <a rel={{model.thumbnail}} href={{model.thumbnail}} data-lightbox={{model.thumbnail}} >
-      <img rel={{model.thumbnail}} src={{model.thumbnail}} class="img-fluid">
-    </a>
-  </div>
-{{else}}
-  {{#if isVideoRequest}}
-    <div class="message-video-request noselect {{videoRequestClass}}">
-      <div class="title">
-        {{requestTitle}}
-      </div>
-      <div class="thumbnailHolder">
-        <img src={{requestThumbnail}} alt="requestThumbnail">
-      </div>
-      <div class="channel">
-        {{requestChannel}}
-      </div>
+
+{{#if isAttachment}}
+  {{#if isPhoto}}
+    <div class="message-img">
+      <a rel={{photoThumbnail}} href={{photoThumbnail}} data-lightbox={{photoThumbnail}} >
+        <img rel={{photoThumbnail}} src={{photoThumbnail}} class="img-fluid">
+      </a>
     </div>
   {{else}}
     {{#if isVideo}}
@@ -39,7 +28,37 @@
 
       </div>
     {{else}}
-      
+      <div class="message-attachment-holder">
+        <a href={{attachmentUrl}} target="_blank" class="message-attachment-link">
+          <div class="message-attachment-wrapper">
+            <div class="message-attachment-icon">
+              <img src="/assets/baseline_attachment_black_48dp.png" alt="message attachment"/>
+            </div>
+            <div class="message-attachment-name">
+              {{attachmentName}}
+            </div>      
+          </div>  
+        </a>
+      </div>
+    {{/if}} 
+  {{/if}} 
+            
+ 
+{{else}}
+
+  {{#if isVideoRequest}}
+    <div class="message-video-request noselect {{videoRequestClass}}">
+      <div class="title">
+        {{requestTitle}}
+      </div>
+      <div class="thumbnailHolder">
+        <img src={{requestThumbnail}} alt="requestThumbnail">
+      </div>
+      <div class="channel">
+        {{requestChannel}}
+      </div>
+    </div>
+  {{else}}    
       <div class="message-text-holder">
         {{#if mine}}
           <div class="reply-holder" role="button" {{action "reply"}}>
@@ -53,7 +72,7 @@
             </div>
           {{/if}}
           <div class="text">            
-            {{{bodyMessage}}}              
+            {{emoji-parse bodyMessage}}              
           </div>
         </div>
         {{#unless mine}}
@@ -68,8 +87,6 @@
             <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
           </div>
         </div>
-      {{/if}}
-    {{/if}}
-
+      {{/if}}                
   {{/if}}
 {{/if}}

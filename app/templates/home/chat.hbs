@@ -211,7 +211,9 @@
               {{#chat-message-time model=message.date}}
 
               {{/chat-message-time}}
-
+            {{/if}}
+            {{#if message.isLoading}}
+              {{chat-message-loading classNames="chat-message-loading" model=message.message}}
             {{/if}}
           {{/each}}
           {{#unless isLoadingMessages}}
@@ -238,10 +240,14 @@
           </div>
       {{/if}}
       <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}}">        
+        {{#if displayEmoji}}
+          {{emoji-picker selectEmoji=(action "selectEmoji")}}
+        {{/if}}
+        <img class="show-emoji" {{action 'toggleEmoji'}} src="/assets/insert_emoticon_black.png" alt="select emoji"/>
+
         {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-        {{#file-upload name="chatPhotos"
-                       accept="image/*, video/mp4"
+        {{#file-upload name="chatPhotos"                       
                        onfileadd=(action "uploadImageToChat")}}
           <img src="/assets/attachment.png" alt="icon">
         {{/file-upload}}

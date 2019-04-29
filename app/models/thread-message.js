@@ -11,6 +11,9 @@ export default DS.Model.extend({
   isMessage: computed('json.isMessage', function () {
     return this.get('json.isMessage');
   }),
+  isLoading: computed('json.isLoading', function () {
+    return this.get('json.isLoading');
+  }),
   isDate: computed('json.isDate', function () {
     return this.get('json.isDate');
   }),

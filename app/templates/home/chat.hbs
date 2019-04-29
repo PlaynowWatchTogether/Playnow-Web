@@ -233,7 +233,7 @@
       {{#if inReplyTo}}
           <div class="in-reply-to">
             <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
-            <div class="reply-text">{{inReplyTo.text}}</div>
+            <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
             <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
               <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png"/>
             </div>

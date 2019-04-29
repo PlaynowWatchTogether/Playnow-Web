@@ -68,7 +68,7 @@
         <div class="message-text with-tooltip" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
           {{#if inReplyTo}}
             <div class="in-reply-to-message">
-              {{inReplyTo.text}}            
+              {{emoji-parse inReplyTo.text}}            
             </div>
           {{/if}}
           <div class="text">            

@@ -744,6 +744,7 @@ export default Controller.extend({
     },
     selectEmoji(emoji){
       let msg = this.get('messageText');
+      
       msg = msg + ' ' + emoji;
       this.set('messageText', msg);
       this.toggleProperty('displayEmoji');
@@ -839,24 +840,7 @@ export default Controller.extend({
             debug(`File available at ${downloadURL}`);
           });
       });
-      // if (file.type.includes('video/')) {
-        
-        
-      // } else if (file.type.includes('image/')) {
-      //   file.readAsDataURL().then((url) => {
-
-      //     let ref = this.firebaseApp.storage().ref('Media/Photos/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
-
-      //     ref.putString(url, 'data_url').then((snapshot) => {
-      //       snapshot.ref.getDownloadURL().then((downloadURL) => {
-      //         let ds = this.get('dataSource');
-      //         ds.sendMessage('', downloadURL);
-
-      //         debug('File available at', downloadURL);
-      //       });
-      //     });
-      //   });
-      // }
+    
     },
     sendMessage() {
       this.performSendMessage();

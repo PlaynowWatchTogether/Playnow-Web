@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import {bind} from '@ember/runloop';
 import $ from 'jquery';
-
+import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
 export default Component.extend({
   classNames: ['ember-content-editable'],
   classNameBindings: ['clearPlaceholderOnFocus:clear-on-focus'],
@@ -89,10 +89,11 @@ export default Component.extend({
   },
 
   domChanged() {
-    const text = this.element.innerText;
+    const text = this.element.innerHTML;
+    const rawText = text.replace(/<img class="emojione" .+ title="(.+)" src=.+>/,'$1');
     this.setProperties({
-      value: text,
-      _internalValue: text
+      value: rawText,
+      _internalValue: rawText
     });
     this.setEndOfContenteditable();
   },
@@ -118,10 +119,11 @@ export default Component.extend({
     const value = this.get('value');
 
     if (value === undefined || value === null) {
-      this.element.innerText = '';
+      this.element.innerHTML = '';      
     } else {
-      this.element.innerText = value;
+      this.element.innerHTML = emojiParse([value]);    
     }
+    $(this.element).data('raw-text', value)
     this.setEndOfContenteditable();
   },
 

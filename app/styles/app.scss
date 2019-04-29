@@ -2495,6 +2495,10 @@ CHAT
         }
         .message-attachment-name{
             margin: auto;
+            overflow-wrap: break-word;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
         }
       }
       .newMessageHolder {

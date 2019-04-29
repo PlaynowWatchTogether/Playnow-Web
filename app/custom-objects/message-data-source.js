@@ -66,6 +66,34 @@ export default EmberObject.extend({
       debug(`Failed to update videoState on path ${ref} to ${JSON.stringify(values)}`);
     });
   },
+  sendVideoMessage(video,mode = 'youtubeVideo'){
+    let senderId = this.myId;
+    let path = this.messageRoot();
+    let convId = this.convId();    
+    let message = {};
+    const msgUid = this.generateMessageId();
+    message['uid'] = msgUid;
+    message['date'] = new Date().getTime() / 1000;
+    message['serverDate'] = this.fb.firebase_.database.ServerValue.TIMESTAMP;
+    message['convoId'] = convId;
+    message['senderId'] = senderId;
+    message['senderName'] = this.auth.current.get('userName');
+    message['type'] = 'ShareVideo';
+    message['userId'] = senderId;
+    message['message'] = 'web';
+    message['text'] = '';    
+    message['video']={
+      mode: mode,
+      id: video.id,
+      title: video.snippet.title,
+      description: video.snippet.description,
+      channelTitle: video.snippet.channelTitle
+    };
+    let ref = path + "/" + convId + "/Messages/" + msgUid;
+    this.db.ref(ref).update(message).then(() => {
+      
+    });
+  },
   sendVideo(video, mode = 'youtubeVideo') {
     let convId = this.convId();
     let path = this.messageRoot();

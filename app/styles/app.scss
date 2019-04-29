@@ -97,6 +97,7 @@ body > .ember-view {
 //Variables
 $primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+$message-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.16);
 $friends-list-hover-color: #dadada5e;
 $header-height: 45px;
 $search-icon-size: 16px;
@@ -2288,7 +2289,7 @@ CHAT
             padding: 5px 15px;
             font-size: 90%;
             border-radius: 14px;
-            box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);
+            box-shadow: $message-shadow;
             display: inline-block;
             margin-top: 5px;
           }
@@ -2324,7 +2325,7 @@ CHAT
           .message-video-request {
             background: white;
             border-radius: 20px;
-            box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
+            box-shadow: $message-shadow;
             display: grid;
             width: 100%;
             margin-top: 10px;
@@ -2372,7 +2373,7 @@ CHAT
               width: min-content;
               border-radius: 20px;
               overflow: hidden;
-              box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.16);
+              box-shadow: $message-shadow;
 
             }
 
@@ -2481,7 +2482,7 @@ CHAT
           height: 100px;
           background: #F0F0F0;
           border-radius: 10px;
-          box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.16);          
+          box-shadow: $message-shadow;
           .lds-ripple{
             margin: auto;
           }
@@ -2512,12 +2513,37 @@ CHAT
             overflow: hidden;
         }
       }
+      .message-share-video-holder{
+        padding-bottom: 5px;
+        padding-top: 5px;
+        grid-column-start: 1;
+        grid-column-end: 3;
+        place-content: center;
+        display: flex;
+        .message-share-video-title{
+          box-shadow: $message-shadow;
+          overflow-wrap: break-word;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          background: #D9F6FF;
+          padding: 10px 10px;
+          border-radius: 10px;
+          color: #00A2D9;
+          max-width: 80%;
+        }
+      }
       .newMessageHolder {
         border-top: 1px solid #E6E6E6;
         display: flex;
         grid-template-columns: minmax(0, auto) 50px 50px;
         flex: 0 0 auto;
         min-height: 50px;
+        .chat-action-send{
+          cursor: pointer;
+          margin-right: 10px;
+          color: #3399FF;
+        }
         .show-emoji{          
           margin: auto;
           margin-left: 5px;

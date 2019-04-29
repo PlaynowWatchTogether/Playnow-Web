@@ -9,7 +9,9 @@ export default Component.extend({
   store: service(),
   auth: service(),
   attributeBindings: ['messageUid','messageTS'],
-
+  shouldDisplaySender: computed('model', 'displaySender', function(){
+    return this.get('displaySender') && !this.get('isShareVideo');
+  }),
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
   }),
@@ -45,6 +47,17 @@ export default Component.extend({
     }
     return color;
   },
+  shareVideoTitle: computed('model', function(){
+    const model = this.get('model');
+    const video = model.video;
+    return `${video.title} | ${video.channelTitle}`;
+
+  }),
+  isShareVideo: computed('model', function(){
+    let model = this.get('model');
+    let type = model['type'];
+    return type === 'ShareVideo';
+  }),
   textAuthorClass: computed('model','members', function(){
     let members = this.get('members');
     let model = this.get('model');    

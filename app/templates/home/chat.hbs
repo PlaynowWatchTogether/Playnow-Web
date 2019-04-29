@@ -266,7 +266,8 @@
         {{/file-upload}}
 
         <div class="imgHolder">
-          <img src="/assets/send.png" {{action "sendMessage"}} alt="icon" role="button">
+
+          <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send">Send</div>
         </div>
       </div>
     {{/file-dropzone}}

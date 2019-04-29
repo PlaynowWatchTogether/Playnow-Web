@@ -713,10 +713,14 @@ export default Controller.extend({
     this.set('inReplyTo', null);
     this.set('messageText', '');
   },
-  shareVideo(video) {
+  shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
     if (this.get('isMaster')) {
       this.set('playerModel', video);
+      if (sendMessage){
+        let ds = this.get('dataSource');
+        ds.sendVideoMessage(video);
+      }
       ds.sendVideo(video)
     } else {
       ds.sendMessage('', '', {
@@ -872,8 +876,8 @@ export default Controller.extend({
           this.composeMessage();
         }
         return;
-      }
-      this.shareVideo(video);
+      }    
+      this.shareVideo(video, true);
     },
     musicPick(video) {
       if (this.get('isCompose')) {

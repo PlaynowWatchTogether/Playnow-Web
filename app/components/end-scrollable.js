@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import $ from 'jquery';
 import {bind} from '@ember/runloop';
-
+import {debug} from '@ember/debug';
 export default Component.extend({
   init() {
     this._super(...arguments);
@@ -47,6 +47,19 @@ export default Component.extend({
           }
         }
       } else {
+        let scrollTop = $(this.element).scrollTop();
+        let windowHeight = $(this.element).height();
+        var currentMin = null;
+        $(this.element).find(this.get('scrollChild')).children('.messageHolder').each((index,child)=>{
+            var offset = $(child).offset();
+            if (offset.top > 0 && currentMin === null){
+                currentMin = child;
+            }
+            //debug(`top: ${scrollTop} offset: ${JSON.stringify(offset)}`);
+        });
+        if (this.get('onTopChildChanged')){
+          this.get('onTopChildChanged')(currentMin);
+        }
         if (scrolled < scrollHalf) {
           if (!$(this.element).hasClass('loading')) {
             this.onScrolledHalf();

@@ -181,7 +181,10 @@
           </div>
         </div>
       {{/if}}
-      {{#end-scrollable classNames="messagesHolder" blockScroll=blockAutoscroll onScrolledHalf=(action "loadMore")
+      {{#end-scrollable classNames="messagesHolder" 
+                        blockScroll=blockAutoscroll 
+                        onScrolledHalf=(action "loadMore")
+                        onTopChildChanged=(action "topChildChanged")
                         scrollChild=".messagesWrappper"}}
         {{#if isLoadingMessages}}
           <div class="loading-holder h-100">
@@ -231,7 +234,13 @@
                 </div>
               {{/each}}
             </div>
+            <div class="message-scroll-date-holder">
+              <div class="title">
+                Today
+              </div>
+            </div>
           {{/unless}}
+
         </div>
       {{/end-scrollable}}
       {{#if inReplyTo}}

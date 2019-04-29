@@ -2215,6 +2215,17 @@ CHAT
         height: 100px;
         overflow-y: auto;
         padding-bottom: 20px;
+        .message-scroll-date-holder{
+          position: fixed;
+          left: 50%;
+          padding-top: 20px;
+          .title{
+            background: #F0EAFF;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #807E7E;
+          }
+        }
 
         .messagesWrappper {
           display: grid;

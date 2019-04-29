@@ -395,18 +395,18 @@ export default Controller.extend({
       sorted.forEach(function (mes, index) {
         let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
         let mesDate = new Date(mes.date);
-        let diff = lastDate.getTime() - mesDate.getTime();
-        if (Math.abs(diff) > one_day) {
-          let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: '' + mesDate.getTime()};
-          let normalizedData = obj.store.normalize('thread-message', {
-            id: '' + mesDate.getTime(),
-            convoId: ds.convId(),
-            content: JSON.stringify({isDate: true, date: mesDate.getTime()})
-          });
+        // let diff = lastDate.getTime() - mesDate.getTime();
+        // if (Math.abs(diff) > one_day) {
+        //   let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: '' + mesDate.getTime()};
+        //   let normalizedData = obj.store.normalize('thread-message', {
+        //     id: '' + mesDate.getTime(),
+        //     convoId: ds.convId(),
+        //     content: JSON.stringify({isDate: true, date: mesDate.getTime()})
+        //   });
 
-          obj.store.push(normalizedData);
-          uiMessages.push(MessageObject.create({content: dateContent}));
-        }
+        //   obj.store.push(normalizedData);
+        //   uiMessages.push(MessageObject.create({content: dateContent}));
+        // }
         let mesCntent = {
           isMessage: true,
           message: mes,
@@ -558,10 +558,7 @@ export default Controller.extend({
     let limit = this.get('limit');
     let fltrMessages = this.store.peekAll('thread-message').filter((elem) => {
       return elem.get('convoId') === this.get('dataSource').convId();
-    }).slice(Math.max(0, length - limit), length + 1);
-    fltrMessages.forEach((message)=>{
-      debug(`${message.id} ${message.isLoading}`);
-    });
+    }).slice(Math.max(0, length - limit), length + 1);    
     return fltrMessages;
   }),
   hasMoreMessages: computed('messages.@each.id', 'limit', function () {
@@ -744,6 +741,20 @@ export default Controller.extend({
     return (master || senderId === this.db.myId());
   }),
   actions: {
+    topChildChanged(child){
+      let tm = this.get('messageDateTimeout');
+      if (tm){
+        clearTimeout(tm);
+      }
+      $('.message-scroll-date-holder').show();
+      const ts = $(child).attr('messagets');
+      const mm = moment.unix(ts/1000);
+      $('.message-scroll-date-holder .title').html(mm.format('MM-DD-YYYY'));
+      this.set('messageDateTimeout', setTimeout(()=>{
+        $('.message-scroll-date-holder').fadeOut('fast'); 
+      },1000));
+      
+    },
     toggleEmoji(){
       this.toggleProperty('displayEmoji');
     },

@@ -994,6 +994,11 @@ export default Controller.extend({
           });
         }
       }
+      if (message['type'] === 'ShareVideo'){
+        this.get('youtubeSearch').video(message.video.id).then((video) => {
+          this.shareVideo(video);
+        });
+      }
       if (message['type'] === 'Video') {
         // this.set('videoPlayerUrl', message['media']);
         // $('#videoPreviewModal').modal();

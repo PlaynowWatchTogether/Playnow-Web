@@ -250,6 +250,9 @@ export default Component.extend({
     $(this.element).find('.with-tooltip').tooltip({container: 'body',boundary: 'window'});
   },
   actions: {
+    videoShareClick(){
+
+    },
     videoRequestClick(){
       if (this.get('canClick')) {
         this.get('onClick')(this.model);

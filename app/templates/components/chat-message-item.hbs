@@ -16,7 +16,7 @@
   </div>
 {{else}}    
     {{#if isShareVideo}}
-      <div class="message-share-video-holder">
+      <div class="message-share-video-holder" role="button" {{action 'videoShareClick'}}>
         <div class="message-share-video-title">
           {{shareVideoTitle}}
         </div>

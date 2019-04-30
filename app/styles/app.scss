@@ -2653,6 +2653,8 @@ CHAT
         place-content: center;
         display: flex;
         .message-share-video-title{
+          text-decoration: underline;
+          cursor: pointer;
           box-shadow: $message-shadow;
           overflow-wrap: break-word;
           text-overflow: ellipsis;

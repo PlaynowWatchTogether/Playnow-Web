@@ -1,3 +1,4 @@
+{{yield}}
 {{thumbnail-background model=videoThumbnail classNames="thumbnail"}}
 <div class="title-holder">
   <p class="videoTitle block-with-text">
@@ -11,3 +12,10 @@
 <div class="channel-desc">
   {{viewsCount}} {{channelDesc}}
 </div>
+{{#if displayRequest}}
+<div class="request-overlay">
+	<div class="request-btn" role="button" {{action "requestVideo"}}>
+		Request
+	</div>
+</div>
+{{/if}}

@@ -12,6 +12,20 @@ export default Component.extend({
   shouldDisplaySender: computed('model', 'displaySender', function(){
     return this.get('displaySender') && !this.get('isShareVideo');
   }),
+  videoRequestModel: computed('model', function(){
+    let model = this.get('model');
+    return {
+      snippet: {
+        title: model.video.title,
+        channelTitle: model.video.channelTitle,
+        thumbnails: {
+          medium:{
+            url: model.video.imageURL
+          }
+        }
+      }
+    }
+  }),
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
   }),
@@ -225,6 +239,7 @@ export default Component.extend({
     }
     return null;
   }),
+
   click() {
     if (this.get('canClick')) {
       this.get('onClick')(this.model);
@@ -235,6 +250,11 @@ export default Component.extend({
     $(this.element).find('.with-tooltip').tooltip({container: 'body',boundary: 'window'});
   },
   actions: {
+    videoRequestClick(){
+      if (this.get('canClick')) {
+        this.get('onClick')(this.model);
+      }
+    },
     clickOnPhoto() {
       this.get('onPhotoSelect')(this.get('model.thumbnail'));
     },

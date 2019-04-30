@@ -29,7 +29,14 @@ export default Component.extend({
     }
   }),
   click() {
-    this.clickAction(this.get('model'));
+    if (!this.get('displayRequest')){
+      this.clickAction(this.get('model'));
+    }
+  },
+  actions:{
+    requestVideo(){
+      this.clickAction(this.get('model')); 
+    }
   },
   nFormat(num, digits) {
     var si = [

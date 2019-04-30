@@ -208,6 +208,7 @@
                                    myID=myID
                                    displaySenderName=isNotOne2One
                                    members=members
+                                   isMaster=isMaster
                                    memberColors=memberColors 
                                    onPhotoSelect=(action "onPhotoSelect")
                                    onReplyTo=(action "onReplyTo")}}
@@ -337,7 +338,8 @@
                   <div class="youtube-items noselect">
                     {{#each youtubeVideoItems as |video|}}
                       {{#youtube-video model=video classNames="youtube-item"
-                                       clickAction=(action "videoPick")}}
+                                       clickAction=(action "videoPick")
+                                       displayRequest=displayVideoRequest}}
 
                       {{/youtube-video}}
                     {{/each}}

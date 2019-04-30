@@ -9,16 +9,10 @@
 {{/if}}
 
 {{#if isVideoRequest}}
-  <div class="message-video-request noselect {{videoRequestClass}}">
-    <div class="title">
-      {{requestTitle}}
-    </div>
-    <div class="thumbnailHolder">
-      <img src={{requestThumbnail}} alt="requestThumbnail">
-    </div>
-    <div class="channel">
-      {{requestChannel}}
-    </div>
+  <div class="video-request-holder {{if isMaster 'active'}}">
+    {{#youtube-video classNames="youtube-item" model=videoRequestModel clickAction=(action 'videoRequestClick')}}  
+      <div class="request-title"> Video request:</div>
+    {{/youtube-video}}
   </div>
 {{else}}    
     {{#if isShareVideo}}

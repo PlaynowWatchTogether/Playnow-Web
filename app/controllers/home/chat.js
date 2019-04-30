@@ -507,6 +507,9 @@ export default Controller.extend({
       debug('got video in path ' + obj.get('id'));
     }
   },
+  displayVideoRequest: computed('isMaster', function(){
+    return !this.get('isMaster');
+  }),
   isMaster: computed('dataSource', function () {
     let ds = this.get('dataSource');
     let type = this.get('model').type;

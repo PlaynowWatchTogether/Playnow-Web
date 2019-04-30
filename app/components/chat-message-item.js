@@ -58,6 +58,32 @@ export default Component.extend({
     let type = model['type'];
     return type === 'ShareVideo';
   }),
+  attachments: computed('model', function(){
+    let model = this.get('model');
+    let type = model['type'];
+    let attachments = [];
+    if (type === 'photo'){//back compatible photo
+      attachments.push({
+        type:'image/*',
+        url: model.thumbnail
+      });
+    }
+    if (type === 'Video'){//back compatible video
+      attachments.push({
+        type:'video/*',
+        url: model.media
+      });
+    }
+    if (type === 'attachment'){//back compatible one attachment      
+      attachments.push(model.attachment);    
+    }
+    if (model.attachments){
+      model.attachments.forEach((elem)=>{
+        attachments.push(elem);
+      });
+    }
+    return attachments;
+  }),
   textAuthorClass: computed('model','members', function(){
     let members = this.get('members');
     let model = this.get('model');    

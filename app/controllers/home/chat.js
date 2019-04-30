@@ -12,6 +12,7 @@ import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
 import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
+import { set } from '@ember/object';
 
 export default Controller.extend({
   firebaseApp: service(),
@@ -24,6 +25,7 @@ export default Controller.extend({
   id: null,
   init() {
     this._super(...arguments);
+    this.uploads = [];
     this.chatModel = {};
     this.messageText = '';
     this.composeChips = [];
@@ -521,7 +523,20 @@ export default Controller.extend({
       return '';
     }
   }),
+  chatActionSendClass: computed('messageText', 'uploads.@each.status', function(){
+    var enabled = true;
+    if (this.get('messageText').length == 0)
+      enabled = false;
+    this.get('uploads').forEach((elem)=>{
+      if (elem.state !== 2){
+        enabled = false;
+      }
+    });
+    return enabled ? '' : 'disabled';
+  }),
   reset() {
+    this.set('inReplyTo', null);
+    this.set('uploads',[]);
     this.set('id', null);
     this.set('youtubeVideoItemsPage', null);
     this.set('youtubeMusicItemsPage', null);
@@ -692,9 +707,17 @@ export default Controller.extend({
     }
   },
   performSendMessage() {
+    var enabled = true;
     if (this.get('messageText').length === 0) {
+      enabled = false;
+    }  
+    this.get('uploads').forEach((elem)=>{
+      if (elem.state !== 2){
+        enabled = false;
+      }
+    });
+    if (!enabled)
       return;
-    }
     if (this.get('isCompose')) {
       if (this.get('composeChips').length === 0) {
         this.set('composeError', 'Add friends to group');
@@ -709,7 +732,9 @@ export default Controller.extend({
     }
     let ds = this.get('dataSource');
     let reply = this.get('inReplyTo');
-    ds.sendMessage(this.get('messageText'), null, null,false, reply);
+    let uploads = this.get('uploads');
+    ds.sendMessage(this.get('messageText'),uploads, reply);
+    this.set('uploads',[]);
     this.set('inReplyTo', null);
     this.set('messageText', '');
   },
@@ -723,7 +748,7 @@ export default Controller.extend({
       }
       ds.sendVideo(video)
     } else {
-      ds.sendMessage('', '', {
+      ds.sendMessage('', [],null, {
         id: video['id'],
         title: video['snippet']['title'],
         channelTitle: video['snippet']['channelTitle'],
@@ -745,6 +770,9 @@ export default Controller.extend({
     return (master || senderId === this.db.myId());
   }),
   actions: {
+    onRemoveUpload(upload){
+      this.get('uploads').removeObject(upload);
+    },
     topChildChanged(child){
       let tm = this.get('messageDateTimeout');
       if (tm){
@@ -838,28 +866,44 @@ export default Controller.extend({
         }
         return;
       }
-      let ds = this.get('dataSource');
-      let id = ds.generateMessageId();
-      let mesCntent = {
-          isLoading: true,                    
-          id: id
-        };
-        let normalizedData = this.store.normalize('thread-message', {
-          id: id,
-          convoId: ds.convId(),
-          content: JSON.stringify(mesCntent)
-        });
+      let upload = {file: file, state: 0};
+      this.get('uploads').addObject(upload);
+      // let ds = this.get('dataSource');
+      // let id = ds.generateMessageId();
+      // let mesCntent = {
+      //     isLoading: true,                    
+      //     id: id
+      //   };
+      //   let normalizedData = this.store.normalize('thread-message', {
+      //     id: id,
+      //     convoId: ds.convId(),
+      //     content: JSON.stringify(mesCntent)
+      //   });
 
-      this.store.push(normalizedData);
-      this.notifyPropertyChange('limit');
+      // this.store.push(normalizedData);
+      // this.notifyPropertyChange('limit');
       let ref = this.firebaseApp.storage().ref('Media/Files/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
-      ref.put(file.blob).then((snapshot) => {
-          snapshot.ref.getDownloadURL().then((downloadURL) => {            
+      const uploadTask = ref.put(file.blob);
+      uploadTask.on('state_changed', (snapshot)=>{
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        set(upload, 'state',1);
+        set(upload, 'progress',progress);
+        set(upload, 'transferred',snapshot.bytesTransferred);
+        set(upload, 'total',snapshot.totalBytes);
+        debug(`Upload progress changed ${progress}`);        
+      }, (error)=>{
+        set(upload, 'state',3);
+        set(upload, 'error',error);
+      }, ()=>{
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {            
             // ds.sendMessage('', downloadURL, null, true);
-            ds.sendAttachment(file, downloadURL, id);
+            //ds.sendAttachment(file, downloadURL, id);
             debug(`File available at ${downloadURL}`);
-          });
+            set(upload, 'url',downloadURL);
+            set(upload, 'state',2);            
+        });
       });
+    
     
     },
     sendMessage() {

@@ -1,1 +1,35 @@
-{{yield}}
+{{#if isPhoto}}
+	<div class="message-img">
+	  <a rel={{attachmentUrl}} href={{attachmentUrl}} data-lightbox={{attachmentUrl}} >
+	    <img rel={{attachmentUrl}} src={{attachmentUrl}} class="img-fluid">
+	  </a>
+	</div>
+{{else}}
+	{{#if isVideo}}
+	  <div class="message-video" role="button">
+	    <div class="video-holder">
+	      <video controls>
+
+	        <source src={{attachmentUrl}}
+	                type="video/mp4">
+
+	        Sorry, your browser doesn't support embedded videos.
+	      </video>
+	    </div>
+
+	  </div>
+	{{else}}
+	  <div class="message-attachment-holder">
+	    <a href={{attachmentUrl}} target="_blank" class="message-attachment-link">
+	      <div class="message-attachment-wrapper">
+	        <div class="message-attachment-icon">
+	          <img src="/assets/baseline_attachment_black_48dp.png" alt="message attachment"/>
+	        </div>
+	        <div class="message-attachment-name">
+	          {{attachmentName}}
+	        </div>      
+	      </div>  
+	    </a>
+	  </div>
+	{{/if}} 
+{{/if}} 

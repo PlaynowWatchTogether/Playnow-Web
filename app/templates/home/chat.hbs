@@ -252,7 +252,15 @@
             </div>
           </div>
       {{/if}}
-      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}}">        
+      {{#if uploads}}
+        <div class="message-uploads {{if inReplyTo 'has-in-reply'}}">
+          {{#each uploads as |upload|}}
+            {{chat-upload-item model=upload
+              onRemove=(action "onRemoveUpload")}}
+          {{/each}}
+        </div>
+      {{/if}}
+      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}} {{if uploads 'has-uploads'}}">        
         {{#if displayEmoji}}
           {{emoji-picker selectEmoji=(action "selectEmoji")}}
         {{/if}}
@@ -267,7 +275,7 @@
 
         <div class="imgHolder">
 
-          <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send">Send</div>
+          <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
         </div>
       </div>
     {{/file-dropzone}}

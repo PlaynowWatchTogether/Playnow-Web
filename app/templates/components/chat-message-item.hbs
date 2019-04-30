@@ -8,102 +8,72 @@
 {{/unless}}
 {{/if}}
 
-{{#if isAttachment}}
-  {{#if isPhoto}}
-    <div class="message-img">
-      <a rel={{photoThumbnail}} href={{photoThumbnail}} data-lightbox={{photoThumbnail}} >
-        <img rel={{photoThumbnail}} src={{photoThumbnail}} class="img-fluid">
-      </a>
+{{#if isVideoRequest}}
+  <div class="message-video-request noselect {{videoRequestClass}}">
+    <div class="title">
+      {{requestTitle}}
     </div>
-  {{else}}
-    {{#if isVideo}}
-      <div class="message-video" role="button">
-        <div class="video-holder">
-          <video controls>
-
-            <source src={{videoSrc}}
-                    type="video/mp4">
-
-            Sorry, your browser doesn't support embedded videos.
-          </video>
+    <div class="thumbnailHolder">
+      <img src={{requestThumbnail}} alt="requestThumbnail">
+    </div>
+    <div class="channel">
+      {{requestChannel}}
+    </div>
+  </div>
+{{else}}    
+    {{#if isShareVideo}}
+      <div class="message-share-video-holder">
+        <div class="message-share-video-title">
+          {{shareVideoTitle}}
         </div>
-
       </div>
     {{else}}
-      <div class="message-attachment-holder">
-        <a href={{attachmentUrl}} target="_blank" class="message-attachment-link">
-          <div class="message-attachment-wrapper">
-            <div class="message-attachment-icon">
-              <img src="/assets/baseline_attachment_black_48dp.png" alt="message attachment"/>
-            </div>
-            <div class="message-attachment-name">
-              {{attachmentName}}
-            </div>      
-          </div>  
-        </a>
-      </div>
-    {{/if}} 
-  {{/if}} 
-            
- 
-{{else}}
-
-  {{#if isVideoRequest}}
-    <div class="message-video-request noselect {{videoRequestClass}}">
-      <div class="title">
-        {{requestTitle}}
-      </div>
-      <div class="thumbnailHolder">
-        <img src={{requestThumbnail}} alt="requestThumbnail">
-      </div>
-      <div class="channel">
-        {{requestChannel}}
-      </div>
-    </div>
-  {{else}}    
-      {{#if isShareVideo}}
-        <div class="message-share-video-holder">
-          <div class="message-share-video-title">
-            {{shareVideoTitle}}
+      <div class="message-text-holder">
+        {{#if mine}}
+          <div class="reply-holder" role="button" {{action "reply"}}>
+            <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
           </div>
-        </div>
-      {{else}}
-        <div class="message-text-holder">
-          {{#if mine}}
-            <div class="reply-holder" role="button" {{action "reply"}}>
-              <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
-            </div>
-          {{/if}}
-          <div class="message-text with-tooltip" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
-            {{#unless mine}}
-              {{#if displaySenderName}}
-                <div class="message-text-author" style={{textAuthorClass}}>
-                  {{senderName}}
-                </div>
-              {{/if}}
-            {{/unless}}
-            {{#if inReplyTo}}
-              <div class="in-reply-to-message">
-                {{emoji-parse inReplyTo.text}}            
+        {{/if}}
+        <div class="message-text with-tooltip" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
+          {{#unless mine}}
+            {{#if displaySenderName}}
+              <div class="message-text-author" style={{textAuthorClass}}>
+                {{senderName}}
               </div>
             {{/if}}
+          {{/unless}}
+          {{#if inReplyTo}}
+            <div class="in-reply-to-message">
+              {{emoji-parse inReplyTo.text}}            
+            </div>
+          {{/if}}
+          {{#if bodyMessage}}
             <div class="text">            
               {{emoji-parse bodyMessage}}              
             </div>
-          </div>
-          {{#unless mine}}
-            <div class="reply-holder" role="button" {{action "reply"}}>
-              <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
+          {{/if}}
+          {{#if attachments}}
+            <div class="message-item-attachments">
+              {{#each attachments as |attachment|}}
+                {{chat-message-attachment model=attachment classNames="message-item-attachment"}}
+              {{/each}}
             </div>
-          {{/unless}}
+          {{/if}}
         </div>
-        {{#if isLastSeen}}
-          <div class="last-seen">
-            <div class="profilePicWrapper">
-              <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
-            </div>
+        {{#unless mine}}
+          <div class="reply-holder" role="button" {{action "reply"}}>
+            <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
           </div>
-        {{/if}} 
-      {{/if}}                 
-  {{/if}}
+        {{/unless}}
+      </div>      
+
+      {{#if isLastSeen}}
+        <div class="last-seen">
+          <div class="profilePicWrapper">
+            <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
+          </div>
+        </div>
+      {{/if}} 
+    {{/if}}                 
 {{/if}}
+

@@ -50,6 +50,7 @@
     "ember-emoji": "^1.0.2",
     "ember-export-application-global": "^2.0.0",
     "ember-file-upload": "^2.6.1",
+    "ember-filepond": "0.0.2",
     "ember-is-mobile": "^2.0.5",
     "ember-load-initializers": "^1.1.0",
     "ember-local-storage": "^1.6.0",

@@ -2208,7 +2208,54 @@ CHAT
           }
         }
       }
+      .message-uploads{
+        border-top: 1px solid #E6E6E6;
+        display: flex;
+        padding: 5px 10px;
+        flex-wrap: wrap;
+        button:focus {
+          outline: none;
+        }
+        button{
+          margin: auto;
+        }
+        .chat-upload-item{
+          max-width: 300px;
+          margin-bottom: 5px;
+          .chat-upload{   
+              height: 50px;     
+              margin-right: 10px;      
+              grid-column-gap: 10px;              
+              border-radius: 10px;
+              padding-left: 10px;
+              padding-right: 10px;
+              display: grid;
+              grid-template-columns: min-content auto min-content;
+          }      
+          .chat-upload-state{
+            font-size: 70%;
 
+          }    
+          .chat-upload-loading, .chat-upload-details {
+            margin: auto;
+          }
+        }
+        .chat-upload-item.new,.chat-upload-item.loading{
+          .chat-upload{      
+            color: #1e2430;
+            background: #c7ccd8;
+          }
+        }
+        .chat-upload-item.new,.chat-upload-item.completed{
+          .chat-upload{      
+            background: #22a061;
+            color: white;
+          }
+        }
+      }
+      .message-uploads.has-in-reply{
+        border-top: none;
+      }
       .messagesHolder {
         flex: 1 1 auto;
         padding-left: 20px;
@@ -2258,13 +2305,18 @@ CHAT
         }
         .messageHolder:hover{
           .reply-holder{
+            visibility: visible;
             display: inline-block;
           }
         }
         .messageHolder {
           display: grid;
           grid-template-columns: 50px 70%;
-
+          .message-text-author {
+            margin-left: 10px;
+            margin-right: 10px;
+            margin-top: 10px;
+          }
           .profilePicWrapper {
             width: 37px;
             height: 37px;
@@ -2274,6 +2326,9 @@ CHAT
           .message-text-holder{
             display: flex;            
             .in-reply-to-message{
+              margin-left: 10px;
+              margin-right: 10px;
+              margin-top: 10px;
               border-left: 4px solid #969494;
               padding-left: 5px;
               color: #ADADAD;
@@ -2285,19 +2340,25 @@ CHAT
           .message-text {
 
             width: fit-content;
-            background: white;
-            padding: 5px 15px;
+            background: white;            
             font-size: 90%;
             border-radius: 14px;
             box-shadow: $message-shadow;
             display: inline-block;
             margin-top: 5px;
+            .text {
+              word-break: break-word;
+              padding-left: 10px;
+              padding-right: 10px;
+              padding-top: 5px;
+              padding-bottom: 5px;
+            }
           }
 
           .reply-holder{
+            visibility: hidden;
             margin-top: auto;
-            margin-bottom: auto;
-            display: none;
+            margin-bottom: auto;            
             margin-left: 10px;
             cursor: pointer;
             img{
@@ -2363,7 +2424,7 @@ CHAT
           .message-video {
             cursor: pointer;
             grid-column-start: 2;
-            width: 50%;
+            width: auto;
             position: relative;
             height: 200px;
             border-radius: 20px;
@@ -2415,13 +2476,17 @@ CHAT
               justify-self: end;
           }
           .reply-holder{
-              display: none;
-              margin-right: 5px;
+              visibility: hidden;
+              margin-right: 10px;
           }
           .message-text {            
             background: #F0F0F0;
             display: inline-block;
             .text {
+              padding-left: 10px;
+              padding-right: 10px;
+              padding-top: 5px;
+              padding-bottom: 5px;
               word-break: break-word;
             }
           }
@@ -2435,6 +2500,7 @@ CHAT
           .reply-holder{
             cursor: pointer;
             display: inline-block;
+            visibility: visible;
           }
         }
       }
@@ -2488,6 +2554,13 @@ CHAT
           }
         }
       }
+      .message-item-attachments {
+        display: flex;
+        flex-direction: column;
+        .message-item-attachment {
+          align-self: flex-end;
+        }
+      }
       .message-attachment-holder {
         display: flex;
         justify-content: end;
@@ -2501,9 +2574,12 @@ CHAT
           margin-bottom: 5px;
           background: #dedede;
           border-radius: 10px;
-          width: 300px;
-          padding: 10px;
+          width: 300px;          
           display: flex;
+          padding: 5px;
+          display: flex;
+          margin-right: 10px;
+          margin-left: 10px;
         }
         .message-attachment-name{
             margin: auto;
@@ -2511,6 +2587,11 @@ CHAT
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
+        }
+        .message-attachment-icon {
+          img {
+            width: 40px;
+          }
         }
       }
       .message-share-video-holder{
@@ -2543,6 +2624,10 @@ CHAT
           cursor: pointer;
           margin-right: 10px;
           color: #3399FF;
+        }
+        .chat-action-send.disabled{
+          pointer-events:none;
+          color: #ccc;
         }
         .show-emoji{          
           margin: auto;
@@ -2600,6 +2685,9 @@ CHAT
         }
       }
       .newMessageHolder.has-in-reply{
+        border-top: none;
+      }
+      .newMessageHolder.has-uploads{
         border-top: none;
       }
     }

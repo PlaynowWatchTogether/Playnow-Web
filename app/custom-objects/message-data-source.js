@@ -394,7 +394,7 @@ export default EmberObject.extend({
       }
     });
   },
-  sendMessage(text, thumbnail, video = null, videoFile = false, inReplyTo = null) {
+  sendMessage(text, attachments=[], inReplyTo = null, video=null) {
     let senderId = this.myId;
     let path = this.messageRoot();
     let convId = this.convId();
@@ -406,22 +406,23 @@ export default EmberObject.extend({
     message['convoId'] = convId;
     message['senderId'] = senderId;
     message['senderName'] = this.auth.current.get('userName');
-    if (thumbnail) {
-      message['type'] = 'photo';
-      message['thumbnail'] = thumbnail;
-    } else {
-      message['type'] = 'text';
-    }
+    message['type'] = 'text';
     if (video) {
       message['type'] = 'VideoRequest';
       message['video'] = video;
       message['isMusic'] = video.isMusic;
     }
-    if (videoFile) {
-      message['type'] = 'Video';
-      message['media'] = thumbnail;
-      message['media_thumbnail'] = "";
-    }
+    message['attachments']=[];
+    attachments.forEach((attachment)=>{
+      if (attachment.state === 2){
+        message['attachments'].push({
+          name: attachment.file.name,
+          size: attachment.file.size,
+          type: attachment.file.type,
+          url: attachment.url
+        });
+      }
+    });
     if (inReplyTo){
       message['inReplyTo'] = inReplyTo;
     }

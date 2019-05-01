@@ -22,6 +22,19 @@ export default Component.extend({
       }
     }
   },
+  updateCurrentTopChild(){
+    var currentMin = null;
+    $(this.element).find(this.get('scrollChild')).children('.messageHolder').each((index,child)=>{
+        var offset = $(child).offset();
+        if (offset.top > 0 && currentMin === null){
+            currentMin = child;
+        }
+        //debug(`top: ${scrollTop} offset: ${JSON.stringify(offset)}`);
+    });
+    if (this.get('onTopChildChanged')){
+      this.get('onTopChildChanged')(currentMin);
+    }
+  },
   didInsertElement() {
     this._super(...arguments);
     this._mutationObserver = new MutationObserver(bind(this, this.domChanged));
@@ -31,6 +44,7 @@ export default Component.extend({
       characterData: false,
       subtree: false
     });
+    this.updateCurrentTopChild();
     $(this.element).on('scroll', () => {
 
       if ($(this.element).height() === 0)
@@ -49,17 +63,7 @@ export default Component.extend({
       } else {
         let scrollTop = $(this.element).scrollTop();
         let windowHeight = $(this.element).height();
-        var currentMin = null;
-        $(this.element).find(this.get('scrollChild')).children('.messageHolder').each((index,child)=>{
-            var offset = $(child).offset();
-            if (offset.top > 0 && currentMin === null){
-                currentMin = child;
-            }
-            //debug(`top: ${scrollTop} offset: ${JSON.stringify(offset)}`);
-        });
-        if (this.get('onTopChildChanged')){
-          this.get('onTopChildChanged')(currentMin);
-        }
+        this.updateCurrentTopChild();
         if (scrolled < scrollHalf) {
           if (!$(this.element).hasClass('loading')) {
             this.onScrolledHalf();
@@ -75,5 +79,6 @@ export default Component.extend({
         $(this.element).scrollTop(this.lastHeight);
       }
     }
+    this.updateCurrentTopChild();
   }
 });

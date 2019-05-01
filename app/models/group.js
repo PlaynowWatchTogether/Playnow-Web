@@ -8,6 +8,6 @@ export default DS.Model.extend({
   videoType: attr('string'),
   latestMessageDate: attr('number'),
   lastMessage: attr('string'),
-  groupPics: attr('string')
-
+  groupPics: attr('string'),
+  ProfilePic: attr('string')
 });

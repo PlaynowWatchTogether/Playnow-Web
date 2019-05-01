@@ -245,6 +245,7 @@ export default Controller.extend({
         obj.set('chatModel', {
           hasProfilePic: true,
           title: friend.get('displayName'),
+          ProfilePic: friend.get('safeProfilePic'),
           user: friend
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
@@ -290,8 +291,11 @@ export default Controller.extend({
           fb: obj.firebaseApp,
           auth: obj.auth
         }));
+        let profilePic = group.get('ProfilePic');
+
         obj.set('chatModel', {
-          hasProfilePic: false,
+          hasProfilePic:  profilePic!=null && profilePic.length > 0,
+          ProfilePic: profilePic,
           title: group.get('GroupName'),
           group: group
         });
@@ -299,8 +303,11 @@ export default Controller.extend({
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
         obj.offGroupListen();
         obj.set('listenGroup',obj.get('db').listenGroup(convId, (snapshot)=>{
+          let profilePic = snapshot.ProfilePic;
+
           obj.set('chatModel', {
-              hasProfilePic: false,
+              hasProfilePic: profilePic!=null && profilePic.length > 0,
+              ProfilePic: profilePic,
               title: snapshot.GroupName,
               group: group
           });

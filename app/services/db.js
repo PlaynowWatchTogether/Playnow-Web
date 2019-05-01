@@ -295,6 +295,23 @@ export default Service.extend({
   myId() {
     return this.firebaseApp.auth().currentUser.uid
   },
+  updateGroupPic(id, groupPic){
+    return new Promise((resolve,reject)=>{
+      const ref = this.firebaseApp.database().ref();
+      const update = {};
+      this.realGroup(id).then((group)=>{
+        Object.keys(group.Members).forEach((memberKey) => {                    
+          update["/Users/" + memberKey + "/Groups/" + id + "/ProfilePic"] = groupPic;
+        });
+        ref.update(update).then(()=>{
+          resolve();
+        }).catch((error)=>{
+          reject(error);
+        });
+      });
+
+    });
+  },
   updateGroupName(id,groupName){
     return new Promise((resolve,reject)=>{
       const ref = this.firebaseApp.database().ref();

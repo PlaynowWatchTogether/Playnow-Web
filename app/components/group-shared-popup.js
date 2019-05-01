@@ -3,10 +3,11 @@ import $ from 'jquery';
 import {debug} from '@ember/debug'
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
-
-export default Component.extend({
+import FileUploadHelper from '../mixins/file-upload-helper';
+export default Component.extend(FileUploadHelper, {
 	store: service(),
 	db: service(),
+	firebaseApp: service(),
 	init(){
 		this._super(...arguments);
 		this.set('composeChips', []);
@@ -37,6 +38,13 @@ export default Component.extend({
 		});
 		this.get('db').listenGroup(this.get('model.chat_id'), (group)=>{
 			this.set('title', group.GroupName);
+			let profilePic =group.ProfilePic;
+
+			if (!profilePic || profilePic.length===0){
+				profilePic = '/assets/monalisa.png';
+			} 
+			this.set('profilePic', profilePic);
+			this.set('title', group.GroupName);
 		})
 	},
 	modelObserver(obj) {
@@ -48,30 +56,27 @@ export default Component.extend({
 			$(this.element).find('#groupSharedPopup').modal('show');
 		});
 	},
-	attachments: computed('lastAttachmentUpdate', function(){
+	attachments: computed('lastAttachmentUpdate','model', function(){
 		return this.get('store').peekAll('chat-attachment').filter((elem)=>{
 			return elem.get('convId') === this.get('model.chat_id');
 		});
-	}),
-	// title: computed('dataSource', function(){
-	// 	const ds = this.get('dataSource');
-	// 	if (!ds){
-	// 		return '';
-	// 	}
-	// 	return this.get('store').peekRecord('group', this.get('dataSource').convId()).get('GroupName');
-	// }),
-	profilePic:computed('dataSource', function(){
-		const ds = this.get('dataSource');
-		if (!ds){
-			return ''; 
-		}
-		let profilePic =  this.get('store').peekRecord('group', this.get('dataSource').convId()).get('ProfilePic');
-		if (!profilePic || profilePic.length === 0) {
-	      profilePic = '/assets/monalisa.png'
-	    } 
-	    return profilePic;
-	}),
+	}),	
 	actions:{
+		uploadGroupProfileImage(file){
+			
+			const myID = this.get('db').myId();
+	        let metadata = {
+	          cacheControl: 'public,max-age=86400'
+	        };
+	        let ref = this.firebaseApp.storage().ref('Media/Files/' + myID + "/" + this.generateUUID() + '.png');
+
+	        ref.put(file.blob, metadata).then((snapshot) => {
+	          snapshot.ref.getDownloadURL().then((downloadURL) => {	            
+	            this.get('db').updateGroupPic(this.get('model.chat_id'),downloadURL);	            
+	          });
+	        });
+		    
+		},
 		updateGroupName(){
 			const newName = this.get('editableTitle');
 			if (newName.length === 0){

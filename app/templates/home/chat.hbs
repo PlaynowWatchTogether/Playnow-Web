@@ -35,7 +35,14 @@
         {{else}}
           {{#if chatModel.group}}
             <div class="title noselect">
-              <div class="profilePicWrapper"></div>
+              {{#if chatModel.hasProfilePic}}
+                <div class="profilePicWrapper">
+                  <img src={{chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                </div>
+              {{else}}
+                <div class="profilePicWrapper"></div>
+              {{/if}}
+              
               <span class="name">{{chatModel.title}}</span>
             </div>
           {{else}}

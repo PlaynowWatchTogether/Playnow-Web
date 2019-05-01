@@ -13,7 +13,16 @@
         	<div class="group-profile-header">
         		<div class="group-profile-image">
 	        		<div class="profilePicWrapper">
-					  <img src={{profilePic}} class="profilePic" alt="icon">
+                        {{#if isAdmin}}
+                            {{#file-upload name="group-profile"
+                               accept="image/*"
+                               onfileadd=(action "uploadGroupProfileImage")
+                               classNames="profilePicChange"}}
+                               <img src={{profilePic}} class="profilePic" alt="icon">
+                            {{/file-upload}}
+                        {{else}}
+					       <img src={{profilePic}} class="profilePic" alt="icon">
+                        {{/if}}
 					</div>
         		</div>
         		<div class="group-profile-title">
@@ -32,24 +41,27 @@
         			</div>
         		</div>
         		<div class="group-profile-participants">
+
         			<div class="group-participants-header noselect">Participants:</div>
         			<div class="group-participants-search">
-        				<div class="group-participants-search-holder">
-				          <div class="compose-row">
-				            {{#users-chat-compose classNames="compose-search" 
-				            					  chips=composeChips
-				            					  placeholder="Search in contact" 
-				            					  onChipAdd=(action "onChipAdd")
-				            					  typeaheadID="group-typeahead"
-				                                  onChipClick=(action "onChipClick")}}
-				              <div class="error-tip">{{composeError}}</div>
-				            {{/users-chat-compose}}
-				          </div>
-				        </div>
-        				<div class="participants-add" {{action "addParticipants"}}>
-        					<img alt="add participants" src="/assets/ic_plus@2x.png"/>
-        					<div class="noselect">Add</div>
-        				</div>
+                        {{#if isAdmin}}
+            				<div class="group-participants-search-holder">
+    				          <div class="compose-row">
+    				            {{#users-chat-compose classNames="compose-search" 
+    				            					  chips=composeChips
+    				            					  placeholder="Search in contact" 
+    				            					  onChipAdd=(action "onChipAdd")
+    				            					  typeaheadID="group-typeahead"
+    				                                  onChipClick=(action "onChipClick")}}
+    				              <div class="error-tip">{{composeError}}</div>
+    				            {{/users-chat-compose}}
+    				          </div>
+    				        </div>
+            				<div class="participants-add" {{action "addParticipants"}}>
+            					<img alt="add participants" src="/assets/ic_plus@2x.png"/>
+            					<div class="noselect">Add</div>
+            				</div>
+                        {{/if}}
         			</div>
         			<div class="group-participants-members">
         				{{#each members as |member|}}
@@ -65,9 +77,9 @@
                 {{#each attachments as |attachment|}}
                     {{group-profile-attachment model=attachment classNames="group-profile-attachment"}}
                 {{else}}
-                <div class="group-profile-shared-none">
-                    Nothing shared so far
-                </div>
+                    <div class="group-profile-shared-none">
+                        Nothing shared so far
+                    </div>
                 {{/each}}
         	</div>
         </div>

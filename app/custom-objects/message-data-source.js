@@ -320,7 +320,35 @@ export default EmberObject.extend({
       });
     }
   },
-  
+  off(returnRes){
+    this.db.ref(returnRes[0]).off('value', returnRes[1]);
+  },
+  chatAttachments(store, updateCallback){
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Attachments";
+
+    let valueListener = (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let id= item.key;
+        item.forEach((attachment)=>{
+          let atId = attachment.key;
+          const payload = attachment.val();
+          payload.id = `${id}_${atId}`;
+          payload.convId = convId;
+          let normalizedData = store.normalize('chat-attachment', payload);  
+          store.push(normalizedData);
+        })
+        
+      });
+      updateCallback(records);
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener)
+    return [ref,valueListener];
+  },
+
   members(updateCallback) {
     if (this.type === 'one2one') {
       this.profile(this.get('user.id')).then((profile) => {
@@ -360,6 +388,7 @@ export default EmberObject.extend({
     let msgUid = new Date().getTime().toString() + senderId;
     return msgUid;
   },
+
   sendAttachment(file, url, msgUid){
     let senderId = this.myId;
     let path = this.messageRoot();
@@ -440,7 +469,23 @@ export default EmberObject.extend({
           });
         });
       }
-    })
+    });
+    // if (message['attachments'].length > 0){
+    //   //attachments for chat
+    //   let attachmentsRef = `${path}/${convId}/Attachments`;
+    //   let globalAttachments = message['attachments'].map(function(elem,index){
+    //       let k = `${msgUid}_${index}`;
+    //       let obj = {};
+    //       obj[k] = elem;
+    //       return obj;
+    //   }).reduce(function(elem){
+    //     return elem;
+    //   })
+    //   this.db.ref(attachmentsRef).update(globalAttachments);
+    //   //attachments for profile
+    //   let profileAttachmentsRef = `Users/${senderId}/Attachments/${convId}/Attachments`;
+    //   this.db.ref(profileAttachmentsRef).update(globalAttachments);
+    // }
   }
 
 });

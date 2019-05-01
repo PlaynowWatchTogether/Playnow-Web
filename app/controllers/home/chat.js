@@ -95,7 +95,9 @@ export default Controller.extend({
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
   },
-
+  isGroup: computed('model', function(){
+    return this.get('model.type') === 'group';
+  }),
   isCompose: computed('model', function () {
     return this.get('model.chat_id') === 'compose'
   }),
@@ -295,8 +297,15 @@ export default Controller.extend({
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
-
+        obj.set('listenGroup',obj.get('db').listenGroup(convId, (snapshot)=>{
+          obj.set('chatModel', {
+              hasProfilePic: false,
+              title: snapshot.GroupName,
+              group: group
+          });
+        }));
       });
+      
     } else {
       obj.set('chatModel', {});
     }
@@ -526,18 +535,28 @@ export default Controller.extend({
       return '';
     }
   }),
-  chatActionSendClass: computed('messageText', 'uploads.@each.status', function(){
-    var enabled = true;
-    if (this.get('messageText').length == 0)
-      enabled = false;
+  canPerformSend: computed('messageText', 'uploads.@each.state', function(){
+    var hasUnloadedUploads = false;
+    const hasText = this.get('messageText').length > 0;
+    const hasAttachments = this.get('uploads').length > 0;
+    
     this.get('uploads').forEach((elem)=>{
       if (elem.state !== 2){
-        enabled = false;
+        hasUnloadedUploads = true;
       }
     });
+    return (hasText && hasAttachments && !hasUnloadedUploads) || (hasText && !hasAttachments) || (!hasText && hasAttachments && !hasUnloadedUploads)
+
+  }),
+  chatActionSendClass: computed('canPerformSend', function(){
+    const enabled = this.get('canPerformSend');
     return enabled ? '' : 'disabled';
   }),
   reset() {
+    const groupListern = this.get('listenGroup');
+    if (groupListern){
+      this.get('db').offListenGroup(groupListern);
+    }
     this.set('inReplyTo', null);
     this.set('uploads',[]);
     this.set('id', null);
@@ -710,16 +729,8 @@ export default Controller.extend({
     }
   },
   performSendMessage() {
-    var enabled = true;
-    if (this.get('messageText').length === 0) {
-      enabled = false;
-    }  
-    this.get('uploads').forEach((elem)=>{
-      if (elem.state !== 2){
-        enabled = false;
-      }
-    });
-    if (!enabled)
+    
+    if (!this.get('canPerformSend'))
       return;
     if (this.get('isCompose')) {
       if (this.get('composeChips').length === 0) {

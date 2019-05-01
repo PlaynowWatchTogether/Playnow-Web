@@ -3,6 +3,7 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import $ from 'jquery';
 import moment from 'moment';
+import { htmlSafe } from '@ember/template';
 
 export default Component.extend({
   classNameBindings: ['mine'],
@@ -104,12 +105,12 @@ export default Component.extend({
     if (members && model){
        var clr = this.get('memberColors')[model.senderId];
        if (clr)
-          return `color: ${clr}`;
+          return htmlSafe(`color: ${clr}`);
         clr = this.randomColor();
         this.get('memberColors')[model.senderId] = clr;
-        return `color: ${clr}`;
+        return htmlSafe(`color: ${clr}`);
     }
-    return '';
+    return htmlSafe('');
   }),
   photoThumbnail: computed('model', function(){
       let model = this.get('model');

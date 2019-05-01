@@ -31,6 +31,45 @@ export default Service.extend({
       }
     });
   },
+  realGroup(id){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    return new Promise((resolve)=>{
+      let ref = this.firebaseApp.database().ref(`/channels/Groups/${id}`);
+      ref.once('value', (data)=>{
+        const payload = data.val();
+        payload["id"] = data.key;
+        resolve(payload);
+      });
+    });
+    
+  },
+  listenGroup(id, updateCallback){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    
+    let ref = this.firebaseApp.database().ref(`/Users/${myId}/Groups/${id}`);
+    const listener = (data)=>{
+      const payload = data.val();
+      payload["id"] = data.key;
+      updateCallback(payload);
+    };
+    ref.on('value', listener);    
+    return [ref,listener];
+  },
+  offListenGroup(ret){  
+    ret[0].off('value', ret[1]);    
+  },
+  group(id){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    return new Promise((resolve)=>{
+      let ref = this.firebaseApp.database().ref(`/Users/${myId}/Groups/${id}`);
+      ref.once('value', (data)=>{
+        const payload = data.val();
+        payload["id"] = data.key;
+        resolve(payload);
+      });
+    });
+    
+  },
   groups(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -255,6 +294,36 @@ export default Service.extend({
   },
   myId() {
     return this.firebaseApp.auth().currentUser.uid
+  },
+  updateGroupName(id,groupName){
+    return new Promise((resolve,reject)=>{
+      const ref = this.firebaseApp.database().ref();
+      const update = {};
+      this.realGroup(id).then((group)=>{
+        Object.keys(group.Members).forEach((memberKey) => {                    
+          update["/Users/" + memberKey + "/Groups/" + id + "/GroupName"] = groupName;
+        });
+        ref.update(update).then(()=>{
+          resolve();
+        }).catch((error)=>{
+          reject(error);
+        });
+      });
+
+    });
+    
+
+  },
+  addGroupMembers(group,groupName, members){
+    
+    const ref = this.firebaseApp.database().ref();
+    const update = {};
+    members.forEach((member)=>{
+      update[`/channels/Groups/${group}/Members/${member["id"]}/Name`] = member['firstName'] + ' ' + member['lastName'];  
+      update[`/Users/${member["id"]}/Groups/${group}/GroupName`] = groupName
+    });    
+    return ref.update(update);
+    
   },
   createGroup(name, members) {
     return this.profile(this.myId()).then((profile) => {

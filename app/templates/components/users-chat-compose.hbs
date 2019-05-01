@@ -8,11 +8,11 @@
         {{/compose-chip}}
       {{/each}}
       {{#custom-typeahead
-        id="typeahead-compose"
+        id=typeaheadID
         content=friends
         displayKey="firstName"
         valueToken="firstName"
-        placeholder="Type the username of the person"
+        placeholder=placeholder
         class="form-control"
         selectOnEnter=true
         suggestionTemplate=suggestionTemplate

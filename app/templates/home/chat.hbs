@@ -66,7 +66,11 @@
       {{#if isCompose}}
         <div class="searchHolder">
           <div class="row compose-row">
-            {{#users-chat-compose classNames="col compose-search" chips=composeChips onChipAdd=(action "onChipAdd")
+            {{#users-chat-compose classNames="col compose-search" 
+                                  chips=composeChips 
+                                  typeaheadID="typeahead-compose"
+                                  placeholder="Type the username of the person"
+                                  onChipAdd=(action "onChipAdd")
                                   onChipClick=(action "onChipClick")}}
               <div class="error-tip">{{composeError}}</div>
             {{/users-chat-compose}}
@@ -388,7 +392,9 @@
     </div>
   </div>
 </div>
-
+{{#if isGroup}}
+  {{group-shared-popup model=model dataSource=dataSource actionSelector=".titleHolder > .title"}}
+{{/if}}
 <div class="modal fade" id="videoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
      aria-hidden="false">
   <div class="modal-dialog modal-dialog-centered" role="document">

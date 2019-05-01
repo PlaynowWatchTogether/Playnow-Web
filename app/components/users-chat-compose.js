@@ -50,7 +50,7 @@ export default Component.extend({
       debug('term updated to ' + term);
     },
     selectFriend(result) {
-      $('#typeahead-compose').val('');
+      $(`#${this.get('typeaheadID')}`).val('');
       this.get('onChipAdd')(result);
     },
     onBackspaceEmpty() {

@@ -58,8 +58,17 @@
         			</div>
         		</div>
         	</div>
+            <div class="group-profile-shared-label">
+                Shared between you and {{title}}
+            </div>
         	<div class="group-profile-shared">
-
+                {{#each attachments as |attachment|}}
+                    {{group-profile-attachment model=attachment classNames="group-profile-attachment"}}
+                {{else}}
+                <div class="group-profile-shared-none">
+                    Nothing shared so far
+                </div>
+                {{/each}}
         	</div>
         </div>
       </div>      

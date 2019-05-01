@@ -7,5 +7,6 @@ export default DS.Model.extend({
 	url: attr('string'),
 	date: attr('number'),
 	type: attr('string'),
-	size: attr('number')	
+	size: attr('number'),
+	name: attr('string')	
 });

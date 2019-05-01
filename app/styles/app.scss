@@ -4187,7 +4187,7 @@ CHAT
 
     }
     .group-profile-title{
-        margin-top: 40px;
+        margin-top: 50px;
         padding-right: 20px;
         margin-bottom: auto;
         display: flex;
@@ -4232,7 +4232,7 @@ CHAT
           overflow: hidden;          
           text-decoration: none;
         }
-    }
+    }  
     .group-profile-participants{
       flex: 0 0 35%;
       max-width: 35%;
@@ -4259,6 +4259,7 @@ CHAT
             }
           }
       }
+
       .group-participants-search{
         display: flex;
         flex-direction: row;
@@ -4361,7 +4362,43 @@ CHAT
           }
         }
       }
-    }
-    
+    }    
+  }
+  .group-profile-shared-label{
+    margin-bottom: 20px;
+  }
+  .group-profile-shared-none{
+        margin: auto;
+  }
+  .group-profile-shared{
+      display: flex;
+      flex-wrap: wrap;
+      .group-profile-attachment{
+        width: 150px;
+        height: 150px;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        border: 1px solid black;
+        display: flex;
+        .message-img{
+          margin: auto;
+        }
+        .message-attachment-holder{
+            display: flex;
+            margin: auto;
+            .message-attachment-wrapper{
+              margin: auto;
+              display: flex;
+              flex-direction: column;
+            }
+            .message-attachment-icon{
+              margin: auto;
+              img{
+                width: 50px;
+                height: 50px;
+              }
+            }
+        }
+      }
   }
 }

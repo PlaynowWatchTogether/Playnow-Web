@@ -297,6 +297,7 @@ export default Controller.extend({
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+        obj.offGroupListen();
         obj.set('listenGroup',obj.get('db').listenGroup(convId, (snapshot)=>{
           obj.set('chatModel', {
               hasProfilePic: false,
@@ -552,11 +553,15 @@ export default Controller.extend({
     const enabled = this.get('canPerformSend');
     return enabled ? '' : 'disabled';
   }),
-  reset() {
+  offGroupListen(){
     const groupListern = this.get('listenGroup');
     if (groupListern){
       this.get('db').offListenGroup(groupListern);
+      this.set('listenGroup',null);
     }
+  },
+  reset() {
+    this.offGroupListen();
     this.set('inReplyTo', null);
     this.set('uploads',[]);
     this.set('id', null);

@@ -30,6 +30,7 @@ export default Component.extend({
 		}
 		ds.chatAttachments(this.get('store'), (update)=>{
 			debug('got update');
+			this.set('lastAttachmentUpdate', new Date().getTime());
 		});
 		ds.members((members)=>{
 			this.set('members',members);
@@ -47,6 +48,11 @@ export default Component.extend({
 			$(this.element).find('#groupSharedPopup').modal('show');
 		});
 	},
+	attachments: computed('lastAttachmentUpdate', function(){
+		return this.get('store').peekAll('chat-attachment').filter((elem)=>{
+			return elem.get('convId') === this.get('model.chat_id');
+		});
+	}),
 	// title: computed('dataSource', function(){
 	// 	const ds = this.get('dataSource');
 	// 	if (!ds){

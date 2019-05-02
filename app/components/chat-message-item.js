@@ -9,7 +9,7 @@ export default Component.extend({
   classNameBindings: ['mine'],
   store: service(),
   auth: service(),
-  attributeBindings: ['messageUid','messageTS'],
+  attributeBindings: ['messageUid','messageTS','messageDate','messageIndex:message-index'],
   shouldDisplaySender: computed('model', 'displaySender', function(){
     return this.get('displaySender') && !this.get('isShareVideo');
   }),
@@ -27,8 +27,29 @@ export default Component.extend({
       }
     }
   }),
+  messageTextClass: computed('model', function(){
+    const model = this.get('model');
+    const index = model.messageIndex;
+    const max = model.maxIndex;
+    if (max == 1){
+      return 'single';
+    }
+    if (index === 0){
+      return 'multiple-first';
+    }
+    if (index === max-1){
+      return 'multiple-last';
+    }
+    return 'multiple-middle';
+  }),
   user: computed('model', function () {
     return this.store.find('user', this.get('model').senderId);
+  }),
+  messageIndex: computed('model', function(){
+    return this.get('model.messageIndex');
+  }),
+  messageDate: computed('model', function(){
+    return moment(this.get('model.date')).format('MM-DD-YYYY');
   }),
   messageTS: computed('model', function(){
     return this.get('model.date');
@@ -38,6 +59,9 @@ export default Component.extend({
   }),
   mine: computed('model', 'auth.uid', function () {
     return this.get('model').senderId === this.auth.get('uid')
+  }),
+  textAuthorId: computed('model', function(){
+    return this.get('model.senderId');
   }),
   inReplyTo: computed('model', function(){
     return this.get('model.inReplyTo');
@@ -99,6 +123,7 @@ export default Component.extend({
     }
     return attachments;
   }),
+
   textAuthorClass: computed('model','members', function(){
     let members = this.get('members');
     let model = this.get('model');    

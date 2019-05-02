@@ -97,7 +97,7 @@ body > .ember-view {
 //Variables
 $primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-$message-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.16);
+$message-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
 $friends-list-hover-color: #dadada5e;
 $header-height: 45px;
 $search-icon-size: 16px;
@@ -108,7 +108,7 @@ $medium-font: 'Conv_Segoe UI, Medium';
 $btn-blue: #71C3FF;
 $video-round-corner: 10px;
 $table-gap: 5px;
-
+$message-border-radius: 14px;
 .background_gradient {
   background-image: $primary-gradient
 }
@@ -2063,7 +2063,11 @@ CHAT
           display: grid;
         }
 
-        .name {
+        .single-name {          
+          margin-top: auto;
+          margin-bottom: auto;
+        }
+        .name{
           margin-left: 10px;
           margin-top: auto;
           margin-bottom: auto;
@@ -2264,11 +2268,22 @@ CHAT
         height: 100px;
         overflow-y: auto;
         padding-bottom: 20px;
+        .chat-message-time-item{
+          margin-top: 20px;
+          z-index: 1;
+        }
         .message-scroll-date-holder{
-          position: fixed;
-          left: 50%;
+          width: 100%;
+          opacity: 0.95;
+          position: absolute;          
           padding-top: 20px;
+          padding-right: 40px;
+
           .title{
+            width: max-content;
+            justify-content: center;
+            margin: auto;
+            box-shadow: $message-shadow;
             background: #F0EAFF;
             padding: 10px 20px;
             border-radius: 20px;
@@ -2299,10 +2314,16 @@ CHAT
         }
 
         .messageTime {
-          color: #E3D636;
-          text-align: center;
-          padding-top: 5px;
-          padding-bottom: 5px;
+
+          opacity: 0.95;
+          box-shadow: $message-shadow;
+          width: max-content;
+          margin: auto;
+          background: #F0EAFF;
+          padding: 10px 20px;
+          border-radius: 20px;
+          color: #807E7E;
+          text-align: center;          
         }
         .messageHolder:hover{
           .reply-holder{
@@ -2313,6 +2334,46 @@ CHAT
         .messageHolder {
           display: grid;
           grid-template-columns: 50px 70%;
+          .message-item-attachments {
+            display: flex;
+            flex-direction: column;
+            .message-item-attachment {
+              align-self: flex-end;
+            }
+          }
+          .message-attachment-holder {
+            display: flex;
+            justify-content: end;
+            justify-self: end;
+            .message-attachment-link {
+              display: block;
+              cursor: pointer;
+            }
+            .message-attachment-wrapper {
+              margin-top: 5px;
+              margin-bottom: 5px;
+              background: #dedede;
+              border-radius: 10px;
+              width: 300px;          
+              display: flex;
+              padding: 5px;
+              display: flex;
+              margin-right: 10px;
+              margin-left: 10px;
+            }
+            .message-attachment-name{
+                margin: auto;
+                overflow-wrap: break-word;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .message-attachment-icon {
+              img {
+                width: 40px;
+              }
+            }
+          }
           .video-request-holder{
             width: max-content;
             background: #f3f2f2;
@@ -2363,6 +2424,9 @@ CHAT
             background: #4a53ff;
           }
           .message-text-author {
+            font-size: 90%;
+            font-family: $medium-font;
+            cursor: pointer;
             margin-left: 10px;
             margin-right: 10px;
             margin-top: 10px;
@@ -2379,20 +2443,25 @@ CHAT
               margin-left: 10px;
               margin-right: 10px;
               margin-top: 10px;
-              border-left: 4px solid #969494;
+              border-left: 4px solid #C1C1C1;
               padding-left: 5px;
-              color: #ADADAD;
+              color: #C1C1C1;
               font-size: 95%;
               margin-top: 5px;
               margin-bottom: 5px;
+              .reply-author{              
+                cursor:pointer;
+                font-family: $medium-font;                
+                margin-bottom: 5px;
+              }
             }
           }
           .message-text {
 
             width: fit-content;
-            background: white;            
+            background: #F4F4F4;            
             font-size: 90%;
-            border-radius: 14px;
+            border-radius: $message-border-radius;
             box-shadow: $message-shadow;
             display: inline-block;
             margin-top: 5px;
@@ -2401,8 +2470,22 @@ CHAT
               padding-left: 10px;
               padding-right: 10px;
               padding-top: 5px;
-              padding-bottom: 5px;
+              padding-bottom: 10px;
             }
+          }
+          .message-text.multiple-first{
+            border-bottom-left-radius: 0px;
+          }
+          .message-text.multiple-middle{
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+          }
+          .message-text.single{
+            margin-bottom: 15px;            
+          }
+          .message-text.multiple-last{
+            margin-bottom: 15px;            
+            border-top-left-radius: 0px;
           }
 
           .reply-holder{
@@ -2411,9 +2494,12 @@ CHAT
             margin-bottom: auto;            
             margin-left: 10px;
             cursor: pointer;
-            img{
-              width: 23px;
-              height: 23px;
+            img{            
+              width: 18px;
+              height: 18px;
+            }
+            img:hover{
+              filter: invert(1);
             }
           }
           .last-seen {
@@ -2508,6 +2594,14 @@ CHAT
           .video-request-holder{
             justify-self: end;
           }
+          .message-attachment-holder {          
+            .message-attachment-wrapper {
+              background: #1486f9;
+              .message-attachment-name{
+                color: white;
+              }
+            }
+          }
           .message-video {
             margin-top: 5px;
             justify-content: end;
@@ -2521,26 +2615,51 @@ CHAT
           .profilePic {
             display: none;
           }
-
+            
           .message-text-holder{
               display: flex;
               grid-column-start: 2;
               justify-self: end;
+              .in-reply-to-message{
+
+                color: #DBEDFF;
+                border-left: 4px solid #DBEDFF;
+                .reply-author{
+                  cursor:pointer;
+                  margin-bottom: 5px;
+                  font-family: $medium-font;
+                }
+              }
           }
           .reply-holder{
               visibility: hidden;
               margin-right: 10px;
           }
           .message-text {            
-            background: #F0F0F0;
+            background: #3399FF;
             display: inline-block;
             .text {
+              color: white;
               padding-left: 10px;
               padding-right: 10px;
               padding-top: 5px;
               padding-bottom: 5px;
               word-break: break-word;
             }
+          }
+          .message-text.multiple-first{
+            border-bottom-left-radius: $message-border-radius;
+            border-bottom-right-radius: 0px;
+          }
+          .message-text.multiple-middle{
+            border-bottom-left-radius: $message-border-radius;
+            border-top-left-radius: $message-border-radius;
+            border-bottom-right-radius: 0px;
+            border-top-right-radius: 0px;
+          }
+          .message-text.multiple-last{            
+            border-top-left-radius: $message-border-radius;
+            border-top-right-radius: 0px;
           }
 
           .message-img {
@@ -2606,49 +2725,10 @@ CHAT
           }
         }
       }
-      .message-item-attachments {
-        display: flex;
-        flex-direction: column;
-        .message-item-attachment {
-          align-self: flex-end;
-        }
-      }
-      .message-attachment-holder {
-        display: flex;
-        justify-content: end;
-        justify-self: end;
-        .message-attachment-link {
-          display: block;
-          cursor: pointer;
-        }
-        .message-attachment-wrapper {
-          margin-top: 5px;
-          margin-bottom: 5px;
-          background: #dedede;
-          border-radius: 10px;
-          width: 300px;          
-          display: flex;
-          padding: 5px;
-          display: flex;
-          margin-right: 10px;
-          margin-left: 10px;
-        }
-        .message-attachment-name{
-            margin: auto;
-            overflow-wrap: break-word;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-        }
-        .message-attachment-icon {
-          img {
-            width: 40px;
-          }
-        }
-      }
+      
       .message-share-video-holder{
-        padding-bottom: 5px;
-        padding-top: 5px;
+        padding-bottom: 15px;
+        padding-top: 15px;
         grid-column-start: 1;
         grid-column-end: 3;
         place-content: center;
@@ -2662,10 +2742,14 @@ CHAT
           white-space: nowrap;
           overflow: hidden;
           background: #D9F6FF;
-          padding: 10px 10px;
+          padding: 5px 10px;
           border-radius: 10px;
           color: #00A2D9;
           max-width: 80%;
+          font-size: 90%;
+        }
+        .message-share-video-title:hover{
+          background: #75ddfd;
         }
       }
       .newMessageHolder {
@@ -2678,6 +2762,9 @@ CHAT
           cursor: pointer;
           margin-right: 10px;
           color: #3399FF;
+        }
+        .chat-action-send:hover{
+          color: #0078f1;
         }
         .chat-action-send.disabled{
           pointer-events:none;
@@ -2698,16 +2785,22 @@ CHAT
         }
 
         .messageContent {
-
+          margin: auto;
           max-height: 150px;
           overflow-y: auto;
           flex: 1 1 auto;
           width: 100%;
 
-          min-height: 50px;
+          
           outline: none;
           font-size: 90%;
-          padding: 16px 10px 5px;
+          padding: 5px 10px 5px;
+          .emojione{
+            margin-top: -1px;
+            height: auto;
+            width: 20px;
+          }
+
         }
 
         textarea {
@@ -2733,9 +2826,13 @@ CHAT
         }
 
         img {
+          cursor: pointer;
           flex: 0 0 auto;
           width: 31px;
           height: 31px;
+        }
+        img.hovered:hover{
+          filter: invert(1);
         }
       }
       .newMessageHolder.has-in-reply{
@@ -4402,4 +4499,11 @@ CHAT
         }
       }
   }
+}
+.emoji-back{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }

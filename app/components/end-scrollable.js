@@ -23,16 +23,25 @@ export default Component.extend({
     }
   },
   updateCurrentTopChild(){
-    var currentMin = null;
-    $(this.element).find(this.get('scrollChild')).children('.messageHolder').each((index,child)=>{
-        var offset = $(child).offset();
-        if (offset.top > 0 && currentMin === null){
-            currentMin = child;
+    var currentMaxOffScreen = null;
+    const rootOffset = Ember.$(this.element).offset().top;
+    const childrens = $(this.element).find(this.get('scrollChild')).children('.chat-message-time-item');
+    childrens.each((index,child)=>{
+        const offset = $(child).offset();
+        const childOffset = offset.top - rootOffset-20;
+        const headerOffset = $('.message-scroll-date-holder').offset().top - rootOffset;
+        if (childOffset <= headerOffset){
+            currentMaxOffScreen = child;
+            $(child).css('opacity',0);
+        }else{
+          $(child).css('opacity',1);
         }
-        //debug(`top: ${scrollTop} offset: ${JSON.stringify(offset)}`);
     });
+    if (!currentMaxOffScreen && childrens.length>0){
+      currentMaxOffScreen = childrens[0];
+    }
     if (this.get('onTopChildChanged')){
-      this.get('onTopChildChanged')(currentMin);
+      this.get('onTopChildChanged')(currentMaxOffScreen);
     }
   },
   didInsertElement() {

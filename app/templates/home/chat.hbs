@@ -55,7 +55,7 @@
                 <div class="profilePicWrapper"></div>
               {{/if}}
               <div class="title-holder">
-                <span class="name">{{chatModel.title}}</span>
+                <span class="single-name">{{chatModel.title}}</span>
                 {{#if isChatOnline}}
                   <span class="online">{{onlineText}}</span>
                 {{/if}}
@@ -227,7 +227,7 @@
               {{/chat-message-item}}
             {{/if}}
             {{#if message.isDate}}
-              {{#chat-message-time model=message.date}}
+              {{#chat-message-time model=message.date classNames='chat-message-time-item'}}
 
               {{/chat-message-time}}
             {{/if}}
@@ -274,15 +274,16 @@
       {{/if}}
       <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}} {{if uploads 'has-uploads'}}">        
         {{#if displayEmoji}}
+          <div class="emoji-back"></div>
           {{emoji-picker selectEmoji=(action "selectEmoji")}}
         {{/if}}
-        <img class="show-emoji" {{action 'toggleEmoji'}} src="/assets/insert_emoticon_black.png" alt="select emoji"/>
+        <img class="show-emoji hovered" {{action 'toggleEmoji'}} src="/assets/insert_emoticon_black.png" alt="select emoji"/>
 
         {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
         {{#file-upload name="chatPhotos"                       
                        onfileadd=(action "uploadImageToChat")}}
-          <img src="/assets/attachment.png" alt="icon">
+          <img src="/assets/attachment.png" alt="icon" class="hovered">
         {{/file-upload}}
 
         <div class="imgHolder">

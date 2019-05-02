@@ -32,6 +32,11 @@ export default Controller.extend({
     this.limit = 100;
     this.memberColors={};
     this.messages = ArrayProxy.create({content: []});
+    $('body').on('click','.emoji-back', (e)=>{
+      e.stopPropagation();
+      this.set('displayEmoji');
+      return false;
+    });
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
       delegate: {
@@ -411,30 +416,70 @@ export default Controller.extend({
           ds.sendSeen(lastRecord.uid);
         }
       }
+      
+      const wrappedMessages = [];
       sorted.forEach(function (mes, index) {
-        let displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
-        let mesDate = new Date(mes.date);
-        // let diff = lastDate.getTime() - mesDate.getTime();
-        // if (Math.abs(diff) > one_day) {
-        //   let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: '' + mesDate.getTime()};
-        //   let normalizedData = obj.store.normalize('thread-message', {
-        //     id: '' + mesDate.getTime(),
-        //     convoId: ds.convId(),
-        //     content: JSON.stringify({isDate: true, date: mesDate.getTime()})
-        //   });
+        const displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
 
-        //   obj.store.push(normalizedData);
-        //   uiMessages.push(MessageObject.create({content: dateContent}));
-        // }
+        const mesDate = new Date(mes.date);
+        let diff = lastDate.getTime() - mesDate.getTime();
+        if (mesDate.getFullYear() !== lastDate.getFullYear() || mesDate.getDate() !== lastDate.getDate() || mesDate.getMonth() !== lastDate.getMonth())  {
+          let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: `${moment(mesDate).format('MM-DD-YYYY')}-${mes.convoId}`,convId: mes.convoId};          
+          wrappedMessages.push(dateContent);        
+        }
         let mesCntent = {
           isMessage: true,
           message: mes,
+          lastMessageIndex: lastMessageIndex,
           displaySender: displaySender,
-          id: mes['id']
-        };
-        let normalizedData = obj.store.normalize('thread-message', {
           id: mes['id'],
-          convoId: ds.convId(),
+          convId: mes.convoId
+        };
+        wrappedMessages.push(mesCntent);        
+        lastDate = mesDate
+
+      });
+      //group messages
+      let lastMessageIndex = 0;
+      const messagesBySender = [];
+      wrappedMessages.forEach((mesCntent, index)=>{
+        if (mesCntent.isMessage){
+          if (mesCntent.message.type !== 'ShareVideo'){
+            if (messagesBySender.length === 0){
+              const lastGroup = {content:[mesCntent], senderId: mesCntent.message.senderId};
+              messagesBySender.push(lastGroup);
+            }else{
+              const lastGroup = messagesBySender[messagesBySender.length-1];
+              if (mesCntent.message.senderId === lastGroup.senderId){
+                lastGroup.content.push(mesCntent);
+              }else{
+                const lastGroup = {content:[mesCntent], senderId: mesCntent.message.senderId};
+                messagesBySender.push(lastGroup);
+              }
+            }
+          }
+        }
+        // const nextSenderIsTheSame = index < wrappedMessages.length - 1 ? wrappedMessages[index + 1].message.senderId === mesCntent.senderId : true;
+        // mesCntent.message.messageIndex = lastMessageIndex;
+        // if (!nextSenderIsTheSame){
+        //   lastMessageIndex = 0;
+        // }else{
+        //   lastMessageIndex+=1;
+        // }
+      });
+      messagesBySender.forEach((group)=>{
+        group.content.forEach((elem, index)=>{
+          elem.message.maxIndex = group.content.length;
+          elem.message.messageIndex = index;
+        });
+      });
+      wrappedMessages.forEach((mesCntent)=>{
+
+        let normalizedData = obj.store.normalize('thread-message', {
+          id: mesCntent.id,
+          convoId: mesCntent.convId,
+          isMessage: mesCntent.isMessage,
+          isDate: mesCntent.isDate,
           content: JSON.stringify(mesCntent)
         });
 
@@ -443,8 +488,7 @@ export default Controller.extend({
         uiMessages.push(MessageObject.create({
           content: mesCntent
         }));
-        lastDate = mesDate
-      });
+      })
       obj.set('blockAutoscroll', false);
       obj.set('isLoadingMessages', false);
       obj.messages.setObjects(uiMessages);
@@ -568,6 +612,7 @@ export default Controller.extend({
     }
   },
   reset() {
+    this.set('displayEmoji',false);
     this.offGroupListen();
     this.set('inReplyTo', null);
     this.set('uploads',[]);
@@ -803,14 +848,21 @@ export default Controller.extend({
       let tm = this.get('messageDateTimeout');
       if (tm){
         clearTimeout(tm);
+        this.set('messageDateTimeout', null);
       }
-      $('.message-scroll-date-holder').show();
-      const ts = $(child).attr('messagets');
-      const mm = moment.unix(ts/1000);
-      $('.message-scroll-date-holder .title').html(mm.format('MM-DD-YYYY'));
-      this.set('messageDateTimeout', setTimeout(()=>{
-        $('.message-scroll-date-holder').fadeOut('fast'); 
-      },1000));
+      if (child){
+        $('.message-scroll-date-holder').show();
+        // const ts = $(child).attr('messagets');
+        // const mm = moment.unix(ts/1000);
+        // $('.message-scroll-date-holder .title').html(mm.format('MM-DD-YYYY'));  
+        $('.message-scroll-date-holder .title').html($(child).text());  
+      }else{
+        $('.message-scroll-date-holder').hide();
+      }
+      
+      // this.set('messageDateTimeout', setTimeout(()=>{
+        // $('.message-scroll-date-holder').fadeOut('fast'); 
+      // },1000));
       
     },
     toggleEmoji(){
@@ -820,8 +872,7 @@ export default Controller.extend({
       let msg = this.get('messageText');
       
       msg = msg + ' ' + emoji;
-      this.set('messageText', msg);
-      this.toggleProperty('displayEmoji');
+      this.set('messageText', msg);      
     },
     onReplyTo(message){
       this.set('inReplyTo', message);
@@ -927,6 +978,9 @@ export default Controller.extend({
             debug(`File available at ${downloadURL}`);
             set(upload, 'url',downloadURL);
             set(upload, 'state',2);            
+            setTimeout(function () {
+             $('.newMessageHolder .ember-content-editable').focus();
+            }, 1000);            
         });
       });
     

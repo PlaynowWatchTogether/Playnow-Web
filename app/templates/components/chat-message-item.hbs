@@ -25,20 +25,25 @@
       <div class="message-text-holder">
         {{#if mine}}
           <div class="reply-holder" role="button" {{action "reply"}}>
-            <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
+            <img src="/assets/ic_chat_bubble_reply_mine@2x.png" alt="reply to message"/>
           </div>
         {{/if}}
-        <div class="message-text with-tooltip" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
+        <div class="message-text with-tooltip {{messageTextClass}}" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
           {{#unless mine}}
             {{#if displaySenderName}}
-              <div class="message-text-author" style={{textAuthorClass}}>
+              {{#user-profile-view classNames="message-text-author" model=textAuthorId style=textAuthorClass}}              
                 {{senderName}}
-              </div>
+              {{/user-profile-view}}
             {{/if}}
           {{/unless}}
           {{#if inReplyTo}}
             <div class="in-reply-to-message">
-              {{emoji-parse inReplyTo.text}}            
+              {{#user-profile-view classNames="reply-author" model=inReplyTo.senderId}}                            
+                {{inReplyTo.senderName}}
+              {{/user-profile-view}}
+              <div class="reply-content">
+                {{emoji-parse inReplyTo.text}}            
+              </div>
             </div>
           {{/if}}
           {{#if bodyMessage}}

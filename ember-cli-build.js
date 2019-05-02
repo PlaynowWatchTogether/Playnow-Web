@@ -13,7 +13,7 @@ module.exports = function(defaults) {
   });
   app.import('node_modules/bootstrap/dist/css/bootstrap.css');
   app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
-
+  app.import('vendor/js/jquery.sticky.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

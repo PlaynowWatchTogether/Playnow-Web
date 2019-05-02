@@ -14,11 +14,12 @@ Router.map(function() {
     this.route('friends');
     this.route('chat', {path: '/chat/:chat_id/:type'});
     this.route('create');
+    this.route('group');
   });
   this.route('search', {path: '/search/:query'});
   this.route('mobile');
   this.route('404');
-  // this.route('notfound', { path: '/*path' });
+
 });
 
 export default Router;

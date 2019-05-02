@@ -1,0 +1,265 @@
+$primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
+$input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+$message-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
+$friends-list-hover-color: #dadada5e;
+$header-height: 45px;
+$search-icon-size: 16px;
+$search-padding: 3px;
+$hover-background: #dadada5e;
+$bold-font: 'Conv_Segoe UI Bold';
+$medium-font: 'Conv_Segoe UI, Medium';
+$btn-blue: #71C3FF;
+$video-round-corner: 10px;
+$table-gap: 5px;
+$message-border-radius: 14px;
+
+.main-controls-wrapper{
+	background: #D7C6FF;
+	border-radius: 15px;
+	display: grid;
+    grid-template-columns: 160px auto;
+}
+.dropdown.feedgroups{
+	margin: auto;
+    cursor: pointer;
+    margin-top: 1px;
+}
+.dropdown.feedgroups.show{
+	filter: invert(1)
+}
+.home.group{
+  .mainPage {
+    .row-friends {
+      background: white;
+      height: 100%;
+      box-shadow: $input-shadow;
+      border-radius: 0 20px 0 0;
+    }
+  }
+  .create-feed-group {
+  	.content{
+	  	display: grid;
+	    grid-template-rows: 50px auto;
+	    width: 100%;
+	    background: white;
+	    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
+	    border-radius: 20px 0 0 0;
+	    margin-left: 5px;
+    }
+    .feed-group-title-holder{
+    	border-bottom: 1px solid #E6E6E6;
+	    height: 45px;
+	    display: grid;
+	    grid-template-columns: auto min-content;
+	    padding-right: 20px;
+	    .title{
+	        height: 100%;
+		    font-size: 130%;
+		    color: #88B3F9;
+		    margin-left: 20px;
+		    display: grid;
+		    grid-template-columns: auto;
+		    span {
+		        margin-top: auto;
+    			margin-bottom: auto;
+		    }
+		    
+	    }
+	    .back {
+	    	text-align: center;
+			margin: auto;
+		}
+    }
+    .feed-group-create-content{
+		display: flex;
+	    flex-direction: column;
+	    width: 50%;
+	    margin: auto;
+	    height: max-content;
+	    .details{
+	        display: flex;
+    		flex-direction: row;
+    		.info{
+    		    flex: 1 1 auto;
+    		}
+    		.feed-group-channel-name{
+    			margin-bottom: 20px;
+    		}
+    		input.edit{
+    		    background: #F5F4F4;
+			    border-radius: 18px;
+			    border: 1px solid #D1D1D1;
+			    padding: 5px 10px;
+			    width: 100%;			   
+			    outline: none;
+    		}
+    		.edit::placeholder{
+    			color: #D1D1D1;
+    		}
+    		textarea.edit {
+    		    min-height: 100px;
+    		    background: rgb(245, 244, 244);
+			    border-radius: 18px;
+			    border: 1px solid rgb(209, 209, 209);
+			    padding: 5px 10px;
+			    width: 100%;			    
+			    outline: none;
+			    max-height: 200px;
+			    margin-top: 0px;
+			    margin-bottom: 20px;
+			    height: 100px;
+    		}    		
+    		.feed-group-location{
+    			margin-bottom: 20px;
+    		}
+
+    		.feed-group-location-label{
+    			color: #6F6F6F;
+    			margin-bottom: 10px;
+    		}
+    		.feed-group-access{
+    		    display: flex;
+    		    .feed-group-access-label{
+    		        margin-right: 20px;
+    		        .title {
+    		            color: #7B7878;
+    		            font-family: $medium-font;
+    		        }
+    		        .subtitle{
+    		        	color: #6F6F6F;
+    					font-size: 80%;
+    		        }
+    		    }
+    		    .feed-group-access-value {
+    		        margin-top: auto;
+    				margin-bottom: auto;
+    		    }
+
+    		}
+    		.feed-group-access-value{
+	    		.switch {
+
+	              position: relative;
+	              display: inline-block;
+	              width: 60px;
+	              height: 20px;
+	              margin-top: auto;
+	              margin-bottom: auto;
+	            }
+
+	            /* Hide default HTML checkbox */
+	            .switch input {
+	              opacity: 0;
+	              width: 0;
+	              height: 0;
+	            }
+
+	            /* The slider */
+	            .switcher {
+	              position: absolute;
+	              cursor: pointer;
+	              top: 0;
+	              left: 0;
+	              right: 0;
+	              bottom: 0;
+	              -webkit-transition: .4s;
+	              transition: .4s;
+	              background-color: white;
+    			  border: 3px solid black;
+    			  height: 25px;	              
+	            }
+
+	            .switcher:before {
+	              position: absolute;
+	              content: "";
+	              border-radius: 50%;
+	              height: 15px;
+	              width: 15px;
+	              bottom: 2.5px;
+	              left: 4px;
+	              background-color: black;
+	              -webkit-transition: .4s;
+	              transition: .4s;
+	            }
+
+	            input:checked + .switcher {
+	              background-color: white;
+	            }
+
+	            input:focus + .switcher {
+	              box-shadow: 0 0 1px #2196F3;
+	            }
+
+	            input:checked + .switcher:before {
+	              transform: translateX(30px) translateY(0px);
+    			  background-color: black;
+	              -webkit-transform: translateX(30px) translateY(0px);
+	              -ms-transform: translateX(30px) translateY(0px);	              
+	            }
+
+	            /* Rounded sliders */
+	            .switcher.round {
+	              border-radius: 34px;
+	            }
+
+	            .switcher.round:before {
+	              border-radius: 50%;
+	            }
+    		}
+	    }
+	    .fee-group-create{
+		    background: #02E7B2;
+		    width: max-content;
+		    padding: 10px 20px;
+		    color: white;
+		    border-radius: 20px;
+		    margin: auto;
+		    margin-top: 20px;
+		    cursor: pointer;
+		}
+		.fee-group-create:hover{
+			background: #05c196;
+		}
+
+
+    	.feed-group-profile-pic{
+    		width: 200px;
+    		cursor: pointer;
+    		height: 200px;
+    		position: relative;
+    		margin-right: 40px;
+    		.file-upload{
+    			cursor: pointer;
+    		}
+    		.profilePicWrapper{
+    		    width: 100%;
+    			height: 100%;
+    		}
+    		.pic-border{
+    			background: $primary-gradient;
+    			width: 100%;
+			    height: 100%;
+			    border-radius: 50%;
+    		}
+    		.pic-content{
+    		    position: absolute;
+			    top: 10px;
+			    width: 180px;
+			    height: 180px;
+			    margin: auto;
+			    border-radius: 50%;
+			    background: white;
+			    left: 10px;
+			    display: flex;
+			    .placeholder-title{
+			    	margin: auto;
+			    	color: #727272;
+			    	font-size: 90%;
+			    }
+    		}
+    	}
+    }
+
+  }
+
+}

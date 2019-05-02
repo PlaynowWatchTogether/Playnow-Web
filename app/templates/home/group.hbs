@@ -1,0 +1,85 @@
+<div class="create-feed-group row  h-100">
+  <div class="content h-100">
+    <div class="feed-group-title-holder">
+      <div class="title">
+        <span class="noselect">Create Channel</span>
+      </div>
+      <div class="back">
+        {{#link-to "home"}}
+          <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+        {{/link-to}}
+      </div>
+    </div>
+    <div class="feed-group-create-content">
+    	<div class="details">
+
+	    	<div class="feed-group-profile-pic">
+	    		<div class="pic-border">
+
+	    		</div>
+
+	    		
+	    		{{#file-upload name="group-profile"
+			                           accept="image/*"
+			                           onfileadd=(action "uploadGroupImage")
+			                           classNames="pic-content"}}
+	    			{{#if profilePic}}
+	    			  <div class="profilePicWrapper">			            
+			          	<img src={{profilePic}} class="profilePic" alt="profilePic">
+			          </div>
+	    			{{else}}
+		    			<span class="placeholder-title">
+		    				Select channel picture
+		    			</span>
+	    			{{/if}}
+	    		{{/file-upload}}
+	    	</div>
+	    	<div class="info">
+		    	<div class="feed-group-channel-name"> 
+		    		{{input value=channelName placeholder="Channel name" classNames="edit"}}
+		    	</div>
+		    	<div class="feed-group-channel-description"> 
+		    		{{textarea value=channelDescription placeholder="Channel description" classNames="edit"}}
+		    	</div>
+		    	<div class="feed-group-location-label"> 
+		    		Location
+		    	</div>
+		    	<div class="feed-group-location"> 
+		    		{{input value=channelLocation placeholder="Location" classNames="edit"}}
+		    	</div>
+		    	<div class="feed-group-access">
+			    	<div class="feed-group-access-label"> 
+						<div class="title">
+							{{#if isPublic}}
+								Public group
+							{{else}}
+								Private group
+							{{/if}}
+						</div>
+			    		<div class="subtitle">
+			    			{{#if isPublic}}
+			    				Anyone can access
+			    			{{else}}
+			    				Access with approve
+			    			{{/if}}
+			    		</div>
+			    	</div>
+			    	<div class="feed-group-access-value"> 
+				    	<div class="switch-holder">	                  
+		                  <label class="switch">
+		                  	{{input type="checkbox" checked=isPublic}}		                    
+		                    <span class="switcher round"></span>
+		                  </label>
+		                </div>
+			    	</div>	
+			    </div>	
+		    </div>
+	    </div>	
+    	<div class="feed-group-create-holder">
+    		<div class="fee-group-create">
+    			Create
+    		</div> 
+    	</div>
+    </div>
+  </div>
+</div>

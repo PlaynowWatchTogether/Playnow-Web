@@ -1,3 +1,5 @@
+@import 'feed.scss';
+
 .seo-h1{
   display:none;
 }
@@ -95,20 +97,7 @@ body > .ember-view {
 }
 
 //Variables
-$primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
-$input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-$message-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
-$friends-list-hover-color: #dadada5e;
-$header-height: 45px;
-$search-icon-size: 16px;
-$search-padding: 3px;
-$hover-background: #dadada5e;
-$bold-font: 'Conv_Segoe UI Bold';
-$medium-font: 'Conv_Segoe UI, Medium';
-$btn-blue: #71C3FF;
-$video-round-corner: 10px;
-$table-gap: 5px;
-$message-border-radius: 14px;
+
 .background_gradient {
   background-image: $primary-gradient
 }
@@ -743,7 +732,7 @@ body.home.chat.room {
 
     .content {
       display: grid;
-      grid-template-columns: min-content 600px auto 160px min-content;
+      grid-template-columns: min-content 600px auto min-content;
       padding-top: 5px;
       padding-bottom: 5px;
       width: 100%;
@@ -839,7 +828,7 @@ body.home.chat.room {
       .controls {
         height: 34px;
         display: grid;
-        grid-template-columns: 60px 60px;
+        grid-template-columns: 40px 60px 60px;
 
         .friend-requests {
           width: 24px;

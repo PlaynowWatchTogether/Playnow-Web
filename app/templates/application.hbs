@@ -14,61 +14,90 @@
             <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
           </div>
         {{/search-holder}}
-        {{#user-profile-view model=model classNames="profile"}}
-          <span class="name noselect">{{model.FirstName}}</span>
-          <div class="profilePicWrapper">
-            <img class="profilePic" src={{profilePic}} alt="icon">
-          </div>
-        {{/user-profile-view}}
-        <div class="controls">
-          {{#bs-dropdown classNames="dropdown followers"}}
-            <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
-                 aria-expanded="false" data-display="static">
-              <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
-              <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
-              {{#if hasNewRequests}}
-                <div class="new-requests"></div>
-              {{/if}}
+        <div class="main-controls-wrapper">
+          {{#user-profile-view model=model classNames="profile"}}
+            <span class="name noselect">{{model.FirstName}}</span>
+            <div class="profilePicWrapper">
+              <img class="profilePic" src={{profilePic}} alt="icon">
             </div>
-            <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
-              <div class="followers-content">
-                <div class="title">
-                  <div>
-                    Friend request
+          {{/user-profile-view}}
+          <div class="controls">
+            {{#bs-dropdown classNames="dropdown feedgroups"}}              
+              <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false" data-display="static">
+                <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">                
+                {{#if hasNewRequests}}
+                  <div class="new-requests"></div>
+                {{/if}}
+              </div>
+              <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
+                <div class="followers-content">
+                  <div class="title">
+                    <div>
+                      Friend request
+                    </div>
+                  </div>
+
+                  <div class="follower-items">
+                    {{#each followers as |follower|}}
+                      {{#follower-menu-item model=follower classNames="follower"
+                                            actionHandler=(action "followerAction")}}
+
+                      {{/follower-menu-item}}
+                    {{/each}}
                   </div>
                 </div>
+              </div>
+            {{/bs-dropdown}}
+            {{#bs-dropdown classNames="dropdown followers"}}
+              <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false" data-display="static">
+                <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
+                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
+                {{#if hasNewRequests}}
+                  <div class="new-requests"></div>
+                {{/if}}
+              </div>
+              <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
+                <div class="followers-content">
+                  <div class="title">
+                    <div>
+                      Friend request
+                    </div>
+                  </div>
 
-                <div class="follower-items">
-                  {{#each followers as |follower|}}
-                    {{#follower-menu-item model=follower classNames="follower"
-                                          actionHandler=(action "followerAction")}}
+                  <div class="follower-items">
+                    {{#each followers as |follower|}}
+                      {{#follower-menu-item model=follower classNames="follower"
+                                            actionHandler=(action "followerAction")}}
 
-                    {{/follower-menu-item}}
-                  {{/each}}
+                      {{/follower-menu-item}}
+                    {{/each}}
+                  </div>
                 </div>
               </div>
-            </div>
-          {{/bs-dropdown}}
-          {{#bs-dropdown classNames="gear dropdown"}}
+            {{/bs-dropdown}}
+            {{#bs-dropdown classNames="gear dropdown"}}
 
-            <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                 aria-expanded="false">
-              <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
-              <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="chevron">
-            </div>
+              <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
+                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="chevron">
+              </div>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <h6 class="dropdown-header">More:</h6>
-              <a class="dropdown-item" data-toggle="modal" data-target="#settingsModal">Settings</a>
-              <a class="dropdown-item" href="#">Information</a>
-              <a class="dropdown-item" href="#">Support</a>
-              <h6 class="dropdown-header">Action:</h6>
-              <a class="dropdown-item" href="#">Blocked</a>
-              <a class="dropdown-item" {{action "logout"}} role="button">Log Out</a>
-            </div>
-          {{/bs-dropdown}}
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <h6 class="dropdown-header">More:</h6>
+                <a class="dropdown-item" data-toggle="modal" data-target="#settingsModal">Settings</a>
+                <a class="dropdown-item" href="#">Information</a>
+                <a class="dropdown-item" href="#">Support</a>
+                <h6 class="dropdown-header">Action:</h6>
+                <a class="dropdown-item" href="#">Blocked</a>
+                <a class="dropdown-item" {{action "logout"}} role="button">Log Out</a>
+              </div>
+            {{/bs-dropdown}}
 
-        </div>
+          </div>
+        </div>  
       </div>
     </header>
   {{/if}}

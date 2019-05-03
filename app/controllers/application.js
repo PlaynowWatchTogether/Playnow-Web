@@ -5,8 +5,8 @@ import {computed} from "@ember/object";
 import {set} from "@ember/object";
 import {debug} from "@ember/debug";
 import $ from "jquery";
-
-export default Controller.extend({
+import UUIDGenerator from '../mixins/uuid-generator';
+export default Controller.extend(UUIDGenerator, {
   auth: service(),
   db: service(),
   firebaseApp: service(),
@@ -59,17 +59,6 @@ export default Controller.extend({
     let m = this.get('model');
     return m['Username'];
   }),
-  generateUUID() { // Public Domain/MIT
-    var d = new Date().getTime();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
-      d += performance.now(); //use high-precision timer if available
-    }
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-  },
   hasNewRequests: computed('followers.@each', function () {
     return (this.get('followers') || []).length > 0;
   }),

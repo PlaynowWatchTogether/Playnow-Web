@@ -1,0 +1,44 @@
+<div class="post-content {{if isMine "mine"}}">
+  <div class="post-header">
+    <div class="post-author-pic">
+      <div class="profilePicWrapper">
+        <img src={{safe-profile-pic model.senderPic}} class="profilePic" alt="ProfilePic">
+      </div>
+    </div>
+    <div class="post-author-name">
+      {{model.senderName}}
+    </div>
+    <div class="post-time">
+      {{postTimeFormatted}}
+    </div>
+  </div>
+  {{#if hasText}}
+    <div class="post-message">
+      {{emoji-parse model.text}}
+    </div>
+  {{/if}}
+  {{#if attachments}}
+    <div class="post-attachments">
+      {{#each attachments as |attachment|}}
+        {{chat-message-attachment model=attachment classNames="post-attachment-item"}}
+      {{/each}}
+    </div>
+  {{/if}}
+  <div class="post-reactions">
+    <div class="reaction-comments">
+      <img src="/assets/ic-feed-post-comments@2x.png" alt="post reactions comments">
+      <div class="label">{{postCommentsCount}}</div>
+    </div>
+    <div class="reaction-likes">
+      {{#if isLiked}}
+        <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
+      {{else}}
+        <img src="/assets/ic-feed-post-likes@2x.png" alt="post reactions likes">
+      {{/if}}
+      <div class="label">{{postLikesCount}}</div>
+    </div>
+  </div>
+</div>
+<div class="post-comments">
+
+</div>

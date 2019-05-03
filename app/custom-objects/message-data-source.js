@@ -69,7 +69,7 @@ export default EmberObject.extend({
   sendVideoMessage(video,mode = 'youtubeVideo'){
     let senderId = this.myId;
     let path = this.messageRoot();
-    let convId = this.convId();    
+    let convId = this.convId();
     let message = {};
     const msgUid = this.generateMessageId();
     message['uid'] = msgUid;
@@ -81,7 +81,7 @@ export default EmberObject.extend({
     message['type'] = 'ShareVideo';
     message['userId'] = senderId;
     message['message'] = 'web';
-    message['text'] = '';    
+    message['text'] = '';
     message['video']={
       mode: mode,
       id: video.id,
@@ -91,7 +91,7 @@ export default EmberObject.extend({
     };
     let ref = path + "/" + convId + "/Messages/" + msgUid;
     this.db.ref(ref).update(message).then(() => {
-      
+
     });
   },
   sendVideo(video, mode = 'youtubeVideo') {
@@ -337,10 +337,10 @@ export default EmberObject.extend({
           const payload = attachment.val();
           payload.id = `${id}_${atId}`;
           payload.convId = convId;
-          let normalizedData = store.normalize('chat-attachment', payload);  
+          let normalizedData = store.normalize('chat-attachment', payload);
           store.push(normalizedData);
         })
-        
+
       });
       updateCallback(records);
     };
@@ -392,7 +392,7 @@ export default EmberObject.extend({
   sendAttachment(file, url, msgUid){
     let senderId = this.myId;
     let path = this.messageRoot();
-    let convId = this.convId();    
+    let convId = this.convId();
     let message = {};
     message['uid'] = msgUid;
     message['date'] = new Date().getTime() / 1000;
@@ -403,7 +403,7 @@ export default EmberObject.extend({
     message['type'] = 'attachment';
     message['userId'] = senderId;
     message['message'] = 'web';
-    message['text'] = '';    
+    message['text'] = '';
     message['attachment']={
       name: file.name,
       size: file.size,
@@ -470,22 +470,6 @@ export default EmberObject.extend({
         });
       }
     });
-    // if (message['attachments'].length > 0){
-    //   //attachments for chat
-    //   let attachmentsRef = `${path}/${convId}/Attachments`;
-    //   let globalAttachments = message['attachments'].map(function(elem,index){
-    //       let k = `${msgUid}_${index}`;
-    //       let obj = {};
-    //       obj[k] = elem;
-    //       return obj;
-    //   }).reduce(function(elem){
-    //     return elem;
-    //   })
-    //   this.db.ref(attachmentsRef).update(globalAttachments);
-    //   //attachments for profile
-    //   let profileAttachmentsRef = `Users/${senderId}/Attachments/${convId}/Attachments`;
-    //   this.db.ref(profileAttachmentsRef).update(globalAttachments);
-    // }
   }
 
 });

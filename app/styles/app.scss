@@ -2052,7 +2052,7 @@ CHAT
           display: grid;
         }
 
-        .single-name {          
+        .single-name {
           margin-top: auto;
           margin-bottom: auto;
         }
@@ -2216,32 +2216,32 @@ CHAT
         .chat-upload-item{
           max-width: 300px;
           margin-bottom: 5px;
-          .chat-upload{   
-              height: 50px;     
-              margin-right: 10px;      
-              grid-column-gap: 10px;              
+          .chat-upload{
+              height: 50px;
+              margin-right: 10px;
+              grid-column-gap: 10px;
               border-radius: 10px;
               padding-left: 10px;
               padding-right: 10px;
               display: grid;
               grid-template-columns: min-content auto min-content;
-          }      
+          }
           .chat-upload-state{
             font-size: 70%;
 
-          }    
+          }
           .chat-upload-loading, .chat-upload-details {
             margin: auto;
           }
         }
         .chat-upload-item.new,.chat-upload-item.loading{
-          .chat-upload{      
+          .chat-upload{
             color: #1e2430;
             background: #c7ccd8;
           }
         }
         .chat-upload-item.new,.chat-upload-item.completed{
-          .chat-upload{      
+          .chat-upload{
             background: #22a061;
             color: white;
           }
@@ -2264,7 +2264,7 @@ CHAT
         .message-scroll-date-holder{
           width: 100%;
           opacity: 0.95;
-          position: absolute;          
+          position: absolute;
           padding-top: 20px;
           padding-right: 40px;
 
@@ -2312,7 +2312,7 @@ CHAT
           padding: 10px 20px;
           border-radius: 20px;
           color: #807E7E;
-          text-align: center;          
+          text-align: center;
         }
         .messageHolder:hover{
           .reply-holder{
@@ -2343,7 +2343,7 @@ CHAT
               margin-bottom: 5px;
               background: #dedede;
               border-radius: 10px;
-              width: 300px;          
+              width: 300px;
               display: flex;
               padding: 5px;
               display: flex;
@@ -2427,7 +2427,7 @@ CHAT
             margin-bottom: auto;
           }
           .message-text-holder{
-            display: flex;            
+            display: flex;
             .in-reply-to-message{
               margin-left: 10px;
               margin-right: 10px;
@@ -2438,9 +2438,9 @@ CHAT
               font-size: 95%;
               margin-top: 5px;
               margin-bottom: 5px;
-              .reply-author{              
+              .reply-author{
                 cursor:pointer;
-                font-family: $medium-font;                
+                font-family: $medium-font;
                 margin-bottom: 5px;
               }
             }
@@ -2448,7 +2448,7 @@ CHAT
           .message-text {
 
             width: fit-content;
-            background: #F4F4F4;            
+            background: #F4F4F4;
             font-size: 90%;
             border-radius: $message-border-radius;
             box-shadow: $message-shadow;
@@ -2470,20 +2470,20 @@ CHAT
             border-top-left-radius: 0px;
           }
           .message-text.single{
-            margin-bottom: 15px;            
+            margin-bottom: 15px;
           }
           .message-text.multiple-last{
-            margin-bottom: 15px;            
+            margin-bottom: 15px;
             border-top-left-radius: 0px;
           }
 
           .reply-holder{
             visibility: hidden;
             margin-top: auto;
-            margin-bottom: auto;            
+            margin-bottom: auto;
             margin-left: 10px;
             cursor: pointer;
-            img{            
+            img{
               width: 18px;
               height: 18px;
             }
@@ -2583,7 +2583,7 @@ CHAT
           .video-request-holder{
             justify-self: end;
           }
-          .message-attachment-holder {          
+          .message-attachment-holder {
             .message-attachment-wrapper {
               background: #1486f9;
               .message-attachment-name{
@@ -2604,7 +2604,7 @@ CHAT
           .profilePic {
             display: none;
           }
-            
+
           .message-text-holder{
               display: flex;
               grid-column-start: 2;
@@ -2624,7 +2624,7 @@ CHAT
               visibility: hidden;
               margin-right: 10px;
           }
-          .message-text {            
+          .message-text {
             background: #3399FF;
             display: inline-block;
             .text {
@@ -2646,7 +2646,7 @@ CHAT
             border-bottom-right-radius: 0px;
             border-top-right-radius: 0px;
           }
-          .message-text.multiple-last{            
+          .message-text.multiple-last{
             border-top-left-radius: $message-border-radius;
             border-top-right-radius: 0px;
           }
@@ -2714,7 +2714,7 @@ CHAT
           }
         }
       }
-      
+
       .message-share-video-holder{
         padding-bottom: 15px;
         padding-top: 15px;
@@ -2759,7 +2759,10 @@ CHAT
           pointer-events:none;
           color: #ccc;
         }
-        .show-emoji{          
+        .emoji-picker-holder {
+          display: flex;
+        }
+        .show-emoji{
           margin: auto;
           margin-left: 5px;
         }
@@ -2780,7 +2783,7 @@ CHAT
           flex: 1 1 auto;
           width: 100%;
 
-          
+
           outline: none;
           font-size: 90%;
           padding: 5px 10px 5px;
@@ -2996,7 +2999,7 @@ CHAT
             width: 100%;
             height: 100%;
             background: rgba(1,1,1,0.3);
-            border-radius: 10px;            
+            border-radius: 10px;
             .request-btn{
               margin: auto;
               background: blueviolet;
@@ -3048,7 +3051,7 @@ CHAT
             border-radius: $video-round-corner;
           }
         }
-        
+
         .youtube-item {
           position: relative;
           cursor: pointer;
@@ -3084,13 +3087,13 @@ CHAT
             width: 100%;
             border-radius: $video-round-corner;
           }
-          
+
         }
         .youtube-item:hover{
            .request-overlay {
             display:grid;
            }
-        } 
+        }
       }
 
       .youtube-items.music {
@@ -4262,7 +4265,7 @@ CHAT
 
 .group-profile-root{
   .group-profile-header{
-    display: flex;    
+    display: flex;
     padding-left: 100px;
     padding-right: 100px;
 
@@ -4279,7 +4282,7 @@ CHAT
         margin-bottom: auto;
         display: flex;
         flex: 0 0 50%;
-        max-width: 50%;        
+        max-width: 50%;
         margin-left: 20px;
         .edit-title-wrapper{
           align-self: center;
@@ -4316,10 +4319,10 @@ CHAT
           overflow-wrap: break-word;
           text-overflow: ellipsis;
           white-space: nowrap;
-          overflow: hidden;          
+          overflow: hidden;
           text-decoration: none;
         }
-    }  
+    }
     .group-profile-participants{
       flex: 0 0 35%;
       max-width: 35%;
@@ -4449,7 +4452,7 @@ CHAT
           }
         }
       }
-    }    
+    }
   }
   .group-profile-shared-label{
     margin-bottom: 20px;

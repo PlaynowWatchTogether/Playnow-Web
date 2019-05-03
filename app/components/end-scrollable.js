@@ -24,12 +24,15 @@ export default Component.extend({
   },
   updateCurrentTopChild(){
     var currentMaxOffScreen = null;
-    const rootOffset = Ember.$(this.element).offset().top;
-    const childrens = $(this.element).find(this.get('scrollChild')).children('.chat-message-time-item');
+    const rootOffset = $(this.element).offset().top;
+    const childrens = $(this.element).find(this.get('scrollChild')).children(this.get('itemTimeSelector'));
+    const fixedHolder = $('.message-scroll-date-holder').offset();
+    if (!fixedHolder)
+      return;
     childrens.each((index,child)=>{
         const offset = $(child).offset();
         const childOffset = offset.top - rootOffset-20;
-        const headerOffset = $('.message-scroll-date-holder').offset().top - rootOffset;
+        const headerOffset = fixedHolder.top - rootOffset;
         if (childOffset <= headerOffset){
             currentMaxOffScreen = child;
             $(child).css('opacity',0);

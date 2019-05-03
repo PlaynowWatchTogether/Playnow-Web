@@ -28,16 +28,16 @@
         		<div class="group-profile-title">
                     {{#if isAdmin}}
                      <div class="edit-title-wrapper" {{action "toggleDisabled"}}>
-        			     <img src="/assets/ic_icon_pencil@2x.png" class="edit-title" alt="edit group title"/>
+        			            <img src="/assets/ic_icon_pencil@2x.png" class="edit-title" alt="edit group title"/>
                      </div>
                     {{/if}}
         			<div class="group-title noselect">
                         {{#if isDisabled}}
                             <div class="group-title-label">{{title}}</div>
                         {{else}}
-                            {{input value=editableTitle classNames="group-name-input" disabled=isDisabled insert-newline=(action "updateGroupName") autocomplete='off'}}                              				
+                            {{input value=editableTitle classNames="group-name-input" disabled=isDisabled insert-newline=(action "updateGroupName") autocomplete='off'}}
                         {{/if}}
-                        
+
         			</div>
         		</div>
         		<div class="group-profile-participants">
@@ -47,9 +47,9 @@
                         {{#if isAdmin}}
             				<div class="group-participants-search-holder">
     				          <div class="compose-row">
-    				            {{#users-chat-compose classNames="compose-search" 
+    				            {{#users-chat-compose classNames="compose-search"
     				            					  chips=composeChips
-    				            					  placeholder="Search in contact" 
+    				            					  placeholder="Search in contact"
     				            					  onChipAdd=(action "onChipAdd")
     				            					  typeaheadID="group-typeahead"
     				                                  onChipClick=(action "onChipClick")}}
@@ -65,7 +65,7 @@
         			</div>
         			<div class="group-participants-members">
         				{{#each members as |member|}}
-        					{{group-profile-participant model=member classNames="group-participants-member"}}        				        			
+        					{{group-profile-participant model=member classNames="group-participants-member"}}
         				{{/each}}
         			</div>
         		</div>
@@ -83,7 +83,7 @@
                 {{/each}}
         	</div>
         </div>
-      </div>      
+      </div>
     </div>
   </div>
 </div>

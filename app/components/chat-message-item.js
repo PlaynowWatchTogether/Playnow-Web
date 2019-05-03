@@ -4,8 +4,9 @@ import {computed} from '@ember/object';
 import $ from 'jquery';
 import moment from 'moment';
 import { htmlSafe } from '@ember/template';
+import MessageAttachmentsWrapper from '../mixins/message-attachments-wrapper';
 
-export default Component.extend({
+export default Component.extend(MessageAttachmentsWrapper, {
   classNameBindings: ['mine'],
   store: service(),
   auth: service(),
@@ -99,34 +100,13 @@ export default Component.extend({
   }),
   attachments: computed('model', function(){
     let model = this.get('model');
-    let type = model['type'];
-    let attachments = [];
-    if (type === 'photo'){//back compatible photo
-      attachments.push({
-        type:'image/*',
-        url: model.thumbnail
-      });
-    }
-    if (type === 'Video'){//back compatible video
-      attachments.push({
-        type:'video/*',
-        url: model.media
-      });
-    }
-    if (type === 'attachment'){//back compatible one attachment      
-      attachments.push(model.attachment);    
-    }
-    if (model.attachments){
-      model.attachments.forEach((elem)=>{
-        attachments.push(elem);
-      });
-    }
-    return attachments;
+
+    return this.wrapMessageAttachments(model);
   }),
 
   textAuthorClass: computed('model','members', function(){
     let members = this.get('members');
-    let model = this.get('model');    
+    let model = this.get('model');
     if (members && model){
        var clr = this.get('memberColors')[model.senderId];
        if (clr)

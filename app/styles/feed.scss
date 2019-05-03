@@ -1,17 +1,5 @@
-$primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
-$input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-$message-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
-$friends-list-hover-color: #dadada5e;
-$header-height: 45px;
-$search-icon-size: 16px;
-$search-padding: 3px;
-$hover-background: #dadada5e;
-$bold-font: 'Conv_Segoe UI Bold';
-$medium-font: 'Conv_Segoe UI, Medium';
-$btn-blue: #71C3FF;
-$video-round-corner: 10px;
-$table-gap: 5px;
-$message-border-radius: 14px;
+@import 'vars.scss';
+@import 'feed/show.scss';
 
 .main-controls-wrapper{
 	background: #D7C6FF;
@@ -63,7 +51,7 @@ $message-border-radius: 14px;
 		        margin-top: auto;
     			margin-bottom: auto;
 		    }
-		    
+
 	    }
 	    .back {
 	    	text-align: center;
@@ -90,7 +78,7 @@ $message-border-radius: 14px;
 			    border-radius: 18px;
 			    border: 1px solid #D1D1D1;
 			    padding: 5px 10px;
-			    width: 100%;			   
+			    width: 100%;
 			    outline: none;
     		}
     		.edit::placeholder{
@@ -102,13 +90,13 @@ $message-border-radius: 14px;
 			    border-radius: 18px;
 			    border: 1px solid rgb(209, 209, 209);
 			    padding: 5px 10px;
-			    width: 100%;			    
+			    width: 100%;
 			    outline: none;
 			    max-height: 200px;
 			    margin-top: 0px;
 			    margin-bottom: 20px;
 			    height: 100px;
-    		}    		
+    		}
     		.feed-group-location{
     			margin-bottom: 20px;
     		}
@@ -166,7 +154,7 @@ $message-border-radius: 14px;
 	              transition: .4s;
 	              background-color: white;
     			  border: 3px solid black;
-    			  height: 25px;	              
+    			  height: 25px;
 	            }
 
 	            .switcher:before {
@@ -194,7 +182,7 @@ $message-border-radius: 14px;
 	              transform: translateX(30px) translateY(0px);
     			  background-color: black;
 	              -webkit-transform: translateX(30px) translateY(0px);
-	              -ms-transform: translateX(30px) translateY(0px);	              
+	              -ms-transform: translateX(30px) translateY(0px);
 	            }
 
 	            /* Rounded sliders */

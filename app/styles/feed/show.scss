@@ -1,0 +1,367 @@
+@import '../vars.scss';
+
+.home.group.show {
+  .feed-root {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 5px;
+    .feed-parent {
+      background: white;
+      width: 100%;
+      height: 100%;
+      border-top-left-radius: 20px;
+      display: flex;
+      .feed-content {
+        flex: 1 1 70%;
+        max-width: 70%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        .back{
+          width: 40px;
+          height: 45px;
+          display: flex;
+          cursor: pointer;
+          a{
+            margin: auto;
+          }
+        }
+        .feed-header{
+          display: flex;
+          flex-direction: row;
+          margin-left: 30px;
+          margin-right: 30px;
+          border-bottom: 1px solid #D6D6D6;
+          padding-bottom: 10px;
+          .feed-pic {
+            flex: 0 0 auto;
+            cursor: pointer;
+            .pic-holder {
+              width: 146px;
+              height: 150px;
+              display: flex;
+              background: white;
+              border-radius: 50%;
+              box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.30);
+              padding: 10px;
+              .profilePicWrapper {
+                width: 100%;
+                height: 100%;
+                margin: auto;
+              }
+            }
+          }
+          .feed-middle {
+            width: 100%;
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            padding-left: 20px;
+            .feed-edit {
+              display: flex;
+              .edit-img {
+                width: 12px;
+                margin-left: auto;
+                flex: 0 0 auto;
+                height: 12px;
+                cursor: pointer;
+              }
+            }
+            .feed-title {
+              font-size: 150%;
+              font-family: $medium-font;
+            }
+            .feed-description {
+              font-size: 90%;
+              margin-top: 10px;
+              padding-left: 10px;
+            }
+            .feed-admins-root {
+              margin-top: 10px;
+              margin-left: 10px;
+              .label{
+                font-family: $medium-font;
+                font-size: 90%;
+              }
+            }
+
+
+          }
+          .feed-views {
+            flex: 1 1 30%;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            padding-right: 20px;
+            .views-img {
+              width: 14px;
+              height: 9px;
+              flex: 0 0 auto;
+              margin-top: 6px;
+              margin-right: 5px;
+            }
+            .label {
+              flex: 0 0 auto;
+              color: #989898;
+              height: min-content;
+              font-size: 80%;
+            }
+          }
+        }
+        .feed-messages-holder{
+          flex: 1 1 auto;
+          padding-left: 20px;
+          padding-right: 20px;
+          height: 100px;
+          overflow-y: auto;
+          padding-bottom: 20px;
+          .message-scroll-date-holder{
+            width: 100%;
+            opacity: 0.95;
+            position: absolute;
+            padding-top: 20px;
+            .title{
+              width: max-content;
+              justify-content: center;
+              margin: auto;
+              box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+              background: #F0EAFF;
+              padding: 10px 20px;
+              border-radius: 20px;
+              color: #807E7E;
+            }
+          }
+          .feed-messages-root{
+            display: grid;
+            grid-template-columns: auto;
+            .feed-post-time{
+              margin-top: 20px;
+              z-index: 1;
+              .messageTime{
+                opacity: 0.95;
+                box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+                width: max-content;
+                margin: auto;
+                background: #F0EAFF;
+                padding: 10px 20px;
+                border-radius: 20px;
+                color: #807E7E;
+                text-align: center;
+              }
+            }
+            .feed-post-item{
+              display: flex;
+              flex-direction: column;
+              padding-top: 5px;
+              padding-bottom: 5px;
+              .post-content{
+                display: flex;
+                background: #F4F4F4;
+                border-radius: 10px;
+                flex-direction: column;
+                padding: 10px;
+                width: 55%;
+                .post-header{
+                  display: flex;
+                  flex-direction: row;
+                  padding-bottom: 10px;
+                  .profilePicWrapper{
+                    width: 32px;
+                    height: 32px;
+                  }
+                  .post-author-name{
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    margin-left: 5px;
+                    font-size: 110%;
+                  }
+                  .post-time{
+                    color: #838383;
+                    justify-self: flex-end;
+                    margin-top: auto;
+                    margin-bottom: auto;
+                    margin-left: auto;
+                    font-size: 90%;
+                  }
+                }
+                .post-message{
+                  margin-left: 20px;                  
+                  padding-bottom: 5px;
+                }
+                .post-attachments{
+                  padding-bottom: 10px;
+                  .post-attachment-item{
+                    .message-attachment-holder{
+                      background: #dedede;
+                      border-radius: 10px;
+                      padding: 5px;
+                      text-decoration: none;
+                      .message-attachment-wrapper{
+                        display: flex;
+                        .message-attachment-icon{
+                          img{
+                            width: 40px;
+                          }
+                        }
+                        .message-attachment-name{
+                          margin-top: auto;
+                          margin-bottom: auto;
+                          margin-left: 20px;
+                        }
+                      }
+                    }
+                  }
+                  .message-img{
+                    .img-fluid{
+                      border-radius: 10px;
+                    }
+                  }
+                }
+                .post-reactions{
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: flex-end;
+                  .reaction-comments, .reaction-likes{
+                    display: grid;
+                    grid-template-columns: auto auto;
+                    cursor: pointer;
+                    img{
+                      width: 25px;
+                    }
+                    .label{
+                      opacity: 0.59;
+                      margin-left: 5px;
+                    }
+                  }
+                  .reaction-likes{
+                    margin-left: 10px;
+                  }
+                }
+
+
+              }
+              .post-content.mine{
+                align-self: flex-end;
+              }
+
+            }
+          }
+        }
+
+        .feed-uploads{
+          border-top: 1px solid #E6E6E6;
+          display: flex;
+          padding: 5px 10px;
+          flex-wrap: wrap;
+          button:focus {
+            outline: none;
+          }
+          button{
+            margin: auto;
+          }
+          .chat-upload-item{
+            max-width: 300px;
+            margin-bottom: 5px;
+            .chat-upload{
+                height: 50px;
+                margin-right: 10px;
+                grid-column-gap: 10px;
+                border-radius: 10px;
+                padding-left: 10px;
+                padding-right: 10px;
+                display: grid;
+                grid-template-columns: min-content auto min-content;
+            }
+            .chat-upload-state{
+              font-size: 70%;
+
+            }
+            .chat-upload-loading, .chat-upload-details {
+              margin: auto;
+            }
+          }
+          .chat-upload-item.new,.chat-upload-item.loading{
+            .chat-upload{
+              color: #1e2430;
+              background: #c7ccd8;
+            }
+          }
+          .chat-upload-item.new,.chat-upload-item.completed{
+            .chat-upload{
+              background: #22a061;
+              color: white;
+            }
+          }
+        }
+        .feed-post {
+          border-top: 1px solid #E6E6E6;
+          display: flex;
+          grid-template-columns: minmax(0, auto) 50px 50px;
+          flex: 0 0 auto;
+          min-height: 50px;
+          .emoji-picker-holder{
+            display: flex;
+            .show-emoji {
+              margin: auto;
+              margin-left: 5px;
+            }
+            img{
+              cursor: pointer;
+              flex: 0 0 auto;
+              width: 31px;
+              height: 31px;
+            }
+          }
+          .ember-content-editable{
+            margin: auto;
+            max-height: 150px;
+            overflow-y: auto;
+            flex: 1 1 auto;
+            width: 100%;
+            outline: none;
+            font-size: 90%;
+            padding: 5px 10px 5px;
+          }
+          .ember-content-editable:empty{
+            color: #a9a9a9;
+          }
+          .ember-content-editable:focus {
+            outline: none;
+          }
+          .file-upload{
+            margin: auto;
+            width: 60px;
+            img{
+              cursor: pointer;
+              flex: 0 0 auto;
+              width: 31px;
+              height: 31px;
+            }
+          }
+          .imgHolder{
+            margin: auto;
+            width: 50px;
+          }
+          .chat-action-send{
+            cursor: pointer;
+            margin-right: 10px;
+            color: #3399FF;
+          }
+          .chat-action-send.disabled{
+            pointer-events: none;
+            color: #ccc;
+          }
+
+        }
+        .feed-post.has-uploads{
+          border-top: none;
+        }
+      }
+      .feed-sidebar{
+        flex: 1 1 30%;
+        max-width: 30%;
+        border-left: 1px solid #D5D3D3;
+      }
+    }
+  }
+}

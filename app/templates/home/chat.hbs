@@ -42,7 +42,7 @@
               {{else}}
                 <div class="profilePicWrapper"></div>
               {{/if}}
-              
+
               <span class="name">{{chatModel.title}}</span>
             </div>
           {{else}}
@@ -73,8 +73,8 @@
       {{#if isCompose}}
         <div class="searchHolder">
           <div class="row compose-row">
-            {{#users-chat-compose classNames="col compose-search" 
-                                  chips=composeChips 
+            {{#users-chat-compose classNames="col compose-search"
+                                  chips=composeChips
                                   typeaheadID="typeahead-compose"
                                   placeholder="Type the username of the person"
                                   onChipAdd=(action "onChipAdd")
@@ -192,11 +192,12 @@
           </div>
         </div>
       {{/if}}
-      {{#end-scrollable classNames="messagesHolder" 
-                        blockScroll=blockAutoscroll 
+      {{#end-scrollable classNames="messagesHolder"
+                        blockScroll=blockAutoscroll
                         onScrolledHalf=(action "loadMore")
                         onTopChildChanged=(action "topChildChanged")
-                        scrollChild=".messagesWrappper"}}
+                        scrollChild=".messagesWrappper"
+                        itemTimeSelector=".chat-message-time-item"}}
         {{#if isLoadingMessages}}
           <div class="loading-holder h-100">
             <div class="lds-ripple">
@@ -205,7 +206,7 @@
             </div>
           </div>
         {{/if}}
-        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{limit}}>
+        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
           {{#if hasMoreMessages}}
             <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
           {{/if}}
@@ -214,13 +215,13 @@
               {{#chat-message-item model=message.message classNames="messageHolder"
                                    canClick=isMaster
                                    onClick=(action "onMessageClick")
-                                   displaySender=message.displaySender 
-                                   lastSeen=lastSeenMessage 
+                                   displaySender=message.displaySender
+                                   lastSeen=lastSeenMessage
                                    myID=myID
                                    displaySenderName=isNotOne2One
                                    members=members
                                    isMaster=isMaster
-                                   memberColors=memberColors 
+                                   memberColors=memberColors
                                    onPhotoSelect=(action "onPhotoSelect")
                                    onReplyTo=(action "onReplyTo")}}
 
@@ -272,17 +273,13 @@
           {{/each}}
         </div>
       {{/if}}
-      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}} {{if uploads 'has-uploads'}}">        
-        {{#if displayEmoji}}
-          <div class="emoji-back"></div>
-          {{emoji-picker selectEmoji=(action "selectEmoji")}}
-        {{/if}}
-        <img class="show-emoji hovered" {{action 'toggleEmoji'}} src="/assets/insert_emoticon_black.png" alt="select emoji"/>
+      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}} {{if uploads 'has-uploads'}}">
+        {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames='emoji-picker-holder'}}
 
         {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
                                   enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-        {{#file-upload name="chatPhotos"                       
-                       onfileadd=(action "uploadImageToChat")}}
+        {{#file-upload name="chatPhotos"
+                       onfileadd=(action "uploadImage")}}
           <img src="/assets/attachment.png" alt="icon" class="hovered">
         {{/file-upload}}
 

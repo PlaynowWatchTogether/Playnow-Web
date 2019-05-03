@@ -13,8 +13,10 @@ import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
 import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
 import { set } from '@ember/object';
-
-export default Controller.extend({
+import MessagingUploadsHandler from '../../mixins/messaging-uploads-handler';
+import MessagingMessageHelper from '../../mixins/messaging-message-helper';
+import MessagingMessagePager from '../../mixins/messaging-messsage-pager';
+export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager, {
   firebaseApp: service(),
   youtubeSearch: service(),
   db: service(),
@@ -25,18 +27,10 @@ export default Controller.extend({
   id: null,
   init() {
     this._super(...arguments);
-    this.uploads = [];
     this.chatModel = {};
     this.messageText = '';
     this.composeChips = [];
-    this.limit = 100;
     this.memberColors={};
-    this.messages = ArrayProxy.create({content: []});
-    $('body').on('click','.emoji-back', (e)=>{
-      e.stopPropagation();
-      this.set('displayEmoji');
-      return false;
-    });
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
       delegate: {
@@ -99,6 +93,9 @@ export default Controller.extend({
 
     this.queryYoutubeVideos(true);
     this.queryYoutubeMusic(true);
+  },
+  messageConvId(){
+    return this.get('dataSource').convId();
   },
   isGroup: computed('model', function(){
     return this.get('model.type') === 'group';
@@ -221,7 +218,7 @@ export default Controller.extend({
   isNotOne2One: computed('model', function(){
     let type = this.get('model').type;
     return type!=='one2one';
-  }),  
+  }),
   modelObserver: (obj) => {
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
@@ -318,7 +315,7 @@ export default Controller.extend({
           });
         }));
       });
-      
+
     } else {
       obj.set('chatModel', {});
     }
@@ -399,80 +396,13 @@ export default Controller.extend({
     }
 
     ds.messages((messages) => {
-      let uiMessages = [];
-      let lastDate = new Date(0);
-      let sorted = messages.sort(function (a, b) {
-        return a['date'] - b['date'];
-      });
-      sorted.forEach((message) => {
-        debug('Got message ' + message.id + " text: " + message['text'] + " with ts: " + message['date']);
-      });
-      if (sorted.length > 0) {
-        let lastRecord = null;
-        sorted.forEach((elem) => {
-          lastRecord = elem;
-        });
-        if (lastRecord) {
-          ds.sendSeen(lastRecord.uid);
-        }
+      const converted = obj.convertServerMessagesToUI(messages);
+      const wrappedMessages = converted.messages;
+      const lastRecord = converted.lastRecord;
+      const uiMessages = [];
+      if (lastRecord){
+        ds.sendSeen(lastRecord.uid);
       }
-      
-      const wrappedMessages = [];
-      sorted.forEach(function (mes, index) {
-        const displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
-
-        const mesDate = new Date(mes.date);
-        let diff = lastDate.getTime() - mesDate.getTime();
-        if (mesDate.getFullYear() !== lastDate.getFullYear() || mesDate.getDate() !== lastDate.getDate() || mesDate.getMonth() !== lastDate.getMonth())  {
-          let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: `${moment(mesDate).format('MM-DD-YYYY')}-${mes.convoId}`,convId: mes.convoId};          
-          wrappedMessages.push(dateContent);        
-        }
-        let mesCntent = {
-          isMessage: true,
-          message: mes,
-          lastMessageIndex: lastMessageIndex,
-          displaySender: displaySender,
-          id: mes['id'],
-          convId: mes.convoId
-        };
-        wrappedMessages.push(mesCntent);        
-        lastDate = mesDate
-
-      });
-      //group messages
-      let lastMessageIndex = 0;
-      const messagesBySender = [];
-      wrappedMessages.forEach((mesCntent, index)=>{
-        if (mesCntent.isMessage){
-          if (mesCntent.message.type !== 'ShareVideo'){
-            if (messagesBySender.length === 0){
-              const lastGroup = {content:[mesCntent], senderId: mesCntent.message.senderId};
-              messagesBySender.push(lastGroup);
-            }else{
-              const lastGroup = messagesBySender[messagesBySender.length-1];
-              if (mesCntent.message.senderId === lastGroup.senderId){
-                lastGroup.content.push(mesCntent);
-              }else{
-                const lastGroup = {content:[mesCntent], senderId: mesCntent.message.senderId};
-                messagesBySender.push(lastGroup);
-              }
-            }
-          }
-        }
-        // const nextSenderIsTheSame = index < wrappedMessages.length - 1 ? wrappedMessages[index + 1].message.senderId === mesCntent.senderId : true;
-        // mesCntent.message.messageIndex = lastMessageIndex;
-        // if (!nextSenderIsTheSame){
-        //   lastMessageIndex = 0;
-        // }else{
-        //   lastMessageIndex+=1;
-        // }
-      });
-      messagesBySender.forEach((group)=>{
-        group.content.forEach((elem, index)=>{
-          elem.message.maxIndex = group.content.length;
-          elem.message.messageIndex = index;
-        });
-      });
       wrappedMessages.forEach((mesCntent)=>{
 
         let normalizedData = obj.store.normalize('thread-message', {
@@ -491,7 +421,7 @@ export default Controller.extend({
       })
       obj.set('blockAutoscroll', false);
       obj.set('isLoadingMessages', false);
-      obj.messages.setObjects(uiMessages);
+      obj.updateMessages(uiMessages);
 
       // obj.notifyPropertyChange('messages');
       // obj.set('messages', uiMessages);
@@ -591,7 +521,7 @@ export default Controller.extend({
     var hasUnloadedUploads = false;
     const hasText = this.get('messageText').length > 0;
     const hasAttachments = this.get('uploads').length > 0;
-    
+
     this.get('uploads').forEach((elem)=>{
       if (elem.state !== 2){
         hasUnloadedUploads = true;
@@ -615,12 +545,11 @@ export default Controller.extend({
     this.set('displayEmoji',false);
     this.offGroupListen();
     this.set('inReplyTo', null);
-    this.set('uploads',[]);
+    this.resetUploads();
     this.set('id', null);
     this.set('youtubeVideoItemsPage', null);
     this.set('youtubeMusicItemsPage', null);
     this.set('messageText', '');
-    this.set('limit', 100);
     this.set('playerVideo', {});
     this.set('composeChips', []);
     this.set('chatModel', {});
@@ -644,25 +573,9 @@ export default Controller.extend({
       vsh.closeVideo();
     }
 
-    this.messages.setObjects([]);
+    this.resetMessages();
   },
-  filteredMessages: computed('messages.@each.id', 'limit', function () {
-    let messages = (this.get('messages') || []);
-    let length = messages.length;
-    let limit = this.get('limit');
-    let fltrMessages = this.store.peekAll('thread-message').filter((elem) => {
-      return elem.get('convoId') === this.get('dataSource').convId();
-    }).slice(Math.max(0, length - limit), length + 1);    
-    return fltrMessages;
-  }),
-  hasMoreMessages: computed('messages.@each.id', 'limit', function () {
-    let messages = (this.get('messages') || []);
-    let length = messages.length;
-    return this.get('limit') <= length;
-  }),
-  totalMessages: computed('messages', function () {
-    return (this.get('messages') || []).length;
-  }),
+
   generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -786,7 +699,7 @@ export default Controller.extend({
     }
   },
   performSendMessage() {
-    
+
     if (!this.get('canPerformSend'))
       return;
     if (this.get('isCompose')) {
@@ -805,7 +718,7 @@ export default Controller.extend({
     let reply = this.get('inReplyTo');
     let uploads = this.get('uploads');
     ds.sendMessage(this.get('messageText'),uploads, reply);
-    this.set('uploads',[]);
+    this.resetUploads();
     this.set('inReplyTo', null);
     this.set('messageText', '');
   },
@@ -841,9 +754,7 @@ export default Controller.extend({
     return (master || senderId === this.db.myId());
   }),
   actions: {
-    onRemoveUpload(upload){
-      this.get('uploads').removeObject(upload);
-    },
+
     topChildChanged(child){
       let tm = this.get('messageDateTimeout');
       if (tm){
@@ -854,25 +765,23 @@ export default Controller.extend({
         $('.message-scroll-date-holder').show();
         // const ts = $(child).attr('messagets');
         // const mm = moment.unix(ts/1000);
-        // $('.message-scroll-date-holder .title').html(mm.format('MM-DD-YYYY'));  
-        $('.message-scroll-date-holder .title').html($(child).text());  
+        // $('.message-scroll-date-holder .title').html(mm.format('MM-DD-YYYY'));
+        $('.message-scroll-date-holder .title').html($(child).text());
       }else{
         $('.message-scroll-date-holder').hide();
       }
-      
+
       // this.set('messageDateTimeout', setTimeout(()=>{
-        // $('.message-scroll-date-holder').fadeOut('fast'); 
+        // $('.message-scroll-date-holder').fadeOut('fast');
       // },1000));
-      
+
     },
-    toggleEmoji(){
-      this.toggleProperty('displayEmoji');
-    },
+
     selectEmoji(emoji){
       let msg = this.get('messageText');
-      
+
       msg = msg + ' ' + emoji;
-      this.set('messageText', msg);      
+      this.set('messageText', msg);
     },
     onReplyTo(message){
       this.set('inReplyTo', message);
@@ -882,7 +791,7 @@ export default Controller.extend({
     },
     loadMore() {
       this.set('blockAutoscroll', true);
-      this.set('limit', this.get('limit') + 100);
+      this.loadMoreMessages();
     },
     onVideoEnd() {
       if ($('#autoplay-checkbox')[0] && $('#autoplay-checkbox')[0].checked) {
@@ -933,7 +842,7 @@ export default Controller.extend({
       let ds = this.get('videoStateHandler');
       ds.handleNextState('loaded');
     },
-    uploadImageToChat(file) {
+    uploadImage(file) {
       if (this.get('isCompose')) {
         if (this.get('composeChips').length === 0) {
           this.set('composeError', 'Add friends to group');
@@ -943,48 +852,7 @@ export default Controller.extend({
         }
         return;
       }
-      let upload = {file: file, state: 0};
-      this.get('uploads').addObject(upload);
-      // let ds = this.get('dataSource');
-      // let id = ds.generateMessageId();
-      // let mesCntent = {
-      //     isLoading: true,                    
-      //     id: id
-      //   };
-      //   let normalizedData = this.store.normalize('thread-message', {
-      //     id: id,
-      //     convoId: ds.convId(),
-      //     content: JSON.stringify(mesCntent)
-      //   });
-
-      // this.store.push(normalizedData);
-      // this.notifyPropertyChange('limit');
-      let ref = this.firebaseApp.storage().ref('Media/Files/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
-      const uploadTask = ref.put(file.blob);
-      uploadTask.on('state_changed', (snapshot)=>{
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        set(upload, 'state',1);
-        set(upload, 'progress',progress);
-        set(upload, 'transferred',snapshot.bytesTransferred);
-        set(upload, 'total',snapshot.totalBytes);
-        debug(`Upload progress changed ${progress}`);        
-      }, (error)=>{
-        set(upload, 'state',3);
-        set(upload, 'error',error);
-      }, ()=>{
-        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {            
-            // ds.sendMessage('', downloadURL, null, true);
-            //ds.sendAttachment(file, downloadURL, id);
-            debug(`File available at ${downloadURL}`);
-            set(upload, 'url',downloadURL);
-            set(upload, 'state',2);            
-            setTimeout(function () {
-             $('.newMessageHolder .ember-content-editable').focus();
-            }, 1000);            
-        });
-      });
-    
-    
+      this.uploadImageToChat(file);
     },
     sendMessage() {
       this.performSendMessage();
@@ -1000,7 +868,7 @@ export default Controller.extend({
           this.composeMessage();
         }
         return;
-      }    
+      }
       this.shareVideo(video, true);
     },
     musicPick(video) {

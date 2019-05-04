@@ -1,9 +1,7 @@
 <div class="post-content {{if isMine "mine"}}">
   <div class="post-header">
     <div class="post-author-pic">
-      <div class="profilePicWrapper">
-        <img src={{safe-profile-pic model.senderPic}} class="profilePic" alt="ProfilePic">
-      </div>
+      {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
     </div>
     <div class="post-author-name">
       {{model.senderName}}
@@ -25,11 +23,11 @@
     </div>
   {{/if}}
   <div class="post-reactions">
-    <div class="reaction-comments">
+    <div class="reaction-comments" {{action "toggleReactionComments"}}>
       <img src="/assets/ic-feed-post-comments@2x.png" alt="post reactions comments">
       <div class="label">{{postCommentsCount}}</div>
     </div>
-    <div class="reaction-likes">
+    <div class="reaction-likes" {{action 'toggleLike'}}>
       {{#if isLiked}}
         <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
       {{else}}
@@ -39,6 +37,23 @@
     </div>
   </div>
 </div>
-<div class="post-comments">
-
-</div>
+{{#if showComments}}
+  <div class="post-comments {{if isMine "mine"}}">
+    <div class="header">
+      <div class="comments">
+        <div class="label">Comments</div>
+        <div class="value">{{postCommentsCount}}</div>
+      </div>
+      <div class="likes">
+        <div class="label">Likes</div>
+        <div class="value">{{postLikesCount}}</div>
+      </div>
+    </div>
+    {{#each modelComments as |comment|}}
+      {{feed-comment-item model=comment classNames="post-comment-item" onLikeComment=(action "onLikeComment")}}
+    {{/each}}
+    <div class="new-comment">
+      {{input value=commentText classNames="input" placeholder="Post a comment" insert-newline=(action "postComment") autocomplete='off'}}
+    </div>
+  </div>
+{{/if}}

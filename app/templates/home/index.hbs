@@ -2,7 +2,7 @@
   <div class="content h-100">
     <div class="room-title-holder">
       <div class="title">
-        <span class="noselect">Public rooms</span>
+        <span class="noselect">Groups</span>
       </div>
       {{#link-to "home.group" classNames="create noselect" tagName="div"}}
         <div class="button hoveredBtn">
@@ -11,28 +11,38 @@
         </div>
       {{/link-to}}
     </div>
-    <div class="search-holder">
-      {{#search-holder classNames="search-wrapper" }}
-
-        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-
-        {{input value=roomQuery classNames="searchInput" placeholder="Search for Rooms" autocomplete='off'}}
-        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-      {{/search-holder}}
-    </div>
-    <div class="roomsHolder">
-      <div class="rooms-wrapper">
-        {{#if loading}}
-          Loading
-        {{/if}}
-        {{#each filteredModel as |room|}}
-          {{#link-to "home.chat" room.id "room" classNames="room-chat-link"}}
-            {{#home-room-item model=room classNames="room"}}
-
-            {{/home-room-item}}
-          {{/link-to}}
-        {{/each}}
+    {{#fit-parent-height parentSelector=".publicRooms" classNames="feed-list-root" minusSelector='.room-title-holder'}}
+      <div class="feed-content">
       </div>
-    </div>
+      <div class="feed-sidebar">
+        <div class="side-content">
+          <div class="feeds-own feeds-item">
+            <div class="title">
+              Your Groups
+            </div>
+            <div class="list">
+              {{home-feed-list model=myFeeds}}
+            </div>
+          </div>
+          <div class="feeds-follows feeds-item">
+            <div class="title">
+              Following Groups
+            </div>
+            <div class="list">
+              {{home-feed-list model=followedFeeds}}
+            </div>
+          </div>
+          <div class="feed-public feeds-item">
+            <div class="title">
+              Discover
+            </div>
+            <div class="list">
+              {{home-feed-list model=publicFeeds isPublic=true classNames="feed-list" onFollowGroup=(action "followGroup") onUnFollowGroup=(action "unFollowGroup")}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    {{/fit-parent-height}}
   </div>
 </div>

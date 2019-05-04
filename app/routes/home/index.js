@@ -11,39 +11,38 @@ export default Route.extend(AuthRouteMixin, {
     this.arProxy = ArrayProxy.create({content: []});
   },
   model() {
-    return this.store.peekAll('room');
+    return this.store.peekAll('feed-item');
   },
   activate() {
 
     // let ctrl = this.controllerFor('home/index');
     // ctrl.set('model', arProxy);
-    this.get('db').rooms((rooms) => {
-      let ids = rooms.map((elem) => {
+    this.get('db').feeds((feeds)=>{
+      const ids = feeds.map((elem) => {
         return elem['id'];
       });
-      let localRooms = this.store.peekAll('room');
-      localRooms.forEach((room) => {
-        if (!ids.includes(room.get('id'))) {
-          room.unloadRecord();
+      const localRooms = this.store.peekAll('feed-item');
+      localRooms.forEach((feed) => {
+        if (!ids.includes(feed.get('id'))) {
+          feed.unloadRecord();
         }
       });
-      rooms.forEach((room) => {
-        if (room['videoState']){
-          room['rawData'] = JSON.stringify(room);
-          room['lastUpdate'] = new Date().getUTCMilliseconds();
-          let normalizedData = this.store.normalize('room', room);
-          this.store.push(normalizedData);
-        }
+      feeds.forEach((feed) => {
+        feed['rawData'] = JSON.stringify(feed);
+        feed['lastUpdate'] = new Date().getUTCMilliseconds();
+        feed['Followers'] = JSON.stringify(feed.Followers || {});
+        feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
+        feed['Admins'] = JSON.stringify(feed.Admins || {});
+        let normalizedData = this.store.normalize('feed-item', feed);
+        this.store.push(normalizedData);
       });
-
-    }, () => {
-    });
+    })
     this._super(...arguments);
     $('body').addClass('index');
   },
   deactivate() {
     this._super(...arguments);
     $('body').removeClass('index');
-    this.get('db').roomsOff();
+    this.get('db').feedsOff();
   }
 });

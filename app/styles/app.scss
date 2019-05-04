@@ -3296,7 +3296,7 @@ CHAT
     border-radius: 20px 0 0 0;
     margin-left: $table-gap;
     display: grid;
-    grid-template-rows: 50px min-content auto;
+    grid-template-rows: $header-height auto;
 
     .room-title-holder {
       border-bottom: 1px solid #E6E6E6;

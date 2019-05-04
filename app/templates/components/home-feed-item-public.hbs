@@ -1,0 +1,51 @@
+<div class="header">
+  <div class="feed-item-pic-wrapper">
+    <div class="feed-item-pic">
+      <div class="pic">
+        <div class="profilePicWrapper">
+          <img class="profilePic" src={{safe-profile-pic model.ProfilePic}} alt="icon">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="details">
+    <div class="feed-item-views">
+      <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
+      <div class="label">
+        {{model.viewsNumber}}
+      </div>
+    </div>
+    <div class="feed-actions">
+      {{#if isFollowing}}
+        <div class="action-following" {{action "unFollowGroup"}}>
+          <div class="simple">Following</div>
+          <div class="action">Unfollow</div>
+        </div>
+      {{else if isRequestedFollow}}
+        <div class="action-follow-request">
+          Requested
+        </div>
+      {{else}}
+        <div class="action-follow" {{action "followGroup"}}>
+          <img src="/assets/ic_plus@2x.png" alt="icon">
+          <div>Follow</div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="feed-title">
+  @ {{model.GroupName}}
+</div>
+<div class="feed-description">
+  {{model.GroupDescription}}
+</div>
+<div class="private-group">
+  <div class="label">
+    {{#if model.isPublic}}
+      Public Group
+    {{else}}
+      Private Group
+    {{/if}}
+  </div>
+</div>

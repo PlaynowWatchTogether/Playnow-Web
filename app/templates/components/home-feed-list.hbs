@@ -1,0 +1,16 @@
+{{#each model as |feed|}}
+  {{#if isPublic}}
+    {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}
+      {{home-feed-item-public model=feed classNames="home-feed-item-public" onFollowGroup=(action 'followGroup') onUnFollowGroup=(action 'unFollowGroup')}}
+    {{/link-to}}
+  {{else}}
+    {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}
+      {{home-feed-item model=feed classNames="home-feed-item"}}
+    {{/link-to}}
+  {{/if}}
+{{else}}
+  <div class="empty">
+    No groups
+  </div>
+
+{{/each}}

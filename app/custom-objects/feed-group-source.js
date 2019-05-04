@@ -19,6 +19,14 @@ export default EmberObject.extend({
   reset(){
 
   },
+  updateGroup(convId, name, description){
+    const myID = this.db.myId();
+    const updates = {
+      GroupName: name,
+      GroupDescription: description
+    }
+    return this.feedRef(convId).update(updates);
+  },
   createGroup(details){
     return new Promise((resolve, reject)=>{
       const payload = details;
@@ -27,6 +35,7 @@ export default EmberObject.extend({
         payload["creatorName"] = `${profile['FirstName']} ${profile['LastName']}`;
         payload["creatorId"] = profile["id"];
         payload["creatorAvatar"] = profile["ProfilePic"];
+        payload[`Admins/${myID}/id`] = myID;
         const id = this.generateFeedId();
         this.feedRef(id).set(payload).then(()=>{
           payload.id = id;
@@ -72,6 +81,47 @@ export default EmberObject.extend({
     const ret = {ref:ref,listener:valueListener};
     this.listeners.push(ret);
     return ret;
+  },
+  addLike(convId, mesId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Messages/${mesId}/Likes/${senderId}`);
+    return ref.set(1);
+  },
+  removeLike(convId, mesId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Messages/${mesId}/Likes/${senderId}`);
+    return ref.remove();
+  },
+  addCommentLike(convId, mesId,commentId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Messages/${mesId}/Comments/${commentId}/Likes/${senderId}`);
+    return ref.set(1);
+  },
+  removeCommentLike(convId, mesId,commentId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Messages/${mesId}/Comments/${commentId}/Likes/${senderId}`);
+    return ref.remove();
+  },
+  postComment(convId, mesId, text){
+    let senderId = this.db.myId();
+    let msgUid = new Date().getTime().toString() + senderId;
+    let message = {};
+    message['uid'] = msgUid;
+    message['date'] = new Date().getTime() / 1000;
+    message['serverDate'] = this.firebaseApp.firebase_.database.ServerValue.TIMESTAMP;
+    message['convoId'] = convId;
+    message['senderId'] = senderId;
+    message['senderName'] = this.auth.current.get('userName');
+    message['type'] = 'comment';
+    message['userId'] = senderId;
+    message['message'] = 'web';
+    message['text'] = text;
+    let ref = this.feedRef(convId).child(`Messages/${mesId}/Comments/${msgUid}`);
+    ref.update(message).then(() => {
+      debug('Message posted');
+    }).catch((error)=>{
+      debug('failed to post message');
+    });
   },
   sendPost(convId,text, uploads){
     let senderId = this.db.myId();

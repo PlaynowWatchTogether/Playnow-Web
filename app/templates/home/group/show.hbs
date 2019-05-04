@@ -4,13 +4,13 @@
     {{#file-dropzone classNames="feed-content h-100" name="chatPhotos" as |dropzone|}}
       {{#if dropzone.active}}
         {{#if dropzone.valid}}
-          <div class="dropzone">
-            <div class="content">
-              <div>Drop to upload</div>
+          {{#if isMember}}
+            <div class="dropzone">
+              <div class="content">
+                <div>Drop to upload</div>
+              </div>
             </div>
-          </div>
-        {{else}}
-
+          {{/if}}
         {{/if}}
       {{/if}}
       <div class="back">
@@ -26,91 +26,153 @@
             </div>
           </div>
         </div>
-        <div class="feed-middle">
-          <div class="feed-edit">
-            <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
-          </div>
-          <div class="feed-title">
-            @ {{feed.GroupName}}
-          </div>
-          <div class="feed-description">
-            {{feed.GroupDescription}}
-          </div>
+        <div class="feed-middle {{if editFeed 'edit'}}">
+          {{#if editFeed}}
+            <div class="feed-edit-save" {{action 'saveEdit'}}>
+              Done
+            </div>
+            <div class="feed-title-edit">
+              <span>@</span>
+              {{input value=feedTitle classNames='edit' placeholder='Channel name'}}
+            </div>
+            <div class="feed-description-edit">
+              {{textarea value=feedDescription classNames='edit' placeholder='Description'}}
+            </div>
+          {{else}}
+            {{#if isAdmin}}
+              <div class="feed-edit" {{action 'enableEdit'}}>
+                <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
+              </div>
+            {{/if}}
+            <div class="feed-title">
+              @ {{feed.GroupName}}
+            </div>
+            <div class="feed-description">
+              {{feed.GroupDescription}}
+            </div>
+          {{/if}}
           <div class="feed-admins-root">
             <div class="label">ADMINS</div>
-            <div class="users"></div>
+            <div class="users">
+              {{#each groupAdmins as |admin|}}
+                {{feed-details-admin-item model=admin.id classNames="feed-admin-item"}}
+              {{/each}}
+            </div>
+            {{#if editFeed}}
+              <div class="feed-admins-edit">
+                <img src="/assets/ic_plus@2x.png" alt="icon">
+                <div>Add Admin</div>
+              </div>
+            {{/if}}
           </div>
-
         </div>
-        <div class="feed-views">
-          <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
-          <div class="label">222</div>
+        <div class="feed-info">
+          <div class="feed-views">
+            <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
+            <div class="label">{{groupViews}}</div>
+          </div>
+          <div class="feed-actions">
+            {{#if isOwner}}
+              <div class="action-follow-request">
+                Owner
+              </div>
+            {{else}}
+              {{#if isFollowing}}
+                <div class="action-following" {{action "unFollowGroup"}}>
+                  <div class="simple">Following</div>
+                  <div class="action">Unfollow</div>
+                </div>
+              {{else if isRequestedFollow}}
+                <div class="action-follow-request">
+                  Requested
+                </div>
+              {{else}}
+                <div class="action-follow" {{action "followGroup"}}>
+                  <img src="/assets/ic_plus@2x.png" alt="icon">
+                  <div>Follow</div>
+                </div>
+              {{/if}}
+            {{/if}}
+          </div>
         </div>
       </div>
-      {{#end-scrollable classNames="feed-messages-holder"
-                        itemTimeSelector=".feed-post-time"
-                        blockScroll=blockAutoscroll
-                        onScrolledHalf=(action "loadMore")
-                        onTopChildChanged=(action "topChildChanged")
-                        scrollChild=".feed-messages-root"}}
-        {{#if isLoadingMessages}}
-          <div class="loading-holder h-100">
-            <div class="lds-ripple">
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        {{/if}}
-        <div class="feed-messages-root" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-          {{#if hasMoreMessages}}
-            <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
-          {{/if}}
-          {{#each filteredMessages as |message|}}
-            {{#if message.isMessage}}
-              {{chat-message-post
-                model=message.message
-                classNames="feed-post-item"
-              }}
-            {{/if}}
-            {{#if message.isDate}}
-              {{chat-message-time model=message.date classNames='feed-post-time'}}
-            {{/if}}
-            {{#if message.isLoading}}
-              {{chat-message-loading classNames="chat-message-loading" model=message.message}}
-            {{/if}}
-          {{/each}}
-          {{#unless isLoadingMessages}}
-            <div class="message-scroll-date-holder">
-              <div class="title">
-                Today
+      {{#if isMember}}
+        {{#end-scrollable classNames="feed-messages-holder"
+                          itemTimeSelector=".feed-post-time"
+                          blockScroll=true
+                          refreshScroll=lastMessageDate
+                          onScrolledHalf=(action "loadMore")
+                          onTopChildChanged=(action "topChildChanged")
+                          scrollChild=".feed-messages-root"}}
+          {{#if isLoadingMessages}}
+            <div class="loading-holder h-100">
+              <div class="lds-ripple">
+                <div></div>
+                <div></div>
               </div>
             </div>
-          {{/unless}}
+          {{/if}}
+          <div class="feed-messages-root" data-total={{totalMessages}} data-limit={{messagesLimit}}>
+            {{#if hasMoreMessages}}
+              <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+            {{/if}}
+            {{#each filteredMessages as |message|}}
+              {{#if message.isMessage}}
+                {{chat-message-post
+                  willShowCommentsForMessage=(action "willShowCommentsForMessage")
+                  postCommentForMessage=(action "postCommentForMessage")
+                  onLikePost=(action "onLikePost")
+                  onLikeComment=(action "onLikeComment")
+                  model=message.message
+                  classNames="feed-post-item"
+                }}
+              {{/if}}
+              {{#if message.isDate}}
+                {{chat-message-time model=message.date classNames='feed-post-time'}}
+              {{/if}}
+              {{#if message.isLoading}}
+                {{chat-message-loading classNames="chat-message-loading" model=message.message}}
+              {{/if}}
+            {{/each}}
+            {{#unless isLoadingMessages}}
+              <div class="message-scroll-date-holder">
+                <div class="title">
+                  Today
+                </div>
+              </div>
+            {{/unless}}
 
+          </div>
+        {{/end-scrollable}}
+        {{#if uploads}}
+          <div class="feed-uploads">
+            {{#each uploads as |upload|}}
+              {{chat-upload-item model=upload
+                onRemove=(action "onRemoveUpload")}}
+            {{/each}}
+          </div>
+        {{/if}}
+        <div class="feed-post {{if uploads 'has-uploads'}}">
+          {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames='emoji-picker-holder'}}
+          {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
+                                    enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
+          {{#file-upload name="chatPhotos"
+                         onfileadd=(action "uploadImageToChatAction")}}
+            <img src="/assets/attachment.png" alt="icon" class="hovered">
+          {{/file-upload}}
+
+          <div class="imgHolder">
+
+            <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
+          </div>
         </div>
-      {{/end-scrollable}}
-      {{#if uploads}}
-        <div class="feed-uploads">
-          {{#each uploads as |upload|}}
-            {{chat-upload-item model=upload
-              onRemove=(action "onRemoveUpload")}}
-          {{/each}}
+      {{else}}
+        <div class="feed-private-group">
+          <div class="label">
+            Private Group
+          </div>
         </div>
       {{/if}}
-      <div class="feed-post {{if uploads 'has-uploads'}}">
-        {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames='emoji-picker-holder'}}
-        {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
-                                  enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-        {{#file-upload name="chatPhotos"
-                       onfileadd=(action "uploadImageToChatAction")}}
-          <img src="/assets/attachment.png" alt="icon" class="hovered">
-        {{/file-upload}}
-
-        <div class="imgHolder">
-
-          <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
-        </div>
-      </div>
     {{/file-dropzone}}
     <div class="feed-sidebar">
     </div>

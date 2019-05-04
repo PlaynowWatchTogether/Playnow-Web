@@ -41,22 +41,22 @@ export default Service.extend({
         resolve(payload);
       });
     });
-    
+
   },
   listenGroup(id, updateCallback){
     let myId = this.firebaseApp.auth().currentUser.uid;
-    
+
     let ref = this.firebaseApp.database().ref(`/Users/${myId}/Groups/${id}`);
     const listener = (data)=>{
       const payload = data.val();
       payload["id"] = data.key;
       updateCallback(payload);
     };
-    ref.on('value', listener);    
+    ref.on('value', listener);
     return [ref,listener];
   },
-  offListenGroup(ret){  
-    ret[0].off('value', ret[1]);    
+  offListenGroup(ret){
+    ret[0].off('value', ret[1]);
   },
   group(id){
     let myId = this.firebaseApp.auth().currentUser.uid;
@@ -68,7 +68,7 @@ export default Service.extend({
         resolve(payload);
       });
     });
-    
+
   },
   groups(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
@@ -237,6 +237,28 @@ export default Service.extend({
     ref.on('value', clb);
 
   },
+  feedsOff() {
+    let ref = this.firebaseApp.database().ref("channels/feed");
+    ref.off('value', this.listeners["channels/feed"]);
+  },
+  feeds(updateCallback) {
+
+    let ref = this.firebaseApp.database().ref("channels/feed");
+
+    let clb = (data) => {
+      let records = [];
+      data.forEach((item) => {
+        let payload = item.val();
+        payload.id = item.key;
+        records.push(payload);
+
+      });
+      updateCallback(records);
+    };
+    this.listeners["channels/feed"] = clb;
+    ref.on('value', clb);
+
+  },
   tokens(user) {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("Tokens/" + user);
@@ -300,7 +322,7 @@ export default Service.extend({
       const ref = this.firebaseApp.database().ref();
       const update = {};
       this.realGroup(id).then((group)=>{
-        Object.keys(group.Members).forEach((memberKey) => {                    
+        Object.keys(group.Members).forEach((memberKey) => {
           update["/Users/" + memberKey + "/Groups/" + id + "/ProfilePic"] = groupPic;
         });
         ref.update(update).then(()=>{
@@ -317,7 +339,7 @@ export default Service.extend({
       const ref = this.firebaseApp.database().ref();
       const update = {};
       this.realGroup(id).then((group)=>{
-        Object.keys(group.Members).forEach((memberKey) => {                    
+        Object.keys(group.Members).forEach((memberKey) => {
           update["/Users/" + memberKey + "/Groups/" + id + "/GroupName"] = groupName;
         });
         ref.update(update).then(()=>{
@@ -328,19 +350,19 @@ export default Service.extend({
       });
 
     });
-    
+
 
   },
   addGroupMembers(group,groupName, members){
-    
+
     const ref = this.firebaseApp.database().ref();
     const update = {};
     members.forEach((member)=>{
-      update[`/channels/Groups/${group}/Members/${member["id"]}/Name`] = member['firstName'] + ' ' + member['lastName'];  
+      update[`/channels/Groups/${group}/Members/${member["id"]}/Name`] = member['firstName'] + ' ' + member['lastName'];
       update[`/Users/${member["id"]}/Groups/${group}/GroupName`] = groupName
-    });    
+    });
     return ref.update(update);
-    
+
   },
   createGroup(name, members) {
     return this.profile(this.myId()).then((profile) => {
@@ -408,5 +430,54 @@ export default Service.extend({
 
       })
     })
+  },
+  requestFollowFeedGroup(group){
+    const id = this.myId();
+    this.profile(id).then((profile) => {
+      let name = profile['FirstName'] + ' ' + profile['LastName'];
+      let email = this.firebaseApp.auth().currentUser.email;
+      let username = name;
+      if (email && email.includes('@')) {
+        username = email.split("@")[0]
+      }
+      let ref = this.firebaseApp.database().ref(`channels/feed/${group}/FollowRequests/${id}`);
+      let updates = {};
+      updates['Email'] = email;
+      updates['Name'] = username;
+      updates['Username'] = name;
+      if (profile['ProfilePic']) {
+        updates['ProfilePic'] = profile['ProfilePic'];
+      }
+      ref.update(updates).then(() => {
+
+      });
+    })
+  },
+  followFeedGroup(group){
+    const id = this.myId();
+    this.profile(id).then((profile) => {
+      let name = profile['FirstName'] + ' ' + profile['LastName'];
+      let email = this.firebaseApp.auth().currentUser.email;
+      let username = name;
+      if (email && email.includes('@')) {
+        username = email.split("@")[0]
+      }
+      let ref = this.firebaseApp.database().ref(`channels/feed/${group}/Followers/${id}`);
+      let updates = {};
+      updates['Email'] = email;
+      updates['Name'] = username;
+      updates['Username'] = name;
+      if (profile['ProfilePic']) {
+        updates['ProfilePic'] = profile['ProfilePic'];
+      }
+      ref.update(updates).then(() => {
+
+      });
+    })
+  },
+  unFollowFeedGroup(group){
+    const id = this.myId();
+    let ref = this.firebaseApp.database().ref(`channels/feed/${group}/Followers/${id}`);
+    return ref.remove();
   }
 });

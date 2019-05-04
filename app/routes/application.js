@@ -6,7 +6,6 @@ export default Route.extend({
   auth: service(),
   db: service(),
   firebaseApp: service(),
-  firebaseMessage: service(),
   ntp: service(),
   isMobile: service(),
   activate() {

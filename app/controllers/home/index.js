@@ -5,9 +5,28 @@ import {get} from '@ember/object';
 
 export default Controller.extend({
   db: service(),
+  firebaseApp: service(),
   init() {
     this._super(...arguments);
   },
+  myFeeds: computed('model.@each.lastUpdate', function(){
+    const myID = this.db.myId();
+    return this.get('model').filter((elem) => {
+      return elem.get('creatorId') === myID;
+    });
+  }),
+  followedFeeds: computed('model.@each.lastUpdate', function(){
+    const myID = this.db.myId();
+    return this.get('model').filter((elem) => {
+      return elem.get('creatorId') !== myID && elem.isFollowing(myID);
+    });
+  }),
+  publicFeeds: computed('model.@each.lastUpdate', function(){
+    const myID = this.db.myId();
+    return this.get('model').filter((elem) => {
+      return elem.get('creatorId') !== myID;
+    });
+  }),
   filteredModel: computed('model.@each.lastUpdate', 'roomQuery', function () {
     let q = this.get('roomQuery');
     return this.get('model').filter((elem) => {
@@ -22,5 +41,17 @@ export default Controller.extend({
     }).sort((a, b) => {
       return b.viewersCount - a.viewersCount;
     })
-  })
+  }),
+  actions:{
+    followGroup(group){
+      if (group.get('isPublic')){
+        this.get('db').followFeedGroup(group.id);
+      }else{
+        this.get('db').requestFollowFeedGroup(group.id);
+      }
+    },
+    unFollowGroup(group){
+      this.get('db').unFollowFeedGroup(group.id);
+    }
+  }
 });

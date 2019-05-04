@@ -37,9 +37,50 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
     this.set('dataSource', ds);
   },
+  isAdmin: computed('feed', function(){
+    const myId = this.get('db').myId();
+    return this.get('feed.creatorId') === myId;
+  }),
+  isOwner: computed('feed', function(){
+    const myId = this.get('db').myId();
+    return this.get('feed.creatorId') === myId;
+  }),
+  isFollowing: computed('feed', function(){
+    const admin = this.get('isAdmin');
+    if (admin)
+      return true;
+    return Object.keys(this.get('feed.Followers')||{}).includes(this.db.myId());
+  }),
+  isRequestedFollow: computed('feed', function(){
+    return Object.keys(this.get('feed.FollowRequests')||{}).includes(this.db.myId());
+  }),
+  groupAdmins: computed('feed', function(){
+    return Object.values(this.get('feed.Admins') || {});
+  }),
+  isMember: computed('feed', function(){
+    const admin = this.get('isAdmin');
+    if (admin)
+      return true;
+    const feed = this.get('feed');
+    const myId = this.get('db').myId();
+    if (feed){
+      return feed.GroupAccess === 1 || Object.keys(feed.Followers||{}).includes(myId);
+    }else{
+      return false;
+    }
+  }),
+  groupViews:computed('feed', function(){
+    const feed = this.get('feed');
+    if (feed){
+      return Object.keys(feed.Followers||{}).length;
+    }else{
+      return 0;
+    }
+  }),
   handleDSChange(){
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
       this.set('feed', feed);
+      this.set('lastMessageDate',feed.lastMessageDate);
     });
     this.dataSource.messages(this.dataSource.feedId, (messages)=>{
       const converted = this.convertServerMessagesToUI(messages);
@@ -119,6 +160,49 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
 
     },
     onReplyTo(){
+
+    },
+    willShowCommentsForMessage(show){
+      this.set('blockAutoscroll', show);
+    },
+    postCommentForMessage(message, text){
+      this.dataSource.postComment(this.dataSource.feedId,message.id,text);
+    },
+    onLikeComment(post,comment,liked){
+      if (liked){
+        this.dataSource.addCommentLike(this.dataSource.feedId,post.uid, comment.uid);
+      }else{
+        this.dataSource.removeCommentLike(this.dataSource.feedId,post.uid,comment.uid);
+      }
+    },
+    onLikePost(post, liked){
+      if (liked){
+        this.dataSource.addLike(this.dataSource.feedId,post.uid);
+      }else{
+        this.dataSource.removeLike(this.dataSource.feedId,post.uid);
+      }
+    },
+    unFollowGroup(){
+      const group = this.get('feed');
+      this.get('db').unFollowFeedGroup(group.id);
+    },
+    followGroup(){
+      const group = this.get('feed');
+      if (group.GroupAccess === 1){
+        this.get('db').followFeedGroup(group.id);
+      }else{
+        this.get('db').requestFollowFeedGroup(group.id);
+      }
+    },
+    enableEdit(){
+      this.set('feedTitle', this.get('feed.GroupName'));
+      this.set('feedDescription', this.get('feed.GroupDescription'));
+      this.set('editFeed', true);
+    },
+    saveEdit(){
+      this.dataSource.updateGroup(this.dataSource.feedId, this.get('feedTitle'), this.get('feedDescription')).then(()=>{
+        this.set('editFeed', false);  
+      })
 
     }
   }

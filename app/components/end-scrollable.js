@@ -5,7 +5,15 @@ import {debug} from '@ember/debug';
 export default Component.extend({
   init() {
     this._super(...arguments);
-    this.lastHeight = 0
+    this.lastHeight = 0;
+    this.addObserver('refreshScroll', this,'onRefreshScroll');
+  },
+  onRefreshScroll(obj){
+      obj.scrollDown();
+  },
+  scrollDown(){
+    this.lastHeight = $(this.element)[0].scrollHeight;
+    $(this.element).scrollTop(this.lastHeight);
   },
   didRender() {
     this._super(...arguments);

@@ -1,10 +1,19 @@
 import Component from '@ember/component';
 import VideoSearchMixin from '../mixins/videos-search-mixin';
 import { computed } from '@ember/object';
+import { htmlSafe } from '@ember/template';
 
 export default Component.extend(VideoSearchMixin, {
   loadingVideoClass: computed('isLoadingVideo', function () {
     return this.get('isLoadingVideo') ? 'active' : '';
+  }),
+  sectionTitle: computed('searchQueryVideo', function(){
+    const query = this.get('searchQueryVideo');
+    if (!query || query.length === 0){
+      return 'Trending'
+    }else{
+      return htmlSafe(`Results for: ${query}`);
+    }
   }),
   didInsertElement(){
     this._super(...arguments);
@@ -18,6 +27,7 @@ export default Component.extend(VideoSearchMixin, {
       });
     },
     triggerSearch() {
+      this.set('searchQueryVideo', this.get('searchQuery'));
       this.queryVideos(true);
     },
     videoPick(video){
@@ -28,6 +38,9 @@ export default Component.extend(VideoSearchMixin, {
     },
     playlistVideoRemove(video){
       return this.get('onPlaylistRemoveVideo')(video);
+    },
+    videoAddToPlaylist(video){
+      return this.get('onPlaylistAddVideo')(video);
     }
   }
 });

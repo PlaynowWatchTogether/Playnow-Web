@@ -4,9 +4,9 @@ import moment from 'moment';
 import YoutubeVideoView from '../mixins/youtube-video-view';
 
 export default Component.extend(YoutubeVideoView, {
-  classNameBindings: ['isRemovable:removable'],
+  classNameBindings: ['isRemovable:removable','canAdd:addable'],
   click() {
-    if (!this.get('displayRequest') && !this.get('isRemovable')){
+    if (!this.get('displayRequest') && !this.get('isRemovable') && !this.get('canAdd')){
       this.clickAction(this.get('model'));
     }
   },
@@ -16,6 +16,9 @@ export default Component.extend(YoutubeVideoView, {
     },
     removeVideo(){
       this.removeAction(this.get('model'))
+    },
+    addVideo(){
+      this.addAction(this.get('model'));
     }
   }
 });

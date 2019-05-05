@@ -6,7 +6,7 @@
     {{#search-holder classNames="search" }}
 
       <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-      {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
+      {{input value=searchQuery classNames="searchInput" placeholder="Search content"
               insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
       <img src="/assets/ic_music_close.png" class="close-search" alt="close">
       <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
@@ -18,10 +18,14 @@
     {{chat-videos-playlist
       classNames='chat-videos-playlist'
       model=playlistModel
+      isEditing=isEditingPlaylist
       onVideoPick=(action "videoPick")
       onAddVideo=(action "playlistVideoAdd")
       onRemoveVideo=(action "playlistVideoRemove")}}
   {{/if}}
+  <div class="title">
+    {{sectionTitle}}
+  </div>
   {{#if isLoadingVideo}}
     <div class="loading-holder h-100">
       <div class="lds-ripple">
@@ -30,15 +34,14 @@
       </div>
     </div>
   {{else}}
-    <div class="title">
-      Trending
-    </div>
   {{/if}}
   <div class="youtube-items noselect">
 
     {{#each youtubeVideoItems as |video|}}
       {{#youtube-video model=video classNames="youtube-item"
                        clickAction=(action "videoPick")
+                       canAdd=isEditingPlaylist
+                       addAction=(action "videoAddToPlaylist")
                        displayRequest=displayVideoRequest}}
 
       {{/youtube-video}}

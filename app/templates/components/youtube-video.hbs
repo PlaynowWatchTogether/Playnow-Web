@@ -24,3 +24,8 @@
     <img src="/assets/ic-video-remove-icon@2x.png" alt='remove video' class="icon">
   </div>
 {{/if}}
+{{#if canAdd}}
+  <div class="youtube-video-add" {{action 'addVideo'}}>
+    <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
+  </div>
+{{/if}}

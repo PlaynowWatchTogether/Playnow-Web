@@ -1,0 +1,24 @@
+<div class="create-event-date-time">
+  <div class="create-event-date">
+    <div class="create-field-label">
+      When
+    </div>
+    {{input value=model.date placeholder="Date" classNames="edit start date" autocomplete=false}}
+  </div>
+  <div class="create-event-time">
+    <div class="create-event-time-from-label create-field-label">
+      Start
+    </div>
+    <div class="create-event-time-from">
+      {{input value=model.timeStart placeholder="7:00 am" classNames="edit start time" autocomplete=false}}
+    </div>
+    <div class="create-event-time-to-label create-field-label">
+      End
+    </div>
+    <div class="create-event-time-to">
+      {{input value=model.timeEnd placeholder="5:00 pm" classNames="edit end time" autocomplete=false}}
+    </div>
+  </div>
+
+</div>
+{{yield}}

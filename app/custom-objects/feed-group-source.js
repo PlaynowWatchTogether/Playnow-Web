@@ -167,6 +167,13 @@ export default EmberObject.extend({
     const itemID = video['playlistId'];
     let ref = this.feedRef(convId).child(`Playlist/${itemID}`);
     return ref.remove();
+  },
+  createEvent(convId, event){
+    let senderId = this.db.myId();
+    const msgUid = new Date().getTime().toString() + senderId;
+    let message = event;
+    let ref = this.feedRef(convId).child(`Events/${msgUid}`);
+    return ref.update(message);
   }
 
 });

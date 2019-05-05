@@ -328,3 +328,89 @@ $message-border-radius: 14px;
   }
 
 }
+
+@mixin events-create-input{
+  background: none;
+  border: 1px solid #D1D1D1;
+  border-radius: 20px;
+  padding: 5px 10px;
+  width: 100%;
+  outline: none;
+  .error{
+    color: red;
+    font-size: 50%;
+  }
+  &.with-error{
+    border-color: red;
+  }
+
+}
+@mixin events-create-input-holder{
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+  margin-left: 40px;
+  margin-right: 40px;
+  flex-direction: column;
+  margin-top: 20px;
+}
+@mixin events-create{
+  font-size: 70%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  .back-icon{
+    margin: 10px;
+    align-self: flex-start;
+    position: absolute;
+    cursor: pointer;
+  }
+  .error{
+    color: red;
+    font-size: 50%;
+  }
+  .create-label{
+    font-size: 120%;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .create-field-label{
+    font-family: $medium-font;
+  }
+  .create-event-date-time{
+    display: flex;
+    flex-direction: row;
+    .create-event-date{
+      flex: 1 1 80%;
+      max-width: 80%;
+      padding-right: 10px;
+    }
+    .create-event-time{
+      flex: 1 1 30%;
+      max-width: 30%;
+    }
+  }
+  .input-field-group{
+    @include events-create-input-holder;
+    .input-field-wrapper{
+      width: 100%;
+    }
+    .edit{
+      @include events-create-input;
+    }
+    textarea{
+      resize: none;
+      height: 100px;
+    }
+  }
+  .create{
+    @include events-create-input-holder;
+    .create-btn{
+      @include simple-button(#02E7B2);
+      width: max-content;
+      margin: auto;
+    }
+  }
+
+
+}

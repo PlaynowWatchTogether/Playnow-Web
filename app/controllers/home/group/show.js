@@ -7,8 +7,10 @@ import MessaginUploadsHandler from '../../../mixins/messaging-uploads-handler';
 import MessagingMessageHelper from '../../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../../mixins/messaging-messsage-pager';
 import MessageObject from '../../../custom-objects/message-object';
+import CreateEventMixin from '../../../mixins/create-event-mixin';
+import moment from 'moment';
 
-export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, {
+export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {
   firebaseApp: service(),
   db: service(),
   auth: service(),
@@ -127,6 +129,18 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     this.resetUploads();
     this.set('messageText', '');
   },
+  timeDropdown: computed(function(){
+
+  }),
+  newEventSeatsDropdown:computed(function(){
+    const seats = [{id: -1,title:'Unlimited'}];
+    let i = 1;
+    while (i <= 150) {
+      seats.push({title: i, id: i});
+      i += 1;
+    }
+    return seats
+  }),
   actions:{
     selectEmoji(emoji){
       let msg = this.get('messageText');
@@ -222,6 +236,10 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     playlistVideoRemove(video){
       return this.dataSource.removePlaylistItem(this.dataSource.feedId, video);
+    },
+    showCreateEvent(){
+      $('#sidebar-tabs .tab-events a').tab('show');
+      this.createEventShowed();
     }
   }
 });

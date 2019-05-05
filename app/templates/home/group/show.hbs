@@ -177,14 +177,14 @@
     <div class="feed-sidebar">
       <div class="header">
         <div class="tabs">
-          <ul class="nav nav-pills">
-            <li class="nav-item">
+          <ul class="nav nav-pills" id="sidebar-tabs">
+            <li class="nav-item tab-videos">
               <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
                  aria-selected="true">
                 Videos
               </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item tab-events">
               <a class="nav-link" data-toggle="tab" href="#events" role="tab" aria-controls="events"
                  aria-selected="true">
                 Events
@@ -192,10 +192,12 @@
             </li>
           </ul>
         </div>
-        <div class="create-event">
-          <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
-          <div class="label">Create Event</div>
-        </div>
+        {{#unless creatingEvent}}
+          <div class="create-event" {{action 'showCreateEvent'}}>
+            <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
+            <div class="label">Create Event</div>
+          </div>
+        {{/unless}}
       </div>
       <div class="tab-content">
         <div class="tab-pane fade show active" id="videos">
@@ -209,6 +211,54 @@
             onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
         </div>
         <div class="tab-pane fade" id="events">
+          {{#if creatingEvent}}
+            <div class="events-create-root">
+              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelCreateEvent'}}>
+              <div class="create-label">
+                Create Event
+              </div>
+              <div class="input-field-group">
+                <div class="create-title input-field-wrapper {{if newEventErrors.title 'with-error'}}">
+                  {{input value=newEvent.title placeholder="Title" classNames="edit"}}
+                  {{#if newEventErrors.title}}
+                    <span class="error">{{newEventErrors.title}}</span>
+                  {{/if}}
+                </div>
+              </div>
+              {{#event-create-date-time-picker model=newEvent.date classNames="input-field-group "}}
+                {{#if newEventErrors.date}}
+                  <span class="error">{{newEventErrors.date}}</span>
+                {{/if}}
+              {{/event-create-date-time-picker}}
+              <div class="input-field-group">
+                <div class="create-field-label">
+                  Event description
+                </div>
+                <div class="create-description input-field-wrapper {{if newEventErrors.description 'with-error'}}">
+                  {{textarea value=newEvent.description placeholder="This event is for..." classNames="edit"}}
+                  {{#if newEventErrors.description}}
+                    <span class="error">{{newEventErrors.description}}</span>
+                  {{/if}}
+                </div>
+              </div>
+              <div class="input-field-group">
+                <div class="create-field-label">
+                  Seats
+                </div>
+                <div class="dropdown create-seats input-field-wrapper">
+                  {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
+                                  onChange=(action 'onSeatsPick')}}
+                </div>
+              </div>
+
+              <div class="create">
+                <div class="create-btn" {{action "createEvent"}}>
+                  Create
+                </div>
+              </div>
+            </div>
+          {{else}}
+          {{/if}}
         </div>
       </div>
     </div>

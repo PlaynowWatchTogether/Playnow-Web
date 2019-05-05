@@ -77,6 +77,15 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       return 0;
     }
   }),
+  playlistModel: computed('feed', function(){
+
+    const feed = this.get('feed');
+    if (feed){
+      return {title:`${feed.GroupName}'s playlist`, videos: Object.values((feed.Playlist || {}))}
+    }else{
+      return null;
+    }
+  }),
   handleDSChange(){
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
       this.set('feed', feed);
@@ -201,9 +210,18 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     saveEdit(){
       this.dataSource.updateGroup(this.dataSource.feedId, this.get('feedTitle'), this.get('feedDescription')).then(()=>{
-        this.set('editFeed', false);  
+        this.set('editFeed', false);
       })
 
+    },
+    videoPick(video){
+
+    },
+    playlistVideoAdd(video){
+      return this.dataSource.addPlaylistItem(this.dataSource.feedId, video);
+    },
+    playlistVideoRemove(video){
+      return this.dataSource.removePlaylistItem(this.dataSource.feedId, video);
     }
   }
 });

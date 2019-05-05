@@ -1,0 +1,48 @@
+{{#scroll-with-listener  music=false
+                         onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=scrollParent
+                         loading=loadingVideo}}
+
+  <div class="searchHolder">
+    {{#search-holder classNames="search" }}
+
+      <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+      {{input value=searchQueryVideo classNames="searchInput" placeholder="Search content"
+              insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+      <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+      <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
+        <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+      </div>
+    {{/search-holder}}
+  </div>
+  {{#if playlistModel}}
+    {{chat-videos-playlist
+      classNames='chat-videos-playlist'
+      model=playlistModel
+      onVideoPick=(action "videoPick")
+      onAddVideo=(action "playlistVideoAdd")
+      onRemoveVideo=(action "playlistVideoRemove")}}
+  {{/if}}
+  {{#if isLoadingVideo}}
+    <div class="loading-holder h-100">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  {{else}}
+    <div class="title">
+      Trending
+    </div>
+  {{/if}}
+  <div class="youtube-items noselect">
+
+    {{#each youtubeVideoItems as |video|}}
+      {{#youtube-video model=video classNames="youtube-item"
+                       clickAction=(action "videoPick")
+                       displayRequest=displayVideoRequest}}
+
+      {{/youtube-video}}
+    {{/each}}
+  </div>
+
+{{/scroll-with-listener}}

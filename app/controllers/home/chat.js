@@ -16,9 +16,10 @@ import { set } from '@ember/object';
 import MessagingUploadsHandler from '../../mixins/messaging-uploads-handler';
 import MessagingMessageHelper from '../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../mixins/messaging-messsage-pager';
-export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager, {
+import VideoSearchMixin from '../../mixins/videos-search-mixin';
+
+export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, {
   firebaseApp: service(),
-  youtubeSearch: service(),
   db: service(),
   auth: service(),
   ntp: service(),
@@ -91,8 +92,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.set('playerState', {});
     this.set('searchMode', 'video');
 
-    this.queryYoutubeVideos(true);
-    this.queryYoutubeMusic(true);
+    this.queryVideos(true);
+    this.queryMusic(true);
   },
   messageConvId(){
     return this.get('dataSource').convId();
@@ -136,78 +137,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
     return ''
   }),
-  queryYoutubeMusic(reset) {
-    return new Promise((resolve) => {
-      let q = this.get('searchQueryMusic');
-      let page = this.get('youtubeMusicItemsPage');
-      if (reset) {
-        this.set('isLoadingMusic', true);
-      }
-      if (reset) {
-        this.set('youtubeMusicItems', []);
-      }
-      if (!q || q.length === 0) {
-        this.get('youtubeSearch').trending(true, page).then((data) => {
-          this.set('youtubeMusicItemsPage', data.nextPage);
-          if (reset) {
-            this.set('youtubeMusicItems', data.items);
-          } else {
-            this.get('youtubeMusicItems').pushObjects(data.items);
-          }
-          this.set('isLoadingMusic', false);
-          resolve();
-        });
-      } else {
-        this.get('youtubeSearch').search(q, true, page).then((data) => {
-          this.set('youtubeMusicItemsPage', data.nextPage);
-          if (reset) {
-            this.set('youtubeMusicItems', data.items);
-          } else {
-            this.get('youtubeMusicItems').pushObjects(data.items);
-          }
-          this.set('isLoadingMusic', false);
-          resolve();
-        });
-      }
 
-    });
-  },
-  queryYoutubeVideos(reset) {
-    return new Promise((resolve) => {
-      if (reset) {
-        this.set('isLoadingVideo', true);
-      }
-      let q = this.get('searchQueryVideo');
-      let page = this.get('youtubeVideoItemsPage');
-      if (reset) {
-        this.set('youtubeVideoItems', []);
-      }
-      if (!q || q.length === 0) {
-        this.get('youtubeSearch').trending(false, page).then((data) => {
-          this.set('youtubeVideoItemsPage', data.nextPage);
-          if (reset) {
-            this.set('youtubeVideoItems', data.items);
-          } else {
-            this.get('youtubeVideoItems').pushObjects(data.items);
-          }
-          this.set('isLoadingVideo', false);
-          resolve();
-        });
-      } else {
-        this.get('youtubeSearch').search(q, false, page).then((data) => {
-          this.set('youtubeVideoItemsPage', data.nextPage);
-          if (reset) {
-            this.set('youtubeVideoItems', data.items);
-          } else {
-            this.get('youtubeVideoItems').pushObjects(data.items);
-          }
-          this.set('isLoadingVideo', false);
-          resolve();
-        });
-      }
-
-    });
-  },
   messageTextObserver: (obj) => {
     debug('typing ' + obj.get('messageText'));
     let ds = obj.get('dataSource');
@@ -545,21 +475,18 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.set('displayEmoji',false);
     this.offGroupListen();
     this.set('inReplyTo', null);
-    this.resetUploads();
     this.set('id', null);
-    this.set('youtubeVideoItemsPage', null);
-    this.set('youtubeMusicItemsPage', null);
+    this.resetUploads();
+    this.resetVideoSearch();
     this.set('messageText', '');
     this.set('playerVideo', {});
     this.set('composeChips', []);
     this.set('chatModel', {});
 
     this.set('searchMode', 'video');
-    this.set('searchQueryVideo', '');
-    this.set('searchQueryMusic', '');
     this.set('isLoadingMessages', false);
-    this.queryYoutubeVideos(true);
-    this.queryYoutubeMusic(true);
+    this.queryVideos(true);
+    this.queryMusic(true);
 
     let ds = this.get('dataSource');
     if (ds) {
@@ -825,7 +752,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     scrolledHalfYoutubeVideo() {
       if (this.get('searchMode') === 'video') {
         this.set('loadingVideo', true);
-        this.queryYoutubeVideos(false).then(() => {
+        this.queryVideos(false).then(() => {
           this.set('loadingVideo', false);
         });
       }
@@ -833,7 +760,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     scrolledHalfYoutubeMusic() {
       if (this.get('searchMode') === 'music') {
         this.set('loadingMusic', true);
-        this.queryYoutubeMusic(false).then(() => {
+        this.queryMusic(false).then(() => {
           this.set('loadingMusic', false);
         });
       }
@@ -899,11 +826,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     triggerSearch() {
       if (this.get('searchMode') === 'video') {
-        this.set('youtubeVideoItemsPage', null);
-        this.queryYoutubeVideos(true);
+        this.queryVideos(true);
       } else {
-        this.set('youtubeMusicItemsPage', null);
-        this.queryYoutubeMusic(true);
+        this.queryMusic(true);
       }
     },
     onChipAdd(data) {

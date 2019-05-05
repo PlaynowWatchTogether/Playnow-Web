@@ -154,6 +154,19 @@ export default EmberObject.extend({
     }).catch((error)=>{
       debug('failed to post message');
     });
+  },
+  addPlaylistItem(convId, video){
+    const senderId = this.db.myId();
+    const itemID = new Date().getTime().toString() + senderId;
+    const item = video;
+    item['playlistId'] = itemID;
+    let ref = this.feedRef(convId).child(`Playlist/${itemID}`);
+    return ref.set(item);
+  },
+  removePlaylistItem(convId, video){
+    const itemID = video['playlistId'];
+    let ref = this.feedRef(convId).child(`Playlist/${itemID}`);
+    return ref.remove();
   }
 
 });

@@ -17,6 +17,7 @@ export default DS.Model.extend({
   Followers: attr('string'),
   Admins: attr('string'),
   FollowRequests: attr('string'),
+  Playlist: attr('string'),
   viewsNumber: computed('FollowersObject', function(){
     return Object.keys(this.get('FollowersObject')).length;
   }),

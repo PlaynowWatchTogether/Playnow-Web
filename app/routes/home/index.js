@@ -32,6 +32,7 @@ export default Route.extend(AuthRouteMixin, {
         feed['lastUpdate'] = new Date().getUTCMilliseconds();
         feed['Followers'] = JSON.stringify(feed.Followers || {});
         feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
+        feed['Playlist'] = JSON.stringify(feed.Playlist || {});
         feed['Admins'] = JSON.stringify(feed.Admins || {});
         let normalizedData = this.store.normalize('feed-item', feed);
         this.store.push(normalizedData);

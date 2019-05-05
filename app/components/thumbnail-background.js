@@ -18,6 +18,9 @@ export default Component.extend({
   },
   handleSize: function handleSize() {
     var parentWidth = $(this.element).parent().width();
+    if (this.get('useSelfWidth')){
+      parentWidth = $(this.element).width();
+    }
     $(this.element).css('height', parentWidth * (9 / 16));
   },
   willDestroyElement: function willDestroyElement() {

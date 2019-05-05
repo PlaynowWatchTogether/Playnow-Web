@@ -1,0 +1,57 @@
+<div class="playlist-header">
+  <div class="playlist-title">
+    {{model.title}}
+  </div>
+  {{#if isEditing}}
+    <div class="playlist-save" {{action 'disableEdit'}}>
+      Done
+    </div>
+  {{else}}
+    <div class="playlist-edit" {{action 'enableEdit'}}>
+      <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit playlist">
+    </div>
+  {{/if}}
+</div>
+{{#if isEditing}}
+  <div class="playlist-add">
+    {{input value=playlistUrl placeholder="Paste video link" classNames='input'}}
+    <img src="/assets/ic-playlist-add-link@2x.png" alt='add playlist link' {{action 'searchVideo'}}>
+  </div>
+{{/if}}
+{{#if videoModel}}
+<div class="playlist-add-video-item">
+  {{youtube-playlist-video model=videoModel classNames="video-item"}}
+  <div class="add-video-holder">
+    <div class="add-video"  {{action 'addVideo'}}>
+      Add
+    </div>
+  </div>
+</div>
+{{/if}}
+{{#if videoError}}
+  <div class="playlist-search-error">
+    {{videoError}}
+  </div>
+{{/if}}
+{{#if model.videos}}
+  <div class="playlist-content">
+    {{#each model.videos as |video|}}
+      {{youtube-video model=video classNames="youtube-item"                        
+                       clickAction=(action "videoPick")
+                       removeAction=(action 'videoRemove')
+                       displayRequest=displayVideoRequest
+                       isRemovable=isEditing}}
+    {{/each}}
+  </div>
+{{else}}
+  {{#unless isEditing}}
+    <div class="playlist-empty">
+      Empty - Create your playlist!
+    </div>
+  {{/unless}}
+{{/if}}
+
+
+
+
+{{yield}}

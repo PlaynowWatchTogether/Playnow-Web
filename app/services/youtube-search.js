@@ -8,15 +8,13 @@ import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
 export default Service.extend({
   video(id) {
-    return new Promise((resolve) => {
-      $.getJSON(VIDEOS_URL + '?' + API_KEY + '&part=id,snippet&id=' + id, null, (data) => {
+    return new Promise((resolve,reject) => {
+      $.getJSON(VIDEOS_URL + '?' + API_KEY + '&part=id,snippet,statistics&id=' + id, null, (data) => {
         debug(data);
         resolve(
           data['items'].firstObject
         );
       })
-
-
     })
   },
   related(videoId) {

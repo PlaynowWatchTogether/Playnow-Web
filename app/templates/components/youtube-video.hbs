@@ -13,9 +13,14 @@
   {{viewsCount}} {{channelDesc}}
 </div>
 {{#if displayRequest}}
-<div class="request-overlay">
-	<div class="request-btn" role="button" {{action "requestVideo"}}>
-		Request
-	</div>
-</div>
+  <div class="request-overlay">
+  	<div class="request-btn" role="button" {{action "requestVideo"}}>
+  		Request
+  	</div>
+  </div>
+{{/if}}
+{{#if isRemovable}}
+  <div class="youtube-video-remove" {{action 'removeVideo'}}>
+    <img src="/assets/ic-video-remove-icon@2x.png" alt='remove video' class="icon">
+  </div>
 {{/if}}

@@ -19,8 +19,8 @@
         }
       }
       .feed-content {
-        flex: 1 1 70%;
-        max-width: 70%;
+        flex: 1 1 67%;
+        max-width: 67%;
         display: flex;
         flex-direction: column;
         position: relative;
@@ -584,9 +584,76 @@
         }
       }
       .feed-sidebar{
-        flex: 1 1 30%;
-        max-width: 30%;
+        flex: 1 1 33%;
+        max-width: 33%;
         border-left: 1px solid #D5D3D3;
+        display: flex;
+        flex-direction: column;
+
+        .header{
+          padding: 0px 10px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          .tabs {
+            .nav-item {
+              cursor: pointer;
+            }
+
+            .nav-link {
+              color: #A2A2A2;
+              background: none;
+              padding-bottom: 0;
+              border-radius: 0;
+            }
+
+            .nav-link.active {
+              background: none;
+
+              color: #27BDD8;
+              border-bottom: 4px solid #27BDD8;
+              padding-bottom: 0;
+              border-radius: 0;
+            }
+          }
+          .create-event{
+            @include iconned-button(#7FDBFC, 14px);
+          }
+        }
+        .tab-content{
+          overflow-y: scroll;
+          #videos{
+            .col-12{
+              padding: 0px 10px;
+            }
+            .title{
+              margin-top: 20px;
+              font-size: 120%;
+              flex: 0 0 auto;
+              font-family: $medium-font;
+            }
+            .searchHolder{
+              @include videos-search;
+            }
+            .youtube-items {
+              @include youtube-videos
+
+              .youtube-item{
+                @include youtube-item
+              }
+            }
+            .chat-videos-playlist{
+              @include chat-playlist
+              .playlist-content{
+                @include youtube-videos
+                .youtube-item{
+                  @include youtube-item
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

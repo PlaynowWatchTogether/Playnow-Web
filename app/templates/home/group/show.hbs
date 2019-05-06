@@ -19,85 +19,96 @@
         {{/link-to}}
       </div>
       <div class="feed-header">
-        <div class="feed-pic">
-          <div class="pic-holder">
-            <div class="profilePicWrapper">
-              {{#file-upload name="feedPic"
-                             disabled=disableProfilePicChange
-                             accept="image/*"
-                             onfileadd=(action "updateFeedPic")}}
-                             <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
-              {{/file-upload}}
+        <div class="feed-header-body">
+          <div class="feed-pic">
+            <div class="pic-holder">
+              <div class="profilePicWrapper">
+                {{#file-upload name="feedPic"
+                               disabled=disableProfilePicChange
+                               accept="image/*"
+                               onfileadd=(action "updateFeedPic")}}
+                               <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
+                {{/file-upload}}
+              </div>
             </div>
           </div>
-        </div>
-        <div class="feed-middle {{if editFeed 'edit'}}">
-          {{#if editFeed}}
-            <div class="feed-edit-save" {{action 'saveEdit'}}>
-              Done
-            </div>
-            <div class="feed-title-edit">
-              <span>@</span>
-              {{input value=feedTitle classNames='edit' placeholder='Channel name'}}
-            </div>
-            <div class="feed-description-edit">
-              {{textarea value=feedDescription classNames='edit' placeholder='Description'}}
-            </div>
-          {{else}}
-            {{#if isAdmin}}
-              <div class="feed-edit" {{action 'enableEdit'}}>
-                <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
-              </div>
-            {{/if}}
-            <div class="feed-title">
-              @ {{feed.GroupName}}
-            </div>
-            <div class="feed-description">
-              {{feed.GroupDescription}}
-            </div>
-          {{/if}}
-          <div class="feed-admins-root">
-            <div class="label">ADMINS</div>
-            <div class="users">
-              {{#each groupAdmins as |admin|}}
-                {{feed-details-admin-item model=admin.id classNames="feed-admin-item"}}
-              {{/each}}
-            </div>
+          <div class="feed-middle {{if editFeed 'edit'}}">
             {{#if editFeed}}
-              <div class="feed-admins-edit">
-                <img src="/assets/ic_plus@2x.png" alt="icon">
-                <div>Add Admin</div>
+              <div class="feed-edit-save" {{action 'saveEdit'}}>
+                Done
               </div>
-            {{/if}}
-          </div>
-        </div>
-        <div class="feed-info">
-          <div class="feed-views">
-            <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
-            <div class="label">{{groupViews}}</div>
-          </div>
-          <div class="feed-actions">
-            {{#if isOwner}}
-              <div class="action-follow-request">
-                Owner
+              <div class="feed-title-edit">
+                <span>@</span>
+                {{input value=feedTitle classNames='edit' placeholder='Channel name'}}
+              </div>
+              <div class="feed-description-edit">
+                {{textarea value=feedDescription classNames='edit' placeholder='Description'}}
               </div>
             {{else}}
-              {{#if isFollowing}}
-                <div class="action-following" {{action "unFollowGroup"}}>
-                  <div class="simple">Following</div>
-                  <div class="action">Unfollow</div>
-                </div>
-              {{else if isRequestedFollow}}
-                <div class="action-follow-request">
-                  Requested
-                </div>
-              {{else}}
-                <div class="action-follow" {{action "followGroup"}}>
-                  <img src="/assets/ic_plus@2x.png" alt="icon">
-                  <div>Follow</div>
+              {{#if isAdmin}}
+                <div class="feed-edit" {{action 'enableEdit'}}>
+                  <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
                 </div>
               {{/if}}
+              <div class="feed-title">
+                @ {{feed.GroupName}}
+              </div>
+              <div class="feed-description">
+                {{feed.GroupDescription}}
+              </div>
             {{/if}}
+            <div class="feed-admins-root">
+              <div class="label">ADMINS</div>
+              <div class="users">
+                {{#each groupAdmins as |admin|}}
+                  {{feed-details-admin-item model=admin.id classNames="feed-admin-item"}}
+                {{/each}}
+              </div>
+              {{#if editFeed}}
+                <div class="feed-admins-edit" {{action "displayAdmins"}}>
+                  <img src="/assets/ic_plus@2x.png" alt="icon">
+                  <div>Add Admin</div>
+                </div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="feed-info">
+            <div class="feed-views">
+              <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
+              <div class="label">{{groupViews}}</div>
+            </div>
+            <div class="feed-actions">
+              {{#if isOwner}}
+                <div class="action-follow-request">
+                  Owner
+                </div>
+              {{else}}
+                {{#if isFollowing}}
+                  <div class="action-following" {{action "unFollowGroup"}}>
+                    <div class="simple">Following</div>
+                    <div class="action">Unfollow</div>
+                  </div>
+                {{else if isRequestedFollow}}
+                  <div class="action-follow-request">
+                    Requested
+                  </div>
+                {{else}}
+                  <div class="action-follow" {{action "followGroup"}}>
+                    <img src="/assets/ic_plus@2x.png" alt="icon">
+                    <div>Follow</div>
+                  </div>
+                {{/if}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        <div class="feed-header-footer">
+          <div class="feed-watcher-items">
+            {{#each membersOnline as |watcher|}}
+              <div class="feed-watcher-item">
+                {{remote-user-profile-pic model=watcher.userId classNames="profilePicWrapper"}}
+              </div>
+            {{/each}}
           </div>
         </div>
       </div>
@@ -318,4 +329,10 @@
       </div>
     </div>
   </div>
+  {{feed-item-edit-admins-popup
+    model=feed
+    id="modalEditAdmins"
+    classNames="modal fade"
+    addAsAdmin=(action "addAsAdmin")
+    removeAsAdmin=(action "removeAsAdmin")}}
 </div>

@@ -13,13 +13,17 @@ export default Route.extend(AuthRouteMixin, {
   model() {
     return this.store.peekAll('feed-item');
   },
-  activate() {    
+  activate() {
     this._super(...arguments);
     $('body').addClass('index');
   },
   deactivate() {
     this._super(...arguments);
     $('body').removeClass('index');
+
     this.get('db').feedsOff();
+  },
+  resetController(controller) {
+    controller.reset()
   }
 });

@@ -13,6 +13,13 @@ export default Controller.extend(FileUploadHelper, {
 			db:this.get('db'),
 			firebaseApp: this.get('firebaseApp')});
 	},
+	reset(){
+		this.set('errors',{});
+		this.set('channelName','');
+		this.set('channelDescription','');
+		this.set('channelLocation',null);
+		this.set('profilePic',null);
+	},
 	actions:{
 		uploadGroupImage(file){
 			let ref = this.firebaseApp.storage().ref('Media/Files/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
@@ -38,11 +45,13 @@ export default Controller.extend(FileUploadHelper, {
 		},
 		createFeed(){
 			this.set('errors',{});
-			if (this.get('channelName').length === 0){
+			const name = this.get('channelName');
+			if (!name || name.length === 0){
 				this.set('errors.name','Should not be blank')
 				return;
 			}
-			if (this.get('channelDescription').length === 0){
+			const desc = this.get('channelDescription');
+			if (!desc || desc.length === 0){
 				this.set('errors.description','Should not be blank')
 				return;
 			}
@@ -52,8 +61,8 @@ export default Controller.extend(FileUploadHelper, {
 			}
 			this.groupSource.createGroup({
 				ProfilePic: this.get('profilePic')||'',
-				GroupName: this.get('channelName'),
-				GroupDescription: this.get('channelDescription'),
+				GroupName: name,
+				GroupDescription: desc,
 				GroupAccess: this.get('isPublic')?1:0
 			},this.get('channelLocation')).then((channel)=>{
 				this.transitionToRoute('home.group.show',{group_id: channel.id});

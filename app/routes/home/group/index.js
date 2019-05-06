@@ -7,6 +7,9 @@ export default Route.extend({
   },
   deactivate() {
     this._super(...arguments);
-    $('body').removeClass('index');   
+    $('body').removeClass('index');
+  },
+  resetController(controller) {
+    controller.reset()
   }
 });

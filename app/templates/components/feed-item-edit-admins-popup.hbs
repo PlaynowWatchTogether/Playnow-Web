@@ -1,0 +1,54 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="back-holder" {{action "hideModal"}}>
+        <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+      </div>
+      <div class="modal-title" id="exampleModalLongTitle">Current Admins</div>
+    </div>
+    <div class="modal-body">
+      <div class="feed-item-admins-current">
+        {{#each groupAdmins as |admin|}}
+          {{feed-item-edit-admin-item model=admin feed=model classNames="feed-item-admins-item" removeAsAdmin=(action "removeAsAdmin")}}
+        {{/each}}
+      </div>
+      <div class="modal-title">
+        Add Admin
+      </div>
+      <div class="feed-item-admins-add">
+        <div class="search-holder">
+          {{#search-holder classNames="search" }}
+
+            <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+            {{input value=searchQuery classNames="searchInput" placeholder="Search contact"
+                    insert-newline=(action "triggerSearch") autocomplete='off' name="videoSearch"}}
+            <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+            <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch"}} role="button">
+              <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+            </div>
+          {{/search-holder}}
+        </div>
+        {{#if resultQuery}}
+          <div class="search-result-label">
+            SEARCH RESULT
+          </div>
+          {{#if isLoadingSearch}}
+            <div class="loading-holder h-100">
+              <div class="lds-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          {{/if}}
+          <div class="search-results">
+            {{#each searchResults as |user|}}
+              {{feed-admin-edit-add model=user
+                classNames="user-result-item"
+                addAdmin=addAsAdmin}}
+            {{/each}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

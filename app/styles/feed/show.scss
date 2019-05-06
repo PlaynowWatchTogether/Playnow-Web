@@ -35,230 +35,251 @@
         }
         .feed-header{
           display: flex;
-          flex-direction: row;
-          margin-left: 30px;
-          margin-right: 30px;
+          flex-direction: column;
           border-bottom: 1px solid #D6D6D6;
-          padding-bottom: 10px;
-          .feed-pic {
-            flex: 0 0 auto;
-            cursor: pointer;
-            .pic-holder {
-              width: 146px;
-              height: 150px;
-              display: flex;
-              background: white;
-              border-radius: 50%;
-              box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.30);
-              padding: 10px;
-              .profilePicWrapper {
-                width: 100%;
-                height: 100%;
-                margin: auto;
-              }
-            }
-          }
-          .feed-middle {
-            width: 100%;
-            flex: 1 1 auto;
+          .feed-header-body{
             display: flex;
-            flex-direction: column;
-            padding-left: 20px;
-            .feed-edit-save{
-              align-self: flex-end;
+            flex-direction: row;
+            margin-left: 30px;
+            margin-right: 30px;
+            padding-bottom: 10px;
+            .feed-pic {
+              flex: 0 0 auto;
               cursor: pointer;
-              color: #4D9CB4;
-              font-size: 80%;
-            }
-            .feed-title-edit{
-              background: #F5F4F4;
-              border-radius: 20px;
-              border: 1px solid #D1D1D1;
-              padding-left: 10px;
-              padding-right: 10px;
-              padding-top: 5px;
-              padding-bottom: 5px;
-              margin-right: 35px;
-              input{
-                background: none;
-                border: none;
-                outline: none;
-                padding-left: 5px;
-              }
-            }
-            .feed-description-edit{
-              background: #F5F4F4;
-              border-radius: 20px;
-              border: 1px solid #D1D1D1;
-              margin-top: 10px;
-              margin-right: 35px;
-              textarea{
-                width: 100%;
-                background: none;
-                border: none;
-                resize: none;
-                outline: none;
+              .pic-holder {
+                width: 146px;
+                height: 150px;
+                display: flex;
+                background: white;
+                border-radius: 50%;
+                box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.30);
                 padding: 10px;
-                border-radius: 20px;
-                font-size: 80%;
-              }
-            }
-            .feed-edit {
-              display: flex;
-              .edit-img {
-                width: 12px;
-                margin-left: auto;
-                flex: 0 0 auto;
-                height: 12px;
-                cursor: pointer;
-              }
-            }
-            .feed-title {
-              font-size: 150%;
-              font-family: $medium-font;
-            }
-            .feed-description {
-              font-size: 90%;
-              margin-top: 10px;
-              padding-left: 10px;
-            }
-            .feed-admins-root {
-              display: flex;
-              margin-top: 10px;
-              margin-left: 10px;
-              .feed-admins-edit{
-                cursor: pointer;
-                background: #5AB9FF;
-                border-radius: 20px;
-                display: grid;
-                grid-template-columns: min-content auto;
-                padding: 5px 10px;
-                margin-left: 10px;
-                flex: 0 0 auto;
-                img{
-                  width: 13px;
+                .profilePicWrapper {
+                  width: 100%;
+                  height: 100%;
                   margin: auto;
                 }
-                div{
-                  color: white;
-                  margin-left: 5px;
+              }
+            }
+            .feed-middle {
+              width: 100%;
+              flex: 1 1 auto;
+              display: flex;
+              flex-direction: column;
+              padding-left: 20px;
+              .feed-edit-save{
+                align-self: flex-end;
+                cursor: pointer;
+                color: #4D9CB4;
+                font-size: 80%;
+              }
+              .feed-title-edit{
+                background: #F5F4F4;
+                border-radius: 20px;
+                border: 1px solid #D1D1D1;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                margin-right: 35px;
+                input{
+                  background: none;
+                  border: none;
+                  outline: none;
+                  padding-left: 5px;
+                }
+              }
+              .feed-description-edit{
+                background: #F5F4F4;
+                border-radius: 20px;
+                border: 1px solid #D1D1D1;
+                margin-top: 10px;
+                margin-right: 35px;
+                textarea{
+                  width: 100%;
+                  background: none;
+                  border: none;
+                  resize: none;
+                  outline: none;
+                  padding: 10px;
+                  border-radius: 20px;
                   font-size: 80%;
                 }
               }
-              .feed-admins-edit:hover{
-                background: #3cabfd;
-              }
-              .label{
-                flex: 0 0 auto;
-                margin-top: auto;
-                margin-bottom: auto;
-                font-family: $medium-font;
-                font-size: 60%;
-              }
-              .users{
-                flex: 1 1 auto;
-                overflow-y: scroll;
+              .feed-edit {
                 display: flex;
-                margin-left: 10px;
-                .feed-admin-item{
+                .edit-img {
+                  width: 12px;
+                  margin-left: auto;
                   flex: 0 0 auto;
-                  width: 25px;
-                  height: 25px;
-                  padding: 5px;
-                  margin-right: 5px;
-                  border-radius: 50%;
-                  box-shadow: $message-shadow;
-                  .profilePicWrapper{
-                    width: 100%;
-                    height: 100%;
+                  height: 12px;
+                  cursor: pointer;
+                }
+              }
+              .feed-title {
+                font-size: 150%;
+                font-family: $medium-font;
+              }
+              .feed-description {
+                font-size: 90%;
+                margin-top: 10px;
+                padding-left: 10px;
+              }
+              .feed-admins-root {
+                display: flex;
+                margin-top: 10px;
+                margin-left: 10px;
+                .feed-admins-edit{
+                  cursor: pointer;
+                  background: #5AB9FF;
+                  border-radius: 20px;
+                  display: grid;
+                  grid-template-columns: min-content auto;
+                  padding: 5px 10px;
+                  margin-left: 10px;
+                  flex: 0 0 auto;
+                  img{
+                    width: 13px;
+                    margin: auto;
+                  }
+                  div{
+                    color: white;
+                    margin-left: 5px;
+                    font-size: 80%;
+                  }
+                }
+                .feed-admins-edit:hover{
+                  background: #3cabfd;
+                }
+                .label{
+                  flex: 0 0 auto;
+                  margin-top: auto;
+                  margin-bottom: auto;
+                  font-family: $medium-font;
+                  font-size: 60%;
+                }
+                .users{
+                  flex: 1 1 auto;
+                  overflow-y: scroll;
+                  display: flex;
+                  margin-left: 10px;
+                  .feed-admin-item{
+                    flex: 0 0 auto;
+                    width: 25px;
+                    height: 25px;
+                    padding: 2px;
+                    margin-right: 5px;
+                    border-radius: 50%;
+                    box-shadow: $message-shadow;
+                    .profilePicWrapper{
+                      width: 100%;
+                      height: 100%;
+                    }
                   }
                 }
               }
-            }
 
-          }
-          .feed-middle.edit{
-            .feed-admins-root{
-              margin-right: 35px;
             }
-            .users{
-              flex: 1 1 50%;
-            }
+            .feed-middle.edit{
+              .feed-admins-root{
+                margin-right: 35px;
+              }
+              .users{
+                flex: 1 1 50%;
+              }
 
-          }
-          .feed-info{
-            flex: 1 1 30%;
-            align-items: flex-end;
-            display: flex;
-            flex-direction: column;
-            .feed-views {
-              flex: 0 0 auto;
+            }
+            .feed-info{
+              flex: 1 1 30%;
+              align-items: flex-end;
               display: flex;
-              flex-direction: row;
-              justify-content: flex-end;
-              padding-right: 20px;
-              .views-img {
-                width: 14px;
-                height: 9px;
+              flex-direction: column;
+              .feed-views {
                 flex: 0 0 auto;
-                margin-top: 6px;
-                margin-right: 5px;
-              }
-              .label {
-                flex: 0 0 auto;
-                color: #989898;
-                height: min-content;
-                font-size: 80%;
-              }
-            }
-            .feed-actions{
-              padding-top: 10px;
-              .action-following, .action-follow-request{
-                background: #F4F4F4;
-                cursor: pointer;
-                border-radius: 20px;
                 display: flex;
-                padding: 5px 10px;
-                font-size: 80%;
-                border: 1px solid #D6D6D6;
-                color: #777778;
-                .action{
-                  display: none;
-                  color: white;
+                flex-direction: row;
+                justify-content: flex-end;
+                padding-right: 20px;
+                .views-img {
+                  width: 14px;
+                  height: 9px;
+                  flex: 0 0 auto;
+                  margin-top: 6px;
+                  margin-right: 5px;
                 }
-              }
-              .action-following:hover{
-                background: #ff1818;
-                .action{
-                  display: block;
-                }
-                .simple{
-                  display: none;
-                }
-              }
-              .action-follow{
-                cursor: pointer;
-                background: #5AB9FF;
-                border-radius: 20px;
-                display: grid;
-                grid-template-columns: min-content auto;
-                padding: 5px 10px;
-                img{
-                  width: 13px;
-                  margin: auto;
-                }
-                div{
-                  color: white;
-                  margin-left: 5px;
+                .label {
+                  flex: 0 0 auto;
+                  color: #989898;
+                  height: min-content;
                   font-size: 80%;
                 }
               }
-              .action-follow:hover{
-                background: #3cabfd;
+              .feed-actions{
+                padding-top: 10px;
+                .action-following, .action-follow-request{
+                  background: #F4F4F4;
+                  cursor: pointer;
+                  border-radius: 20px;
+                  display: flex;
+                  padding: 5px 10px;
+                  font-size: 80%;
+                  border: 1px solid #D6D6D6;
+                  color: #777778;
+                  .action{
+                    display: none;
+                    color: white;
+                  }
+                }
+                .action-following:hover{
+                  background: #ff1818;
+                  .action{
+                    display: block;
+                  }
+                  .simple{
+                    display: none;
+                  }
+                }
+                .action-follow{
+                  cursor: pointer;
+                  background: #5AB9FF;
+                  border-radius: 20px;
+                  display: grid;
+                  grid-template-columns: min-content auto;
+                  padding: 5px 10px;
+                  img{
+                    width: 13px;
+                    margin: auto;
+                  }
+                  div{
+                    color: white;
+                    margin-left: 5px;
+                    font-size: 80%;
+                  }
+                }
+                .action-follow:hover{
+                  background: #3cabfd;
+                }
               }
             }
           }
-
+          .feed-header-footer{
+            padding: 10px;
+            .feed-watcher-items{
+              display: flex;
+              .feed-watcher-item{
+                margin-right: 5px;
+                width: 35px;
+                height: 35px;
+                padding: 2px;
+                box-shadow: $message-shadow;
+                border-radius: 50%;
+                .profilePicWrapper{
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+            }
+          }
         }
         .feed-messages-holder{
           flex: 1 1 auto;
@@ -271,6 +292,7 @@
             width: 100%;
             opacity: 0.95;
             position: absolute;
+            padding-right: 40px;
             padding-top: 20px;
             .title{
               width: max-content;
@@ -739,6 +761,123 @@
               @include events-list;
               .events-list-item{
                 @include events-list-item;
+              }
+            }
+          }
+        }
+      }
+    }
+    #modalEditAdmins{
+      .modal-content{
+        border-radius: 20px;
+        border: none;
+        .modal-header{
+          border-bottom: none;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          .back-holder{
+            cursor: pointer;
+            position: absolute;
+            left: 0;
+            padding: 20px;
+          }
+        }
+      }
+      .modal-title{
+        place-self: center;
+        font-size: 130%;
+      }
+      .modal-body{
+        .modal-title{
+          margin-top: 40px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+      }
+      .feed-item-admins-current{
+        padding-left: 20px;
+        padding-right: 20px;
+        .feed-item-admins-item{
+          display: flex;
+          padding: 15px 0px;
+          flex-direction: row;
+          .profilePicWrapper{
+            place-self: center;
+            width: 40px;
+            height: 40px;
+          }
+
+
+          .admin-name{
+            place-self: center;
+            margin-left: 10px;
+            font-family: $medium-font;
+          }
+          .admin-actions{
+            display: flex;
+            place-items: flex-end;
+            flex: 1 1 auto;
+            color: #B9B9B9;
+            flex-direction: row;
+            align-self: center;
+            place-content: flex-end;
+            .admin-action{
+              justify-self: flex-end;
+            }
+            .admin{
+              margin-right: 20px;
+            }
+            .remove{
+              cursor: pointer;
+              color: #FF8686;
+              &:hover{
+                color: darken(#FF8686, 30%);
+              }
+            }
+            .owner{
+              color: #B9B9B9;
+            }
+          }
+        }
+
+      }
+      .feed-item-admins-add{
+        padding-left: 20px;
+        padding-right: 20px;
+        .search-holder{
+          padding-left: 40px;
+          padding-right: 40px;
+          @include videos-search(#60D3FC);
+        }
+        .search-result-label{
+          margin-top: 20px;
+          font-family: $medium-font;
+        }
+        .search-results{
+          .user-result-item{
+            display: flex;
+            place-items: center;
+            padding: 10px 0px;
+            .profilePicWrapper{
+              width: 40px;
+              height: 40px;
+            }
+            .user-name{
+              margin-left: 10px;
+              flex: 1 1 auto;
+              place-self: center;
+            }
+            .user-actions{
+              .action-add{
+                color: #27BDD8;
+                font-family: $medium-font;
+                cursor: pointer;
+              }
+              .action-added{
+                color: #D872FF;
+                font-family: $medium-font;
               }
             }
           }

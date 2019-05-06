@@ -17,7 +17,19 @@ export default EmberObject.extend({
     return `${new Date().getTime()}@${myID}`;
   },
   reset(){
-
+    const myID = this.db.myId();
+    const ref = this.feedRef(this.feedId).child(`videoWatching/${myID}`);
+    ref.remove();
+  },
+  open(convId){
+    const myID = this.db.myId();
+    const ref = this.feedRef(convId).child(`videoWatching/${myID}`);
+    ref.onDisconnect().remove();
+    return ref.update({
+        userId:myID,
+        state: 'closed',
+        updatedAt: new Date().getTime()
+      });
   },
   updateGroupPic(convId, pic){
     const myID = this.db.myId();
@@ -246,6 +258,31 @@ export default EmberObject.extend({
   leaveEvent(convId, eventId){
     let senderId = this.db.myId();
     let ref = this.feedRef(convId).child(`Events/${eventId}/Members/${senderId}`);
+    return ref.remove();
+  },
+  addUserAdmin(convId,user){
+    let senderId = this.db.myId();
+    const id = user.id;
+    let ref = this.feedRef(convId);
+
+    let name = user['FirstName'] + ' ' + user['LastName'];
+    let email = user.Email;
+    let username = name;
+    if (email && email.includes('@')) {
+      username = email.split("@")[0]
+    }
+    let updates = {};
+    updates[`Followers/${id}/Email`] = email;
+    updates[`Followers/${id}/Name`] = username;
+    updates[`Followers/${id}/Username`] = name;
+    if (user['ProfilePic']) {
+      updates[`Followers/${id}/ProfilePic`] =user['ProfilePic'];
+    }
+    updates[`Admins/${id}/id`] = id;
+    return ref.update(updates);
+  },
+  removeUserAdmin(convId,member){
+    const ref = this.feedRef(convId).child(`Admins/${member.id}`);
     return ref.remove();
   }
 });

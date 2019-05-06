@@ -28,6 +28,14 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   messageConvId(){
     return this.dataSource.feedId;
   },
+  membersOnline: computed('feed', function(){
+    const feed = this.get('feed');
+    if (feed){
+      return Object.values(feed.videoWatching);
+    }else{
+      return [];
+    }
+  }),
   handleModelChange(){
     debug('feed/show handleModelChange');
     const id = this.get('model.group_id');
@@ -108,11 +116,13 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       return null;
     }
   }),
+
   handleDSChange(){
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
       this.set('feed', feed);
       this.set('lastMessageDate',feed.lastMessageDate);
     });
+    this.dataSource.open(this.dataSource.feedId);
     this.dataSource.messages(this.dataSource.feedId, (messages)=>{
       const converted = this.convertServerMessagesToUI(messages);
       const wrappedMessages = converted.messages;
@@ -165,6 +175,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     return !this.get('editFeed');
   }),
   actions:{
+    displayAdmins(){
+      $('#modalEditAdmins').modal();
+    },
     selectEmoji(emoji){
       let msg = this.get('messageText');
 
@@ -312,6 +325,12 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
           this.dataSource.updateGroupPic(this.dataSource.feedId, downloadURL);
         });
       });
+    },
+    addAsAdmin(user){
+      return this.dataSource.addUserAdmin(this.dataSource.feedId, user);
+    },
+    removeAsAdmin(member){
+      return this.dataSource.removeUserAdmin(this.dataSource.feedId, member);
     }
   }
 });

@@ -9,6 +9,9 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
   },
+  reset(){
+
+  },
   myFeeds: computed('model.@each.lastUpdate', function(){
     const myID = this.db.myId();
     return this.get('model').filter((elem) => {

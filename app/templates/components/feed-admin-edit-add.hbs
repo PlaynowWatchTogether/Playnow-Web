@@ -1,0 +1,17 @@
+<div class="profilePicWrapper">
+  <img src={{safe-profile-pic model.ProfilePic}} class="profilePic">
+</div>
+<div class="user-name">
+  {{userName}}
+</div>
+<div class="user-actions">
+  {{#if isAdded}}
+    <div class="action-added">
+      Addded!
+    </div>
+  {{else}}
+    <div class="action-add" {{action "addAdmin"}}>
+      Add
+    </div>
+  {{/if}}
+</div>

@@ -37,20 +37,29 @@
 	    	<div class="info">
 		    	<div class="feed-group-channel-name">
 		    		{{input value=channelName placeholder="Channel name" classNames="edit"}}
+            {{#if errors.name}}
+              <div class="error">{{errors.name}}</div>
+            {{/if}}
 		    	</div>
 		    	<div class="feed-group-channel-description">
 		    		{{textarea value=channelDescription placeholder="Channel description" classNames="edit"}}
+            {{#if errors.description}}
+              <div class="error">{{errors.description}}</div>
+            {{/if}}
 		    	</div>
 		    	<div class="feed-group-location-label">
 		    		Location
 		    	</div>
 		    	<div class="feed-group-location">
             {{place-autocomplete-field
-               inputClass="place-autocomplete--input edit"               
+               inputClass="place-autocomplete--input edit"
                placeChangedCallback=(action "channelLocationChanged")
                placeholder="Location"
                preventSubmit=true
             }}
+            {{#if errors.location}}
+              <div class="error">{{errors.location}}</div>
+            {{/if}}
 		    	</div>
 		    	<div class="feed-group-access">
 			    	<div class="feed-group-access-label">

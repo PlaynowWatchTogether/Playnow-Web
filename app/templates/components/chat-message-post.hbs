@@ -31,7 +31,8 @@
 {{#if showComments}}
   {{feed-commentable-elem
     model=model
-    classNames="post-comments {{if isMine 'mine'}}"
+    classNames="post-comments"
+    isMine=isMine
     onLikeComment=onLikeComment
     postCommentForMessage=postCommentForMessage}}
 {{/if}}

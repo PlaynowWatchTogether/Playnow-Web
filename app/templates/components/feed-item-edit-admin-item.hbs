@@ -1,0 +1,10 @@
+{{remote-user-profile-pic model=model.id classNames="admin-pic profilePicWrapper"}}
+{{remote-user-username model=model.id classNames="admin-name"}}
+<div class="admin-actions">
+  {{#if isOwner}}
+    <div class="admin-action owner">Owner</div>
+  {{else}}
+    <div class="admin-action admin">Admin</div>
+    <div class="admin-action remove" {{action "removeAsAdmin"}}>Remove</div>
+  {{/if}}
+</div>

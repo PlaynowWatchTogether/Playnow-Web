@@ -2,7 +2,9 @@ import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
-export default Route.extend({
+import ApplicationDBFeed from '../mixins/application-db-feed';
+
+export default Route.extend(ApplicationDBFeed, {
   auth: service(),
   db: service(),
   firebaseApp: service(),
@@ -20,6 +22,8 @@ export default Route.extend({
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.handleFeedSync();
+
         this.db.messaging.requestPermission().then(() => {
           debug('Notification permission granted.');
           this.db.messagePermissionsGranted();

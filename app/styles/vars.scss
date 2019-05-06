@@ -414,3 +414,220 @@ $message-border-radius: 14px;
 
 
 }
+
+@mixin events-list {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+@mixin events-list-item-date{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-left: 10px;
+  margin-right: 10px;
+  img{
+    margin-top: 3px;
+    flex: 0 0 auto;
+    width: 20px;
+    height: auto;
+  }
+  .feed-event-date-wrapper{
+    margin-left: 10px;
+    font-size: 90%;
+    .feed-event-date-date{
+      font-family: $medium-font;
+    }
+    .feed-event-date-time{
+      color: #989898;
+    }
+  }
+}
+@mixin events-list-item{
+  font-size: 80%;
+  .feed-event-content{
+    background: white;
+    margin-top: 15px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    &:hover{
+      background: darken(white, 5%);
+    }
+    .feed-event-body{
+      display: flex;
+      flex-direction: column;
+    }
+    .feed-event-header{
+      display: flex;
+      flex-direction: row;
+      margin-left: 10px;
+      margin-right: 10px;
+      .feed-event-title{
+        font-size: 120%;
+        flex: 1 1 auto;
+        font-family: $medium-font;
+      }
+      .feed-event-seats{
+        display: flex;
+        flex-direction: column;
+        flex: 0 0 auto;
+        text-align: center;
+        img{
+          width: 24px;
+        }
+        div{
+          opacity: 0.59;
+          font-size: 50%;
+        }
+      }
+    }
+    .feed-event-date-root{
+      @include events-list-item-date;
+
+    }
+    .feed-event-description{
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .feed-event-footer{
+      display: flex;
+      flex-direction: row;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(112, 112, 112, 0.24);
+      .author-profile-pic{
+        width: 30px;
+        height: 30px;
+        place-self: center;
+        .profilePicWrapper{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .author-profile-name{
+        margin-left: 10px;
+        flex: 1 1;
+        place-self: center;
+      }
+      .feed-reactions{
+        @include feed-elem-reactions(15px);
+        place-self: center;
+      }
+      .feed-action{
+        margin-left: 7px;
+        display: flex;
+        place-items: center;
+        .action-owner{
+          pointer-events: none;
+          @include simple-button(#D9D9D9);
+        }
+        .action-joined{
+          pointer-events: none;
+          @include simple-button(#D9D9D9);
+        }
+        .action-join{
+          @include iconned-button(#02E7B2, 13px);
+        }
+      }
+    }
+  }
+  .feed-event-comments{
+    @include  feed-elem-comments;
+  }
+}
+@mixin feed-elem-comments{
+  padding-top: 10px;
+  padding-left: 5px;
+  .comments-header{
+    display: flex;
+    padding-bottom: 5px;
+  }
+  .comments, .likes {
+    display: flex;
+    .label {
+      font-family: $medium-font;
+    }
+    .value {
+      margin-left: 5px;
+      opacity: 0.59;
+    }
+  }
+  .likes{
+    margin-left: 10px;
+  }
+  .new-comment{
+    padding-top: 10px;
+    padding-bottom: 20px;
+    .input{
+      width: 100%;
+      border: none;
+      background: #F0F0F0;
+      border-radius: 15px;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      outline: none;
+    }
+  }
+  .post-comment-item{
+    border-top: 1px solid #7070704a;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    .header {
+      display: flex;
+      flex-direction: row;
+      .comment-author-pic{
+        .profilePicWrapper{
+          width: 25px;
+          height: 25px;
+        }
+      }
+      .comment-author-name{
+        opacity: 0.59;
+        margin-left: 10px;
+        flex: 1 1 auto;
+      }
+      .comment-like{
+        place-self: center;
+        justify-self: flex-end;
+        img{
+          cursor: pointer;
+          width: 22px;
+        }
+      }
+    }
+    .content{
+      font-size: 90%;
+      padding-left: 45px;
+    }
+  }
+}
+@mixin feed-elem-reactions($icon-width: 25px){
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  .reaction-comments, .reaction-likes{
+    display: grid;
+    grid-template-columns: auto auto;
+    cursor: pointer;
+    img{
+      margin: auto;
+      width: $icon-width;
+    }
+    .label{
+      opacity: 0.59;
+      margin-left: 5px;
+    }
+  }
+  .reaction-likes{
+    margin-left: 10px;
+  }
+}

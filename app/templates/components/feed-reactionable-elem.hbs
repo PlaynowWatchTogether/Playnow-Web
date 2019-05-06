@@ -1,0 +1,12 @@
+<div class="reaction-comments" {{action "toggleReactionComments"}}>
+  <img src="/assets/ic-feed-post-comments@2x.png" alt="post reactions comments">
+  <div class="label">{{postCommentsCount}}</div>
+</div>
+<div class="reaction-likes" {{action 'toggleLike'}}>
+  {{#if isLiked}}
+    <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
+  {{else}}
+    <img src="/assets/ic-feed-post-likes@2x.png" alt="post reactions likes">
+  {{/if}}
+  <div class="label">{{postLikesCount}}</div>
+</div>

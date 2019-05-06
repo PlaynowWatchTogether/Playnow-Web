@@ -199,7 +199,7 @@
           </div>
         {{/unless}}
       </div>
-      <div class="tab-content">
+      <div class="tab-content h-100">
         <div class="tab-pane fade show active" id="videos">
           {{chat-videos-list
             classNames="col-12"
@@ -258,6 +258,27 @@
               </div>
             </div>
           {{else}}
+            {{#if showingOneEvent}}
+              {{feed-event-show-details
+                model=showingOneEvent
+                classNames="events-show-root"
+                cancelShowEvent=(action "cancelShowEvent")}}              
+            {{else}}
+              <div class="events-list-root">
+
+                {{#each feedEvents as |event|}}
+                  {{feed-event-list-item
+                    model=event
+                    classNames="events-list-item"
+                    onLikePost=(action "onLikeEventPost")
+                    onLikeEventComment=(action "onLikeEventComment")
+                    postCommentForMessage=(action "onPostEventComment")
+                    joinEvent=(action "onJoinEvent")
+                    onDetails=(action "openEventDetails")}}
+                {{/each}}
+
+              </div>
+            {{/if}}
           {{/if}}
         </div>
       </div>

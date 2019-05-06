@@ -1,0 +1,16 @@
+<div class="comments-header">
+  <div class="comments">
+    <div class="label">Comments</div>
+    <div class="value">{{postCommentsCount}}</div>
+  </div>
+  <div class="likes">
+    <div class="label">Likes</div>
+    <div class="value">{{postLikesCount}}</div>
+  </div>
+</div>
+{{#each modelComments as |comment|}}
+  {{feed-comment-item model=comment classNames="post-comment-item" onLikeComment=(action "onLikeComment")}}
+{{/each}}
+<div class="new-comment">
+  {{input value=commentText classNames="input" placeholder="Post a comment" insert-newline=(action "postComment") autocomplete='off'}}
+</div>

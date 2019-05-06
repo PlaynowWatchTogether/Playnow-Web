@@ -22,38 +22,16 @@
       {{/each}}
     </div>
   {{/if}}
-  <div class="post-reactions">
-    <div class="reaction-comments" {{action "toggleReactionComments"}}>
-      <img src="/assets/ic-feed-post-comments@2x.png" alt="post reactions comments">
-      <div class="label">{{postCommentsCount}}</div>
-    </div>
-    <div class="reaction-likes" {{action 'toggleLike'}}>
-      {{#if isLiked}}
-        <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
-      {{else}}
-        <img src="/assets/ic-feed-post-likes@2x.png" alt="post reactions likes">
-      {{/if}}
-      <div class="label">{{postLikesCount}}</div>
-    </div>
-  </div>
+  {{feed-reactionable-elem
+    model=model
+    classNames="post-reactions"
+    showComments=showComments
+    onLikePost=(action "toggleLike")}}
 </div>
 {{#if showComments}}
-  <div class="post-comments {{if isMine "mine"}}">
-    <div class="header">
-      <div class="comments">
-        <div class="label">Comments</div>
-        <div class="value">{{postCommentsCount}}</div>
-      </div>
-      <div class="likes">
-        <div class="label">Likes</div>
-        <div class="value">{{postLikesCount}}</div>
-      </div>
-    </div>
-    {{#each modelComments as |comment|}}
-      {{feed-comment-item model=comment classNames="post-comment-item" onLikeComment=(action "onLikeComment")}}
-    {{/each}}
-    <div class="new-comment">
-      {{input value=commentText classNames="input" placeholder="Post a comment" insert-newline=(action "postComment") autocomplete='off'}}
-    </div>
-  </div>
+  {{feed-commentable-elem
+    model=model
+    classNames="post-comments {{if isMine 'mine'}}"
+    onLikeComment=onLikeComment
+    postCommentForMessage=postCommentForMessage}}
 {{/if}}

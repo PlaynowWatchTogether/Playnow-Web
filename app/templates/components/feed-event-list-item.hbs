@@ -1,0 +1,59 @@
+<div class="feed-event-content">
+  <div class="feed-event-body" {{action "openDetails"}}>
+    <div class="feed-event-header">
+      <div class="feed-event-title">
+        {{model.obj.title}}
+      </div>
+      <div class="feed-event-seats">
+        <img src="/assets/ic-feed-item-seats@2x.png">
+        <div class="label">
+          {{#if model.isSeatsUnlimited}}
+            {{model.seatsOccupied}}
+          {{else}}
+            {{model.seatsOccupied}}/{{model.seatsTotal}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
+    {{feed-event-when model=model classNames="feed-event-date-root"}}    
+    <div class="feed-event-description">
+      {{model.obj.description}}
+    </div>
+  </div>
+  <div class="feed-event-footer">
+    <div class="author-profile-pic">
+      {{remote-user-profile-pic model=model.obj.creatorId classNames="profilePicWrapper" alt="ProfilePic"}}
+    </div>
+    {{remote-user-username model=model.obj.creatorId classNames="author-profile-name"}}
+    {{feed-reactionable-elem
+      model=model.obj
+      classNames="feed-reactions"
+      showComments=showComments
+      onLikePost=onLikePost}}
+    <div class="feed-action">
+      {{#if isCreator}}
+        <div class="action-owner">
+          Creator
+        </div>
+      {{else if isMember}}
+        <div class="action-joined">
+          Joined
+        </div>
+      {{else}}
+        <div class="action-join" {{action "joinEvent"}}>
+          <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
+          <div class="label">
+            Join
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{#if showComments}}
+  {{feed-commentable-elem
+    model=model
+    classNames="feed-event-comments"
+    onLikeComment=onLikeEventComment
+    postCommentForMessage=postCommentForMessage}}
+{{/if}}

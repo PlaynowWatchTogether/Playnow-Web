@@ -82,25 +82,66 @@ export default EmberObject.extend({
     this.listeners.push(ret);
     return ret;
   },
+  addEventLike(convId, eventId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Events/${eventId}/Likes/${senderId}`);
+    return ref.set(1);
+  },
   addLike(convId, mesId){
     let senderId = this.db.myId();
     let ref = this.feedRef(convId).child(`Messages/${mesId}/Likes/${senderId}`);
     return ref.set(1);
+  },
+  removeEventLike(convId, mesId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Events/${mesId}/Likes/${senderId}`);
+    return ref.remove();
   },
   removeLike(convId, mesId){
     let senderId = this.db.myId();
     let ref = this.feedRef(convId).child(`Messages/${mesId}/Likes/${senderId}`);
     return ref.remove();
   },
+  addEventCommentLike(convId, mesId,commentId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Events/${mesId}/Messages/${commentId}/Likes/${senderId}`);
+    return ref.set(1);
+  },
   addCommentLike(convId, mesId,commentId){
     let senderId = this.db.myId();
     let ref = this.feedRef(convId).child(`Messages/${mesId}/Comments/${commentId}/Likes/${senderId}`);
     return ref.set(1);
   },
+  removeEventCommentLike(convId, mesId,commentId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Events/${mesId}/Messages/${commentId}/Likes/${senderId}`);
+    return ref.remove();
+  },
   removeCommentLike(convId, mesId,commentId){
     let senderId = this.db.myId();
     let ref = this.feedRef(convId).child(`Messages/${mesId}/Comments/${commentId}/Likes/${senderId}`);
     return ref.remove();
+  },
+  postEventComment(convId, mesId, text){
+    let senderId = this.db.myId();
+    let msgUid = new Date().getTime().toString() + senderId;
+    let message = {};
+    message['uid'] = msgUid;
+    message['date'] = new Date().getTime() / 1000;
+    message['serverDate'] = this.firebaseApp.firebase_.database.ServerValue.TIMESTAMP;
+    message['convoId'] = convId;
+    message['senderId'] = senderId;
+    message['senderName'] = this.auth.current.get('userName');
+    message['type'] = 'comment';
+    message['userId'] = senderId;
+    message['message'] = 'web';
+    message['text'] = text;
+    let ref = this.feedRef(convId).child(`Events/${mesId}/Messages/${msgUid}`);
+    ref.update(message).then(() => {
+      debug('Message posted');
+    }).catch((error)=>{
+      debug('failed to post message');
+    });
   },
   postComment(convId, mesId, text){
     let senderId = this.db.myId();
@@ -174,6 +215,20 @@ export default EmberObject.extend({
     let message = event;
     let ref = this.feedRef(convId).child(`Events/${msgUid}`);
     return ref.update(message);
-  }
+  },
+  joinEvent(convId, eventId){
+    let senderId = this.db.myId();
+    return new Promise((resolve,reject)=>{
+      this.db.profile(senderId).then((profile)=>{
+        let ref = this.feedRef(convId).child(`Events/${eventId}/Members/${senderId}`);
+        return ref.set({id: senderId, Username: profile.Email.split('@')[0]});  
+      }).catch((error)=>{
+        reject(error);
+      });
 
+    })
+
+
+
+  }
 });

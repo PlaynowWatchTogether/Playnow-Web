@@ -29,7 +29,7 @@ export default Mixin.create({
       this.set('newEvent.seats.available',parseInt(seats));
     },
     cancelCreateEvent(){
-
+      this.resetNewEvent();
     },
     createEvent(){
       this.set('newEventErrors',{});

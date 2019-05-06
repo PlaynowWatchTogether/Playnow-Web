@@ -39,6 +39,16 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
     this.set('dataSource', ds);
   },
+  feedEvents: computed('feed', function(){
+    const feed = this.get('feed');
+    if (feed){
+      return this.store.peekAll('feed-event').filter((elem)=>{
+        return elem.get('feedId') === feed.id;
+      });
+    }else{
+      return [];
+    }
+  }),
   isAdmin: computed('feed', function(){
     const myId = this.get('db').myId();
     return this.get('feed.creatorId') === myId;
@@ -239,7 +249,35 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     showCreateEvent(){
       $('#sidebar-tabs .tab-events a').tab('show');
+      this.set('showingOneEvent',null);
       this.createEventShowed();
+    },
+    onLikeEventPost(event, liked){
+      if (liked){
+        this.dataSource.addEventLike(this.dataSource.feedId,event.id);
+      }else{
+        this.dataSource.removeEventLike(this.dataSource.feedId,event.id);
+      }
+    },
+    onLikeEventComment(event,comment, liked){
+      if (liked){
+        this.dataSource.addEventCommentLike(this.dataSource.feedId,event.id, comment.uid);
+      }else{
+        this.dataSource.removeEventCommentLike(this.dataSource.feedId,event.id,comment.uid);
+      }
+    },
+    onPostEventComment(event, text){
+      this.dataSource.postEventComment(this.dataSource.feedId,event.id,text);
+    },
+    onJoinEvent(event){
+      this.dataSource.joinEvent(this.dataSource.feedId,event.id);
+    },
+    openEventDetails(event){
+      this.resetNewEvent();
+      this.set('showingOneEvent',event);
+    },
+    cancelShowEvent(){
+      this.set('showingOneEvent',null);
     }
   }
 });

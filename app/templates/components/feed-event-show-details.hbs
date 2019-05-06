@@ -1,0 +1,28 @@
+<div class="events-show-header">
+  <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelShowEvent'}}>
+  <div class="create-label">
+    {{model.obj.title}}
+  </div>
+</div>
+{{feed-event-when classNames="events-show-date-root" model=model}}
+<div class="feed-event-description">
+  {{model.obj.description}}
+</div>
+<div class="feed-event-creator">
+  {{remote-user-profile-pic model=model.obj.creatorId classNames="profilePicWrapper"}}
+  {{remote-user-username model=model.obj.creatorId classNames="creator-name"}}
+</div>
+<div class="feed-event-joiners-label">
+  Joiners
+</div>
+<div class="feed-event-joiners-list">
+  {{input classNames="edit" placeholder="Search Joiners" value=searchTerm}}
+  {{#each modelMembers as |member|}}
+    <div class="feed-event-member">
+      {{remote-user-profile-pic model=member.id classNames="member-pic profilePicWrapper"}}
+      <div class="member-name">
+        {{member.Username}}
+      </div>
+    </div>
+  {{/each}}
+</div>

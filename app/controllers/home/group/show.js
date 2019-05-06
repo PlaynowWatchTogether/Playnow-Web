@@ -39,11 +39,21 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
     this.set('dataSource', ds);
   },
-  feedEvents: computed('feed', function(){
+  currentFeedEvents: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
       return this.store.peekAll('feed-event').filter((elem)=>{
-        return elem.get('feedId') === feed.id;
+        return elem.get('feedId') === feed.id && !elem.get('isPast');
+      });
+    }else{
+      return [];
+    }
+  }),
+  pastFeedEvents: computed('feed', function(){
+    const feed = this.get('feed');
+    if (feed){
+      return this.store.peekAll('feed-event').filter((elem)=>{
+        return elem.get('feedId') === feed.id && elem.get('isPast');
       });
     }else{
       return [];
@@ -51,7 +61,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   }),
   isAdmin: computed('feed', function(){
     const myId = this.get('db').myId();
-    return this.get('feed.creatorId') === myId;
+    return this.get('feed.creatorId') === myId || Object.keys(this.get('feed.Admins')||{}).includes(this.db.myId());;
   }),
   isOwner: computed('feed', function(){
     const myId = this.get('db').myId();
@@ -151,6 +161,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     }
     return seats
   }),
+  disableProfilePicChange: computed('editFeed', function(){
+    return !this.get('editFeed');
+  }),
   actions:{
     selectEmoji(emoji){
       let msg = this.get('messageText');
@@ -227,6 +240,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
         this.get('db').requestFollowFeedGroup(group.id);
       }
     },
+
     enableEdit(){
       this.set('feedTitle', this.get('feed.GroupName'));
       this.set('feedDescription', this.get('feed.GroupDescription'));
@@ -272,12 +286,32 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     onJoinEvent(event){
       this.dataSource.joinEvent(this.dataSource.feedId,event.id);
     },
+    onLeaveEvent(event){
+      this.dataSource.leaveEvent(this.dataSource.feedId,event.id);
+    },
+    onDeleteEvent(event){
+      this.dataSource.deleteEvent(this.dataSource.feedId,event.id).then(()=>{
+        this.set('showingOneEvent',null);
+      });
+    },
     openEventDetails(event){
       this.resetNewEvent();
       this.set('showingOneEvent',event);
     },
     cancelShowEvent(){
       this.set('showingOneEvent',null);
+    },
+    updateFeedPic(file){
+      let metadata = {
+        cacheControl: 'public,max-age=86400'
+      };
+      let ref = this.firebaseApp.storage().ref('Media/Files/' + this.db.myId() + "/" + this.generateUUID() + '.png');
+
+      ref.put(file.blob, metadata).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
+          this.dataSource.updateGroupPic(this.dataSource.feedId, downloadURL);
+        });
+      });
     }
   }
 });

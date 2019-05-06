@@ -36,6 +36,14 @@ module.exports = function (environment) {
         showImageNumberLabel: true
       }
     },
+    'place-autocomplete': {
+       exclude: true,
+       key: 'AIzaSyAKZb6tqdn0g5RKqbTt425o9ZVczpqATAA',
+       client: 'gme-myclientid',
+       version: 3.27, // Optional - if client is set version must be above 3.24
+       language: 'en', // Optional - be default will be based on your browser language
+       region: 'GB' // Optional
+    },
     firebase: {
       apiKey: "AIzaSyB2wa-7D0HZTsSwFNXkUSWs7o-kGl0ku-0",
       authDomain: "goldenfingers1-b95ba.firebaseapp.com",

@@ -22,7 +22,12 @@
         <div class="feed-pic">
           <div class="pic-holder">
             <div class="profilePicWrapper">
-              <img src={{safe-profile-pic feed.profilePic}} class="profilePic" alt="ProfilePic">
+              {{#file-upload name="feedPic"
+                             disabled=disableProfilePicChange
+                             accept="image/*"
+                             onfileadd=(action "updateFeedPic")}}
+                             <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
+              {{/file-upload}}
             </div>
           </div>
         </div>
@@ -193,10 +198,12 @@
           </ul>
         </div>
         {{#unless creatingEvent}}
-          <div class="create-event" {{action 'showCreateEvent'}}>
-            <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
-            <div class="label">Create Event</div>
-          </div>
+          {{#if isAdmin}}
+            <div class="create-event" {{action 'showCreateEvent'}}>
+              <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
+              <div class="label">Create Event</div>
+            </div>
+          {{/if}}
         {{/unless}}
       </div>
       <div class="tab-content h-100">
@@ -262,11 +269,16 @@
               {{feed-event-show-details
                 model=showingOneEvent
                 classNames="events-show-root"
-                cancelShowEvent=(action "cancelShowEvent")}}              
+                cancelShowEvent=(action "cancelShowEvent")
+                joinEvent=(action "onJoinEvent")
+                leaveEvent=(action "onLeaveEvent")
+                deleteEvent=(action "onDeleteEvent")}}
             {{else}}
               <div class="events-list-root">
-
-                {{#each feedEvents as |event|}}
+                <div class="events-list-label">
+                  Current Events
+                </div>
+                {{#each currentFeedEvents as |event|}}
                   {{feed-event-list-item
                     model=event
                     classNames="events-list-item"
@@ -274,9 +286,31 @@
                     onLikeEventComment=(action "onLikeEventComment")
                     postCommentForMessage=(action "onPostEventComment")
                     joinEvent=(action "onJoinEvent")
+                    leaveEvent=(action "onLeaveEvent")
                     onDetails=(action "openEventDetails")}}
+                {{else}}
+                  <div class="events-list-empty">
+                    No events
+                  </div>
                 {{/each}}
-
+                <div class="events-list-label">
+                  Past Events
+                </div>
+                {{#each pastFeedEvents as |event|}}
+                  {{feed-event-list-item
+                    model=event
+                    classNames="events-list-item"
+                    onLikePost=(action "onLikeEventPost")
+                    onLikeEventComment=(action "onLikeEventComment")
+                    postCommentForMessage=(action "onPostEventComment")
+                    joinEvent=(action "onJoinEvent")
+                    leaveEvent=(action "onLeaveEvent")
+                    onDetails=(action "openEventDetails")}}
+                {{else}}
+                  <div class="events-list-empty">
+                    No events
+                  </div>
+                {{/each}}
               </div>
             {{/if}}
           {{/if}}

@@ -24,6 +24,15 @@ export default Mixin.create({
         this.store.push(normalizedData);
 
         const events = feed.Events || {};
+        const eventIds = Object.keys(events);
+        const localEvents = this.store.peekAll('feed-event').filter((localFeed)=>{
+          return localFeed.get('feedId') === feed.id;
+        });
+        localEvents.forEach((event) => {
+          if (!eventIds.includes(event.get('id'))) {
+            event.unloadRecord();
+          }
+        });
         Object.keys(events).forEach((eventKey)=>{
           const payload = events[eventKey]
           payload.id = eventKey;

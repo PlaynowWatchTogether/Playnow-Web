@@ -18,6 +18,7 @@ module.exports = function(defaults) {
   app.import('vendor/js/jquery.timepicker.min.js');
   app.import('vendor/js/datepair.js');
   app.import('vendor/js/jquery.datepair.js');
+  app.import('vendor/js/geofire.js');
   // app.import('vendor/js/bootstrap-datetimepicker.min.js');
   //app.import('vendor/css/bootstrap-datetimepicker.min.css');
 

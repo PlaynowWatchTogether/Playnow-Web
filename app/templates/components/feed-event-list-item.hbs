@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    {{feed-event-when model=model classNames="feed-event-date-root"}}    
+    {{feed-event-when model=model classNames="feed-event-date-root"}}
     <div class="feed-event-description">
       {{model.obj.description}}
     </div>
@@ -36,9 +36,7 @@
           Creator
         </div>
       {{else if isMember}}
-        <div class="action-joined">
-          Joined
-        </div>
+        {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent")}}        
       {{else}}
         <div class="action-join" {{action "joinEvent"}}>
           <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">

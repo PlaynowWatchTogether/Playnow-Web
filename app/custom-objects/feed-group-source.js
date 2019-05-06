@@ -19,6 +19,13 @@ export default EmberObject.extend({
   reset(){
 
   },
+  updateGroupPic(convId, pic){
+    const myID = this.db.myId();
+    const updates = {
+      ProfilePic: pic
+    }
+    return this.feedRef(convId).update(updates);
+  },
   updateGroup(convId, name, description){
     const myID = this.db.myId();
     const updates = {
@@ -27,7 +34,7 @@ export default EmberObject.extend({
     }
     return this.feedRef(convId).update(updates);
   },
-  createGroup(details){
+  createGroup(details, groupLocation){
     return new Promise((resolve, reject)=>{
       const payload = details;
       const myID = this.db.myId();
@@ -37,7 +44,10 @@ export default EmberObject.extend({
         payload["creatorAvatar"] = profile["ProfilePic"];
         payload[`Admins/${myID}/id`] = myID;
         const id = this.generateFeedId();
-        this.feedRef(id).set(payload).then(()=>{
+        this.feedRef(id).update(payload).then(()=>{
+          const ref = this.feedRef(id);
+          const geoFire = new window.geofire.GeoFire(ref);
+          geoFire.set("GroupLocation", [groupLocation.lat, groupLocation.lng]);
           payload.id = id;
           resolve(payload);
         }).catch((error)=>{
@@ -213,22 +223,29 @@ export default EmberObject.extend({
     let senderId = this.db.myId();
     const msgUid = new Date().getTime().toString() + senderId;
     let message = event;
+    message['creatorId'] = senderId;
     let ref = this.feedRef(convId).child(`Events/${msgUid}`);
     return ref.update(message);
+  },
+  deleteEvent(convId, eventId){
+    let ref = this.feedRef(convId).child(`Events/${eventId}`);
+    return ref.remove();
   },
   joinEvent(convId, eventId){
     let senderId = this.db.myId();
     return new Promise((resolve,reject)=>{
       this.db.profile(senderId).then((profile)=>{
         let ref = this.feedRef(convId).child(`Events/${eventId}/Members/${senderId}`);
-        return ref.set({id: senderId, Username: profile.Email.split('@')[0]});  
+        return ref.set({id: senderId, Username: profile.Email.split('@')[0]});
       }).catch((error)=>{
         reject(error);
       });
 
     })
-
-
-
+  },
+  leaveEvent(convId, eventId){
+    let senderId = this.db.myId();
+    let ref = this.feedRef(convId).child(`Events/${eventId}/Members/${senderId}`);
+    return ref.remove();
   }
 });

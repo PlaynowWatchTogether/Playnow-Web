@@ -651,6 +651,7 @@
                 padding-left: 10px;
                 padding-right: 10px;
                 .back-icon{
+                  cursor: pointer;
                   flex: 0 0 auto;
                   position: absolute;
                 }
@@ -718,7 +719,20 @@
                     margin-left: 10px;
                   }
                 }
-
+              }
+              .feed-event-actions{
+                display: flex;
+                margin-top: 20px;
+                place-content: center;
+                .action-owner{
+                  @include simple-button(red);
+                }
+                .action-joined{
+                  @include multi-state-button(red,#D9D9D9);
+                }
+                .action-join{
+                  @include iconned-button(#02E7B2, 13px);
+                }
               }
             }
             .events-list-root{

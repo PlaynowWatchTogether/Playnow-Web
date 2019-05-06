@@ -45,7 +45,12 @@
 		    		Location
 		    	</div>
 		    	<div class="feed-group-location">
-		    		{{input value=channelLocation placeholder="Location" classNames="edit"}}
+            {{place-autocomplete-field
+               inputClass="place-autocomplete--input edit"               
+               placeChangedCallback=(action "channelLocationChanged")
+               placeholder="Location"
+               preventSubmit=true
+            }}
 		    	</div>
 		    	<div class="feed-group-access">
 			    	<div class="feed-group-access-label">

@@ -12,7 +12,40 @@ $btn-blue: #71C3FF;
 $video-round-corner: 10px;
 $table-gap: 5px;
 $message-border-radius: 14px;
-
+@mixin multi-state-button($color-true,$color-false){
+  border-radius: 20px;
+  background: $color-false;
+  cursor: pointer;
+  &:hover{
+    background: $color-true;
+  }
+  &.state-true{
+    .action-true{
+      display: block;
+    }
+    .action-false{
+      display: none;
+    }
+    &:hover{
+      .action-true{
+        display: none;
+      }
+      .action-false{
+        display: block;
+      }
+    }
+  }
+  &.state-false{
+    .action-true{
+      display: none;
+    }
+    .action-false{
+      display: block;
+    }
+  }
+  color: white;
+  padding: 5px 10px;
+}
 @mixin iconned-button($color, $width) {
   cursor: pointer;
   background: $color;
@@ -418,6 +451,15 @@ $message-border-radius: 14px;
 @mixin events-list {
   padding-left: 10px;
   padding-right: 10px;
+  .events-list-label{
+    margin-top: 20px;
+    font-family: $medium-font;
+  }
+  .events-list-empty{
+    margin: 20px;
+    text-align: center;
+    color: lightgray;
+  }
 }
 @mixin events-list-item-date{
   display: flex;
@@ -460,6 +502,8 @@ $message-border-radius: 14px;
     .feed-event-body{
       display: flex;
       flex-direction: column;
+      margin-left: 10px;
+      margin-right: 10px;
     }
     .feed-event-header{
       display: flex;
@@ -498,8 +542,8 @@ $message-border-radius: 14px;
     .feed-event-footer{
       display: flex;
       flex-direction: row;
-      padding-left: 10px;
-      padding-right: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
       padding-top: 10px;
       border-top: 1px solid rgba(112, 112, 112, 0.24);
       .author-profile-pic{
@@ -529,8 +573,7 @@ $message-border-radius: 14px;
           @include simple-button(#D9D9D9);
         }
         .action-joined{
-          pointer-events: none;
-          @include simple-button(#D9D9D9);
+          @include multi-state-button(red,#D9D9D9);
         }
         .action-join{
           @include iconned-button(#02E7B2, 13px);

@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-export default Component.extend({
+import FeedEventItemHelper from '../mixins/feed-event-item-helper';
+export default Component.extend(FeedEventItemHelper, {
   modelMembers: computed('model.Members.@each.id','searchTerm', function(){
     const term = this.get('searchTerm');
     return this.get('model.Members').filter((elem)=>{
@@ -14,6 +15,9 @@ export default Component.extend({
   actions: {
     cancelShowEvent(){
       this.get('cancelShowEvent')();
+    },
+    deleteEvent(){
+      this.get('deleteEvent')(this.get('model'));
     }
   }
 });

@@ -13,7 +13,7 @@ export default Controller.extend(UUIDGenerator, {
   init() {
     this._super(...arguments);
     this.set('isDisabled', true);
-    this.addObserver('model', this, 'modelObserver');
+    this.addObserver('model', this, 'modelObserver');    
   },
   modelObserver(obj) {
     let m = obj.get('model');

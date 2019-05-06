@@ -30,6 +30,12 @@ export default Controller.extend(FileUploadHelper, {
 				});
 			});
 		},
+		channelLocationChanged(location){
+			this.set('channelLocation',{
+				lat:location.geometry.location.lat(),
+				lng:location.geometry.location.lng()
+			});
+		},
 		createFeed(){
 			this.set('errors',{});
 			if (this.get('channelName').length === 0){
@@ -40,16 +46,16 @@ export default Controller.extend(FileUploadHelper, {
 				this.set('errors.description','Should not be blank')
 				return;
 			}
-			if (this.get('channelLocation').length === 0){
+			if (!this.get('channelLocation')){
 				this.set('errors.location','Should not be blank')
 				return;
 			}
 			this.groupSource.createGroup({
+				ProfilePic: this.get('profilePic')||'',
 				GroupName: this.get('channelName'),
 				GroupDescription: this.get('channelDescription'),
-				GroupAccess: this.get('isPublic')?1:0,
-				GroupLocation: this.get('channelLocation')
-			}).then((channel)=>{
+				GroupAccess: this.get('isPublic')?1:0
+			},this.get('channelLocation')).then((channel)=>{
 				this.transitionToRoute('home.group.show',{group_id: channel.id});
 			}).catch((error)=>{
 				this.set('errors.create','Failed to create group');

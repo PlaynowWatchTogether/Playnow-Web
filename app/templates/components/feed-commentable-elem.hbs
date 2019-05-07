@@ -10,6 +10,10 @@
 </div>
 {{#each modelComments as |comment|}}
   {{feed-comment-item model=comment classNames="post-comment-item" onLikeComment=(action "onLikeComment")}}
+{{else}}
+<div class="no-comments">
+  No comments to show
+</div>
 {{/each}}
 <div class="new-comment">
   {{input value=commentText classNames="input" placeholder="Post a comment" insert-newline=(action "postComment") autocomplete='off'}}

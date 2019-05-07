@@ -592,6 +592,10 @@ $message-border-radius: 14px;
     display: flex;
     padding-bottom: 5px;
   }
+  .no-comments{
+    text-align: center;
+    color: #ACACAC;
+  }
   .comments, .likes {
     display: flex;
     .label {

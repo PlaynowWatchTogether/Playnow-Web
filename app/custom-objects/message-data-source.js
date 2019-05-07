@@ -471,6 +471,9 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist/`
     }
+    if (this.type === 'feed'){
+      ref = `channels/feed/${convId}/Playlist`
+    }
     if (ref){
       this.db.ref(ref).on('value', (data)=>{
         callback(data.val()||{});
@@ -488,6 +491,9 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist`
     }
+    if (this.type === 'feed'){
+      ref = `channels/feed/${convId}/Playlist`
+    }
     if (ref){
       return this.addPlaylistItemInternal(senderId,this.db.ref(ref), video);
     }
@@ -503,6 +509,9 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     }
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist`
+    }
+    if (this.type === 'feed'){
+      ref = `channels/feed/${convId}/Playlist`
     }
     return this.removePlaylistItemInternal(this.db.ref(ref),video);
   },

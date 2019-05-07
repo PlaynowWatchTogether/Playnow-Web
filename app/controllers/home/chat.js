@@ -271,7 +271,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           obj.set('chatModel.hasProfilePic', profilePic!=null && profilePic.length > 0);
           obj.set('chatModel.ProfilePic', profilePic);
           obj.set('chatModel.title', snapshot.GroupName);
-          obj.set('chatModel.group', group);                            
+          obj.set('chatModel.group', group);
         }));
       });
 
@@ -515,7 +515,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     const chat = this.get('chatModel');
     const playlist = get(chat,'Playlist')
     if (playlist){
-      return {title:`Playlist`, videos: Object.values(playlist || {})}
+      let title = 'Playlist';
+      if (this.get('model.type') === 'feed'){
+        title = `${get(chat,'feed.GroupName')}'s playlist`;
+      }
+      return {title:title, videos: Object.values(playlist || {})}
     }else{
       return null;
     }

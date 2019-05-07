@@ -37,6 +37,7 @@ export default Mixin.create({
         Object.keys(events).forEach((eventKey)=>{
           const payload = events[eventKey]
           payload.id = eventKey;
+          payload.feedId = feed.id;
           const event = {
             id: eventKey,
             feedId: feed.id,

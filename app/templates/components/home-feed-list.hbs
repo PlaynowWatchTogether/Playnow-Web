@@ -1,7 +1,12 @@
 {{#each model as |feed|}}
   {{#if isPublic}}
     {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}
-      {{home-feed-item-public model=feed classNames="home-feed-item-public" onFollowGroup=(action 'followGroup') onUnFollowGroup=(action 'unFollowGroup')}}
+      {{home-feed-item-public
+        model=feed
+        classNames="home-feed-item-public"
+        onFollowGroup=(action 'followGroup')
+        onUnFollowGroup=(action 'unFollowGroup')
+        onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
     {{/link-to}}
   {{else}}
     {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}

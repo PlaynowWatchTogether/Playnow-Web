@@ -1,0 +1,176 @@
+
+@mixin home-feed-item-public{
+  padding: 10px;
+  cursor: pointer;
+  .header{
+    display: flex;
+    position: relative;
+    .feed-item-pic-wrapper{
+      margin: auto;
+      .feed-item-pic{
+        width: 120px;
+        height: 120px;
+        display: flex;
+        border-radius: 50%;
+        padding: 3px;
+        position: relative;
+        .pic{
+          box-shadow: $message-shadow;
+          margin: auto;
+          display: flex;
+          background: white;
+          border-radius: 50%;
+          width: 100%;
+          height: 100%;
+          padding: 10px;
+          .profilePicWrapper{
+            width: 100%;
+            height: 100%;
+            margin: auto;
+          }
+        }
+        .feed-item-author-pic{
+          position: absolute;
+          bottom: 5px;
+          right: 4px;
+          border-radius: 50%;
+          padding: 5px;
+          background: white;
+          width: 35px;
+          height: 35px;
+          box-shadow: $message-shadow;
+          .profilePicWrapper{
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .details{
+      position: absolute;
+      display: flex;
+      right: 0;
+      overflow: hidden;
+      flex-direction: column;
+      .feed-item-views{
+        display: grid;
+        grid-template-columns: auto auto;
+        width: min-content;
+        align-self: flex-end;
+        img{
+          width: 14px;
+          margin-top: 6px;
+        }
+        .label{
+          margin-left: 5px;
+          color: #989898;
+          font-size: 80%;
+        }
+      }
+      .feed-actions{
+        padding-top: 10px;
+        .action-following, .action-follow-request{
+          background: #F4F4F4;
+          cursor: pointer;
+          border-radius: 20px;
+          display: flex;
+          padding: 5px 10px;
+          font-size: 80%;
+          border: 1px solid #D6D6D6;
+          color: #777778;
+          .action{
+            display: none;
+            color: white;
+          }
+        }
+        .action-following:hover{
+          background: #ff1818;
+          .action{
+            display: block;
+          }
+          .simple{
+            display: none;
+          }
+        }
+        .action-follow{
+          cursor: pointer;
+          background: #5AB9FF;
+          border-radius: 20px;
+          display: grid;
+          grid-template-columns: min-content auto;
+          padding: 5px 10px;
+          img{
+            width: 13px;
+            margin: auto;
+          }
+          div{
+            color: white;
+            margin-left: 5px;
+            font-size: 80%;
+          }
+        }
+        .action-follow:hover{
+          background: #3cabfd
+        }
+      }
+
+    }
+  }
+  .feed-title{
+    font-size: 120%;
+    text-align: center;
+    font-family: $medium-font;
+  }
+  .feed-description{
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .public-group{
+    .recent-playing-item{
+      display: flex;
+      flex-direction: row;
+      box-shadow: $message-shadow;
+      background: #F4F4F4;
+      border-radius: 15px;
+      padding: 5px;
+      .thumbnail{
+        flex: 0 0 40%;
+        max-width: 40%;
+        background-position: center;
+        background-size: cover;        
+        border-radius: $video-round-corner;
+      }
+      .video-title{
+        margin: 10px;
+        place-self: center;
+        font-family: $medium-font;
+      }
+    }
+    .recent-post-item-label{
+      color: darkgray;
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
+    .recent-event-item{
+      @include events-list-item;
+    }
+    .recent-post-item{
+      pointer-events: none;
+      @include feed-post-content;
+    }
+  }
+  .private-group{
+    box-shadow: $message-shadow;
+    background: #F4F4F4;
+    border-radius: 15px;
+    height: 90px;
+    font-size: 80%;
+    color: #989898;
+    display: flex;
+    .label{
+      margin: auto;
+    }
+  }
+}

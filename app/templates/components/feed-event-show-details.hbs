@@ -1,16 +1,16 @@
 <div class="events-show-header">
   <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelShowEvent'}}>
   <div class="create-label">
-    {{model.obj.title}}
+    {{model.title}}
   </div>
 </div>
 {{feed-event-when classNames="events-show-date-root" model=model}}
 <div class="feed-event-description">
-  {{model.obj.description}}
+  {{model.description}}
 </div>
 <div class="feed-event-creator">
-  {{remote-user-profile-pic model=model.obj.creatorId classNames="profilePicWrapper"}}
-  {{remote-user-username model=model.obj.creatorId classNames="creator-name"}}
+  {{remote-user-profile-pic model=model.creatorId classNames="profilePicWrapper"}}
+  {{remote-user-username model=model.creatorId classNames="creator-name"}}
 </div>
 <div class="feed-event-joiners-label">
   Joiners

@@ -234,6 +234,8 @@ export default EmberObject.extend(ChatPlaylistHandler, {
     const msgUid = new Date().getTime().toString() + senderId;
     let message = event;
     message['creatorId'] = senderId;
+    message['id'] = msgUid;
+    message['serverDate'] = this.firebaseApp.firebase_.database.ServerValue.TIMESTAMP;
     let ref = this.feedRef(convId).child(`Events/${msgUid}`);
     return ref.update(message);
   },

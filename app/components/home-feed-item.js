@@ -9,6 +9,6 @@ export default Component.extend({
     return this.get('model.groupViewers');
   }),
   viewsNumber: computed('model', function(){
-    return this.get('model.groupViewers').length;
+    return this.get('model.followersCount');
   })
 });

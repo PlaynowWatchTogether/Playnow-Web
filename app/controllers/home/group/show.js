@@ -12,7 +12,7 @@ import moment from 'moment';
 import { get } from '@ember/object';
 import $ from 'jquery';
 import FeedModelWrapper from '../../../custom-objects/feed-model-wrapper';
-
+import FeedEventModelWrapper from '../../../custom-objects/feed-event-model-wrapper';
 export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {
   firebaseApp: service(),
   db: service(),
@@ -53,7 +53,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   currentFeedEvents: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return this.store.peekAll('feed-event').filter((elem)=>{
+      return this.store.peekAll('feed-event').map((elem)=>{
+        return FeedEventModelWrapper.create({content: get(elem,'obj')});
+      }).filter((elem)=>{
         return elem.get('feedId') === get(feed,'id') && !elem.get('isPast');
       });
     }else{
@@ -63,7 +65,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   pastFeedEvents: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return this.store.peekAll('feed-event').filter((elem)=>{
+      return this.store.peekAll('feed-event').map((elem)=>{
+        return FeedEventModelWrapper.create({content: get(elem,'obj')});
+      }).filter((elem)=>{
         return elem.get('feedId') === get(feed,'id') && elem.get('isPast');
       });
     }else{
@@ -289,29 +293,29 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     onLikeEventPost(event, liked){
       if (liked){
-        this.dataSource.addEventLike(this.dataSource.feedId,event.id);
+        this.dataSource.addEventLike(this.dataSource.feedId,get(event,'id'));
       }else{
-        this.dataSource.removeEventLike(this.dataSource.feedId,event.id);
+        this.dataSource.removeEventLike(this.dataSource.feedId,get(event,'id'));
       }
     },
     onLikeEventComment(event,comment, liked){
       if (liked){
-        this.dataSource.addEventCommentLike(this.dataSource.feedId,event.id, comment.uid);
+        this.dataSource.addEventCommentLike(this.dataSource.feedId,get(event,'id'), comment.uid);
       }else{
-        this.dataSource.removeEventCommentLike(this.dataSource.feedId,event.id,comment.uid);
+        this.dataSource.removeEventCommentLike(this.dataSource.feedId,get(event,'id'),comment.uid);
       }
     },
     onPostEventComment(event, text){
-      this.dataSource.postEventComment(this.dataSource.feedId,event.id,text);
+      this.dataSource.postEventComment(this.dataSource.feedId,get(event,'id'),text);
     },
     onJoinEvent(event){
-      this.dataSource.joinEvent(this.dataSource.feedId,event.id);
+      this.dataSource.joinEvent(this.dataSource.feedId,get(event,'id'));
     },
     onLeaveEvent(event){
-      this.dataSource.leaveEvent(this.dataSource.feedId,event.id);
+      this.dataSource.leaveEvent(this.dataSource.feedId,get(event,'id'));
     },
     onDeleteEvent(event){
-      this.dataSource.deleteEvent(this.dataSource.feedId,event.id).then(()=>{
+      this.dataSource.deleteEvent(this.dataSource.feedId,get(event,'id')).then(()=>{
         this.set('showingOneEvent',null);
       });
     },

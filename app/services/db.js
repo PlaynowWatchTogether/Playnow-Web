@@ -451,7 +451,7 @@ export default Service.extend(VideoStateHandler, {
   },
   requestFollowFeedGroup(group){
     const id = this.myId();
-    this.profile(id).then((profile) => {
+    return this.profile(id).then((profile) => {
       let name = profile['FirstName'] + ' ' + profile['LastName'];
       let email = this.firebaseApp.auth().currentUser.email;
       let username = name;
@@ -466,32 +466,34 @@ export default Service.extend(VideoStateHandler, {
       if (profile['ProfilePic']) {
         updates['ProfilePic'] = profile['ProfilePic'];
       }
-      ref.update(updates).then(() => {
-
-      });
+      return ref.update(updates);
     })
   },
   followFeedGroup(group){
-    const id = this.myId();
-    this.profile(id).then((profile) => {
-      let name = profile['FirstName'] + ' ' + profile['LastName'];
-      let email = this.firebaseApp.auth().currentUser.email;
-      let username = name;
-      if (email && email.includes('@')) {
-        username = email.split("@")[0]
-      }
-      let ref = this.firebaseApp.database().ref(`channels/feed/${group}/Followers/${id}`);
-      let updates = {};
-      updates['Email'] = email;
-      updates['Name'] = username;
-      updates['Username'] = name;
-      if (profile['ProfilePic']) {
-        updates['ProfilePic'] = profile['ProfilePic'];
-      }
-      ref.update(updates).then(() => {
-
+    return new Promise((resolve, reject)=>{
+      const id = this.myId();
+      this.profile(id).then((profile) => {
+        let name = profile['FirstName'] + ' ' + profile['LastName'];
+        let email = this.firebaseApp.auth().currentUser.email;
+        let username = name;
+        if (email && email.includes('@')) {
+          username = email.split("@")[0]
+        }
+        let ref = this.firebaseApp.database().ref(`channels/feed/${group}/Followers/${id}`);
+        let updates = {};
+        updates['Email'] = email;
+        updates['Name'] = username;
+        updates['Username'] = name;
+        if (profile['ProfilePic']) {
+          updates['ProfilePic'] = profile['ProfilePic'];
+        }
+        ref.update(updates).then(()=>{
+          // resolve();
+        }).catch((error)=>{
+          reject(error);
+        });
       });
-    })
+    });
   },
   unFollowFeedGroup(group){
     const id = this.myId();

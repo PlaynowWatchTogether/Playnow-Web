@@ -6,18 +6,22 @@
           <img class="profilePic" src={{safe-profile-pic model.ProfilePic}} alt="icon">
         </div>
       </div>
+      <div class="feed-item-author-pic">
+        {{remote-user-profile-pic model=model.creatorId classNames="profilePicWrapper"}}
+      </div>
     </div>
+
   </div>
   <div class="details">
     <div class="feed-item-views">
       <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
       <div class="label">
-        {{model.viewsNumber}}
+        {{viewsNumber}}
       </div>
     </div>
     <div class="feed-actions">
       {{#if isFollowing}}
-        <div class="action-following" {{action "unFollowGroup"}}>
+        <div class="action-following" {{action "unFollowGroup" bubbles=false}}>
           <div class="simple">Following</div>
           <div class="action">Unfollow</div>
         </div>
@@ -26,7 +30,7 @@
           Requested
         </div>
       {{else}}
-        <div class="action-follow" {{action "followGroup"}}>
+        <div class="action-follow" {{action "followGroup" bubbles=false}}>
           <img src="/assets/ic_plus@2x.png" alt="icon">
           <div>Follow</div>
         </div>
@@ -40,12 +44,50 @@
 <div class="feed-description">
   {{model.GroupDescription}}
 </div>
-<div class="private-group">
-  <div class="label">
-    {{#if model.isPublic}}
-      Public Group
+{{#if model.isPublic}}
+  <div class="public-group">
+    {{#if hasRecentAction}}
+      {{#if recentAction.isOnline}}
+        <div class="recent-post-item-label">
+          Now playing:
+        </div>
+        <div class="recent-playing-item">
+          {{thumbnail-background model=recentAction.video.videoThumbnail classNames="thumbnail" useSelfWidth=true}}
+          <div class="video-title">
+            {{recentAction.video.videoName}}
+          </div>
+        </div>
+      {{else if recentAction.isPost}}
+        <div class="recent-post-item-label">
+          Recent:
+        </div>
+        {{chat-message-post
+          model=recentAction.post
+          classNames="recent-post-item"
+        }}
+      {{else if recentAction.isEvent}}
+        <div class="recent-post-item-label">
+          Recent:
+        </div>
+        {{feed-event-list-item
+          model=recentAction.event
+          classNames="recent-event-item"
+          joinEvent=(action "onJoinEvent")
+          leaveEvent=(action "onLeaveEvent")}}
+      {{else}}
+      {{/if}}
     {{else}}
-      Private Group
+      <div class="private-group">
+        <div class="label">
+            No Recent Action
+        </div>
+      </div>
     {{/if}}
   </div>
-</div>
+{{else}}
+  <div class="private-group">
+    <div class="label">
+        Private Group
+    </div>
+  </div>
+{{/if}}

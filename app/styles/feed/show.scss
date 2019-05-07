@@ -1,5 +1,5 @@
 @import '../vars.scss';
-
+@import 'feed-post-content.scss';
 .home.group.show {
   .feed-root {
     margin-left: -15px;
@@ -346,76 +346,8 @@
               padding-top: 5px;
               padding-bottom: 5px;
               .post-content{
-                box-shadow: $message-shadow;
-                display: flex;
-                background: #F4F4F4;
-                border-radius: 10px;
-                flex-direction: column;
-                padding: 10px;
                 width: 55%;
-                .post-header{
-                  display: flex;
-                  flex-direction: row;
-                  padding-bottom: 10px;
-                  .profilePicWrapper{
-                    width: 25px;
-                    height: 25px;
-                  }
-                  .post-author-name{
-                    margin-top: auto;
-                    margin-bottom: auto;
-                    margin-left: 5px;
-                    font-size: 90%;
-                  }
-                  .post-time{
-                    color: #838383;
-                    justify-self: flex-end;
-                    margin-top: auto;
-                    margin-bottom: auto;
-                    margin-left: auto;
-                    font-size: 90%;
-                  }
-                }
-                .post-message{
-                  font-size: 90%;
-                  margin-left: 10px;
-                  padding-bottom: 5px;
-                }
-                .post-attachments{
-                  padding-bottom: 10px;
-                  .post-attachment-item{
-                    .message-attachment-holder{
-                      background: #dedede;
-                      border-radius: 10px;
-                      padding: 5px;
-                      text-decoration: none;
-                      .message-attachment-wrapper{
-                        display: flex;
-                        .message-attachment-icon{
-                          img{
-                            width: 40px;
-                          }
-                        }
-                        .message-attachment-name{
-                          margin-top: auto;
-                          margin-bottom: auto;
-                          margin-left: 20px;
-                          font-size: 90%;
-                        }
-                      }
-                    }
-                  }
-                  .message-img{
-                    .img-fluid{
-                      border-radius: 10px;
-                    }
-                  }
-                }
-                .post-reactions{
-                  @include feed-elem-reactions(15px);
-                }
-
-
+                @include feed-post-content;
               }
               .post-content.mine{
                 align-self: flex-end;
@@ -498,7 +430,6 @@
               .post-comments.mine{
                 align-self: flex-end;
               }
-
             }
           }
         }

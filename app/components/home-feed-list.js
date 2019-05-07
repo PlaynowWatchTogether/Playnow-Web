@@ -7,6 +7,12 @@ export default Component.extend({
     },
     unFollowGroup(model){
       this.get('onUnFollowGroup')(model);
+    },
+    onJoinEvent(group, event){
+      this.get('onJoinEvent')(group, event);
+    },
+    onLeaveEvent(group, event){
+      this.get('onLeaveEvent')(group, event);
     }
   }
 });

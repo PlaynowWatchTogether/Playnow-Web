@@ -37,7 +37,13 @@
               Discover
             </div>
             <div class="list">
-              {{home-feed-list model=publicFeeds isPublic=true classNames="feed-list" onFollowGroup=(action "followGroup") onUnFollowGroup=(action "unFollowGroup")}}
+              {{home-feed-list
+                model=publicFeeds
+                isPublic=true
+                classNames="feed-list"
+                onFollowGroup=(action "followGroup")
+                onUnFollowGroup=(action "unFollowGroup")
+                onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
             </div>
           </div>
         </div>

@@ -3,9 +3,11 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object'
 import {get} from '@ember/object';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
+import FeedGroupSource from '../../custom-objects/feed-group-source';
 export default Controller.extend({
   db: service(),
   firebaseApp: service(),
+  auth: service(),
   init() {
     this._super(...arguments);
   },
@@ -54,13 +56,32 @@ export default Controller.extend({
   actions:{
     followGroup(group){
       if (group.get('isPublic')){
-        this.get('db').followFeedGroup(group.id);
+        return this.get('db').followFeedGroup(get(group,'id'));
       }else{
-        this.get('db').requestFollowFeedGroup(group.id);
+        return this.get('db').requestFollowFeedGroup(get(group,'id'));
       }
     },
     unFollowGroup(group){
-      this.get('db').unFollowFeedGroup(group.id);
-    }
+      this.get('db').unFollowFeedGroup(get(group,'id'));
+    },
+    onJoinEvent(group, event){
+      const ds = FeedGroupSource.create({
+        db: this.get('db'),
+        firebaseApp: this.get('firebaseApp'),
+        auth: this.get('auth'),
+        feedId: get(group,'id')
+      });
+
+      ds.joinEvent(get(group,'id'),get(event,'id'));
+    },
+    onLeaveEvent(group, event){
+      const ds = FeedGroupSource.create({
+        db: this.get('db'),
+        firebaseApp: this.get('firebaseApp'),
+        auth: this.get('auth'),
+        feedId: get(group,'id')
+      });
+      ds.leaveEvent(get(group,'id'),get(event,'id'));
+    },
   }
 });

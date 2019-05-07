@@ -9,6 +9,7 @@ import MessagingMessagePager from '../../../mixins/messaging-messsage-pager';
 import MessageObject from '../../../custom-objects/message-object';
 import CreateEventMixin from '../../../mixins/create-event-mixin';
 import moment from 'moment';
+import $ from 'jquery';
 
 export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {
   firebaseApp: service(),
@@ -31,7 +32,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   membersOnline: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return Object.values(feed.videoWatching);
+      return Object.values(feed.videoWatching||{});
     }else{
       return [];
     }
@@ -124,7 +125,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
     this.dataSource.open(this.dataSource.feedId);
     this.dataSource.messages(this.dataSource.feedId, (messages)=>{
-      const converted = this.convertServerMessagesToUI(messages);
+      const converted = this.convertServerMessagesToUI(messages,this.messageConvId());
       const wrappedMessages = converted.messages;
       const uiMessages = [];
       wrappedMessages.forEach((mesCntent)=>{
@@ -266,7 +267,12 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
 
     },
     videoPick(video){
-
+      if (this.get('isAdmin')){
+        debug(JSON.stringify(video));
+        this.db.createPublicRoom(video, this.get('feed')).then(()=>{
+          this.transitionToRoute('home.chat', this.dataSource.feedId, 'feed')
+        });
+      }
     },
     playlistVideoAdd(video){
       return this.dataSource.addPlaylistItem(this.dataSource.feedId, video);

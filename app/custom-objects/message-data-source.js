@@ -2,7 +2,9 @@ import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
-export default EmberObject.extend({
+import VideoStateHandlerMixin from '../mixins/video-state-handler-mixin';
+
+export default EmberObject.extend(VideoStateHandlerMixin, {
   gcmManager: service(),
   type: 'one2one',
   user: null,
@@ -28,6 +30,8 @@ export default EmberObject.extend({
       return this.room.id;
     } else if (this.type === 'group') {
       return this.group['id'];
+    } else if (this.type === 'feed') {
+      return this.feed['id'];
     } else {
       return "";
     }
@@ -39,6 +43,8 @@ export default EmberObject.extend({
       return 'channels/channels';
     } else if (this.type === 'group') {
       return 'channels/Groups';
+    } else if (this.type === 'feed') {
+      return 'channels/live';
     }
   },
   sendVideoEnd(video) {
@@ -95,25 +101,7 @@ export default EmberObject.extend({
     });
   },
   sendVideo(video, mode = 'youtubeVideo') {
-    let convId = this.convId();
-    let path = this.messageRoot();
-    let ref = path + "/" + convId + "/videoState";
-    let values = {};
-    values['type'] = 'new';
-    values['syncAt'] = new Date().getTime() / 1000.0;
-    values['updatedAt'] = new Date().getTime() / 1000.0;
-    values['videoType'] = mode;
-    values['videoId'] = video['id'];
-    values['videoName'] = video['snippet']['title'];
-    values['videoThumbnail'] = video['snippet']['thumbnails']['high']['url'];
-    values['senderId'] = this.myId;
-    values['seconds'] = 0;
-    debug('sendVideo ' + JSON.stringify(values));
-    this.db.ref(ref).update(values).then((resolve) => {
-
-    }).catch(() => {
-      debug(`Failed to update videoState on path ${ref} to ${JSON.stringify(values)}`);
-    });
+    this.sendVideoInternal(this.db,this.myId,this.convId(),this.messageRoot(),video,mode)
   },
   videoWatchers(updateCallback) {
     let convId = this.convId();
@@ -460,7 +448,7 @@ export default EmberObject.extend({
     message['text'] = text;
     let ref = path + "/" + convId + "/Messages/" + msgUid;
     this.db.ref(ref).update(message).then(() => {
-      if (this.gcmManager && this.type !== 'room') {
+      if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
         this.profile(this.myId).then((myProfile) => {
           this.membersOnce().then((members) => {
             members.forEach((member) => {

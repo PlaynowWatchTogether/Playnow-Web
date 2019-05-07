@@ -1,8 +1,11 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
+import {get} from '@ember/object';
+import VideoStateHandler from '../mixins/video-state-handler-mixin';
+
 import {Promise} from 'rsvp';
-export default Service.extend({
+export default Service.extend(VideoStateHandler, {
   firebaseApp: service(),
   store: service(),
   gcmManager: service(),
@@ -57,6 +60,17 @@ export default Service.extend({
   },
   offListenGroup(ret){
     ret[0].off('value', ret[1]);
+  },
+  feed(id){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    return new Promise((resolve)=>{
+      let ref = this.firebaseApp.database().ref(`/channels/feed/${id}`);
+      ref.once('value', (data)=>{
+        const payload = data.val();
+        payload["id"] = data.key;
+        resolve(payload);
+      });
+    });
   },
   group(id){
     let myId = this.firebaseApp.auth().currentUser.uid;
@@ -414,16 +428,20 @@ export default Service.extend({
       debug(err);
     });
   },
-  createPublicRoom(video) {
+  createPublicRoom(video, feed) {
     return new Promise((resolve, reject) => {
-      let ref = this.firebaseApp.database().ref("channels/channels/" + this.myId());
+      const feedId = get(feed,'id');
+
+      let ref = this.firebaseApp.database().ref(`channels/live/${feedId}`);
       this.profile(this.myId()).then((profile) => {
         let updates = {};
         let username = profile['Email'].split('@').firstObject;
         updates['creatorName'] = username || '';
         updates['creatorAvatar'] = profile.ProfilePic || '';
+        this.sendVideoInternal(this.firebaseApp.database(),this.myId(),feedId,"channels/live",video)
+
         ref.update(updates).then(() => {
-          resolve(video);
+          resolve();
         }).catch((error) => {
           reject(error);
         })

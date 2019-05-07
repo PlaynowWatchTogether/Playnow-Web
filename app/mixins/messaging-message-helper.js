@@ -1,7 +1,7 @@
 import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
-  convertServerMessagesToUI(messages){
+  convertServerMessagesToUI(messages, convId){
     let uiMessages = [];
     let lastDate = new Date(0);
     let sorted = messages.sort(function (a, b) {
@@ -19,7 +19,7 @@ export default Mixin.create({
       const mesDate = new Date(mes.date);
       let diff = lastDate.getTime() - mesDate.getTime();
       if (mesDate.getFullYear() !== lastDate.getFullYear() || mesDate.getDate() !== lastDate.getDate() || mesDate.getMonth() !== lastDate.getMonth())  {
-        let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: `${moment(mesDate).format('MM-DD-YYYY')}-${mes.convoId}`,convId: mes.convoId};
+        let dateContent = {isDate: true, date: mesDate.setHours(0, 0, 0, 0), id: `${moment(mesDate).format('MM-DD-YYYY')}-${mes.convoId}`,convId: convId};
         wrappedMessages.push(dateContent);
       }
       let mesCntent = {
@@ -28,7 +28,7 @@ export default Mixin.create({
         lastMessageIndex: lastMessageIndex,
         displaySender: displaySender,
         id: mes['id'],
-        convId: mes.convoId
+        convId: convId
       };
       wrappedMessages.push(mesCntent);
       lastDate = mesDate

@@ -18,7 +18,7 @@ export default Route.extend(AuthRouteMixin, {
   },
   afterModel(model) {
     let body = $('body');
-    if (model.type === 'room') {
+    if (model.type === 'room' || model.type === 'feed') {
       body.addClass('room');
     } else {
       body.removeClass('room');

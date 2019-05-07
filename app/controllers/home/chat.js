@@ -17,8 +17,9 @@ import MessagingUploadsHandler from '../../mixins/messaging-uploads-handler';
 import MessagingMessageHelper from '../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../mixins/messaging-messsage-pager';
 import VideoSearchMixin from '../../mixins/videos-search-mixin';
+import ChatModelHelper from '../../mixins/chat-model-helper';
 
-export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, {
+export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, ChatModelHelper, {
   firebaseApp: service(),
   db: service(),
   auth: service(),
@@ -96,7 +97,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.queryMusic(true);
   },
   messageConvId(){
-    return this.get('dataSource').convId();
+    const dsConv = this.get('dataSource').convId();
+    const type = this.get('model.type');
+    return `${dsConv}-${type}`;
   },
   isGroup: computed('model', function(){
     return this.get('model.type') === 'group';
@@ -111,7 +114,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return this.get('isLoadingMusic') ? 'active' : '';
   }),
   isRoom: computed('model', function () {
-    return this.get('model.type') === 'room'
+    return this.isTypePublicRoom(this.get('model.type'));
   }),
   playerLoadingClass: computed('playerState', function () {
     let l = this.get('playerState');
@@ -150,6 +153,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return type!=='one2one';
   }),
   modelObserver: (obj) => {
+    const myId = obj.get('db').myId();
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
     obj.videoStateHandler.myId = obj.firebaseApp.auth().currentUser.uid;
@@ -181,7 +185,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           user: friend
         });
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
-        obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+        obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
         obj.get('db').profileObserver(convId, (profile) => {
           obj.set('isChatOnline', true);
           if (profile['Last Active Date'] === 'online') {
@@ -192,26 +196,51 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           debug('one2one profile updated');
         })
       });
-    } else if ('room' === type) {
-      obj.store.find('room', convId).then((room) => {
-        obj.set('dataSource', MessageDataSource.create({
-          type: 'room',
-          gcmManager: obj.gcmManager,
-          room: room,
-          myId: obj.firebaseApp.auth().currentUser.uid,
-          db: obj.firebaseApp.database(),
-          fb: obj.firebaseApp,
-          auth: obj.auth
-        }));
-        obj.set('chatModel', {
-          hasProfilePic: false,
-          title: '@' + room.get('creatorName') + "' room",
-          room: room
-        });
-        obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
-        obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
+    } else if (obj.isTypePublicRoom(type)) {
+      if (type === 'room'){
+        obj.store.find('room', convId).then((room) => {
+          obj.set('dataSource', MessageDataSource.create({
+            type: type,
+            gcmManager: obj.gcmManager,
+            room: room,
+            myId: obj.firebaseApp.auth().currentUser.uid,
+            db: obj.firebaseApp.database(),
+            fb: obj.firebaseApp,
+            auth: obj.auth
+          }));
+          obj.set('chatModel', {
+            hasProfilePic: false,
+            title: '@' + room.get('creatorName') + "' room",
+            room: room
+          });
+          obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
+          obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
 
-      });
+        });
+      }else if (type === 'feed'){
+        obj.db.feed(convId).then((feed)=>{
+          obj.set('dataSource', MessageDataSource.create({
+            type: type,
+            gcmManager: obj.gcmManager,
+            feed: feed,
+            myId: obj.firebaseApp.auth().currentUser.uid,
+            db: obj.firebaseApp.database(),
+            fb: obj.firebaseApp,
+            auth: obj.auth
+          }));
+          const isAdmin = feed.creatorId === myId;// || Object.keys(feed.Admins || {}).includes(myId());
+          obj.set('chatModel', {
+            hasProfilePic: true,
+            title: 'Live @' + feed.GroupName,
+            ProfilePic: feed.ProfilePic,
+            feed: feed,
+            isAdmin: isAdmin
+          });
+
+          obj.videoStateHandler.isMaster = isAdmin;
+          obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
+        })
+      }
     } else if ('group' === type) {
       obj.store.find('group', convId).then((group) => {
         obj.set('dataSource', MessageDataSource.create({
@@ -326,13 +355,14 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
 
     ds.messages((messages) => {
-      const converted = obj.convertServerMessagesToUI(messages);
+      const converted = obj.convertServerMessagesToUI(messages,obj.messageConvId());
       const wrappedMessages = converted.messages;
       const lastRecord = converted.lastRecord;
       const uiMessages = [];
       if (lastRecord){
         ds.sendSeen(lastRecord.uid);
       }
+      const type = obj.get('model.type');
       wrappedMessages.forEach((mesCntent)=>{
 
         let normalizedData = obj.store.normalize('thread-message', {
@@ -435,7 +465,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let ds = this.get('dataSource');
     let type = this.get('model').type;
     if (ds) {
-      return ds.convId() === this.firebaseApp.auth().currentUser.uid || type !== 'room';
+      if (type==='feed'){
+        const isAdmin =this.get('chatModel.isAdmin');
+        return isAdmin;
+      }else{
+        return ds.convId() === this.firebaseApp.auth().currentUser.uid || type !== 'room';// TODO:  fix
+      }
     } else
       return false;
   }),
@@ -529,7 +564,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   },
   modeClass: computed('model', function () {
-    return this.get('model').type;
+    if (this.isTypePublicRoom(this.get('model.type'))){
+      return 'room'
+    }else{
+      return this.get('model').type;
+    }
   }),
   videoTabClass: computed('searchMode', function () {
     return this.get('searchMode') === 'video' ? 'active' : '';
@@ -877,6 +916,14 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     videoPlayerReady(player, component) {
       this.playerComponent = component;
       this.playerPlayer = player;
+    },
+    goBack(){
+      const m = this.get('chatModel');
+      const type = this.get('model.type');
+      if (!m || type!=='feed')
+        this.transitionToRoute('home');
+      return this.transitionToRoute('home.group.show',{group_id: m.feed.id});
+
     }
   }
 });

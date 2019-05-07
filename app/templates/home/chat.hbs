@@ -15,15 +15,13 @@
 
       <div class="titleHolder">
         {{#if isRoom}}
-          <div class="back">
-            {{#link-to "home"}}
-              <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
-            {{/link-to}}
+          <div class="back" {{action "goBack"}}>
+            <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
           </div>
           <div class="title noselect">
             {{#if chatModel.hasProfilePic}}
               <div class="profilePicWrapper">
-                <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
+                <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
               </div>
             {{else}}
               <div class="profilePicWrapper"></div>
@@ -293,7 +291,7 @@
   <div class="col-4 media">
     <div class="row holder h-100">
       <div class="media-wrapper">
-        <div class="media-bg-wrapper">          
+        <div class="media-bg-wrapper">
           <div class="tabs">
             <ul class="nav nav-pills">
               <li class="nav-item">

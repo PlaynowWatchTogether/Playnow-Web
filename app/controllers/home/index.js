@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object'
 import {get} from '@ember/object';
-
+import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 export default Controller.extend({
   db: service(),
   firebaseApp: service(),
@@ -14,19 +14,25 @@ export default Controller.extend({
   },
   myFeeds: computed('model.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').filter((elem) => {
+    return this.get('model').map((elem)=>{
+      return FeedModelWrapper.create({content:elem.get('obj')});
+    }).filter((elem) => {
       return elem.get('creatorId') === myID;
     });
   }),
   followedFeeds: computed('model.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').filter((elem) => {
+    return this.get('model').map((elem)=>{
+      return FeedModelWrapper.create({content:elem.get('obj')});
+    }).filter((elem) => {
       return elem.get('creatorId') !== myID && elem.isFollowing(myID);
     });
   }),
   publicFeeds: computed('model.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').filter((elem) => {
+    return this.get('model').map((elem)=>{
+      return FeedModelWrapper.create({content:elem.get('obj')});
+    }).filter((elem) => {
       return elem.get('creatorId') !== myID;
     });
   }),

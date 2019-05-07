@@ -15,11 +15,11 @@ export default Mixin.create({
       feeds.forEach((feed) => {
         feed['rawData'] = JSON.stringify(feed);
         feed['lastUpdate'] = new Date().getUTCMilliseconds();
-        feed['Followers'] = JSON.stringify(feed.Followers || {});
-        feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
-        feed['Playlist'] = JSON.stringify(feed.Playlist || {});
-        feed['Admins'] = JSON.stringify(feed.Admins || {});
-        feed['videoWatchingContent'] = JSON.stringify(feed.videoWatching || {});
+        // feed['Followers'] = JSON.stringify(feed.Followers || {});
+        // feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
+        // feed['Playlist'] = JSON.stringify(feed.Playlist || {});
+        // feed['Admins'] = JSON.stringify(feed.Admins || {});
+        // feed['videoWatchingContent'] = JSON.stringify(feed.videoWatching || {});
 
         let normalizedData = this.store.normalize('feed-item', feed);
         this.store.push(normalizedData);

@@ -3,11 +3,11 @@ import { computed } from '@ember/object';
 import {inject as service} from '@ember/service';
 export default Component.extend({
   db: service(),
-  isFollowing: computed('model.FollowersObject', function(){
-    return Object.keys(this.get('model.FollowersObject')).includes(this.db.myId());
+  isFollowing: computed('model', function(){
+    return this.get('model').isFollowing(this.db.myId());
   }),
   isRequestedFollow: computed('model.FollowRequestsObject', function(){
-    return Object.keys(this.get('model.FollowRequestsObject')).includes(this.db.myId());
+    return this.get('model').isRequestedFollow(this.db.myId());
   }),
   actions:{
     followGroup(){

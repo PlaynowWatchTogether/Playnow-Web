@@ -20,7 +20,7 @@
       </div>
       <div class="feed-header">
         <div class="feed-header-body">
-          <div class="feed-pic">
+          <div class="feed-pic {{if feed.isPlaying 'active'}}">
             <div class="pic-holder">
               <div class="profilePicWrapper">
                 {{#file-upload name="feedPic"
@@ -191,142 +191,157 @@
       {{/if}}
     {{/file-dropzone}}
     <div class="feed-sidebar">
-      <div class="header">
-        <div class="tabs">
-          <ul class="nav nav-pills" id="sidebar-tabs">
-            <li class="nav-item tab-videos">
-              <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
-                 aria-selected="true">
-                Videos
-              </a>
-            </li>
-            <li class="nav-item tab-events">
-              <a class="nav-link" data-toggle="tab" href="#events" role="tab" aria-controls="events"
-                 aria-selected="true">
-                Events
-              </a>
-            </li>
-          </ul>
-        </div>
-        {{#unless creatingEvent}}
-          {{#if isAdmin}}
-            <div class="create-event" {{action 'showCreateEvent'}}>
-              <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
-              <div class="label">Create Event</div>
-            </div>
-          {{/if}}
-        {{/unless}}
-      </div>
-      <div class="tab-content h-100">
-        <div class="tab-pane fade show active" id="videos">
-          {{chat-videos-list
-            classNames="col-12"
-            scrollParent=".tab-content"
-            displayVideoRequest=displayVideoRequest
-            onVideoPick=(action "videoPick")
-            playlistModel=playlistModel
-            onPlaylistAddVideo=(action "playlistVideoAdd")
-            onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
-        </div>
-        <div class="tab-pane fade" id="events">
-          {{#if creatingEvent}}
-            <div class="events-create-root">
-              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelCreateEvent'}}>
-              <div class="create-label">
-                Create Event
-              </div>
-              <div class="input-field-group">
-                <div class="create-title input-field-wrapper {{if newEventErrors.title 'with-error'}}">
-                  {{input value=newEvent.title placeholder="Title" classNames="edit"}}
-                  {{#if newEventErrors.title}}
-                    <span class="error">{{newEventErrors.title}}</span>
-                  {{/if}}
-                </div>
-              </div>
-              {{#event-create-date-time-picker model=newEvent.date classNames="input-field-group "}}
-                {{#if newEventErrors.date}}
-                  <span class="error">{{newEventErrors.date}}</span>
-                {{/if}}
-              {{/event-create-date-time-picker}}
-              <div class="input-field-group">
-                <div class="create-field-label">
-                  Event description
-                </div>
-                <div class="create-description input-field-wrapper {{if newEventErrors.description 'with-error'}}">
-                  {{textarea value=newEvent.description placeholder="This event is for..." classNames="edit"}}
-                  {{#if newEventErrors.description}}
-                    <span class="error">{{newEventErrors.description}}</span>
-                  {{/if}}
-                </div>
-              </div>
-              <div class="input-field-group">
-                <div class="create-field-label">
-                  Seats
-                </div>
-                <div class="dropdown create-seats input-field-wrapper">
-                  {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
-                                  onChange=(action 'onSeatsPick')}}
-                </div>
-              </div>
-
-              <div class="create">
-                <div class="create-btn" {{action "createEvent"}}>
-                  Create
-                </div>
-              </div>
-            </div>
-          {{else}}
-            {{#if showingOneEvent}}
-              {{feed-event-show-details
-                model=showingOneEvent
-                classNames="events-show-root"
-                cancelShowEvent=(action "cancelShowEvent")
-                joinEvent=(action "onJoinEvent")
-                leaveEvent=(action "onLeaveEvent")
-                deleteEvent=(action "onDeleteEvent")}}
-            {{else}}
-              <div class="events-list-root">
-                <div class="events-list-label">
-                  Current Events
-                </div>
-                {{#each currentFeedEvents as |event|}}
-                  {{feed-event-list-item
-                    model=event
-                    classNames="events-list-item"
-                    onLikePost=(action "onLikeEventPost")
-                    onLikeEventComment=(action "onLikeEventComment")
-                    postCommentForMessage=(action "onPostEventComment")
-                    joinEvent=(action "onJoinEvent")
-                    leaveEvent=(action "onLeaveEvent")
-                    onDetails=(action "openEventDetails")}}
-                {{else}}
-                  <div class="events-list-empty">
-                    No events
-                  </div>
-                {{/each}}
-                <div class="events-list-label">
-                  Past Events
-                </div>
-                {{#each pastFeedEvents as |event|}}
-                  {{feed-event-list-item
-                    model=event
-                    classNames="events-list-item"
-                    onLikePost=(action "onLikeEventPost")
-                    onLikeEventComment=(action "onLikeEventComment")
-                    postCommentForMessage=(action "onPostEventComment")
-                    joinEvent=(action "onJoinEvent")
-                    leaveEvent=(action "onLeaveEvent")
-                    onDetails=(action "openEventDetails")}}
-                {{else}}
-                  <div class="events-list-empty">
-                    No events
-                  </div>
-                {{/each}}
+      {{#if isMember}}
+        <div class="header">
+          <div class="tabs">
+            <ul class="nav nav-pills" id="sidebar-tabs">
+              <li class="nav-item tab-videos">
+                <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+                   aria-selected="true">
+                  Videos
+                </a>
+              </li>
+              <li class="nav-item tab-events">
+                <a class="nav-link" data-toggle="tab" href="#events" role="tab" aria-controls="events"
+                   aria-selected="true">
+                  Events
+                </a>
+              </li>
+            </ul>
+          </div>
+          {{#unless creatingEvent}}
+            {{#if isAdmin}}
+              <div class="create-event" {{action 'showCreateEvent'}}>
+                <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
+                <div class="label">Create Event</div>
               </div>
             {{/if}}
-          {{/if}}
+          {{/unless}}
         </div>
-      </div>
+        <div class="tab-content h-100">
+          <div class="tab-pane fade show active" id="videos">
+            {{#chat-videos-list
+              classNames="col-12"
+              scrollParent=".tab-content"
+              displayVideoRequest=displayVideoRequest
+              onVideoPick=(action "videoPick")
+              playlistModel=playlistModel
+              onPlaylistAddVideo=(action "playlistVideoAdd")
+              onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
+              {{#if feed.isPlaying}}
+                {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive")}}
+              {{/if}}
+            {{/chat-videos-list}}
+          </div>
+          <div class="tab-pane fade" id="events">
+            {{#if creatingEvent}}
+              <div class="events-create-root">
+                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelCreateEvent'}}>
+                <div class="create-label">
+                  Create Event
+                </div>
+                <div class="input-field-group">
+                  <div class="create-title input-field-wrapper {{if newEventErrors.title 'with-error'}}">
+                    {{input value=newEvent.title placeholder="Title" classNames="edit"}}
+                    {{#if newEventErrors.title}}
+                      <span class="error">{{newEventErrors.title}}</span>
+                    {{/if}}
+                  </div>
+                </div>
+                {{#event-create-date-time-picker model=newEvent.date classNames="input-field-group "}}
+                  {{#if newEventErrors.date}}
+                    <span class="error">{{newEventErrors.date}}</span>
+                  {{/if}}
+                {{/event-create-date-time-picker}}
+                <div class="input-field-group">
+                  <div class="create-field-label">
+                    Event description
+                  </div>
+                  <div class="create-description input-field-wrapper {{if newEventErrors.description 'with-error'}}">
+                    {{textarea value=newEvent.description placeholder="This event is for..." classNames="edit"}}
+                    {{#if newEventErrors.description}}
+                      <span class="error">{{newEventErrors.description}}</span>
+                    {{/if}}
+                  </div>
+                </div>
+                <div class="input-field-group">
+                  <div class="create-field-label">
+                    Seats
+                  </div>
+                  <div class="dropdown create-seats input-field-wrapper">
+                    {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
+                                    onChange=(action 'onSeatsPick')}}
+                  </div>
+                </div>
+
+                <div class="create">
+                  <div class="create-btn" {{action "createEvent"}}>
+                    Create
+                  </div>
+                </div>
+              </div>
+            {{else}}
+              {{#if showingOneEvent}}
+                {{feed-event-show-details
+                  model=showingOneEvent
+                  classNames="events-show-root"
+                  cancelShowEvent=(action "cancelShowEvent")
+                  joinEvent=(action "onJoinEvent")
+                  leaveEvent=(action "onLeaveEvent")
+                  deleteEvent=(action "onDeleteEvent")}}
+              {{else}}
+                {{#if feed.isPlaying}}
+                  {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive")}}
+                {{/if}}
+                <div class="events-list-root">
+                  <div class="events-list-label">
+                    Current Events
+                  </div>
+                  {{#each currentFeedEvents as |event|}}
+                    {{feed-event-list-item
+                      model=event
+                      classNames="events-list-item"
+                      onLikePost=(action "onLikeEventPost")
+                      onLikeEventComment=(action "onLikeEventComment")
+                      postCommentForMessage=(action "onPostEventComment")
+                      joinEvent=(action "onJoinEvent")
+                      leaveEvent=(action "onLeaveEvent")
+                      onDetails=(action "openEventDetails")}}
+                  {{else}}
+                    <div class="events-list-empty">
+                      No events
+                    </div>
+                  {{/each}}
+                  <div class="events-list-label">
+                    Past Events
+                  </div>
+                  {{#each pastFeedEvents as |event|}}
+                    {{feed-event-list-item
+                      model=event
+                      classNames="events-list-item"
+                      onLikePost=(action "onLikeEventPost")
+                      onLikeEventComment=(action "onLikeEventComment")
+                      postCommentForMessage=(action "onPostEventComment")
+                      joinEvent=(action "onJoinEvent")
+                      leaveEvent=(action "onLeaveEvent")
+                      onDetails=(action "openEventDetails")}}
+                  {{else}}
+                    <div class="events-list-empty">
+                      No events
+                    </div>
+                  {{/each}}
+                </div>
+              {{/if}}
+            {{/if}}
+          </div>
+        </div>
+      {{else}}
+        <div class="feed-private-group">
+          <div class="label">
+            Private Group
+          </div>
+        </div>
+      {{/if}}
     </div>
   </div>
   {{feed-item-edit-admins-popup

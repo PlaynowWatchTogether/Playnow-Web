@@ -46,18 +46,35 @@
             .feed-pic {
               flex: 0 0 auto;
               cursor: pointer;
+              border-radius: 50%;
+              padding: 5px;
+              width: 150px;
+              height: 150px;
               .pic-holder {
-                width: 146px;
-                height: 150px;
+                width: 100%;
+                height: 100%;
                 display: flex;
                 background: white;
                 border-radius: 50%;
-                box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.30);
-                padding: 10px;
+                box-shadow: $message-shadow;
+                padding: 5px;
                 .profilePicWrapper {
                   width: 100%;
                   height: 100%;
                   margin: auto;
+                }
+                .file-upload{
+                  width: 100%;
+                  height: 100%;
+                  margin: 0;
+                  padding: 0;
+                }
+              }
+              &.active{
+                box-shadow: $message-shadow;
+                background: $primary-gradient;
+                .pic-holder{
+                  box-shadow: none;
                 }
               }
             }
@@ -659,6 +676,10 @@
             }
           }
           #events{
+            .feed-sidebar-playing-root{
+              margin-left: 10px;
+              margin-right: 10px;
+            }
             .events-create-root{
               @include events-create;
             }
@@ -761,6 +782,112 @@
               @include events-list;
               .events-list-item{
                 @include events-list-item;
+              }
+            }
+          }
+        }
+        .feed-sidebar-playing-root{
+          margin-top: 10px;
+          .header-label{
+            display: flex;
+            padding-left: 10px;
+            padding-right: 10px;
+            .label{
+              place-self: center;
+              margin-right: 10px;
+              font-family: $medium-font;
+            }
+            .header-icon{
+              flex: 0 0 auto;
+              border-radius: 50%;
+              box-shadow: $message-shadow;
+              place-self: center;
+              width: 40px;
+              height: 40px;
+              padding: 5px;
+              .profilePicWrapper{
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+          .feed-sidebar-playing-wrapper{
+            margin-top: 10px;
+            background: $primary-gradient;
+            border-radius: 15px;
+            padding: 10px;
+            .feed-sidebar-playing-holder{
+              background: white;
+              border-radius: 15px;
+              padding: 10px 15px;
+              .playing-title-label{
+                font-size: 80%;
+                color: #606060;
+              }
+              .playing-title{
+                margin-top: 10px;
+                font-size: 90%;
+                margin-bottom: 10px;
+                font-family: $medium-font;
+              }
+              .playing-thumbnail{
+                flex: 0 0 auto;
+                position: relative;
+                border-radius: 15px;
+                .thumbnail{
+                  background-position: center;
+                  background-size: cover;
+                  width: 100%;
+                  border-radius: 10px;
+                }
+                .action{
+                  display: flex;
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  left: 0;
+                  bottom: 0;
+                  .action-join{
+                    margin: auto;
+                    @include iconned-button(#02E7B2, 18px)
+                  }
+                }
+              }
+              .playing-members{
+                display: flex;
+                margin-top: 10px;
+                .playing-members-list{
+                  flex: 1 1 auto;
+                  display: flex;
+                  flex-direction: row;
+                  .playing-member-item{
+                    width: 30px;
+                    height: 30px;
+                    flex: 0 0 auto;
+                    border-radius: 50%;
+                    box-shadow: $message-shadow;
+                    padding: 2px;
+
+                    .profilePicWrapper{
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
+                }
+                .playing-members-views{
+                  display: flex;
+                  align-items: center;
+                  .views-img{
+                    width: 15px;
+                    flex: 0 0 auto;
+                    height: auto;
+                  }
+                  .label{
+                    color: #989898;
+                    font-size: 70%;
+                    margin-left: 5px;
+                  }
+                }
               }
             }
           }

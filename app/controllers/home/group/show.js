@@ -9,7 +9,9 @@ import MessagingMessagePager from '../../../mixins/messaging-messsage-pager';
 import MessageObject from '../../../custom-objects/message-object';
 import CreateEventMixin from '../../../mixins/create-event-mixin';
 import moment from 'moment';
+import { get } from '@ember/object';
 import $ from 'jquery';
+import FeedModelWrapper from '../../../custom-objects/feed-model-wrapper';
 
 export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {
   firebaseApp: service(),
@@ -32,7 +34,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   membersOnline: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return Object.values(feed.videoWatching||{});
+      return Object.values(get(feed,'videoWatching')||{});
     }else{
       return [];
     }
@@ -52,7 +54,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     const feed = this.get('feed');
     if (feed){
       return this.store.peekAll('feed-event').filter((elem)=>{
-        return elem.get('feedId') === feed.id && !elem.get('isPast');
+        return elem.get('feedId') === get(feed,'id') && !elem.get('isPast');
       });
     }else{
       return [];
@@ -62,7 +64,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     const feed = this.get('feed');
     if (feed){
       return this.store.peekAll('feed-event').filter((elem)=>{
-        return elem.get('feedId') === feed.id && elem.get('isPast');
+        return elem.get('feedId') === get(feed,'id') && elem.get('isPast');
       });
     }else{
       return [];
@@ -95,7 +97,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     const feed = this.get('feed');
     const myId = this.get('db').myId();
     if (feed){
-      return feed.GroupAccess === 1 || Object.keys(feed.Followers||{}).includes(myId);
+      return get(feed,'isPublic') || Object.keys(feed.get('Followers')||{}).includes(myId);
     }else{
       return false;
     }
@@ -103,7 +105,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   groupViews:computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return Object.keys(feed.Followers||{}).length;
+      return Object.keys(get(feed,'Followers')||{}).length;
     }else{
       return 0;
     }
@@ -112,7 +114,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
 
     const feed = this.get('feed');
     if (feed){
-      return {title:`${feed.GroupName}'s playlist`, videos: Object.values((feed.Playlist || {}))}
+      return {title:`${get(feed,'GroupName')}'s playlist`, videos: Object.values((get(feed,'Playlist') || {}))}
     }else{
       return null;
     }
@@ -120,8 +122,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
 
   handleDSChange(){
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
-      this.set('feed', feed);
-      this.set('lastMessageDate',feed.lastMessageDate);
+      this.set('feed', FeedModelWrapper.create({content:feed}));
+      this.set('lastMessageDate',get(feed,'lastMessageDate'));
     });
     this.dataSource.open(this.dataSource.feedId);
     this.dataSource.messages(this.dataSource.feedId, (messages)=>{
@@ -244,14 +246,14 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     unFollowGroup(){
       const group = this.get('feed');
-      this.get('db').unFollowFeedGroup(group.id);
+      this.get('db').unFollowFeedGroup(group.get('id'));
     },
     followGroup(){
       const group = this.get('feed');
-      if (group.GroupAccess === 1){
-        this.get('db').followFeedGroup(group.id);
+      if (group.get('isPublic')){
+        this.get('db').followFeedGroup(group.get('id'));
       }else{
-        this.get('db').requestFollowFeedGroup(group.id);
+        this.get('db').requestFollowFeedGroup(group.get('id'));
       }
     },
 
@@ -337,6 +339,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     removeAsAdmin(member){
       return this.dataSource.removeUserAdmin(this.dataSource.feedId, member);
+    },
+    joinLive(){
+      this.transitionToRoute('home.chat', this.dataSource.feedId, 'feed');
     }
   }
 });

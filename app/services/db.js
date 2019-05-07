@@ -496,6 +496,7 @@ export default Service.extend(VideoStateHandler, {
   unFollowFeedGroup(group){
     const id = this.myId();
     let ref = this.firebaseApp.database().ref(`channels/feed/${group}/Followers/${id}`);
-    return ref.remove();
+    let refAdmin = this.firebaseApp.database().ref(`channels/feed/${group}/Admins/${id}`);
+    return Promise.all([ref.remove(),refAdmin.remove()]);
   }
 });

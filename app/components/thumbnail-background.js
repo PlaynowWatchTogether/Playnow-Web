@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {htmlSafe} from '@ember/template'
 import $ from 'jquery';
-
+import {run} from '@ember/runloop';
 export default Component.extend({
   attributeBindings: ['style'],
   style: computed('model', function () {
@@ -12,6 +12,11 @@ export default Component.extend({
     this._super.apply(this, arguments);
 
     $(window).on('resize', this.handleSize.bind(this));
+    $(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', (e)=> { // on tab selection event
+      run(()=>{
+        this.handleSize();
+      });
+    });
   },
   didRender: function didRender() {
     this.handleSize();

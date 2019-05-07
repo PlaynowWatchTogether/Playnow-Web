@@ -1,16 +1,44 @@
-<div class="feed-item-pic">
+<div class="feed-item-pic {{if isPlaying "online"}}">
   <div class="pic">
     <div class="profilePicWrapper">
       <img class="profilePic" src={{safe-profile-pic model.ProfilePic}} alt="icon">
     </div>
   </div>
 </div>
-<div class="feed-item-title">
-  {{model.GroupName}}
+<div class="feed-item-content">
+  {{#if hasViewers}}
+    <div class="feed-item-title">
+      @ {{model.GroupName}}
+    </div>
+    <div class="feed-item-online">
+      <div class="feed-item-members">
+        {{#each groupViewers as |member|}}
+          <div class="feed-item-member-item">
+            <div class="member-item-pic">
+              {{remote-user-profile-pic model=member.senderId classNames="profilePicWrapper"}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{else}}
+    <div class="feed-item-title">
+      @ {{model.GroupName}}
+    </div>
+  {{/if}}
 </div>
-<div class="feed-item-views">
-  <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
-  <div class="label">
-    {{model.viewsNumber}}
+<div class="feed-item-info">
+  <div class="feed-item-views">
+    <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
+    <div class="label">
+      {{model.viewsNumber}}
+    </div>
   </div>
+  {{#if hasViewers}}
+    <div class="feed-item-status">
+      <div class="feed-item-online-label">
+        Online
+      </div>
+    </div>
+  {{/if}}
 </div>

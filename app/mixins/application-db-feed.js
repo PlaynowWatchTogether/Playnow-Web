@@ -19,6 +19,7 @@ export default Mixin.create({
         feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
         feed['Playlist'] = JSON.stringify(feed.Playlist || {});
         feed['Admins'] = JSON.stringify(feed.Admins || {});
+        feed['videoWatchingContent'] = JSON.stringify(feed.videoWatching || {});
 
         let normalizedData = this.store.normalize('feed-item', feed);
         this.store.push(normalizedData);

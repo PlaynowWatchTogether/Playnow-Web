@@ -18,6 +18,7 @@ export default DS.Model.extend({
   Admins: attr('string'),
   FollowRequests: attr('string'),
   Playlist: attr('string'),
+  videoWatchingContent: attr('string'),
   viewsNumber: computed('FollowersObject', function(){
     return Object.keys(this.get('FollowersObject')).length;
   }),
@@ -35,5 +36,8 @@ export default DS.Model.extend({
   }),
   isFollowing(id){
       return Object.keys(this.get('FollowersObject')).includes(id);
-  }
+  },
+  videoWatching: computed('videoWatchingContent', function(){
+    return JSON.parse(this.get('videoWatchingContent')) || {};
+  })
 });

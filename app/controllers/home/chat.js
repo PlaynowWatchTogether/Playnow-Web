@@ -7,12 +7,10 @@ import {computed} from '@ember/object';
 import {run} from '@ember/runloop';
 import {debug} from "@ember/debug";
 import $ from 'jquery';
-import ArrayProxy from '@ember/array/proxy';
 import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
-import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
-import { set } from '@ember/object';
+import { get } from '@ember/object';
 import MessagingUploadsHandler from '../../mixins/messaging-uploads-handler';
 import MessagingMessageHelper from '../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../mixins/messaging-messsage-pager';
@@ -169,6 +167,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     if ('one2one' === type) {
       obj.store.find('friends', convId).then((friend) => {
+        obj.set('chatModel', {
+          hasProfilePic: true,
+          title: friend.get('displayName'),
+          ProfilePic: friend.get('safeProfilePic'),
+          user: friend
+        });
         obj.set('dataSource', MessageDataSource.create({
           gcmManager: obj.gcmManager,
           type: 'one2one',
@@ -178,12 +182,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           fb: obj.firebaseApp,
           auth: obj.auth
         }));
-        obj.set('chatModel', {
-          hasProfilePic: true,
-          title: friend.get('displayName'),
-          ProfilePic: friend.get('safeProfilePic'),
-          user: friend
-        });
+
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
         obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
         obj.get('db').profileObserver(convId, (profile) => {
@@ -199,6 +198,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     } else if (obj.isTypePublicRoom(type)) {
       if (type === 'room'){
         obj.store.find('room', convId).then((room) => {
+          obj.set('chatModel', {
+            hasProfilePic: false,
+            title: '@' + room.get('creatorName') + "' room",
+            room: room
+          });
           obj.set('dataSource', MessageDataSource.create({
             type: type,
             gcmManager: obj.gcmManager,
@@ -208,17 +212,21 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
             fb: obj.firebaseApp,
             auth: obj.auth
           }));
-          obj.set('chatModel', {
-            hasProfilePic: false,
-            title: '@' + room.get('creatorName') + "' room",
-            room: room
-          });
+
           obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
           obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
 
         });
       }else if (type === 'feed'){
         obj.db.feed(convId).then((feed)=>{
+          const isAdmin = feed.creatorId === myId;// || Object.keys(feed.Admins || {}).includes(myId());
+          obj.set('chatModel', {
+            hasProfilePic: true,
+            title: 'Live @' + feed.GroupName,
+            ProfilePic: feed.ProfilePic,
+            feed: feed,
+            isAdmin: isAdmin
+          });
           obj.set('dataSource', MessageDataSource.create({
             type: type,
             gcmManager: obj.gcmManager,
@@ -228,14 +236,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
             fb: obj.firebaseApp,
             auth: obj.auth
           }));
-          const isAdmin = feed.creatorId === myId;// || Object.keys(feed.Admins || {}).includes(myId());
-          obj.set('chatModel', {
-            hasProfilePic: true,
-            title: 'Live @' + feed.GroupName,
-            ProfilePic: feed.ProfilePic,
-            feed: feed,
-            isAdmin: isAdmin
-          });
+
 
           obj.videoStateHandler.isMaster = isAdmin;
           obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
@@ -243,6 +244,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       }
     } else if ('group' === type) {
       obj.store.find('group', convId).then((group) => {
+        obj.set('chatModel', {
+          hasProfilePic:  profilePic!=null && profilePic.length > 0,
+          ProfilePic: profilePic,
+          title: group.get('GroupName'),
+          group: group
+        });
         obj.set('dataSource', MessageDataSource.create({
           type: 'group',
           gcmManager: obj.gcmManager,
@@ -254,30 +261,24 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }));
         let profilePic = group.get('ProfilePic');
 
-        obj.set('chatModel', {
-          hasProfilePic:  profilePic!=null && profilePic.length > 0,
-          ProfilePic: profilePic,
-          title: group.get('GroupName'),
-          group: group
-        });
+
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;
         obj.videoStateHandler.syncMode = 'room' === type ? 'sliding' : 'awaiting';
         obj.offGroupListen();
         obj.set('listenGroup',obj.get('db').listenGroup(convId, (snapshot)=>{
           let profilePic = snapshot.ProfilePic;
 
-          obj.set('chatModel', {
-              hasProfilePic: profilePic!=null && profilePic.length > 0,
-              ProfilePic: profilePic,
-              title: snapshot.GroupName,
-              group: group
-          });
+          obj.set('chatModel.hasProfilePic', profilePic!=null && profilePic.length > 0);
+          obj.set('chatModel.ProfilePic', profilePic);
+          obj.set('chatModel.title', snapshot.GroupName);
+          obj.set('chatModel.group', group);                            
         }));
       });
 
     } else {
       obj.set('chatModel', {});
     }
+
 
   },
   sliderClass: computed('videoStateHandler', 'dataSource', function () {
@@ -297,6 +298,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let ds = obj.get('dataSource');
     ds.updateWatching('', 'closed');
     let one_day = 1000 * 60 * 60 * 24;
+    ds.loadPlaylist((playlist)=>{
+      obj.set('chatModel.Playlist', playlist);
+    });
     ds.videoWatchers((watchers) => {
       if (watchers) {
         obj.videoStateHandler.updateWatchers(watchers, 0);
@@ -506,6 +510,16 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       this.set('listenGroup',null);
     }
   },
+  playlistModel: computed('chatModel.Playlist', function(){
+
+    const chat = this.get('chatModel');
+    const playlist = get(chat,'Playlist')
+    if (playlist){
+      return {title:`Playlist`, videos: Object.values(playlist || {})}
+    }else{
+      return null;
+    }
+  }),
   reset() {
     this.set('displayEmoji',false);
     this.offGroupListen();
@@ -923,7 +937,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       if (!m || type!=='feed')
         this.transitionToRoute('home');
       return this.transitionToRoute('home.group.show',{group_id: m.feed.id});
-
-    }
+    },
+    playlistVideoAdd(video){
+      return this.dataSource.addPlaylistItem(video);
+    },
+    playlistVideoRemove(video){
+      return this.dataSource.removePlaylistItem(video);
+    },
   }
 });

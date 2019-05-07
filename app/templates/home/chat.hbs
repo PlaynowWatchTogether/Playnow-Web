@@ -310,7 +310,15 @@
           </div>
           <div class="tab-content col-12">
             <div class="tab-pane row fade show active" id="videos">
-              {{chat-videos-list classNames="col-12" scrollParent=".tab-content" displayVideoRequest=displayVideoRequest onVideoPick=(action "videoPick")}}
+              {{chat-videos-list
+                classNames="col-12"
+                scrollParent=".tab-content"
+                displayVideoRequest=displayVideoRequest
+                onVideoPick=(action "videoPick")
+                playlistModel=playlistModel
+                canEditPlaylist=isMaster
+                onPlaylistAddVideo=(action "playlistVideoAdd")
+                onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
             </div>
             <div class="tab-pane fade" id="music">
               {{#scroll-with-listener classNames="youtube-items row music noselect" music=false

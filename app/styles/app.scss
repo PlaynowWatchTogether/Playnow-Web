@@ -2874,6 +2874,15 @@ CHAT
         width: 100%;
         @include videos-search
       }
+      .chat-videos-playlist{
+        @include chat-playlist
+        .playlist-content{
+          @include youtube-videos
+          .youtube-item{
+            @include youtube-item
+          }
+        }
+      }
     }
 
     .tabs {

@@ -1,7 +1,9 @@
 import EmberObject from '@ember/object';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
-export default EmberObject.extend({
+import ChatPlaylistHandler from '../mixins/chat-playlist-handler';
+
+export default EmberObject.extend(ChatPlaylistHandler, {
   init(){
     this._super(...arguments);
     this.listeners=[];
@@ -220,16 +222,12 @@ export default EmberObject.extend({
   },
   addPlaylistItem(convId, video){
     const senderId = this.db.myId();
-    const itemID = new Date().getTime().toString() + senderId;
-    const item = video;
-    item['playlistId'] = itemID;
-    let ref = this.feedRef(convId).child(`Playlist/${itemID}`);
-    return ref.set(item);
+    let ref = this.feedRef(convId).child(`Playlist`);
+    return this.addPlaylistItemInternal(senderId,ref, video);
   },
   removePlaylistItem(convId, video){
-    const itemID = video['playlistId'];
-    let ref = this.feedRef(convId).child(`Playlist/${itemID}`);
-    return ref.remove();
+    let ref = this.feedRef(convId).child(`Playlist`);
+    return this.removePlaylistItemInternal(ref,video);
   },
   createEvent(convId, event){
     let senderId = this.db.myId();

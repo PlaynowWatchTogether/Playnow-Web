@@ -7,9 +7,11 @@
       Done
     </div>
   {{else}}
-    <div class="playlist-edit" {{action 'enableEdit'}}>
-      <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit playlist">
-    </div>
+    {{#if canEdit}}
+      <div class="playlist-edit" {{action 'enableEdit'}}>
+        <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit playlist">
+      </div>
+    {{/if}}
   {{/if}}
 </div>
 {{#if isEditing}}
@@ -36,7 +38,7 @@
 {{#if model.videos}}
   <div class="playlist-content">
     {{#each model.videos as |video|}}
-      {{youtube-video model=video classNames="youtube-item"                        
+      {{youtube-video model=video classNames="youtube-item"
                        clickAction=(action "videoPick")
                        removeAction=(action 'videoRemove')
                        displayRequest=displayVideoRequest
@@ -46,7 +48,11 @@
 {{else}}
   {{#unless isEditing}}
     <div class="playlist-empty">
-      Empty - Create your playlist!
+      {{#if canEdit}}
+        Empty - Create your playlist!
+      {{else}}
+        Empty
+      {{/if}}
     </div>
   {{/unless}}
 {{/if}}

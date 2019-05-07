@@ -3,8 +3,9 @@ import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
 import VideoStateHandlerMixin from '../mixins/video-state-handler-mixin';
+import ChatPlaylistHandler from '../mixins/chat-playlist-handler';
 
-export default EmberObject.extend(VideoStateHandlerMixin, {
+export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
   gcmManager: service(),
   type: 'one2one',
   user: null,
@@ -458,6 +459,52 @@ export default EmberObject.extend(VideoStateHandlerMixin, {
         });
       }
     });
-  }
+  },
+  loadPlaylist(callback){
+    const senderId = this.myId;
+    const convId = this.convId();
+    const path = this.messageRoot();
+    let ref = null;
+    if (this.type === 'one2one'){
+      ref = `${path}/${convId}/Playlist/${senderId}`
+    }
+    if (this.type === 'group'){
+      ref = `${path}/${convId}/Playlist/`
+    }
+    if (ref){
+      this.db.ref(ref).on('value', (data)=>{
+        callback(data.val()||{});
+      })
+    }
+  },
+  addPlaylistItem(video){
+    const senderId = this.myId;
+    const convId = this.convId();
+    const path = this.messageRoot();
+    let ref = null;
+    if (this.type === 'one2one'){
+      ref = `${path}/${convId}/Playlist/${senderId}`
+    }
+    if (this.type === 'group'){
+      ref = `${path}/${convId}/Playlist`
+    }
+    if (ref){
+      return this.addPlaylistItemInternal(senderId,this.db.ref(ref), video);
+    }
+  },
+  removePlaylistItem(video){
+    const convId = this.convId();
+    const path = this.messageRoot();
+    const senderId = this.myId;
+    let ref = null;
+    if (this.type === 'one2one'){
+
+      ref = `${path}/${convId}/Playlist/${senderId}`
+    }
+    if (this.type === 'group'){
+      ref = `${path}/${convId}/Playlist`
+    }
+    return this.removePlaylistItemInternal(this.db.ref(ref),video);
+  },
 
 });

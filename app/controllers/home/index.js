@@ -74,7 +74,7 @@ export default Controller.extend({
         }
         return aD - bD;
       }else{
-        return a.lastUpdate - b.lastUpdate;
+        return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
       }
     });
   }),

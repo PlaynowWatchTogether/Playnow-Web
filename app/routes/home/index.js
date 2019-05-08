@@ -29,7 +29,7 @@ export default Route.extend(AuthRouteMixin, {
     this._super(...arguments);
     $('body').removeClass('index');
 
-    this.get('db').feedsOff();
+    // this.get('db').feedsOff();
   },
   resetController(controller) {
     controller.reset()

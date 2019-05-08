@@ -269,7 +269,7 @@ export default Service.extend(VideoStateHandler, {
       });
       updateCallback(records);
     };
-    this.listeners["channels/feed"] = clb;
+    // this.listeners["channels/feed"] = clb;
     ref.on('value', clb);
 
   },

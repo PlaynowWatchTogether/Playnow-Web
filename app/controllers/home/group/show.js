@@ -83,10 +83,13 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     return this.get('feed.creatorId') === myId;
   }),
   isFollowing: computed('feed', function(){
-    const admin = this.get('isAdmin');
-    if (admin)
-      return true;
-    return Object.keys(this.get('feed.Followers')||{}).includes(this.db.myId());
+    const feed = this.get('feed');
+    if (feed){
+      const myId = this.get('db').myId();
+      return feed.isMember(myId);
+    }else{
+      return false;
+    }
   }),
   isRequestedFollow: computed('feed', function(){
     return Object.keys(this.get('feed.FollowRequests')||{}).includes(this.db.myId());

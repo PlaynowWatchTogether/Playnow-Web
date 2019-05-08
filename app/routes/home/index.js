@@ -14,6 +14,14 @@ export default Route.extend(AuthRouteMixin, {
     return this.store.peekAll('feed-item');
   },
   activate() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position)=>{
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const controller = this.controllerFor('home.index');
+          controller.set('userLocation', {lat: lat, lng: lng});
+        });
+    }
     this._super(...arguments);
     $('body').addClass('index');
   },

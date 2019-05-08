@@ -31,6 +31,13 @@ export default Component.extend({
     }
     return {isEvent:true, event: FeedEventModelWrapper.create({content:event})};
   }),
+  canShowRecent: computed('model', function(){
+    const isPublic = this.get("model.isPublic");
+    if (isPublic)
+      return true;
+    const myID = this.get('db').myId();
+    return this.get('model').isMember(myID);
+  }),
   hasRecentAction: computed('model', function(){
     const playing = this.get('model.isPlaying');
     if (playing){

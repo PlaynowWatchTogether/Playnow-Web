@@ -1,7 +1,10 @@
 
 @mixin home-feed-item-public{
   padding: 10px;
+  width: 100%;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
   .header{
     display: flex;
     position: relative;
@@ -127,50 +130,57 @@
     padding-top: 10px;
     padding-bottom: 10px;
   }
-  .public-group{
-    .recent-playing-item{
-      display: flex;
-      flex-direction: row;
+  .footer-wrapper{
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    flex-direction: column;
+    .public-group{
+      .recent-playing-item{
+        display: flex;
+        flex-direction: row;
+        box-shadow: $message-shadow;
+        background: #F4F4F4;
+        border-radius: 15px;
+        padding: 5px;
+        .thumbnail{
+          flex: 0 0 40%;
+          max-width: 40%;
+          background-position: center;
+          background-size: cover;
+          border-radius: $video-round-corner;
+        }
+        .video-title{
+          margin: 10px;
+          place-self: center;
+          font-family: $medium-font;
+        }
+      }
+      .recent-post-item-label{
+        color: darkgray;
+        margin-left: 10px;
+        margin-bottom: 10px;
+      }
+      .recent-event-item{
+        @include events-list-item;
+      }
+      .recent-post-item{
+        pointer-events: none;
+        @include feed-post-content;
+      }
+    }
+    .private-group{
       box-shadow: $message-shadow;
       background: #F4F4F4;
       border-radius: 15px;
-      padding: 5px;
-      .thumbnail{
-        flex: 0 0 40%;
-        max-width: 40%;
-        background-position: center;
-        background-size: cover;        
-        border-radius: $video-round-corner;
-      }
-      .video-title{
-        margin: 10px;
-        place-self: center;
-        font-family: $medium-font;
+      height: 90px;
+      font-size: 80%;
+      color: #989898;
+      display: flex;
+      .label{
+        margin: auto;
       }
     }
-    .recent-post-item-label{
-      color: darkgray;
-      margin-left: 10px;
-      margin-bottom: 10px;
-    }
-    .recent-event-item{
-      @include events-list-item;
-    }
-    .recent-post-item{
-      pointer-events: none;
-      @include feed-post-content;
-    }
   }
-  .private-group{
-    box-shadow: $message-shadow;
-    background: #F4F4F4;
-    border-radius: 15px;
-    height: 90px;
-    font-size: 80%;
-    color: #989898;
-    display: flex;
-    .label{
-      margin: auto;
-    }
-  }
+
 }

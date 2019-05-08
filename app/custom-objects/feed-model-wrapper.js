@@ -7,6 +7,9 @@ export default ObjectProxy.extend({
   isFollowing(id){
     return Object.keys(this.get('content.Followers')||{}).includes(id);
   },
+  isMember(id){
+    return this.isAdmin(id) || Object.keys(this.get('content.Followers')||{}).includes(id);
+  },
   isAdmin(id){
     return this.get('content.creatorId') === id || Object.keys(this.get('content.Admins')||{}).includes(id);
   },

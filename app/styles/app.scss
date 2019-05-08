@@ -841,7 +841,54 @@ body.home.chat.room {
           width: 24px;
           height: 24px;
         }
-
+        .feedgroups{
+          margin: auto;
+          cursor: pointer;
+          .dropdown-menu {
+            margin-left: -457px;
+            width: 500px;
+            padding-top: 0;
+          }
+        }
+        .feedgroups{
+          .followers-content{
+            display: flex;
+            flex-direction: column;
+            font-family: $medium-font;
+            .title{
+              border-bottom: 1px solid #DEDEDE;
+              padding: 10px 20px;
+            }
+            .follower-items{
+              display: flex;
+              flex-direction: column;
+              max-height: 500px;
+              overflow-y: scroll;
+              .follower-items-empty{
+                min-height: 200px;
+                display: flex;
+                .create-new{
+                  flex: 0 0 auto;
+                  margin: auto;
+                  @include iconned-button(#5AB9FF, 19px, 100%, 5px);
+                }
+              }
+              .follower-item-feed-title{
+                margin-left: 20px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+              }
+              .follower-item-users{
+                display: flex;
+                flex-direction: column;
+                padding: 0px 10px;
+                .follower{
+                  @include follower-user-request;
+                }
+              }
+            }
+          }
+        }
         .followers {
           margin: auto;
           cursor: pointer;
@@ -886,114 +933,7 @@ body.home.chat.room {
             grid-row-gap: 10px;
 
             .follower {
-              padding: 10px;
-              background: #F0F0F0;
-              border-radius: 20px;
-              display: grid;
-              grid-template-columns: 80px minmax(0, auto) 220px;
-
-              .name {
-                margin-top: auto;
-                margin-bottom: auto;
-                margin-left: 10px;
-              }
-
-              .display-name {
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                font-size: 11px;
-                color: #A7A2A2;
-              }
-
-              .username {
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                overflow: hidden;
-                font-size: 19px;
-
-              }
-
-              .profilePicWrapper {
-                width: 77px;
-                height: 77px;
-              }
-
-              .follow-controls {
-                display: grid;
-                grid-template-columns: auto auto;
-
-                .added {
-                  display: grid;
-                  background: #5AB9FF;
-                  margin: auto;
-                  grid-column-start: 2;
-                  padding: 5px 10px 5px 10px;
-                  border-radius: 20px;
-                  grid-template-columns: auto auto;
-
-                  img {
-                    margin: auto;
-                  }
-
-                  .label {
-                    margin-top: auto;
-                    margin-left: 10px;
-                    color: white;
-                  }
-                }
-
-                .removed {
-                  margin: auto;
-                  background: #C4C4C4;
-                  border-radius: 20px;
-                  padding: 5px 10px;
-                  color: white;
-                  grid-column-start: 2;
-                }
-
-                .add {
-                  width: 80px;
-                  text-align: center;
-                  display: grid;
-                  background: #CF77FF;
-                  margin: auto;
-                  padding: 5px 10px 5px 10px;
-                  border-radius: 20px;
-                  grid-template-columns: auto auto;
-
-                  img {
-                    margin: auto;
-                    width: 19px;
-                    height: 19px;
-                  }
-
-                  .label {
-                    margin-top: auto;
-                    margin-bottom: auto;
-                    margin-left: 10px;
-                    color: white;
-                  }
-                }
-
-                .add:hover {
-                  background: #b939ff;
-                }
-
-                .cancel {
-                  width: 80px;
-                  text-align: center;
-                  margin: auto;
-                  background: #C4C4C4;
-                  border-radius: 20px;
-                  padding: 5px 10px;
-                  color: white;
-                }
-
-                .cancel:hover {
-                  background: #919191;
-                }
-              }
+              @include follower-user-request;
             }
           }
         }
@@ -1005,7 +945,7 @@ body.home.chat.room {
           }
         }
 
-        .followers {
+        .followers, .feedgroups {
           .new-requests {
             position: absolute;
             width: 10px;
@@ -1014,6 +954,12 @@ body.home.chat.room {
             right: 11px;
             background: red;
             top: 2px;
+          }
+        }
+        .feedgroups{
+          .new-requests{
+            top: -5px;
+            right: 6px;
           }
         }
 
@@ -1031,7 +977,27 @@ body.home.chat.room {
 
           }
         }
-
+        .feedgroups:hover {
+          .dropdown-toggle {
+            background: #dadada54;
+            border-radius: 10px;
+          }
+        }
+        .feedgroups{
+          .chevron{
+            margin-top: 8px;
+          }
+        }
+        .feedgroups.show {
+          .friend-requests, .chevron {
+            filter: brightness(0) invert(1);
+          }
+        }
+        .feedgroups.show {
+          .friend-requests, .chevron {
+            filter: brightness(0) invert(1);
+          }
+        }
         .followers.show {
           .friend-requests, .chevron {
             filter: brightness(0) invert(1);

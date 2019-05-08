@@ -46,7 +46,7 @@ $message-border-radius: 14px;
   color: white;
   padding: 5px 10px;
 }
-@mixin iconned-button($color, $width) {
+@mixin iconned-button($color, $width, $font-size: 80%, $column-gap:5px) {
   cursor: pointer;
   background: $color;
   border-radius: 20px;
@@ -54,6 +54,7 @@ $message-border-radius: 14px;
   grid-template-columns: min-content auto;
   padding: 5px 10px;
   flex: 0 0 auto;
+  grid-column-gap: $column-gap;
   &:hover{
     background: darken($color, 30%);
   }
@@ -64,7 +65,10 @@ $message-border-radius: 14px;
   .label{
     color: white;
     margin-left: 5px;
-    font-size: 80%;
+    font-size: $font-size;
+    display: flex;
+    place-self: baseline;
+    margin: auto;
   }
 }
 
@@ -676,5 +680,56 @@ $message-border-radius: 14px;
   }
   .reaction-likes{
     margin-left: 10px;
+  }
+}
+@mixin follower-user-request{
+  background: #F0F0F0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  padding: 10px 20px;
+  .profilePicWrapper{
+    width: 60px;
+    height: 60px;
+    place-self: center;
+  }
+  .name{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    place-self: center;
+    .username{
+      font-family: $medium-font;
+    }
+    .display-name{
+      color: #A7A2A2;
+      font-size: 80%;
+    }
+  }
+  .follow-controls{
+    flex: 0 0 auto;
+    place-self: center;
+    @include follow-controls;
+  }
+}
+@mixin follow-controls{
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-column-gap: 10px;
+  .added {
+    @include iconned-button(#5AB9FF, 19px, 100%, 5px)
+  }
+
+  .removed {
+    @include simple-button(#C4C4C4)
+  }
+
+  .add{
+    @include iconned-button(#CF77FF, 19px,100%, 5px)
+  }
+
+  .cancel {
+    @include simple-button(#C4C4C4)
   }
 }

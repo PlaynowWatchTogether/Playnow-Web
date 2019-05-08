@@ -22,28 +22,47 @@
             </div>
           {{/user-profile-view}}
           <div class="controls">
-            {{#bs-dropdown classNames="dropdown feedgroups"}}              
-              <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
+            {{#bs-dropdown classNames="dropdown feedgroups"}}
+              <div class="dropdown-toggle" id="dropdownFeedgroups" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false" data-display="static">
-                <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">                
-                {{#if hasNewRequests}}
+                <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">
+                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
+                {{#if hasNewRequestsFeed}}
                   <div class="new-requests"></div>
                 {{/if}}
               </div>
-              <div class="dropdown-menu" aria-labelledby="dropdownFollowers">
+              <div class="dropdown-menu" aria-labelledby="dropdownFeedgroups">
                 <div class="followers-content">
                   <div class="title">
                     <div>
-                      Friend request
+                      My Channel follow request
                     </div>
                   </div>
 
                   <div class="follower-items">
-                    {{#each followers as |follower|}}
-                      {{#follower-menu-item model=follower classNames="follower"
-                                            actionHandler=(action "followerAction")}}
+                    {{#each feedRequests as |requestFeed|}}
+                      <div class="follower-item-feed-title">
+                        {{requestFeed.feed.GroupName}}
+                      </div>
+                      <div class="follower-item-users">
+                        {{#each requestFeed.requests as |request|}}
+                          {{#follower-menu-item model=request classNames="follower"
+                                                extra=requestFeed.feed
+                                                actionHandler=(action "feedFollowerAction")}}
 
-                      {{/follower-menu-item}}
+                          {{/follower-menu-item}}
+                        {{/each}}
+                      </div>
+                    {{else}}
+                    <div class="follower-items-empty">
+                      {{#link-to 'home.group' tagName='div' classNames='create-new'}}
+
+                        <img src="/assets/ic_add_friend@2x.png" alt="icon">
+                        <div class="label">
+                          Create Channel
+                        </div>
+                      {{/link-to}}
+                    </div>
                     {{/each}}
                   </div>
                 </div>
@@ -97,7 +116,7 @@
             {{/bs-dropdown}}
 
           </div>
-        </div>  
+        </div>
       </div>
     </header>
   {{/if}}

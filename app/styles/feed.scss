@@ -10,12 +10,12 @@
 }
 .dropdown.feedgroups{
 	margin: auto;
-    cursor: pointer;
-    margin-top: 1px;
+  cursor: pointer;
+  .dropdown-toggle{
+		margin-top: -5px;
+	}
 }
-.dropdown.feedgroups.show{
-	filter: invert(1)
-}
+
 .home.group{
   .mainPage {
     .row-friends {

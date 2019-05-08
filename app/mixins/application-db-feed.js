@@ -47,6 +47,8 @@ export default Mixin.create({
           this.store.push(normalizedData);
         })
       });
+      const contrl = this.controllerFor('application');
+      contrl.set('feedLastUpdate', new Date());
     })
   }
 });

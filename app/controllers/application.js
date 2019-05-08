@@ -6,6 +6,7 @@ import {set} from "@ember/object";
 import {debug} from "@ember/debug";
 import $ from "jquery";
 import UUIDGenerator from '../mixins/uuid-generator';
+import FeedModelWrapper from '../custom-objects/feed-model-wrapper';
 export default Controller.extend(UUIDGenerator, {
   auth: service(),
   db: service(),
@@ -13,7 +14,7 @@ export default Controller.extend(UUIDGenerator, {
   init() {
     this._super(...arguments);
     this.set('isDisabled', true);
-    this.addObserver('model', this, 'modelObserver');    
+    this.addObserver('model', this, 'modelObserver');
   },
   modelObserver(obj) {
     let m = obj.get('model');
@@ -59,6 +60,36 @@ export default Controller.extend(UUIDGenerator, {
     let m = this.get('model');
     return m['Username'];
   }),
+  hasNewRequestsFeed: computed('feedLastUpdate', function(){
+    const myID = this.db.myId();
+    const adminFeeds = this.store.peekAll('feed-item').map((elem)=>{
+      return FeedModelWrapper.create({content:elem.get('obj')});
+    }).filter((elem) => {
+      return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
+    });
+
+    return adminFeeds.length > 0;
+  }),
+  feedRequests: computed('feedLastUpdate', function(){
+    const myID = this.db.myId();
+    const adminFeeds = this.store.peekAll('feed-item').map((elem)=>{
+      return FeedModelWrapper.create({content:elem.get('obj')});
+    }).filter((elem) => {
+      return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
+    });
+    const req = [];
+    adminFeeds.forEach((elem)=>{
+      const r = [];
+      const follow = elem.get('FollowRequests');
+      Object.keys(follow).forEach((key)=>{
+        const payload = follow[key];
+        payload.id = key;
+        r.push(payload);
+      });
+      req.push({feed:elem, requests:r});
+    })
+    return req;
+  }),
   hasNewRequests: computed('followers.@each', function () {
     return (this.get('followers') || []).length > 0;
   }),
@@ -76,6 +107,14 @@ export default Controller.extend(UUIDGenerator, {
     },
     logout() {
       this.transitionToRoute('logout');
+    },
+    feedFollowerAction(action, user,feed){
+      debug('feedFollowerAction');
+      if (action === 1){
+        this.get('db').confirmFeedRequest(feed,user);
+      }else{
+        this.get('db').cancelFeedRequest(feed,user);
+      }
     },
     followerAction(action, model) {
       if (action === 1) {

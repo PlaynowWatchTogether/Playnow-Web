@@ -449,6 +449,21 @@ export default Service.extend(VideoStateHandler, {
       })
     })
   },
+  confirmFeedRequest(group,user){
+    const groupID = get(group,'id');
+    const userId = get(user,'id');
+    let removeRef = this.firebaseApp.database().ref(`channels/feed/${groupID}/FollowRequests/${userId}`);
+    let ref = this.firebaseApp.database().ref(`channels/feed/${groupID}/Followers/${userId}`);
+
+    return Promise.all([removeRef.remove(),ref.update(user)]);
+  },
+  cancelFeedRequest(group,user){
+    const groupID = get(group,'id');
+    const userId = get(user,'id');
+    let removeRef = this.firebaseApp.database().ref(`channels/feed/${groupID}/FollowRequests/${userId}`);
+
+    return removeRef.remove();
+  },
   requestFollowFeedGroup(group){
     const id = this.myId();
     return this.profile(id).then((profile) => {

@@ -26,7 +26,7 @@ export default Component.extend({
       setTimeout(() => {
         $(this.element).fadeOut(1000, () => {
           run(() => {
-            this.actionHandler(1, this.get('model'));
+            this.actionHandler(1, this.get('model'), this.get('extra'));
           });
         });
       }, 1000);
@@ -37,7 +37,7 @@ export default Component.extend({
       setTimeout(() => {
         $(this.element).fadeOut(1000, () => {
           run(() => {
-            this.actionHandler(0, this.get('model'));
+            this.actionHandler(0, this.get('model'), this.get('extra'));
           });
         });
       }, 1000);

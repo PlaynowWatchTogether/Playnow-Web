@@ -16,11 +16,13 @@
     </div>
   {{/if}}
   {{#if attachments}}
-    <div class="post-attachments">
-      {{#each attachments as |attachment|}}
-        {{chat-message-attachment model=attachment classNames="post-attachment-item"}}
-      {{/each}}
-    </div>
+    {{#unless hideAttachments}}
+      <div class="post-attachments">
+        {{#each attachments as |attachment|}}
+          {{chat-message-attachment model=attachment classNames="post-attachment-item" maxWidthSelector='.post-attachments'}}
+        {{/each}}
+      </div>
+    {{/unless}}
   {{/if}}
   {{feed-reactionable-elem
     model=model

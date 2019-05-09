@@ -1,0 +1,163 @@
+@mixin home-list-friend-item-label{
+  overflow-wrap: break-word;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: right;
+}
+@mixin home-list-split-profile-pic{
+  .split-profile-pic {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+  }
+
+  .split-profile-pic1 {
+    display: grid;
+    grid-template-columns: auto;
+  }
+
+  .split-profile-pic2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 2px;
+  }
+
+  .split-profile-pic3 {
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-template-columns: 50% 50%;
+    grid-column-gap: 2px;
+    grid-row-gap: 2px;
+
+    div:first-child {
+      grid-row-start: 1;
+      grid-row-end: 3;
+    }
+  }
+}
+@mixin home-list-friend-item{
+  &:hover{
+    background: $friends-list-hover-color;
+  }
+  &.active{
+    background: $friends-list-hover-color;
+  }
+  .home-contact-item-link{
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    .text-content{
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      place-items: flex-end;
+      place-content: center;
+      padding-right: 10px;
+      overflow-wrap: break-word;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      .name{
+        @include home-list-friend-item-label;
+        display: flex;
+        place-items: center;
+        justify-content: flex-end;
+        .content{
+          overflow-wrap: break-word;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          width: 100%;
+          text-align: right;
+        }
+        .unread-icon {
+          @include unread-icon;
+          display: none;
+          margin-left: 5px;
+        }
+      }
+      .last-message{
+        color: #A5A5A5;
+        font-size: 90%;
+        @include home-list-friend-item-label;
+      }
+      .emojione{
+        width: 20px;
+      }
+    }
+    .pic-content{
+      flex: 0 0 auto;
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      position: relative;
+      padding: 4px;
+      .pic{
+        width: 100%;
+        height: 100%;
+        padding: 3px;
+        border-radius: 50%;
+        background: white;
+        box-shadow: $message-shadow;
+        .profilePicWrapper{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      @include home-list-split-profile-pic;
+    }
+
+    &.unread{
+      .text-content{
+        .name{
+          .unread-icon{
+            display: block;
+          }
+          font-family: $bold-font;
+        }
+        .last-message{
+          color: black;
+        }
+      }
+    }
+    &.online{
+      .online-icon{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: #07FF23;
+        border-radius: 50%;
+        border: solid white 1px;
+        z-index: 2;
+      }
+    }
+    &.playing{
+      .pic-content{
+        background: $primary-gradient;
+        box-shadow: $message-shadow;
+        .pic{
+          box-shadow: none;
+        }
+      }
+    }
+
+  }
+}
+.friendsList{
+  .home-friend-item-link{
+    @include home-list-friend-item;
+  }
+  .home-group-item-link{
+    @include home-list-friend-item;
+  }
+}

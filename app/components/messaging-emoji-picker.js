@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import $ from 'jquery';
 export default Component.extend({
   didInsertElement(){
-    this._super(...arguments);
+    this._super(...arguments);    
     $(this.element).on('click','.emoji-back', (e)=>{
       e.stopPropagation();
       this.set('displayEmoji',false);

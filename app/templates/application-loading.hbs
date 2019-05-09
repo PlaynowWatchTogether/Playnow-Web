@@ -4,31 +4,41 @@
       <div class="play-icon">
         <img src="/assets/main.png" class="play-icon" alt="icon">
       </div>
-      <div class="search">
-        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-        <div class="searchInput"></div>
-        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-        <div class="trigger-search" role="button">
-          <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-        </div>
-      </div>
-      <div class="profile">
-
-      </div>
-      <div class="controls">
-        <div class="followers">
-          <div>
-            <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
-            <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
+      <div class="search-holder">
+        <div class="search">
+          <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+          <div class="searchInput"></div>
+          <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+          <div class="trigger-search" role="button">
+            <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
           </div>
         </div>
-        <div class="gear dropdown">
-          <div>
-            <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
-            <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="chevron">
+      </div>
+      <div class="main-controls-wrapper">
+        <div class="profile">
+          <span class="name noselect"></span>
+          <div class="profilePicWrapper">
+            <img class="profilePic" src={{safe-profile-pic ''}} alt="icon">
           </div>
         </div>
+        <div class="controls">
+          <div class="feedgroups dropdown">
+            <div class="dropdown-toggle">
+              <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">
+            </div>
+          </div>
+          <div class="followers dropdown">
+            <div class="dropdown-toggle">
+              <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
+            </div>
+          </div>
+          <div class="gear dropdown">
+            <div class="dropdown-toggle">
+              <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
+            </div>
+          </div>
 
+        </div>
       </div>
     </div>
   </header>
@@ -48,8 +58,8 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-9 col-child-content h-100">
-      <div class="publicRooms row">
+    <div class="col-child-content h-100">
+      <div class="publicRooms">
         <div class="content h-100">
           <div class="title-holder">
             <div class="title">

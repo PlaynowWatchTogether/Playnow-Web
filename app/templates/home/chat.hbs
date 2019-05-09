@@ -1,297 +1,295 @@
-<div class="row chatRoot {{modeClass}} {{videoClass}} h-100" data-conv-id={{convId}}>
-  <div class="col-8 content h-100">
-    {{#file-dropzone classNames="row holder h-100" name="chatPhotos" as |dropzone|}}
-      {{#if dropzone.active}}
-        {{#if dropzone.valid}}
-          <div class="dropzone">
-            <div class="content">
-              <div>Drop to upload</div>
-            </div>
-          </div>
-        {{else}}
-
-        {{/if}}
-      {{/if}}
-
-      <div class="titleHolder">
-        {{#if isRoom}}
-          <div class="back" {{action "goBack"}}>
-            <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
-          </div>
-          <div class="title noselect">
-            {{#if chatModel.hasProfilePic}}
-              <div class="profilePicWrapper">
-                <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+<div class="feed-root h-100 {{modeClass}} {{videoClass}}" data-conv-id={{convId}}>
+  <div class="feed-parent">
+    <div class="feed-content h-100">
+      {{#file-dropzone classNames="feed-content-wrapper" name="chatPhotos" as |dropzone|}}
+        {{#if dropzone.active}}
+          {{#if dropzone.valid}}
+            <div class="dropzone">
+              <div class="content">
+                <div>Drop to upload</div>
               </div>
-            {{else}}
-              <div class="profilePicWrapper"></div>
-            {{/if}}
+            </div>
+          {{else}}
 
-            <span class="name">{{chatModel.title}}</span>
+          {{/if}}
+        {{/if}}
 
-          </div>
-        {{else}}
-          {{#if chatModel.group}}
+        <div class="titleHolder">
+          {{#if isRoom}}
+            <div class="back" {{action "goBack"}} role="button">
+              <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+            </div>
             <div class="title noselect">
               {{#if chatModel.hasProfilePic}}
                 <div class="profilePicWrapper">
-                  <img src={{chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                  <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
                 </div>
-              {{else}}
-                <div class="profilePicWrapper"></div>
               {{/if}}
 
               <span class="name">{{chatModel.title}}</span>
+
             </div>
           {{else}}
-            {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
-              {{#if chatModel.hasProfilePic}}
-                <div class="profilePicWrapper">
-                  <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
-                </div>
-              {{else}}
-                <div class="profilePicWrapper"></div>
-              {{/if}}
-              <div class="title-holder">
-                <span class="single-name">{{chatModel.title}}</span>
-                {{#if isChatOnline}}
-                  <span class="online">{{onlineText}}</span>
+            {{#if chatModel.group}}
+              <div class="title noselect">
+                {{#if chatModel.hasProfilePic}}
+                  <div class="profilePicWrapper">
+                    <img src={{chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                  </div>
+                {{else}}
+                  <div class="profilePicWrapper"></div>
                 {{/if}}
-              </div>
-            {{/user-profile-view}}
-          {{/if}}
-          <div class="back">
-            {{#link-to "home"}}
-              <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
-            {{/link-to}}
-          </div>
-        {{/if}}
 
-      </div>
-      {{#if isCompose}}
-        <div class="searchHolder">
-          <div class="row compose-row">
-            {{#users-chat-compose classNames="col compose-search"
-                                  chips=composeChips
-                                  typeaheadID="typeahead-compose"
-                                  placeholder="Type the username of the person"
-                                  onChipAdd=(action "onChipAdd")
-                                  onChipClick=(action "onChipClick")}}
-              <div class="error-tip">{{composeError}}</div>
-            {{/users-chat-compose}}
-          </div>
-        </div>
-      {{else}}
-        <div class="chat-members {{membersClass}}">
-          {{#each membersProfiles as |member|}}
-            <div class="member {{member.className}}">
-              {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
-                <img class="profilePic" src={{member.profilePic}} alt="icon">
+                <span class="name">{{chatModel.title}}</span>
+              </div>
+            {{else}}
+              {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
+                {{#if chatModel.hasProfilePic}}
+                  <div class="profilePicWrapper">
+                    <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
+                  </div>
+                {{else}}
+                  <div class="profilePicWrapper"></div>
+                {{/if}}
+                <div class="title-holder">
+                  <span class="single-name">{{chatModel.title}}</span>
+                  {{#if isChatOnline}}
+                    <span class="online">{{onlineText}}</span>
+                  {{/if}}
+                </div>
               {{/user-profile-view}}
-              <div class="profile-back"></div>
+            {{/if}}
+            <div class="back">
+              {{#link-to "home"}}
+                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+              {{/link-to}}
             </div>
-          {{/each}}
+          {{/if}}
+
         </div>
-      {{/if}}
-      <div id="youtubeHolder" class={{playerLoadingClass}}>
-        {{#if hasPlayer}}
-          {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
-                                  videoLoadedAction=(action "videoLoaded")
-                                  playerState=(action "playerStateAction")
-                                  isLoading=playerLoading
-                                  playerSeconds=playerSeconds
-                                  onVideoEnd=(action "onVideoEnd")
-                                  slidingProgress=slidingProgress}}
-
-          {{/youtube-video-player}}
-          <div class="overlay"></div>
-          <div class="controlsOverlay">
-            <div class="controlsHolder">
-              <img src="/assets/ic_video_close.png" class="close" alt="icon">
-              <div class="pause-control"></div>
-              <div class="control">
-                <div class="play">
-                  <img src="/assets/ic_icon_play_video.png" alt="icon">
-                </div>
-                <div class="pause">
-                  <img src="/assets/ic_icon_pause_video.png" alt="icon">
-                </div>
-              </div>
-
-              <span class="video-title noselect"></span>
-              {{#if canAutoplay}}
-                <div class="switch-holder">
-                  <div class="label noselect">Auto play</div>
-                  <label class="switch">
-                    <input type="checkbox" id="autoplay-checkbox" checked>
-                    <span class="switcher round"></span>
-
-                  </label>
-                </div>
-              {{/if}}
-              <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
+        {{#if isCompose}}
+          <div class="searchHolder">
+            <div class="compose-row">
+              {{#users-chat-compose classNames="compose-search"
+                                    chips=composeChips
+                                    typeaheadID="typeahead-compose"
+                                    placeholder="Type the username of the person"
+                                    onChipAdd=(action "onChipAdd")
+                                    onChipClick=(action "onChipClick")}}
+                <div class="error-tip">{{composeError}}</div>
+              {{/users-chat-compose}}
             </div>
           </div>
-          <div class="loading-overlay {{loadingOverlayClass}}"></div>
-          <div class="watchers-holder {{watchersClass}}">
-
-            <div class="watchers-streamer">
-              {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
-
-                {{/watcher-item}}
-              {{/each}}
-            </div>
-            <div class="watchers-other">
-              {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
-
-                {{/watcher-item}}
-              {{/each}}
-            </div>
+        {{else}}
+          <div class="chat-members {{membersClass}}">
+            {{#each membersProfiles as |member|}}
+              <div class="member {{member.className}}">
+                {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
+                  <img class="profilePic" src={{member.profilePic}} alt="icon">
+                {{/user-profile-view}}
+                <div class="profile-back"></div>
+              </div>
+            {{/each}}
           </div>
         {{/if}}
-      </div>
-      {{#unless hasPlayer}}
-        <div id="youtubePlaceHolder"></div>
-      {{/unless}}
-      {{#if hasPlayer}}
-        <div class="youtube-music-holder">
-          <div class="music-player">
-            <div class="watchers {{watchersClass}}">
+        <div id="youtubeHolder" class={{playerLoadingClass}}>
+          {{#if hasPlayer}}
+            {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
+                                    videoLoadedAction=(action "videoLoaded")
+                                    playerState=(action "playerStateAction")
+                                    isLoading=playerLoading
+                                    playerSeconds=playerSeconds
+                                    onVideoEnd=(action "onVideoEnd")
+                                    slidingProgress=slidingProgress}}
+
+            {{/youtube-video-player}}
+            <div class="overlay"></div>
+            <div class="controlsOverlay">
+              <div class="controlsHolder">
+                <img src="/assets/ic_video_close.png" class="close" alt="icon">
+                <div class="pause-control"></div>
+                <div class="control">
+                  <div class="play">
+                    <img src="/assets/ic_icon_play_video.png" alt="icon">
+                  </div>
+                  <div class="pause">
+                    <img src="/assets/ic_icon_pause_video.png" alt="icon">
+                  </div>
+                </div>
+
+                <span class="video-title noselect"></span>
+                {{#if canAutoplay}}
+                  <div class="switch-holder">
+                    <div class="label noselect">Auto play</div>
+                    <label class="switch">
+                      <input type="checkbox" id="autoplay-checkbox" checked>
+                      <span class="switcher round"></span>
+
+                    </label>
+                  </div>
+                {{/if}}
+                <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
+              </div>
+            </div>
+            <div class="loading-overlay {{loadingOverlayClass}}"></div>
+            <div class="watchers-holder {{watchersClass}}">
+
               <div class="watchers-streamer">
                 {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=true}}
+                  {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
 
                   {{/watcher-item}}
                 {{/each}}
               </div>
               <div class="watchers-other">
                 {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=false}}
+                  {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
 
                   {{/watcher-item}}
                 {{/each}}
               </div>
             </div>
-            <div class="details noselect">
-              <img class="thumbnail" src="" alt="icon">
-              <div class="info">
-                <div class="song-name"></div>
-                <div class="song-artist"></div>
-              </div>
-            </div>
-            <div class="controls">
-              <img src="/assets/ic_music_play.png" class="play-btn" alt="icon">
-              <img src="/assets/ic_music_pause.png" class="pause-btn" alt="icon">
-              <img src="/assets/ic_music_close.png" class="close-btn" alt="icon">
-            </div>
-            <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
-          </div>
+          {{/if}}
         </div>
-      {{/if}}
-      {{#end-scrollable classNames="messagesHolder"
-                        blockScroll=blockAutoscroll
-                        onScrolledHalf=(action "loadMore")
-                        onTopChildChanged=(action "topChildChanged")
-                        scrollChild=".messagesWrappper"
-                        itemTimeSelector=".chat-message-time-item"}}
-        {{#if isLoadingMessages}}
-          <div class="loading-holder h-100">
-            <div class="lds-ripple">
-              <div></div>
-              <div></div>
+        {{#unless hasPlayer}}
+          <div id="youtubePlaceHolder"></div>
+        {{/unless}}
+        {{#if hasPlayer}}
+          <div class="youtube-music-holder">
+            <div class="music-player">
+              <div class="watchers {{watchersClass}}">
+                <div class="watchers-streamer">
+                  {{#each watchers as |watcher index|}}
+                    {{#watcher-item model=watcher index=index streamer=true}}
+
+                    {{/watcher-item}}
+                  {{/each}}
+                </div>
+                <div class="watchers-other">
+                  {{#each watchers as |watcher index|}}
+                    {{#watcher-item model=watcher index=index streamer=false}}
+
+                    {{/watcher-item}}
+                  {{/each}}
+                </div>
+              </div>
+              <div class="details noselect">
+                <img class="thumbnail" src="" alt="icon">
+                <div class="info">
+                  <div class="song-name"></div>
+                  <div class="song-artist"></div>
+                </div>
+              </div>
+              <div class="controls">
+                <img src="/assets/ic_music_play.png" class="play-btn" alt="icon">
+                <img src="/assets/ic_music_pause.png" class="pause-btn" alt="icon">
+                <img src="/assets/ic_music_close.png" class="close-btn" alt="icon">
+              </div>
+              <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
             </div>
           </div>
         {{/if}}
-        <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-          {{#if hasMoreMessages}}
-            <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
-          {{/if}}
-          {{#each filteredMessages as |message|}}
-            {{#if message.isMessage}}
-              {{#chat-message-item model=message.message classNames="messageHolder"
-                                   canClick=isMaster
-                                   onClick=(action "onMessageClick")
-                                   displaySender=message.displaySender
-                                   lastSeen=lastSeenMessage
-                                   myID=myID
-                                   displaySenderName=isNotOne2One
-                                   members=members
-                                   isMaster=isMaster
-                                   memberColors=memberColors
-                                   onPhotoSelect=(action "onPhotoSelect")
-                                   onReplyTo=(action "onReplyTo")}}
-
-              {{/chat-message-item}}
-            {{/if}}
-            {{#if message.isDate}}
-              {{#chat-message-time model=message.date classNames='chat-message-time-item'}}
-
-              {{/chat-message-time}}
-            {{/if}}
-            {{#if message.isLoading}}
-              {{chat-message-loading classNames="chat-message-loading" model=message.message}}
-            {{/if}}
-          {{/each}}
-          {{#unless isLoadingMessages}}
-            <div class="typing-indicators">
-              {{#each typingIndicatorProfiles as |indicator|}}
-                <div class="indicator">
-                  <div class="profilePicWrapper">
-                    <img class="profilePic" src={{indicator.profilePic}} alt="icon">
-                  </div>
-                  <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
-                </div>
-              {{/each}}
-            </div>
-            <div class="message-scroll-date-holder">
-              <div class="title">
-                Today
+        {{#end-scrollable classNames="messagesHolder"
+                          blockScroll=blockAutoscroll
+                          onScrolledHalf=(action "loadMore")
+                          onTopChildChanged=(action "topChildChanged")
+                          scrollChild=".messagesWrappper"
+                          itemTimeSelector=".chat-message-time-item"}}
+          {{#if isLoadingMessages}}
+            <div class="loading-holder h-100">
+              <div class="lds-ripple">
+                <div></div>
+                <div></div>
               </div>
             </div>
-          {{/unless}}
+          {{/if}}
+          <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
+            {{#if hasMoreMessages}}
+              <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+            {{/if}}
+            {{#each filteredMessages as |message|}}
+              {{#if message.isMessage}}
+                {{#chat-message-item model=message.message classNames="messageHolder"
+                                     canClick=isMaster
+                                     onClick=(action "onMessageClick")
+                                     displaySender=message.displaySender
+                                     lastSeen=lastSeenMessage
+                                     myID=myID
+                                     displaySenderName=isNotOne2One
+                                     members=members
+                                     isMaster=isMaster
+                                     memberColors=memberColors
+                                     onPhotoSelect=(action "onPhotoSelect")
+                                     onReplyTo=(action "onReplyTo")}}
 
-        </div>
-      {{/end-scrollable}}
-      {{#if inReplyTo}}
+                {{/chat-message-item}}
+              {{/if}}
+              {{#if message.isDate}}
+                {{#chat-message-time model=message.date classNames="chat-message-time-item noselect"}}
+
+                {{/chat-message-time}}
+              {{/if}}
+              {{#if message.isLoading}}
+                {{chat-message-loading classNames="chat-message-loading" model=message.message}}
+              {{/if}}
+            {{/each}}
+            {{#unless isLoadingMessages}}
+              <div class="typing-indicators">
+                {{#each typingIndicatorProfiles as |indicator|}}
+                  <div class="indicator">
+                    <div class="profilePicWrapper">
+                      <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+                    </div>
+                    <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
+                  </div>
+                {{/each}}
+              </div>
+              <div class="message-scroll-date-holder">
+                <div class="title">
+                  Today
+                </div>
+              </div>
+            {{/unless}}
+
+          </div>
+        {{/end-scrollable}}
+        {{#if inReplyTo}}
           <div class="in-reply-to">
             <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
             <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
             <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
-              <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png"/>
+              <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png">
             </div>
           </div>
-      {{/if}}
-      {{#if uploads}}
-        <div class="message-uploads {{if inReplyTo 'has-in-reply'}}">
-          {{#each uploads as |upload|}}
-            {{chat-upload-item model=upload
-              onRemove=(action "onRemoveUpload")}}
-          {{/each}}
+        {{/if}}
+        {{#if uploads}}
+          <div class="message-uploads {{if inReplyTo "has-in-reply"}}">
+            {{#each uploads as |upload|}}
+              {{chat-upload-item model=upload
+                onRemove=(action "onRemoveUpload")}}
+            {{/each}}
+          </div>
+        {{/if}}
+        <div class="newMessageHolder {{if inReplyTo "has-in-reply"}} {{if uploads "has-uploads"}}">
+          {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
+
+          {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
+                                    enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
+          {{#file-upload name="chatPhotos"
+                         onfileadd=(action "uploadImage")}}
+            <img src="/assets/attachment.png" alt="icon" class="hovered">
+          {{/file-upload}}
+
+          <div class="imgHolder">
+
+            <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
+          </div>
         </div>
-      {{/if}}
-      <div class="newMessageHolder {{if inReplyTo 'has-in-reply'}} {{if uploads 'has-uploads'}}">
-        {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames='emoji-picker-holder'}}
-
-        {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
-                                  enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-        {{#file-upload name="chatPhotos"
-                       onfileadd=(action "uploadImage")}}
-          <img src="/assets/attachment.png" alt="icon" class="hovered">
-        {{/file-upload}}
-
-        <div class="imgHolder">
-
-          <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
-        </div>
-      </div>
-    {{/file-dropzone}}
-  </div>
-  <div class="col-4 media">
-    <div class="row holder h-100">
-      <div class="media-wrapper">
-        <div class="media-bg-wrapper">
+      {{/file-dropzone}}
+    </div>
+    <div class="feed-sidebar">
+      <div class="feed-sidebar-wrapper">
+        <div class="header">
           <div class="tabs">
             <ul class="nav nav-pills">
               <li class="nav-item">
@@ -308,55 +306,53 @@
               </li>
             </ul>
           </div>
-          <div class="tab-content col-12">
-            <div class="tab-pane row fade show active" id="videos">
-              {{chat-videos-list
-                classNames="col-12"
-                scrollParent=".tab-content"
-                displayVideoRequest=displayVideoRequest
-                onVideoPick=(action "videoPick")
-                playlistModel=playlistModel
-                canEditPlaylist=isMaster
-                onPlaylistAddVideo=(action "playlistVideoAdd")
-                onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
-            </div>
-            <div class="tab-pane fade" id="music">
-              {{#scroll-with-listener classNames="youtube-items row music noselect" music=false
-                                      onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
-                                      loading=loadingMusic}}
-                <div class="searchHolder">
-                  {{#search-holder classNames="search" }}
-                    <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-                    {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
-                            insert-newline=(action "triggerSearch") autocomplete='off' name="musicSearch"}}
-                    <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-                    <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
-                      <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-                    </div>
-                  {{/search-holder}}
-                </div>
-                {{#if isLoadingMusic}}
-                  <div class="loading-holder h-100">
-                    <div class="lds-ripple">
-                      <div></div>
-                      <div></div>
-                    </div>
+        </div>
+        <div class="tab-content h-100">
+          <div class="tab-pane fade show active" id="videos">
+            {{chat-videos-list
+              classNames="chat-videos-list"
+              scrollParent=".tab-content"
+              displayVideoRequest=displayVideoRequest
+              onVideoPick=(action "videoPick")
+              playlistModel=playlistModel
+              canEditPlaylist=isMaster
+              onPlaylistAddVideo=(action "playlistVideoAdd")
+              onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
+          </div>
+          <div class="tab-pane fade" id="music">
+            {{#scroll-with-listener classNames="youtube-items music noselect" music=false
+                                    onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
+                                    loading=loadingMusic}}
+              <div class="searchHolder">
+                {{#search-holder classNames="search" }}
+                  <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+                  {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
+                          insert-newline=(action "triggerSearch") autocomplete="off" name="musicSearch"}}
+                  <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+                  <div class="trigger-search {{loadingMusicClass}}" {{action "triggerSearch"}} role="button">
+                    <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
                   </div>
-                {{/if}}
-                {{#each youtubeMusicItems as |video|}}
-                  {{#youtube-music model=video classNames="youtube-item-music col-12"
-                                   clickAction=(action "musicPick")}}
+                {{/search-holder}}
+              </div>
+              {{#if isLoadingMusic}}
+                <div class="loading-holder h-100">
+                  <div class="lds-ripple">
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              {{/if}}
+              {{#each youtubeMusicItems as |video|}}
+                {{#youtube-music model=video classNames="youtube-item-music"
+                                 clickAction=(action "musicPick")}}
 
-                  {{/youtube-music}}
+                {{/youtube-music}}
 
-                {{/each}}
-              {{/scroll-with-listener}}
-            </div>
+              {{/each}}
+            {{/scroll-with-listener}}
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
 </div>
@@ -371,7 +367,7 @@
       <source src={{videoPlayerUrl}}
               type="video/mp4">
 
-      Sorry, your browser doesn't support embedded videos.
+      Sorry, your browser doesn"t support embedded videos.
     </video>
   </div>
 </div>

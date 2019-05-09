@@ -12,22 +12,22 @@
                   handleEnd=true blockScroll=true}}
   <div class="friends-wrapper">
     <div class="friendsSearchHolder">
-      {{#search-holder classNames="content" searchSelector="input" closeSelector=".close-search"}}
+      {{#search-holder classNames="search" searchSelector="input" closeSelector=".close-search"}}
 
-        <img src="/assets/search_icon@2x.png" class="searchIcon" alt="icon">
-        {{input value=friendsQuery classNames="friendsSearch" placeholder="Search in messaging" autocomplete='off'}}
+        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+        {{input value=friendsQuery classNames="searchInput" placeholder="Search in messaging" autocomplete='off'}}
         <img src="/assets/ic_music_close.png" class="close-search" alt="close">
       {{/search-holder}}
     </div>
     {{yield}}
     {{#each queriedModel as |friend|}}
       {{#if friend.isFriend}}
-        {{#link-to "home.chat" friend.id "one2one" classNames="friend-chat-link"}}
-          {{#home-friend-item model=friend classNames="friend"}}{{/home-friend-item}}
+        {{#link-to "home.chat" friend.id "one2one" classNames="home-friend-item-link" tagName="div"}}
+          {{#home-friend-item model=friend classNames="home-friend-item home-contact-item-link"}}{{/home-friend-item}}
         {{/link-to}}
       {{else}}
-        {{#link-to "home.chat" friend.id "group" classNames="friend-group-link"}}
-          {{#home-group-item model=friend classNames="group"}}{{/home-group-item}}
+        {{#link-to "home.chat" friend.id "group" classNames="home-group-item-link" tagName="div"}}
+          {{#home-group-item model=friend classNames="home-group-item home-contact-item-link"}}{{/home-group-item}}
         {{/link-to}}
       {{/if}}
     {{/each}}

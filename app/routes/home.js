@@ -33,6 +33,7 @@ export default Route.extend({
     });
   },
   handleGroupMessages(groups) {
+    const myId = this.get('db').myId();
     this.groupListeners.forEach((mds) => {
       mds.stop();
     });
@@ -65,8 +66,11 @@ export default Route.extend({
 
         let last = notEmpty.firstObject;
         if (last) {
-
-          let normalizedData = this.store.normalize('group', {id: friend.id, lastMessage: last.text});
+          let name = last.senderName;
+          if (last.senderId === myId){
+            name = 'You';
+          }
+          let normalizedData = this.store.normalize('group', {id: friend.id, lastMessage: `${name} ${last.text}`});
           this.store.push(normalizedData);
         }
       });
@@ -80,6 +84,7 @@ export default Route.extend({
     ctrl.set('friends', this.store.peekAll('friends'));
     ctrl.set('groups', this.store.peekAll('group'));
     ctrl.set('loading', true);
+    const myId = this.get('db').myId();
     this.get('db').friends((friends) => {
 
       friends.forEach((friend) => {
@@ -105,8 +110,11 @@ export default Route.extend({
 
           let last = notEmpty.firstObject;
           if (last) {
-
-            let normalizedData = this.store.normalize('friends', {id: friend.id, lastMessage: last.text});
+            let name = last.senderName;
+            if (last.senderId === myId){
+              name = 'You';
+            }
+            let normalizedData = this.store.normalize('friends', {id: friend.id, lastMessage: `${name}: ${last.text}`});
             this.store.push(normalizedData);
           }
         })

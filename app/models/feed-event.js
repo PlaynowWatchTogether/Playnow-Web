@@ -2,11 +2,13 @@ import DS from 'ember-data';
 import {computed} from '@ember/object';
 const {attr} = DS;
 import moment from 'moment';
-export default DS.Model.extend({
+import ModelAccess from '../mixins/feed-event-model-access';
+import ProxyMixin from '../mixins/proxy-mixin'
+export default DS.Model.extend(ModelAccess, ProxyMixin, {
   feedId: attr('string'),
-  content: attr('string'),
-  obj:computed('content', function(){
-    return JSON.parse(this.get('content')) || {};
+  rawData: attr('string'),
+  content:computed('rawData', function(){
+    return JSON.parse(this.get('rawData')) || {};
   })
 
 });

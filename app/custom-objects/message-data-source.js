@@ -292,11 +292,9 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
         let ref = path + "/" + convId + "/Members";
         this.membersRef = ref;
         this.db.ref(ref).once('value', (snapshot) => {
-          let records = [];
-          debug('Got values for ref' + ref);
+          let records = [];          
           snapshot.forEach((item) => {
             let mes = item.val();
-            debug('Got member item for ref' + ref);
             if (typeof mes === 'object') {
               mes.id = item.key;
               records.push(mes);

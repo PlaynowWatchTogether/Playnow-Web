@@ -53,9 +53,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   currentFeedEvents: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return this.store.peekAll('feed-event').map((elem)=>{
-        return FeedEventModelWrapper.create({content: get(elem,'obj')});
-      }).filter((elem)=>{
+      return this.store.peekAll('feed-event').filter((elem)=>{
         return elem.get('feedId') === get(feed,'id') && !elem.get('isPast');
       });
     }else{
@@ -65,9 +63,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   pastFeedEvents: computed('feed', function(){
     const feed = this.get('feed');
     if (feed){
-      return this.store.peekAll('feed-event').map((elem)=>{
-        return FeedEventModelWrapper.create({content: get(elem,'obj')});
-      }).filter((elem)=>{
+      return this.store.peekAll('feed-event').filter((elem)=>{
         return elem.get('feedId') === get(feed,'id') && elem.get('isPast');
       });
     }else{
@@ -181,8 +177,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     }
     return seats
   }),
-  disableProfilePicChange: computed('editFeed', function(){
-    return !this.get('editFeed');
+  disableProfilePicChange: computed('isAdmin', function(){
+    return !this.get('isAdmin');
   }),
   actions:{
     displayAdmins(){

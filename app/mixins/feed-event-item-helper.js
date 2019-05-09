@@ -8,7 +8,7 @@ export default Mixin.create({
   isCreator: computed('model', function(){
     return this.get('model.creatorId') === this.db.myId();
   }),
-  isMember: computed('model', function(){
+  isMember: computed('model.Members', function(){
     let found = false;
     (this.get('model.Members')||[]).forEach((member)=>{
       if (this.db.myId() === get(member,'id')){

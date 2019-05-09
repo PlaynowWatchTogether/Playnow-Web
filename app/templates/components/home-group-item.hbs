@@ -1,16 +1,16 @@
-<div class="group-item {{playingClass}} {{onlineClass}} {{unreadClass}}">
-
-  <div class="group-name">
+<div class="text-content">
+  <div class="name">
     <div class="content">
       {{model.GroupName}}
     </div>
-    <div class="last-message">
-      {{emoji-parse lastMessageText}}
-    </div>
+    <div class="unread-icon"></div>
   </div>
-  <div class="group-icon-wrapper">
-    <div class="playing"></div>
-    <div class="playing2"></div>
+  <div class="last-message">
+    {{lastMessageText}}
+  </div>
+</div>
+<div class="pic-content">
+  <div class="pic">
     <div class="split-profile-pic {{profilePicClass}}">
       {{#each members as |member index|}}
         {{#group-member-profile-pic classNames="member-icon" model=member index=index
@@ -19,9 +19,6 @@
         {{/group-member-profile-pic}}
       {{/each}}
     </div>
-    <div class="online-icon"></div>
-    <img class="unread-icon" src="/assets/friend_unread@2x.png" alt="icon">
-
   </div>
-
+  <div class="online-icon"></div>
 </div>

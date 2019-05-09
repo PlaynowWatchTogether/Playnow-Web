@@ -196,13 +196,13 @@
           <div class="tabs">
             <ul class="nav nav-pills" id="sidebar-tabs">
               <li class="nav-item tab-videos">
-                <a class="nav-link active" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+                <a class="nav-link" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
                    aria-selected="true">
                   Videos
                 </a>
               </li>
               <li class="nav-item tab-events">
-                <a class="nav-link" data-toggle="tab" href="#events" role="tab" aria-controls="events"
+                <a class="nav-link active" data-toggle="tab" href="#events" role="tab" aria-controls="events"
                    aria-selected="true">
                   Events
                 </a>
@@ -219,7 +219,7 @@
           {{/unless}}
         </div>
         <div class="tab-content h-100">
-          <div class="tab-pane fade show active" id="videos">
+          <div class="tab-pane fade" id="videos">
             {{#chat-videos-list
               classNames="col-12"
               scrollParent=".tab-content"
@@ -234,7 +234,7 @@
               {{/if}}
             {{/chat-videos-list}}
           </div>
-          <div class="tab-pane fade" id="events">
+          <div class="tab-pane fade  show active" id="events">
             {{#if creatingEvent}}
               <div class="events-create-root">
                 <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelCreateEvent'}}>

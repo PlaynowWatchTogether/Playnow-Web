@@ -14,24 +14,13 @@
       margin-left: auto;
       margin-right: auto;
 
-      .nav-item {
-        cursor: pointer;
-      }
-
-      .nav-link {
-        color: #A2A2A2;
-        background: none;
-        padding-bottom: 0;
-        border-radius: 0;
-      }
-
-      .nav-link.active {
-        background: none;
-
-        color: #27BDD8;
-        border-bottom: 4px solid #27BDD8;
-        padding-bottom: 0;
-        border-radius: 0;
+      @include tabs;
+      .nav{
+        padding-top: 10px;
+        padding-left: 20px;
+        .nav-link{
+          padding: 0px 10px;
+        }
       }
       #discover{
         .feed-discover-list-root{
@@ -71,148 +60,151 @@
       overflow-y: auto;
       width: 100%;
       padding: 20px 10px;
-      .feeds-item{
-        display: flex;
-        flex-direction: column;
-        background: white;
-        border-radius: 10px;
-        width: 100%;
-        margin-bottom: 10px;
-        box-shadow: $message-shadow;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        .title{
-          color: #898989;
-          padding-left: 10px;
-          font-size: 90%;
-          font-family: $medium-font;
-        }
-        .list{
-          .empty{
+      .side-wrapper{
+        .feeds-item{
+          display: flex;
+          flex-direction: column;
+          background: white;
+          border-radius: 10px;
+          width: 100%;
+          margin-bottom: 10px;
+          box-shadow: $message-shadow;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          .title{
             color: #898989;
-            margin: auto;
-            text-align: center;
-            padding-top: 10px;
-            padding-bottom: 10px;
-          }
-          .home-feed-item-link{
-            text-decoration: none;
-            color: black;
-          }
-          .home-feed-item{
             padding-left: 10px;
-            padding-right: 10px;
-            display: flex;
-            flex-direction: row;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            cursor: pointer;
-            .feed-item-content{
-              flex: 1 1 auto;
-              margin-left: 10px;
-              place-self: center;
-              .feed-item-title{
-                flex: 0 0 auto;
-                margin: 0;
-                color: black;
-                font-family: $medium-font;
-              }
-              .feed-item-online{
-                flex: 0 0 auto;
+            font-size: 90%;
+            font-family: $medium-font;
+          }
+          .list{
+            .empty{
+              color: #898989;
+              margin: auto;
+              text-align: center;
+              padding-top: 10px;
+              padding-bottom: 10px;
+            }
+            .home-feed-item-link{
+              text-decoration: none;
+              color: black;
+            }
+            .home-feed-item{
+              padding-left: 10px;
+              padding-right: 10px;
+              display: flex;
+              flex-direction: row;
+              padding-top: 10px;
+              padding-bottom: 10px;
+              cursor: pointer;
+              .feed-item-content{
+                flex: 1 1 auto;
                 margin-left: 10px;
-                .feed-item-member-item{
+                place-self: center;
+                .feed-item-title{
+                  flex: 0 0 auto;
+                  margin: 0;
+                  color: black;
+                  font-family: $medium-font;
+                }
+                .feed-item-online{
+                  flex: 0 0 auto;
+                  margin-left: 10px;
+                  .feed-item-member-item{
 
-                  .member-item-pic{
-                    width: 25px;
-                    height: 25px;
-                    background: white;
-                    border-radius: 50%;
-                    padding: 2px;
-                    box-shadow: $message-shadow;
-                    .profilePicWrapper{
-                      width: 100%;
-                      height: 100%;
+                    .member-item-pic{
+                      width: 25px;
+                      height: 25px;
+                      background: white;
+                      border-radius: 50%;
+                      padding: 2px;
+                      box-shadow: $message-shadow;
+                      .profilePicWrapper{
+                        width: 100%;
+                        height: 100%;
+                      }
                     }
-                  }
 
+                  }
                 }
               }
-            }
-            .feed-item-pic{
-              width: 60px;
-              height: 60px;
-              display: flex;
-              border-radius: 50%;
-              padding: 2px;
-              .pic{
-                margin: auto;
+              .feed-item-pic{
+                width: 60px;
+                height: 60px;
                 display: flex;
-                background: white;
                 border-radius: 50%;
-                width: 100%;
-                height: 100%;
                 padding: 2px;
-                background: white;
-                box-shadow: $message-shadow;
-                .profilePicWrapper{
+                .pic{
+                  margin: auto;
+                  display: flex;
+                  background: white;
+                  border-radius: 50%;
                   width: 100%;
                   height: 100%;
-                  margin: auto;
+                  padding: 2px;
+                  background: white;
+                  box-shadow: $message-shadow;
+                  .profilePicWrapper{
+                    width: 100%;
+                    height: 100%;
+                    margin: auto;
+                  }
+                }
+                &.online{
+                  background: $primary-gradient;
+                  box-shadow: $message-shadow;
+                  .pic{
+                    box-shadow: none;
+                  }
                 }
               }
-              &.online{
-                background: $primary-gradient;
-                box-shadow: $message-shadow;
-                .pic{
-                  box-shadow: none;
-                }
-              }
-            }
 
-            .feed-item-info{
-              display: flex;
-              flex-direction: column;
-              .feed-item-views{
-                display: grid;
-                grid-template-columns: auto auto;
-                flex: 0 0 auto;
-                img{
-                  width: 12px;
-                  margin-top: 4px;
-                }
-                .label{
-                  font-size: 70%;
-                  color: #989898;
-                  margin-left: 4px;
-                }
-              }
-              .feed-item-status{
-                flex: 1 1 auto;
+              .feed-item-info{
                 display: flex;
-                align-items: center;
-                .feed-item-online-label{
-                  color: #8B8787;
-                  font-size: 50%;
+                flex-direction: column;
+                .feed-item-views{
+                  display: grid;
+                  grid-template-columns: auto auto;
+                  flex: 0 0 auto;
+                  img{
+                    width: 12px;
+                    margin-top: 4px;
+                  }
+                  .label{
+                    font-size: 70%;
+                    color: #989898;
+                    margin-left: 4px;
+                  }
+                }
+                .feed-item-status{
+                  flex: 1 1 auto;
+                  display: flex;
+                  align-items: center;
+                  .feed-item-online-label{
+                    color: #8B8787;
+                    font-size: 50%;
+                  }
                 }
               }
-            }
 
-          }
-          .home-feed-item:hover{
-            background: #dadada5e;
-          }
-          .feed-list{
-            padding: 10px;
-          }
-          .home-feed-item-public{
-            @include home-feed-item-public
-          }
-          .home-feed-item-public:hover{
-            background: #dadada5e;
-            border-radius: 15px;
+            }
+            .home-feed-item:hover{
+              background: #dadada5e;
+            }
+            .feed-list{
+              padding: 10px;
+            }
+            .home-feed-item-public{
+              @include home-feed-item-public
+            }
+            .home-feed-item-public:hover{
+              background: #dadada5e;
+              border-radius: 15px;
+            }
           }
         }
       }
+
 
     }
   }

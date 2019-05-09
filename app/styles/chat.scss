@@ -1,0 +1,112 @@
+@import './chat/message-list.scss';
+
+@mixin chat-controller{
+  display: flex;
+  flex-direction: row;
+  .feed-parent{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .feed-content{
+      flex: 0 0 67%;
+      max-width: 67%;
+      .feed-content-wrapper{
+        @include chat-message-list;
+      }
+    }
+    .feed-sidebar{
+      flex: 0 0 33%;
+      max-width: 33%;
+      display: flex;
+      position: relative;
+      .feed-sidebar-wrapper{
+        background: white;
+        width: 100%;
+        .tabs{
+          @include tabs;
+          display: flex;
+          .nav{
+            margin: auto;
+          }
+        }
+        .tab-content{
+          overflow-y: scroll;
+          padding-left: 15px;
+          padding-right: 15px;
+          #videos{
+            .searchHolder{
+              @include videos-search;
+            }
+            .youtube-items {
+              @include youtube-videos
+
+              .youtube-item{
+                @include youtube-item
+              }
+            }
+            .chat-videos-playlist{
+              @include chat-playlist
+              .playlist-content{
+                @include youtube-videos
+                .youtube-item{
+                  @include youtube-item
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  }
+  &.group{
+    .titleHolder{
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+  }
+}
+.mainPage{
+  .col-child-content{
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+}
+body.home.chat{
+  .feed-root{
+    @include chat-controller;
+    &.room{
+      .feed-parent{
+        .feed-content{
+          padding-left: 5px;
+          border-right: 1px solid #D5D3D3;
+          .feed-content-wrapper{
+            border-top-left-radius: $main-table-radius;
+          }
+        }
+      }
+    }
+    &.group, &.one2one{
+      .feed-parent{
+        .feed-content{
+          padding-right: $table-gap;
+          .feed-content-wrapper{
+            border-top-right-radius: $main-table-radius;
+            .titleHolder{
+              .back{
+                right:0;
+              }
+            }
+          }
+        }
+        .feed-sidebar{
+          .feed-sidebar-wrapper{
+            border-top-left-radius: $main-table-radius;
+          }
+        }
+      }
+
+    }
+  }
+}

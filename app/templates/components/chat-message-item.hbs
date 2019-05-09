@@ -10,11 +10,11 @@
 
 {{#if isVideoRequest}}
   <div class="video-request-holder {{if isMaster 'active'}}">
-    {{#youtube-video classNames="youtube-item" model=videoRequestModel clickAction=(action 'videoRequestClick')}}  
+    {{#youtube-video classNames="youtube-item" model=videoRequestModel clickAction=(action 'videoRequestClick')}}
       <div class="request-title"> Video request:</div>
     {{/youtube-video}}
   </div>
-{{else}}    
+{{else}}
     {{#if isShareVideo}}
       <div class="message-share-video-holder" role="button" {{action 'videoShareClick'}}>
         <div class="message-share-video-title">
@@ -31,30 +31,30 @@
         <div class="message-text with-tooltip {{messageTextClass}}" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
           {{#unless mine}}
             {{#if displaySenderName}}
-              {{#user-profile-view classNames="message-text-author" model=textAuthorId style=textAuthorClass}}              
+              {{#user-profile-view classNames="message-text-author" model=textAuthorId style=textAuthorClass}}
                 {{senderName}}
               {{/user-profile-view}}
             {{/if}}
           {{/unless}}
           {{#if inReplyTo}}
             <div class="in-reply-to-message">
-              {{#user-profile-view classNames="reply-author" model=inReplyTo.senderId}}                            
+              {{#user-profile-view classNames="reply-author" model=inReplyTo.senderId}}
                 {{inReplyTo.senderName}}
               {{/user-profile-view}}
               <div class="reply-content">
-                {{emoji-parse inReplyTo.text}}            
+                {{emoji-parse inReplyTo.text}}
               </div>
             </div>
           {{/if}}
           {{#if bodyMessage}}
-            <div class="text">            
-              {{emoji-parse bodyMessage}}              
+            <div class="text">
+              {{emoji-parse bodyMessage}}
             </div>
           {{/if}}
           {{#if attachments}}
             <div class="message-item-attachments">
               {{#each attachments as |attachment|}}
-                {{chat-message-attachment model=attachment classNames="message-item-attachment"}}
+                {{chat-message-attachment model=attachment classNames="message-item-attachment" maxWidthSelector=maxWidthSelector}}
               {{/each}}
             </div>
           {{/if}}
@@ -64,7 +64,7 @@
             <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
           </div>
         {{/unless}}
-      </div>      
+      </div>
 
       {{#if isLastSeen}}
         <div class="last-seen">
@@ -72,7 +72,6 @@
             <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
           </div>
         </div>
-      {{/if}} 
-    {{/if}}                 
+      {{/if}}
+    {{/if}}
 {{/if}}
-

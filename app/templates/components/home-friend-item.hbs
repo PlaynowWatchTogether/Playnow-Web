@@ -1,16 +1,19 @@
-<div class="profileName">
-  <span class="firstName">{{displayName}}</span>
-  <span class="lastName">{{emoji-parse lastMessageText}}</span>
+<div class="text-content">
+  <div class="name">
+    <span class="content">{{displayName}}</span>
+    <div class="unread-icon"></div>
+  </div>
+
+  <div class="last-message">
+    {{lastMessageText}}
+  </div>
 </div>
 
-<div class="profilePicHolder {{playingClass}} {{onlineClass}} {{unreadClass}}">
-  <div class="content">
-    <div class="playing"></div>
-    <div class="playing2"></div>
+<div class="pic-content">
+  <div class="pic">
     <div class="profilePicWrapper">
-      <img class="profilePic" src={{safeProfilePic}} alt="icon">
+      <img class="profilePic" src={{safe-profile-pic model.ProfilePic}} alt="icon">
     </div>
-    <div class="online-icon"></div>
-    <img class="unread-icon" src="/assets/friend_unread@2x.png" alt="icon">
   </div>
+  <div class="online-icon"></div>
 </div>

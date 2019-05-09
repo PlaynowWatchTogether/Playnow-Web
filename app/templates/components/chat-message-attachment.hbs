@@ -1,9 +1,5 @@
 {{#if isPhoto}}
-	<div class="message-img">
-	  <a rel={{attachmentUrl}} href={{attachmentUrl}} data-lightbox={{attachmentUrl}} >
-	    <img rel={{attachmentUrl}} src={{attachmentUrl}} class="img-fluid">
-	  </a>
-	</div>
+	{{chat-message-img model=attachmentUrl classNames="message-img" maxWidthSelector=maxWidthSelector}}		 	
 {{else}}
 	{{#if isVideo}}
 	  <div class="message-video" role="button">
@@ -27,9 +23,9 @@
 	        </div>
 	        <div class="message-attachment-name">
 	          {{attachmentName}}
-	        </div>      
-	      </div>  
+	        </div>
+	      </div>
 	    </a>
 	  </div>
-	{{/if}} 
-{{/if}} 
+	{{/if}}
+{{/if}}

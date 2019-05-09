@@ -5,15 +5,17 @@
         <a class="play-icon" href="/">
           <img src="/assets/main.png" class="play-icon" alt="icon">
         </a>
-        {{#search-holder classNames="search" }}
-          <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-          {{input value=searchQuery classNames="searchInput" placeholder="Search"
-                  insert-newline=(action "triggerSearch") autocomplete='off'}}
-          <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-          <div class="trigger-search" {{action "triggerSearch"}} role="button">
-            <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-          </div>
-        {{/search-holder}}
+        <div class="search-holder">
+          {{#search-holder classNames="search" }}
+            <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+            {{input value=searchQuery classNames="searchInput" placeholder="Search"
+                    insert-newline=(action "triggerSearch") autocomplete='off'}}
+            <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+            <div class="trigger-search" {{action "triggerSearch"}} role="button">
+              <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+            </div>
+          {{/search-holder}}
+        </div>
         <div class="main-controls-wrapper">
           {{#user-profile-view model=model classNames="profile"}}
             <span class="name noselect">{{model.FirstName}}</span>
@@ -26,7 +28,6 @@
               <div class="dropdown-toggle" id="dropdownFeedgroups" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false" data-display="static">
                 <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">
-                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
                 {{#if hasNewRequestsFeed}}
                   <div class="new-requests"></div>
                 {{/if}}
@@ -72,7 +73,6 @@
               <div class="dropdown-toggle" id="dropdownFollowers" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false" data-display="static">
                 <img class="friend-requests" src="/assets/ic_friends_add@2x.png" alt="icon">
-                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="icon">
                 {{#if hasNewRequests}}
                   <div class="new-requests"></div>
                 {{/if}}
@@ -101,7 +101,6 @@
               <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false">
                 <img src="/assets/ic_gear@2x.png" class="gear-icon" alt="gear">
-                <img class="chevron" src="/assets/ic_chevron_settings@2x.png" alt="chevron">
               </div>
 
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

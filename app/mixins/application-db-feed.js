@@ -35,16 +35,19 @@ export default Mixin.create({
           }
         });
         Object.keys(events).forEach((eventKey)=>{
-          const payload = events[eventKey]
-          payload.id = eventKey;
-          payload.feedId = feed.id;
-          const event = {
-            id: eventKey,
-            feedId: feed.id,
-            content: JSON.stringify(payload)
+          if (eventKey && 'undefined'!==eventKey){
+            const payload = events[eventKey]
+            payload.id = eventKey;
+            payload.feedId = feed.id;
+            const event = {
+              id: eventKey,
+              feedId: feed.id,
+              rawData: JSON.stringify(payload)
+            }
+            let normalizedData = this.store.normalize('feed-event', event);
+            this.store.push(normalizedData);
           }
-          let normalizedData = this.store.normalize('feed-event', event);
-          this.store.push(normalizedData);
+
         })
       });
       const contrl = this.controllerFor('application');

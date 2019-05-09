@@ -12,6 +12,7 @@ export default Controller.extend(UUIDGenerator, {
   db: service(),
   firebaseApp: service(),
   init() {
+    window.emojione.emojiSize = '64';
     this._super(...arguments);
     this.set('isDisabled', true);
     this.addObserver('model', this, 'modelObserver');

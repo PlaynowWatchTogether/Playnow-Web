@@ -709,11 +709,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
     if (this.get('isMaster')) {
-      this.set('playerModel', video);
-      if (sendMessage){
-        let ds = this.get('dataSource');
-        ds.sendVideoMessage(video);
-      }
+      this.set('playerModel', video);      
       ds.sendVideo(video)
     } else {
       ds.sendMessage('', [],null, {

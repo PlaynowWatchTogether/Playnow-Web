@@ -1,5 +1,5 @@
 {{#if displayEmoji}}
   <div class="emoji-back"></div>
-  {{emoji-picker selectEmoji=(action "selectEmoji")}}
+  {{emoji-picker emojiSize="64" selectEmoji=(action "selectEmoji")}}
 {{/if}}
-<img class="show-emoji hovered" {{action 'toggleEmoji'}} src="/assets/insert_emoticon_black.png" alt="select emoji"/>
+<img class="show-emoji hovered" {{action "toggleEmoji"}} src="/assets/insert_emoticon_black@2x.png" alt="select emoji" role="button">

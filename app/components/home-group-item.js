@@ -2,8 +2,9 @@ import Component from '@ember/component';
 import {computed} from '@ember/object';
 import PicturedObject from "../custom-objects/pictured-object";
 import {inject as service} from '@ember/service';
-
+import {htmlSafe} from '@ember/template'
 export default Component.extend({
+  classNameBindings: ['unread','online', 'playing'],
   db: service(),
   firebaseApp: service(),
   init() {
@@ -13,21 +14,15 @@ export default Component.extend({
       this.modelObserver(this);
     }
   },
-  playingClass: computed('model.videoType', function () {
+  unread: computed('model.hasNewMessages', function () {
+    return this.get('model.hasNewMessages');
+  }),
+  online: computed('model.isOnline', function () {
+    return this.get('model.isOnline');
+  }),
+  playing: computed('model.videoType', function () {
     let type = this.get('model.videoType');
-    if (type === 'youtubeVideo') {
-      return 'playing-video'
-    } else if (type === 'youtubeMusic') {
-      return 'playing-music'
-    } else {
-      return ''
-    }
-  }),
-  onlineClass: computed('model.isOnline', function () {
-    return this.get('model.isOnline') ? 'online' : '';
-  }),
-  unreadClass: computed('model.hasNewMessages', function () {
-    return this.get('model.hasNewMessages') ? 'unread' : '';
+    return type === 'youtubeVideo' || type === 'youtubeMusic'
   }),
   members: computed('model.groupPics', function () {
     let profilePics = this.get('model.groupPics');
@@ -52,6 +47,6 @@ export default Component.extend({
     }
   }),
   lastMessageText: computed('model.lastMessage', function () {
-    return this.get('model.lastMessage');
+    return htmlSafe(window.emojione.shortnameToUnicode(this.get('model.lastMessage')||'').replace(/(<([^>]+)>)/ig,""));
   })
 });

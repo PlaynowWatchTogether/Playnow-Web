@@ -90,7 +90,7 @@ export default Component.extend({
 
   domChanged() {
     const text = this.element.innerHTML;
-    const rawText = text.replace(/<img class="emojione" .+ title="(.+)" src=.+>/,'$1');
+    const rawText = window.emojione.shortnameToUnicode(text);
     this.setProperties({
       value: rawText,
       _internalValue: rawText
@@ -119,9 +119,9 @@ export default Component.extend({
     const value = this.get('value');
 
     if (value === undefined || value === null) {
-      this.element.innerHTML = '';      
+      this.element.innerHTML = '';
     } else {
-      this.element.innerHTML = emojiParse([value]);    
+      this.element.innerHTML = window.emojione.shortnameToUnicode(value);
     }
     $(this.element).data('raw-text', value)
     this.setEndOfContenteditable();

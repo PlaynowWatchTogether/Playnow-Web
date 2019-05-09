@@ -1,4 +1,6 @@
 @import 'feed.scss';
+@import 'chat.scss';
+@import 'friends/list-item.scss';
 
 .seo-h1{
   display:none;
@@ -732,7 +734,7 @@ body.home.chat.room {
 
     .content {
       display: grid;
-      grid-template-columns: min-content 600px auto min-content;
+      grid-template-columns: min-content 500px auto min-content;
       padding-top: 5px;
       padding-bottom: 5px;
       width: 100%;
@@ -741,296 +743,20 @@ body.home.chat.room {
       .play-icon {
         margin-top: auto;
         margin-bottom: auto;
-        width: 30px;
-        height: 30px;
+        width: 45px;
+        height: 45px;
         margin-right: 10px;
       }
-
-      .search {
+      .search-holder{
         width: 100%;
-        height: 30px;
-        border-radius: 20px;
-        background: white;
-        border-width: 0;
-        display: grid;
-        grid-template-columns: 60px auto 40px 80px;
-        margin-top: auto;
-        margin-bottom: auto;
-
-        .searchInput:focus {
-          background: none;
-          outline: none;
-        }
-
-        .searchInput {
-
-          background: none;
-          border: none;
-          display: block;
-          width: 100%;
-          font-size: 100%;
+        place-items: center;
+        .search{
           height: 30px;
-
-          padding-right: 20px;
         }
-
-        .icon {
-          width: 20px;
-          height: 20px;
-          margin: auto;
-        }
-
-        .trigger-search {
-
-          cursor: pointer;
-          display: grid;
-          width: 100%;
-          height: 100%;
-          background: #BCD7FD;
-          border-radius: 20px;
-        }
-
-        .trigger-search.active {
-          background: #28a4ff !important;
-        }
+        @include videos-search(#60D3FC, none, 0px, #B2B1B1);
       }
 
-      .profile {
-        cursor: pointer;
-        height: 34px;
-        margin-top: auto;
-        margin-bottom: auto;
-        border-radius: 20px;
-        width: fit-content;
-        text-align: center;
-        padding: 5px 10px 5px 20px;
-        display: grid;
-        grid-template-columns: min-content auto;
 
-        .name {
-          color: white;
-          font-size: 100%;
-          margin: auto 10px auto auto;
-        }
-
-        .profilePicWrapper {
-          border-radius: 50%;
-          width: 25px;
-          height: 25px;
-
-        }
-      }
-
-      .profile:hover {
-        background: #9953E8;
-      }
-
-      .controls {
-        height: 34px;
-        display: grid;
-        grid-template-columns: 40px 60px 60px;
-
-        .friend-requests {
-          width: 24px;
-          height: 24px;
-          cursor: pointer;
-          margin: auto;
-        }
-
-        .gear-icon {
-          width: 24px;
-          height: 24px;
-        }
-        .feedgroups{
-          margin: auto;
-          cursor: pointer;
-          .dropdown-menu {
-            margin-left: -457px;
-            width: 500px;
-            padding-top: 0;
-          }
-        }
-        .feedgroups{
-          .followers-content{
-            display: flex;
-            flex-direction: column;
-            font-family: $medium-font;
-            .title{
-              border-bottom: 1px solid #DEDEDE;
-              padding: 10px 20px;
-            }
-            .follower-items{
-              display: flex;
-              flex-direction: column;
-              max-height: 500px;
-              overflow-y: scroll;
-              .follower-items-empty{
-                min-height: 200px;
-                display: flex;
-                .create-new{
-                  flex: 0 0 auto;
-                  margin: auto;
-                  @include iconned-button(#5AB9FF, 19px, 100%, 5px);
-                }
-              }
-              .follower-item-feed-title{
-                margin-left: 20px;
-                margin-top: 10px;
-                margin-bottom: 10px;
-              }
-              .follower-item-users{
-                display: flex;
-                flex-direction: column;
-                padding: 0px 10px;
-                .follower{
-                  @include follower-user-request;
-                }
-              }
-            }
-          }
-        }
-        .followers {
-          margin: auto;
-          cursor: pointer;
-
-          .followers-content {
-            overflow: hidden;
-            display: grid;
-            grid-template-rows: 50px auto;
-            height: 400px;
-
-            .title {
-              padding-left: 20px;
-              font-size: 18px;
-              font-weight: 600;
-              border-bottom: 1px solid #dedede;
-              display: grid;
-
-              div {
-                margin-top: auto;
-                margin-bottom: auto;
-              }
-            }
-          }
-
-          .followers {
-            width: 500px;
-          }
-
-          .dropdown-menu {
-            margin-left: -457px;
-            width: 500px;
-            padding-top: 0;
-          }
-
-          .follower-items {
-            overflow-y: auto;
-            padding-left: 10px;
-            padding-top: 10px;
-            padding-right: 10px;
-            display: grid;
-            grid-template-rows: repeat(auto-fit, 100px);
-            grid-row-gap: 10px;
-
-            .follower {
-              @include follower-user-request;
-            }
-          }
-        }
-
-        .followers, .gear {
-          .dropdown-toggle {
-            padding: 3px;
-            position: relative;
-          }
-        }
-
-        .followers, .feedgroups {
-          .new-requests {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            right: 11px;
-            background: red;
-            top: 2px;
-          }
-        }
-        .feedgroups{
-          .new-requests{
-            top: -5px;
-            right: 6px;
-          }
-        }
-
-        .followers:hover {
-          .dropdown-toggle {
-            background: #dadada54;
-            border-radius: 10px;
-          }
-        }
-
-        .gear:hover {
-          .dropdown-toggle {
-            background: #dadada54;
-            border-radius: 10px;
-
-          }
-        }
-        .feedgroups:hover {
-          .dropdown-toggle {
-            background: #dadada54;
-            border-radius: 10px;
-          }
-        }
-        .feedgroups{
-          .chevron{
-            margin-top: 8px;
-          }
-        }
-        .feedgroups.show {
-          .friend-requests, .chevron {
-            filter: brightness(0) invert(1);
-          }
-        }
-        .feedgroups.show {
-          .friend-requests, .chevron {
-            filter: brightness(0) invert(1);
-          }
-        }
-        .followers.show {
-          .friend-requests, .chevron {
-            filter: brightness(0) invert(1);
-          }
-        }
-
-        .gear {
-          position: relative;
-          cursor: pointer;
-          margin: auto;
-        }
-
-        .gear.show {
-          //padding: 5px 10px;
-
-          img {
-            filter: brightness(0) invert(1);
-          }
-        }
-
-        .dropdown-menu {
-          border-radius: 20px;
-          box-shadow: $input-shadow;
-        }
-
-        .dropdown-item:hover:first-child {
-          border-radius: 10px 10px 0 0;
-        }
-
-        .dropdown-item:hover:last-child {
-          border-radius: 0 0 10px 10px;
-        }
-      }
     }
 
     .container-fluid {
@@ -1055,35 +781,39 @@ body.home.chat.room {
     border-radius: 20px 0 0 0;
   }
 
-  .friends {
 
-    font-size: 130%;
-    color: #B757EE;
-  }
 
   .friendsHeader {
+    display: flex;
+    position: relative;
+    border-bottom: 1px solid #E6E6E6;
+    place-items: center;
     margin-left: -15px;
     margin-right: -15px;
-    display: grid;
-    grid-template-columns: 80px auto;
-    border-bottom: 1px solid #E6E6E6;
-  }
-
-  .friendsTitle {
-    height: 30px;
-    margin-top: auto;
-    margin-bottom: auto;
-    text-align: right;
-    margin-right: 20px;
-  }
-
-  .friendsCompose {
-    height: 30px;
-    margin: auto;
+    .friendsCompose {
+      position: absolute;
+      right: 0;
+      height: 45px;
+      display: flex;
+      padding-left: 15px;
+      padding-right: 15px;
+      a{
+          margin: auto;
+      }
+    }
+    .friendsTitle {
+      flex: 1 1 auto;
+      text-align: center;
+      color: black;
+    }
+    .friends {
+      @include top-label;
+    }
   }
 
   .composeIcon {
     height: 24px;
+    margin: auto;
     width: auto;
   }
 
@@ -1096,195 +826,24 @@ body.home.chat.room {
   .friendsSearchHolder {
     width: 100%;
     padding: 10px 20px;
-
-    .content {
-      padding-top: $search-padding;
-      padding-bottom: $search-padding;
-      display: grid;
-      grid-template-columns: 60px auto 50px;
-      border-radius: 20px;
-      background: #F0F0F0;
-      border-width: 0;
-    }
-  }
-
-  .friendsSearch:focus {
-    background: none;
-    outline: none;
-  }
-
-  .friendsSearch {
-    border: none;
-    background: none;
-    display: block;
-    width: 100%;
-    font-size: 100%;
-    height: auto;
-  }
-
-  .searchIcon {
-    width: $search-icon-size;
-    height: $search-icon-size;
-    margin: auto;
-  }
-
-  .friend {
-    padding-top: 7px;
-    padding-bottom: 7px;
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: auto 100px;
-  }
-
-  .friend.unread {
-    font-family: $bold-font;
-  }
-
-  .friend-chat-link:hover {
-    .friend {
-
-      background: $friends-list-hover-color;
-    }
-  }
-
-  .friend-chat-link.active {
-    .friend {
-      background: $friends-list-hover-color;
-    }
-  }
-
-  .friend-group-link.active {
-    .group {
-      background: $friends-list-hover-color;
-    }
-  }
-
-  .friend-group-link:hover {
-    .group {
-
-      background: $friends-list-hover-color;
-    }
-  }
-
-  .profileName {
-    padding: 0;
-    margin-top: auto;
-    margin-bottom: auto;
-    overflow-wrap: break-word;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .friend .firstName {
-    display: block;
-    color: black;
-    font-size: 100%;
-    text-align: right;
-  }
-
-  .friend .lastName {
-    margin-left: 10px;
-    display: block;
-    color: #A5A5A5;
-    font-size: 80%;
-    text-align: right;
-    overflow-wrap: break-word;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  .friend.unread .lastName {
-    color: black;
-    font-family: 'Conv_Segoe UI', Sans-Serif;
-  }
-
-  .profilePicHolder {
-    position: relative;
-    margin: auto;
-
-    .content {
-      position: relative;
-
-      .profilePicWrapper {
-        width: 60px;
-        height: 60px;
-        margin: auto;
-
-        .profilePic {
-
-
-        }
+    .searchInput{
+      text-align: center;
+      ::placeholder{
+        color: #B2B1B1;
       }
-
-      .online-icon {
-        width: 20px;
-        height: 20px;
-        background: #07FF23;
-        border-radius: 50%;
-        border: solid white 1px;
-        display: none;
-        position: absolute;
-        z-index: 1;
-        top: -5px;
-        right: -5px;
-      }
-
-      .unread-icon {
-        width: 33px;
-        position: absolute;
-        top: 0;
-        left: -24px;
-        display: none;
-      }
-
-      .playing {
-        width: 74px;
-        height: 74px;
-        position: absolute;
-        right: -7px;
-        top: -7px;
-        display: none;
-        border-radius: 50%;
-        background: $primary-gradient;
-      }
-
-      .playing2 {
-        width: 66px;
-        height: 66px;
-        position: absolute;
-        right: -3px;
-        top: -3px;
-        display: none;
-        border-radius: 50%;
-        background: #fff;
-      }
+      font-size: 95%;
     }
-
-
+    .search{
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    .close-search{
+      margin-right: 10px;
+    }
+    @include videos-search(#60D3FC, block, 0px, #B2B1B1)
   }
 
-  .profilePicHolder.playing {
-    .playing {
-      display: block;
-    }
 
-    .playing2 {
-      display: block;
-    }
-  }
-
-  .profilePicHolder.unread {
-    .unread-icon {
-      display: block;
-    }
-  }
-
-  .profilePicHolder.online {
-    .online-icon {
-      display: block;
-    }
-  }
 
   .friendsList {
     margin-left: -15px;
@@ -1292,192 +851,6 @@ body.home.chat.room {
     overflow-y: auto;
     clear: both;
     text-align: center;
-
-    .friend-chat-link {
-      text-decoration: none;
-    }
-
-    .friend-group-link {
-      text-decoration: none;
-      color: black;
-
-      .group {
-        cursor: pointer;
-
-        .group-item {
-          height: 80px;
-          padding-top: 7px;
-          padding-bottom: 7px;
-          cursor: pointer;
-          display: grid;
-          grid-template-columns: auto 100px;
-
-          .group-icon-wrapper {
-            position: relative;
-
-          }
-
-          .groupIconHolder {
-            border-radius: 50%;
-            overflow: hidden;
-            width: 60px;
-            height: 60px;
-            margin: auto;
-
-            .img-divider {
-              width: 4px;
-              height: 100%;
-              display: inline-block;
-              float: left;
-            }
-
-            .member-icon.half {
-              width: 50%;
-            }
-
-            .member-icon.quoter {
-              height: 50%;
-            }
-          }
-
-          .group-name {
-            margin-left: 10px;
-            margin-top: auto;
-            margin-bottom: auto;
-            overflow-wrap: break-word;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-            text-align: right;
-            text-decoration: none;
-          }
-
-          .last-message {
-            color: #A5A5A5;
-            font-size: 80%;
-            text-align: right;
-            overflow-wrap: break-word;
-            text-overflow: ellipsis;
-            overflow: hidden;
-          }
-
-          .status {
-            position: relative;
-          }
-
-          .playing {
-            width: 74px;
-            height: 74px;
-            position: absolute;
-            left: 13px;
-            top: -7px;
-            display: none;
-            border-radius: 50%;
-            background: $primary-gradient;
-          }
-
-          .playing2 {
-            width: 66px;
-            height: 66px;
-            position: absolute;
-            left: 17px;
-            top: -3px;
-            display: none;
-            border-radius: 50%;
-            background: #fff;
-          }
-
-          .online-icon {
-            z-index: 2;
-            top: 0px;
-            right: 15px;
-            width: 20px;
-            height: 20px;
-            background: #07FF23;
-            border-radius: 50%;
-            border: solid white 1px;
-            display: none;
-            position: absolute;
-          }
-
-          .unread-icon {
-            width: 33px;
-            top: -10px;
-            right: 71px;
-            display: none;
-            position: absolute;
-          }
-
-          .playing-music-icon {
-            display: none;
-            margin: auto;
-          }
-
-          .playing-video-icon {
-            display: none;
-            margin: auto;
-          }
-        }
-
-        .group-item.playing-video {
-          .playing, .playing2 {
-            display: block;
-          }
-
-          .playing-video-icon {
-            display: block;
-          }
-
-          .groupIconHolder {
-            display: none;
-          }
-        }
-
-        .group-item.playing-music {
-          .playing, .playing2 {
-            display: block;
-          }
-
-          .playing-music-icon {
-            display: block;
-          }
-
-          .groupIconHolder {
-            display: none;
-          }
-        }
-
-        .group-item.online {
-          .online-icon {
-
-            display: block;
-          }
-        }
-
-        .group-item.unread {
-          font-weight: 900;
-          font-family: $bold-font;
-
-          .last-message {
-            color: black;
-            font-family: 'Conv_Segoe UI', Sans-Serif;
-          }
-
-          .unread-icon {
-            width: 33px;
-            display: block;
-          }
-        }
-      }
-    }
-
-    .friend-group-link:hover {
-      text-decoration: none;
-    }
-
-    .friend-chat-link:hover {
-      text-decoration: none;
-    }
   }
 
   .friendsOutlet {
@@ -3062,13 +2435,12 @@ CHAT
 
       .title {
         height: 100%;
-        font-size: 130%;
-        color: #88B3F9;
         margin-left: 20px;
         display: grid;
         grid-template-columns: auto;
 
         span {
+          @include top-label;
           margin-top: auto;
           margin-bottom: auto;
         }
@@ -3139,50 +2511,25 @@ CHAT
     .room-title-holder {
       border-bottom: 1px solid #E6E6E6;
       height: $header-height;
-      display: grid;
-      grid-template-columns: auto min-content;
+      display: flex;
+      place-items: center;
+      justify-content: space-between;
       padding-right: 20px;
 
-      .create {
-        display: grid;
-        grid-template-columns: max-content auto max-content;
-        margin: auto;
-        width: 100%;
-
-        .button {
-          background: #88B3F9;
-          display: grid;
-          grid-template-columns: min-content auto;
-          border-radius: 20px;
-          width: max-content;
-          padding: 6px;
-          cursor: pointer;
-          box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.16);
-
-          img {
-            width: 20px;
-            height: 20px;
-            margin: auto;
-          }
-
-          div {
-            font-size: 80%;
-            color: white;
-            /* margin: auto; */
-            margin-left: 10px;
-          }
-        }
+      .create-group-button{
+        font-family: $medium-font;
+        padding: 5px 15px;
+        @include iconned-button(#60D3FC,15px,100%)
       }
 
       .title {
         height: 100%;
-        font-size: 130%;
-        color: #88B3F9;
         margin-left: 20px;
         display: grid;
         grid-template-columns: auto;
 
         span {
+          @include top-label;
           margin-top: auto;
           margin-bottom: auto;
         }
@@ -3984,38 +3331,6 @@ CHAT
 }
 
 
-.split-profile-pic {
-  border-radius: 50%;
-  overflow: hidden;
-  width: 60px;
-  height: 60px;
-  margin: auto;
-}
-
-.split-profile-pic1 {
-  display: grid;
-  grid-template-columns: auto;
-}
-
-.split-profile-pic2 {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-column-gap: 2px;
-}
-
-.split-profile-pic3 {
-  display: grid;
-  grid-template-rows: 50% 50%;
-  grid-template-columns: 50% 50%;
-  grid-column-gap: 2px;
-  grid-row-gap: 2px;
-
-  div:first-child {
-    grid-row-start: 1;
-    grid-row-end: 3;
-  }
-}
-
 .member-icon {
   display: inline-block;
   float: left;
@@ -4079,6 +3394,7 @@ CHAT
 }
 
 .ember-emoji.emoji-picker{
+  z-index: 2;
   position: absolute;
   bottom: 60px;
   width: 360px;

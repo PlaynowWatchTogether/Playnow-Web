@@ -1,9 +1,9 @@
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
-
+import {htmlSafe} from '@ember/template'
 export default Component.extend({
-  classNameBindings: ['unread'],
+  classNameBindings: ['unread', 'online', 'playing'],
   db: service(),
   firebaseApp: service(),
   init() {
@@ -13,17 +13,14 @@ export default Component.extend({
       this.modelObserver(this);
     }
   },
-  playingClass: computed('model.videoIsPlaying', function () {
-    return this.get('model.videoIsPlaying') ? 'playing' : '';
+  playing: computed('model.videoIsPlaying', function () {
+    return this.get('model.videoIsPlaying');
   }),
-  onlineClass: computed('model.isOnline', function () {
-    return this.get('model.isOnline') ? 'online' : '';
+  online: computed('model.isOnline', function () {
+    return this.get('model.isOnline');
   }),
   unread: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages');
-  }),
-  unreadClass: computed('model.hasNewMessages', function () {
-    return this.get('model.hasNewMessages') ? 'unread' : '';
   }),
   displayName: computed('model.Username', 'model.firstName', 'model.lastName', function () {
     let username = this.get('model.Username');
@@ -41,16 +38,8 @@ export default Component.extend({
   modelObserver() {
 
   },
-  safeProfilePic: computed('model.profilePic', function () {
-    let m = this.get('model');
-    if (!m['profilePic'] || m['profilePic'].length === 0) {
-      return '/assets/monalisa.png'
-    } else {
-      return m['profilePic']
-    }
-  }),
   lastMessageText: computed('model.lastMessage', function () {
-    return this.get('model.lastMessage');
+    return htmlSafe(window.emojione.shortnameToUnicode(this.get('model.lastMessage')||'').replace(/(<([^>]+)>)/ig,""));
   }),
   didInsertElement() {
     this._super(...arguments);

@@ -2,19 +2,310 @@
 @import 'feed/show.scss';
 @import 'feed/index.scss';
 
-.main-controls-wrapper{
+@mixin main-controls-wrapper{
 	background: #D7C6FF;
 	border-radius: 15px;
-	display: grid;
-    grid-template-columns: 160px auto;
-}
-.dropdown.feedgroups{
-	margin: auto;
-  cursor: pointer;
-  .dropdown-toggle{
-		margin-top: -5px;
+	display: flex;
+	align-self: center;
+	.profile {
+		cursor: pointer;
+		margin-top: auto;
+		margin-bottom: auto;
+		border-radius: 15px;
+		width: fit-content;
+		text-align: center;
+		padding: 5px 10px 5px 20px;
+		display: grid;
+		grid-template-columns: min-content auto;
+
+		.name {
+			color: black;
+			font-family: $medium-font;
+			font-size: 100%;
+			margin: auto 10px auto auto;
+		}
+
+		.profilePicWrapper {
+			border-radius: 50%;
+			width: 25px;
+			height: 25px;
+		}
+		&:hover{
+				background: #9953E8;
+		}
 	}
+	.controls{
+		display: flex;
+		margin-left: 40px;
+		.dropdown{
+
+			cursor: pointer;
+			flex: 0 0 auto;
+	    width: 45px;
+	    display: flex;
+	    justify-items: center;
+	    place-content: center;
+			.dropdown-toggle{
+				position: relative;
+				display: flex;
+				align-self: center;
+				img{
+					height: 24px;
+			    cursor: pointer;
+			    margin: auto;
+				}
+				.new-requests{
+					position: absolute;
+					right: -5px;
+					top: 0;
+					width: 10px;
+					height: 10px;
+					border-radius: 50%;
+					background: red;
+				}
+			}
+			&.show{
+				.dropdown-toggle{
+					img{
+						filter: brightness(0) invert(1);
+					}
+				}
+			}
+			&:hover{
+				background: #9953E8;
+				border-radius: 15px;
+				.dropdown-toggle{
+					img{
+						filter: brightness(50%);
+					}
+				}
+			}
+			&.followers, &.feedgroups{
+				.dropdown-menu{
+					margin-left: -457px;
+					width: 500px;
+					padding-top: 0;
+				}
+			}
+		}
+		.dropdown-menu {
+				border-radius: 20px;
+				box-shadow: $input-shadow;
+		}
+
+	}
+	// .controls {
+	// 	height: 34px;
+	// 	display: grid;
+	// 	grid-template-columns: 40px 60px 60px;
+	//
+	// 	.friend-requests {
+	// 		width: 24px;
+	// 		height: 24px;
+	// 		cursor: pointer;
+	// 		margin: auto;
+	// 	}
+	//
+	// 	.gear-icon {
+	// 		width: 24px;
+	// 		height: 24px;
+	// 	}
+	// 	.feedgroups{
+	// 		margin: auto;
+	// 		cursor: pointer;
+	// 		.dropdown-menu {
+	// 			margin-left: -457px;
+	// 			width: 500px;
+	// 			padding-top: 0;
+	// 		}
+	// 	}
+	// 	.feedgroups{
+	// 		.followers-content{
+	// 			display: flex;
+	// 			flex-direction: column;
+	// 			font-family: $medium-font;
+	// 			.title{
+	// 				border-bottom: 1px solid #DEDEDE;
+	// 				padding: 10px 20px;
+	// 			}
+	// 			.follower-items{
+	// 				display: flex;
+	// 				flex-direction: column;
+	// 				max-height: 500px;
+	// 				overflow-y: scroll;
+	// 				.follower-items-empty{
+	// 					min-height: 200px;
+	// 					display: flex;
+	// 					.create-new{
+	// 						flex: 0 0 auto;
+	// 						margin: auto;
+	// 						@include iconned-button(#5AB9FF, 19px, 100%, 5px);
+	// 					}
+	// 				}
+	// 				.follower-item-feed-title{
+	// 					margin-left: 20px;
+	// 					margin-top: 10px;
+	// 					margin-bottom: 10px;
+	// 				}
+	// 				.follower-item-users{
+	// 					display: flex;
+	// 					flex-direction: column;
+	// 					padding: 0px 10px;
+	// 					.follower{
+	// 						@include follower-user-request;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// 	.followers {
+	// 		margin: auto;
+	// 		cursor: pointer;
+	//
+	// 		.followers-content {
+	// 			overflow: hidden;
+	// 			display: grid;
+	// 			grid-template-rows: 50px auto;
+	// 			height: 400px;
+	//
+	// 			.title {
+	// 				padding-left: 20px;
+	// 				font-size: 18px;
+	// 				font-weight: 600;
+	// 				border-bottom: 1px solid #dedede;
+	// 				display: grid;
+	//
+	// 				div {
+	// 					margin-top: auto;
+	// 					margin-bottom: auto;
+	// 				}
+	// 			}
+	// 		}
+	//
+	// 		.followers {
+	// 			width: 500px;
+	// 		}
+	//
+	// 		.dropdown-menu {
+	// 			margin-left: -457px;
+	// 			width: 500px;
+	// 			padding-top: 0;
+	// 		}
+	//
+	// 		.follower-items {
+	// 			overflow-y: auto;
+	// 			padding-left: 10px;
+	// 			padding-top: 10px;
+	// 			padding-right: 10px;
+	// 			display: grid;
+	// 			grid-template-rows: repeat(auto-fit, 100px);
+	// 			grid-row-gap: 10px;
+	//
+	// 			.follower {
+	// 				@include follower-user-request;
+	// 			}
+	// 		}
+	// 	}
+	//
+	// 	.followers, .gear {
+	// 		.dropdown-toggle {
+	// 			padding: 3px;
+	// 			position: relative;
+	// 		}
+	// 	}
+	//
+	// 	.followers, .feedgroups {
+	// 		.new-requests {
+	// 			position: absolute;
+	// 			width: 10px;
+	// 			height: 10px;
+	// 			border-radius: 50%;
+	// 			right: 11px;
+	// 			background: red;
+	// 			top: 2px;
+	// 		}
+	// 	}
+	// 	.feedgroups{
+	// 		.new-requests{
+	// 			top: 0;
+	// 			right: 6px;
+	// 		}
+	// 	}
+	//
+	// 	.followers:hover {
+	// 		.dropdown-toggle {
+	// 			background: #dadada54;
+	// 			border-radius: 10px;
+	// 		}
+	// 	}
+	//
+	// 	.gear:hover {
+	// 		.dropdown-toggle {
+	// 			background: #dadada54;
+	// 			border-radius: 10px;
+	//
+	// 		}
+	// 	}
+	// 	.feedgroups:hover {
+	// 		.dropdown-toggle {
+	// 			background: #dadada54;
+	// 			border-radius: 10px;
+	// 		}
+	// 	}
+	// 	.feedgroups{
+	// 		.chevron{
+	// 			margin-top: 7px;
+	// 		}
+	// 	}
+	// 	.feedgroups.show {
+	// 		.friend-requests, .chevron {
+	// 			filter: brightness(0) invert(1);
+	// 		}
+	// 	}
+	// 	.feedgroups.show {
+	// 		.friend-requests, .chevron {
+	// 			filter: brightness(0) invert(1);
+	// 		}
+	// 	}
+	// 	.followers.show {
+	// 		.friend-requests, .chevron {
+	// 			filter: brightness(0) invert(1);
+	// 		}
+	// 	}
+	//
+	// 	.gear {
+	// 		position: relative;
+	// 		cursor: pointer;
+	// 		margin: auto;
+	// 	}
+	//
+	// 	.gear.show {
+	// 		//padding: 5px 10px;
+	//
+	// 		img {
+	// 			filter: brightness(0) invert(1);
+	// 		}
+	// 	}
+	//
+	// 	.dropdown-menu {
+	// 		border-radius: 20px;
+	// 		box-shadow: $input-shadow;
+	// 	}
+	//
+	// 	.dropdown-item:hover:first-child {
+	// 		border-radius: 10px 10px 0 0;
+	// 	}
+	//
+	// 	.dropdown-item:hover:last-child {
+	// 		border-radius: 0 0 10px 10px;
+	// 	}
+	// }
 }
+.main-controls-wrapper{
+	@include main-controls-wrapper;
+
+}
+
 
 .home.group{
   .mainPage {
@@ -42,14 +333,13 @@
 	    grid-template-columns: auto min-content;
 	    padding-right: 20px;
 	    .title{
-	        height: 100%;
-		    font-size: 130%;
-		    color: #88B3F9;
+	      height: 100%;
 		    margin-left: 20px;
 		    display: grid;
 		    grid-template-columns: auto;
 		    span {
-		        margin-top: auto;
+					@include top-label;
+		      margin-top: auto;
     			margin-bottom: auto;
 		    }
 

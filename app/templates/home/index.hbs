@@ -1,13 +1,13 @@
-<div class="publicRooms row">
+<div class="publicRooms">
   <div class="content h-100">
     <div class="room-title-holder">
       <div class="title">
         <span class="noselect">Groups</span>
       </div>
       {{#link-to "home.group" classNames="create noselect" tagName="div"}}
-        <div class="button hoveredBtn">
+        <div class="create-group-button">
           <img src="/assets/ic_plus@2x.png" alt="icon">
-          <div>Create Group</div>
+          <div class="label">Create Group</div>
         </div>
       {{/link-to}}
     </div>
@@ -49,34 +49,36 @@
       </div>
       <div class="feed-sidebar">
         <div class="side-content">
-          <div class="feeds-own feeds-item">
-            <div class="title">
-              Your Groups
+          <div class="side-wrapper">
+            <div class="feeds-own feeds-item">
+              <div class="title noselect">
+                Your groups
+              </div>
+              <div class="list">
+                {{home-feed-list model=myFeeds}}
+              </div>
             </div>
-            <div class="list">
-              {{home-feed-list model=myFeeds}}
+            <div class="feeds-follows feeds-item">
+              <div class="title noselect">
+                Following groups
+              </div>
+              <div class="list">
+                {{home-feed-list model=followedFeeds}}
+              </div>
             </div>
-          </div>
-          <div class="feeds-follows feeds-item">
-            <div class="title">
-              Following Groups
-            </div>
-            <div class="list">
-              {{home-feed-list model=followedFeeds}}
-            </div>
-          </div>
-          <div class="feed-public feeds-item">
-            <div class="title">
-              Discover
-            </div>
-            <div class="list">
-              {{home-feed-list
-                model=publicFeeds
-                isPublic=true
-                classNames="feed-list"
-                onFollowGroup=(action "followGroup")
-                onUnFollowGroup=(action "unFollowGroup")
-                onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+            <div class="feed-public feeds-item">
+              <div class="title noselect">
+                Discover
+              </div>
+              <div class="list">
+                {{home-feed-list
+                  model=publicFeeds
+                  isPublic=true
+                  classNames="feed-list"
+                  onFollowGroup=(action "followGroup")
+                  onUnFollowGroup=(action "unFollowGroup")
+                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+              </div>
             </div>
           </div>
         </div>

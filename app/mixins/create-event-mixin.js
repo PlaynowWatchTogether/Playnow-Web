@@ -1,6 +1,7 @@
 import Mixin from '@ember/object/mixin';
 import { debug } from '@ember/debug';
 import { computed } from '@ember/object';
+import { set } from '@ember/object';
 export default Mixin.create({
   init(){
     this._super(...arguments);
@@ -15,6 +16,7 @@ export default Mixin.create({
   resetNewEvent(){
     this.set('creatingEvent',false);
     this.set('newEventErrors',{});
+    this.set('newEventUploads',[]);
     this.set('newEvent', {
       date:{
 
@@ -30,6 +32,34 @@ export default Mixin.create({
     },
     cancelCreateEvent(){
       this.resetNewEvent();
+    },
+    removeEventPic(upload){
+      this.set('newEventUploads',null);
+    },
+    uploadEventPic(file){
+      let upload = {file: file, state: 0};
+      this.set('newEventUploads',upload);
+      let ref = this.firebaseApp.storage().ref('Media/Files/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + file.name);
+      const uploadTask = ref.put(file.blob);
+      uploadTask.on('state_changed', (snapshot)=>{
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        set(upload, 'state',1);
+        set(upload, 'progress',progress);
+        set(upload, 'transferred',snapshot.bytesTransferred);
+        set(upload, 'total',snapshot.totalBytes);
+        debug(`Upload progress changed ${progress}`);
+      }, (error)=>{
+        set(upload, 'state',3);
+        set(upload, 'error',error);
+      }, ()=>{
+        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // ds.sendMessage('', downloadURL, null, true);
+            //ds.sendAttachment(file, downloadURL, id);
+            debug(`File available at ${downloadURL}`);
+            set(upload, 'url',downloadURL);
+            set(upload, 'state',2);
+        });
+      });
     },
     createEvent(){
       this.set('newEventErrors',{});
@@ -47,6 +77,15 @@ export default Mixin.create({
         this.set('newEventErrors.date','Should be set');
         return;
       }
+      const upload = this.get('newEventUploads');
+      const url = this.get('newEventUploads.url');
+      if (upload && !url){
+        return;
+      }
+      if (url){
+        model.ProfilePic = url;
+      }
+
       this.dataSource.createEvent(this.dataSource.feedId, model).then(()=>{
         this.resetNewEvent();
       });

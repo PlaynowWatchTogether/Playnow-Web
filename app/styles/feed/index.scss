@@ -101,7 +101,15 @@
                 flex: 1 1 auto;
                 margin-left: 10px;
                 place-self: center;
+                overflow-wrap: break-word;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
                 .feed-item-title{
+                  overflow-wrap: break-word;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
                   flex: 0 0 auto;
                   margin: 0;
                   color: black;

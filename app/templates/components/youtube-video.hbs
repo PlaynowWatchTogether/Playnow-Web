@@ -1,9 +1,11 @@
 {{yield}}
 {{thumbnail-background model=videoThumbnail classNames="thumbnail"}}
 <div class="title-holder">
-  <p class="videoTitle block-with-text">
-    {{videoTitle}}
-  </p>
+  {{#text-truncator height=55 classNames="videoTitle"}}
+    <span>
+      {{videoTitle}}
+    </span>
+  {{/text-truncator}}
 
 </div>
 <div class="channel-title">

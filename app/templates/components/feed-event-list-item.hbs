@@ -16,6 +16,11 @@
       </div>
     </div>
     {{feed-event-when model=model classNames="feed-event-date-root"}}
+    {{#if model.ProfilePic}}
+      {{#unless hideImage}}
+        {{chat-message-img classNames="feed-event-pic" model=model.ProfilePic maxWidthSelector="div"}}
+      {{/unless}}
+    {{/if}}
     <div class="feed-event-description">
       {{model.description}}
     </div>

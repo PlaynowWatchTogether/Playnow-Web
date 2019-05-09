@@ -409,6 +409,73 @@ $message-border-radius: 15.5px;
   }
 
 }
+@mixin chat-upload-item{
+  max-width: 300px;
+  margin-bottom: 5px;
+  .chat-upload{
+    height: 50px;
+    margin-right: 10px;
+    grid-column-gap: 10px;
+    border-radius: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: row;
+    button{
+      background: white;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      place-content: center;
+      place-items: center;
+      justify-items: center;
+      justify-content: center;
+      display: flex;
+      align-self: center;
+      padding: 0;
+      &:hover{
+        background: lightgray;
+      }
+    }
+    .chat-upload-details{
+      flex: 1 1 auto;
+      margin-left: 10px;
+      margin-right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  .chat-upload-state{
+    font-size: 70%;
+
+  }
+  .chat-upload-loading, .chat-upload-details {
+    margin: auto;
+  }
+  .chat-upload-loading{
+    flex: 1 1 auto;
+    padding: 0px 10px;
+    .chat-upload-name{
+      align-self: center;
+      place-self: end;
+      justify-self: center;
+      text-align: center;
+    }
+  }
+  &.new, &.loading{
+    .chat-upload{
+      color: #1e2430;
+      background: #c7ccd8;
+    }
+  }
+
+  &.new, &.completed{
+    .chat-upload{
+      background: #22a061;
+      color: white;
+    }
+  }
+}
 @mixin events-create-input-holder{
   display: flex;
   margin-top: 20px;
@@ -459,12 +526,46 @@ $message-border-radius: 15.5px;
     .input-field-wrapper{
       width: 100%;
     }
+    .create-description{
+      @include events-create-input;
+      textarea{
+        resize: none;
+        height: 100px;
+        border: none;
+        background: none;
+        outline: none;
+        width: 100%;
+      }
+      .create-uploads{
+        margin: 0;
+        padding: 0;
+        .chat-upload-item{
+
+          @include chat-upload-item;
+          max-width: none;
+          margin: 0;
+          .chat-upload{
+            margin: 0;
+          }
+        }
+
+      }
+      .new-event-pic-btn{
+        display: flex;
+
+        place-content: flex-end;
+        padding-right: 5px;
+        .file-upload{
+          cursor: pointer;
+          margin: 0;
+          img{
+            width: 30px;
+          }
+        }
+      }
+    }
     .edit{
       @include events-create-input;
-    }
-    textarea{
-      resize: none;
-      height: 100px;
     }
   }
   .create{
@@ -610,6 +711,11 @@ $message-border-radius: 15.5px;
           @include iconned-button(#02E7B2, 13px);
         }
       }
+    }
+    .feed-event-pic{
+      margin-top: 10px;
+      margin-left: -10px;
+      margin-right: -10px;
     }
   }
   .feed-event-comments{

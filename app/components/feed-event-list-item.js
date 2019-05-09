@@ -6,7 +6,10 @@ import FeedEventItemHelper from '../mixins/feed-event-item-helper';
 export default Component.extend(FeedEventItemHelper, {
   actions: {
     openDetails(){
-      this.get('onDetails')(this.get('model'));
+      const act = this.get('onDetails');
+      if (act){
+          act(this.get('model'));
+      }
     }
   }
 });

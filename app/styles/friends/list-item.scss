@@ -3,8 +3,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: 100%;
-  text-align: right;
 }
 @mixin home-list-split-profile-pic{
   .split-profile-pic {
@@ -67,6 +65,8 @@
       overflow: hidden;
       .name{
         @include home-list-friend-item-label;
+        width: 100%;
+        text-align: right;
         display: flex;
         place-items: center;
         justify-content: flex-end;
@@ -87,6 +87,8 @@
       .last-message{
         color: #A5A5A5;
         font-size: 90%;
+        width: 100%;
+        text-align: right;
         @include home-list-friend-item-label;
       }
       .emojione{

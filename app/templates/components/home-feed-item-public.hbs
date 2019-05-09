@@ -41,9 +41,9 @@
 <div class="feed-title">
   @ {{model.GroupName}}
 </div>
-<div class="feed-description">
-  {{model.GroupDescription}}
-</div>
+{{#text-truncator height=90 classNames="feed-description"}}
+  <p>{{model.GroupDescription}}</p>
+{{/text-truncator}}
 <div class="footer-wrapper">
   {{#if canShowRecent}}
     <div class="public-group">
@@ -73,6 +73,7 @@
           </div>
           {{feed-event-list-item
             model=recentAction.event
+            hideImage=true
             classNames="recent-event-item"
             joinEvent=(action "onJoinEvent")
             leaveEvent=(action "onLeaveEvent")}}

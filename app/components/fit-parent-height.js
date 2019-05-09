@@ -21,7 +21,9 @@ export default Component.extend({
   handleSize(){
     const minus = (this.get('minusSelector')||'').split(';');
     let height = $(this.get('parentSelector')).height();
-    const parentOffset = $(this.element).closest(this.get('parentSelector')).offset().top;
+    let parent = $(this.element).closest(this.get('parentSelector'));
+
+    const parentOffset = parent ? parent.offset().top : 0;
     const windowHeight = $(window).height();
     const maxParentHeight = windowHeight-parentOffset;
     height = maxParentHeight;

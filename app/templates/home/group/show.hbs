@@ -20,42 +20,46 @@
       </div>
       <div class="feed-header">
         <div class="feed-header-body">
-          <div class="feed-pic {{if feed.isPlaying 'active'}}">
-            <div class="pic-holder">
-              <div class="profilePicWrapper">
-                {{#file-upload name="feedPic"
-                               disabled=disableProfilePicChange
-                               accept="image/*"
-                               onfileadd=(action "updateFeedPic")}}
-                               <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
-                {{/file-upload}}
+          <div class="feed-pic-holder">
+            <div class="feed-pic {{if feed.isPlaying "active"}}">
+              <div class="pic-holder">
+                <div class="profilePicWrapper">
+                  {{#file-upload name="feedPic"
+                                 disabled=disableProfilePicChange
+                                 accept="image/*"
+                                 onfileadd=(action "updateFeedPic")}}
+                                 <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
+                  {{/file-upload}}
+                </div>
               </div>
             </div>
           </div>
-          <div class="feed-middle {{if editFeed 'edit'}}">
+          <div class="feed-middle {{if editFeed "edit"}}">
             {{#if editFeed}}
-              <div class="feed-edit-save" {{action 'saveEdit'}}>
+              <div class="feed-edit-save" {{action "saveEdit"}}>
                 Done
               </div>
               <div class="feed-title-edit">
                 <span>@</span>
-                {{input value=feedTitle classNames='edit' placeholder='Channel name'}}
+                {{input value=feedTitle classNames="edit" placeholder="Channel name" maxlength=50}}
               </div>
               <div class="feed-description-edit">
-                {{textarea value=feedDescription classNames='edit' placeholder='Description'}}
+                {{textarea value=feedDescription classNames="edit" placeholder="Description" maxlength=150}}
               </div>
             {{else}}
               {{#if isAdmin}}
-                <div class="feed-edit" {{action 'enableEdit'}}>
+                <div class="feed-edit" {{action "enableEdit"}}>
                   <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
                 </div>
               {{/if}}
               <div class="feed-title">
                 @ {{feed.GroupName}}
               </div>
-              <div class="feed-description">
-                {{feed.GroupDescription}}
-              </div>
+
+              {{#text-truncator classNames="feed-description" height=90}}
+                <p>{{feed.GroupDescription}}</p>
+              {{/text-truncator}}
+
             {{/if}}
             <div class="feed-admins-root">
               <div class="label">ADMINS</div>
@@ -144,7 +148,7 @@
                 }}
               {{/if}}
               {{#if message.isDate}}
-                {{chat-message-time model=message.date classNames='feed-post-time'}}
+                {{chat-message-time model=message.date classNames="feed-post-time"}}
               {{/if}}
               {{#if message.isLoading}}
                 {{chat-message-loading classNames="chat-message-loading" model=message.message}}
@@ -168,8 +172,8 @@
             {{/each}}
           </div>
         {{/if}}
-        <div class="feed-post {{if uploads 'has-uploads'}}">
-          {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames='emoji-picker-holder'}}
+        <div class="feed-post {{if uploads "has-uploads"}}">
+          {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
           {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
                                     enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
           {{#file-upload name="chatPhotos"
@@ -211,7 +215,7 @@
           </div>
           {{#unless creatingEvent}}
             {{#if isAdmin}}
-              <div class="create-event" {{action 'showCreateEvent'}}>
+              <div class="create-event" {{action "showCreateEvent"}}>
                 <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
                 <div class="label">Create Event</div>
               </div>
@@ -237,13 +241,13 @@
           <div class="tab-pane fade  show active" id="events">
             {{#if creatingEvent}}
               <div class="events-create-root">
-                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelCreateEvent'}}>
+                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action "cancelCreateEvent"}}>
                 <div class="create-label">
                   Create Event
                 </div>
                 <div class="input-field-group">
-                  <div class="create-title input-field-wrapper {{if newEventErrors.title 'with-error'}}">
-                    {{input value=newEvent.title placeholder="Title" classNames="edit"}}
+                  <div class="create-title input-field-wrapper {{if newEventErrors.title "with-error"}}">
+                    {{input value=newEvent.title placeholder="Title" classNames="edit" maxlength=50}}
                     {{#if newEventErrors.title}}
                       <span class="error">{{newEventErrors.title}}</span>
                     {{/if}}
@@ -258,11 +262,27 @@
                   <div class="create-field-label">
                     Event description
                   </div>
-                  <div class="create-description input-field-wrapper {{if newEventErrors.description 'with-error'}}">
-                    {{textarea value=newEvent.description placeholder="This event is for..." classNames="edit"}}
+                  <div class="create-description input-field-wrapper {{if newEventErrors.description "with-error"}}">
+                    {{textarea value=newEvent.description placeholder="This event is for..."  maxlength=150}}
                     {{#if newEventErrors.description}}
                       <span class="error">{{newEventErrors.description}}</span>
                     {{/if}}
+                    {{#if newEventUploads}}
+                      <div class="create-uploads">
+                        {{chat-upload-item model=newEventUploads
+                          onRemove=(action "removeEventPic")}}
+                      </div>
+                    {{else}}
+                      <div class="new-event-pic-btn">
+                        {{#file-upload name="eventPic"
+                                       accept="image/*"
+                                       onfileadd=(action "uploadEventPic")}}
+                                       <img src="/assets/ic-feed-events-attach-img@2x.png" role="button">
+                        {{/file-upload}}
+                      </div>
+                    {{/if}}
+
+
                   </div>
                 </div>
                 <div class="input-field-group">
@@ -271,7 +291,7 @@
                   </div>
                   <div class="dropdown create-seats input-field-wrapper">
                     {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
-                                    onChange=(action 'onSeatsPick')}}
+                                    onChange=(action "onSeatsPick")}}
                   </div>
                 </div>
 

@@ -5,6 +5,9 @@
   </div>
 </div>
 {{feed-event-when classNames="events-show-date-root" model=model}}
+{{#if model.ProfilePic}}
+  {{chat-message-img classNames="events-show-pic" model=model.ProfilePic maxWidthSelector="div"}}
+{{/if}}
 <div class="feed-event-description">
   {{model.description}}
 </div>

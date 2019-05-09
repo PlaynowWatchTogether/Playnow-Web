@@ -1,7 +1,8 @@
 @import '../vars.scss';
 @import 'feed-post-content.scss';
+@import '../friends/list-item.scss';
 .home.group.show {
-  .feed-root {    
+  .feed-root {
     padding-left: 5px;
     .feed-parent {
       background: white;
@@ -41,47 +42,57 @@
             margin-left: 30px;
             margin-right: 30px;
             padding-bottom: 10px;
-            .feed-pic {
+            .feed-pic-holder{
               flex: 0 0 auto;
-              cursor: pointer;
-              border-radius: 50%;
-              padding: 5px;
-              width: 150px;
-              height: 150px;
-              .pic-holder {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                background: white;
+              display: flex;
+              place-items: center;
+              .feed-pic {
+                cursor: pointer;
                 border-radius: 50%;
-                box-shadow: $message-shadow;
                 padding: 5px;
-                .profilePicWrapper {
+                width: 150px;
+                height: 150px;
+                .pic-holder {
                   width: 100%;
                   height: 100%;
-                  margin: auto;
+                  display: flex;
+                  background: white;
+                  border-radius: 50%;
+                  box-shadow: $message-shadow;
+                  padding: 5px;
+                  .profilePicWrapper {
+                    width: 100%;
+                    height: 100%;
+                    margin: auto;
+                  }
+                  .file-upload{
+                    width: 100%;
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                  }
                 }
-                .file-upload{
-                  width: 100%;
-                  height: 100%;
-                  margin: 0;
-                  padding: 0;
-                }
-              }
-              &.active{
-                box-shadow: $message-shadow;
-                background: $primary-gradient;
-                .pic-holder{
-                  box-shadow: none;
+                &.active{
+                  box-shadow: $message-shadow;
+                  background: $primary-gradient;
+                  .pic-holder{
+                    box-shadow: none;
+                  }
                 }
               }
             }
+
             .feed-middle {
+              flex: 0 1 auto;
               width: 100%;
-              flex: 1 1 auto;
+              max-width: auto;
               display: flex;
               flex-direction: column;
               padding-left: 20px;
+              overflow-wrap: break-word;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
               .feed-edit-save{
                 align-self: flex-end;
                 cursor: pointer;
@@ -89,6 +100,7 @@
                 font-size: 80%;
               }
               .feed-title-edit{
+                display: flex;
                 background: #F5F4F4;
                 border-radius: 20px;
                 border: 1px solid #D1D1D1;
@@ -98,6 +110,7 @@
                 padding-bottom: 5px;
                 margin-right: 35px;
                 input{
+                  flex: 1 1 auto;
                   background: none;
                   border: none;
                   outline: none;
@@ -122,6 +135,7 @@
                 }
               }
               .feed-edit {
+                height: 1.5em;
                 display: flex;
                 .edit-img {
                   width: 12px;
@@ -132,6 +146,7 @@
                 }
               }
               .feed-title {
+                @include home-list-friend-item-label;
                 font-size: 150%;
                 font-family: $medium-font;
               }
@@ -139,9 +154,13 @@
                 font-size: 90%;
                 margin-top: 10px;
                 padding-left: 10px;
+                white-space: normal;
+                height: 4.5em;
+                overflow: hidden;
               }
               .feed-admins-root {
                 display: flex;
+                height: 30px;
                 margin-top: 10px;
                 margin-left: 10px;
                 .feed-admins-edit{
@@ -174,6 +193,7 @@
                   font-size: 60%;
                 }
                 .users{
+                  place-items: center;
                   flex: 1 1 auto;
                   overflow-y: scroll;
                   display: flex;
@@ -193,19 +213,20 @@
                   }
                 }
               }
+              &.edit{
+                .feed-admins-root{
+                  margin-right: 35px;
+                }
+                .users{
 
+                  flex: 1 1 50%;
+                }
+              }
             }
-            .feed-middle.edit{
-              .feed-admins-root{
-                margin-right: 35px;
-              }
-              .users{
-                flex: 1 1 50%;
-              }
 
-            }
             .feed-info{
-              flex: 1 1 30%;
+              flex: 0 0 120px;
+              max-width: 120px;
               align-items: flex-end;
               display: flex;
               flex-direction: column;
@@ -214,7 +235,6 @@
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
-                padding-right: 20px;
                 .views-img {
                   width: 14px;
                   height: 9px;
@@ -281,6 +301,7 @@
             padding: 10px;
             .feed-watcher-items{
               display: flex;
+              place-content: flex-end;
               .feed-watcher-item{
                 margin-right: 5px;
                 width: 35px;
@@ -437,44 +458,8 @@
           display: flex;
           padding: 5px 10px;
           flex-wrap: wrap;
-          button:focus {
-            outline: none;
-          }
-          button{
-            margin: auto;
-          }
           .chat-upload-item{
-            max-width: 300px;
-            margin-bottom: 5px;
-            .chat-upload{
-                height: 50px;
-                margin-right: 10px;
-                grid-column-gap: 10px;
-                border-radius: 10px;
-                padding-left: 10px;
-                padding-right: 10px;
-                display: grid;
-                grid-template-columns: min-content auto min-content;
-            }
-            .chat-upload-state{
-              font-size: 70%;
-
-            }
-            .chat-upload-loading, .chat-upload-details {
-              margin: auto;
-            }
-          }
-          .chat-upload-item.new,.chat-upload-item.loading{
-            .chat-upload{
-              color: #1e2430;
-              background: #c7ccd8;
-            }
-          }
-          .chat-upload-item.new,.chat-upload-item.completed{
-            .chat-upload{
-              background: #22a061;
-              color: white;
-            }
+            @include chat-upload-item;
           }
         }
         .feed-post {
@@ -555,25 +540,7 @@
           align-items: center;
           justify-content: space-between;
           .tabs {
-            .nav-item {
-              cursor: pointer;
-            }
-
-            .nav-link {
-              color: #A2A2A2;
-              background: none;
-              padding-bottom: 0;
-              border-radius: 0;
-            }
-
-            .nav-link.active {
-              background: none;
-
-              color: #27BDD8;
-              border-bottom: 4px solid #27BDD8;
-              padding-bottom: 0;
-              border-radius: 0;
-            }
+            @include tabs;
           }
           .create-event{
             @include iconned-button(#7FDBFC, 14px);
@@ -639,6 +606,9 @@
                   text-align: center;
                   font-family: $medium-font;
                 }
+              }
+              .events-show-pic{
+                margin-top: 10px;
               }
               .events-show-date-root{
                 margin-top: 20px;
@@ -718,6 +688,11 @@
               @include events-list;
               .events-list-item{
                 @include events-list-item;
+                .feed-event-pic{
+                  margin-top: 10px;
+                  margin-left: -10px;
+                  margin-right: -10px;
+                }
               }
             }
           }

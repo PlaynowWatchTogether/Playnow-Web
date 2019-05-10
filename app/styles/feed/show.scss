@@ -82,7 +82,7 @@ $post-content-width: 60%;
                       width: 100%;
                       height: 100%;
                       color: white;
-                      background: #00000094;
+                      background: rgba(0, 0, 0, 0.30);
                       place-content: center;
                       place-items: center;
                       display: none;
@@ -223,7 +223,7 @@ $post-content-width: 60%;
                   .users{
                     place-items: center;
                     flex: 1 1 auto;
-                    overflow-y: scroll;
+                    overflow-y: auto;
                     display: flex;
                     margin-left: 10px;
                     .feed-admin-item{
@@ -330,6 +330,7 @@ $post-content-width: 60%;
               .feed-watcher-items{
                 display: flex;
                 place-content: flex-end;
+                justify-content: flex-end;
                 .feed-watcher-item{
                   margin-right: 5px;
                   width: 35px;
@@ -492,6 +493,7 @@ $post-content-width: 60%;
           .feed-post-holder{
             display: flex;
             place-content: center;
+            justify-content: center;
             .feed-post-wrapper{
               display: flex;
               background: white;
@@ -711,6 +713,7 @@ $post-content-width: 60%;
             }
           }
           #events{
+            padding-bottom: 20px;
             .feed-sidebar-playing-root{
               margin-left: 10px;
               margin-right: 10px;
@@ -805,6 +808,7 @@ $post-content-width: 60%;
                 display: flex;
                 margin-top: 20px;
                 place-content: center;
+                justify-content: center;
                 .action-owner{
                   @include simple-button(red);
                 }

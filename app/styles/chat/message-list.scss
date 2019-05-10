@@ -1046,6 +1046,7 @@
       }
       &.mine{
         place-content: flex-end;
+        justify-content: flex-end;
         .video-request-holder{
           justify-self: end;
         }
@@ -1073,7 +1074,9 @@
         .message-text-holder{
             display: flex;
             place-content: flex-end;
+            justify-content: flex-end;
             justify-self: end;
+
             .in-reply-to-message{
 
               color: #DBEDFF;

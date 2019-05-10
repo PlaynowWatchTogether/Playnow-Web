@@ -67,9 +67,11 @@
                   {{feed.GroupName}}
                 </div>
 
-                {{#text-truncator classNames="feed-description" height=90}}
-                  <p>{{feed.GroupDescription}}</p>
-                {{/text-truncator}}
+                <div class="feed-description">
+                  {{#text-truncator classNames="feed-description-truncated" height=90}}                  
+                    <p>{{feed.GroupDescription}}</p>
+                  {{/text-truncator}}
+                </div>
 
               {{/if}}
               <div class="feed-admins-root">

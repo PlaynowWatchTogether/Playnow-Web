@@ -43,7 +43,16 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     }
   }),
   handleModelChange(){
-    debug('feed/show handleModelChange');
+    $(document).on('keyup.group',(event)=>{
+      if (27 === event.keyCode){
+        if (this.get('displayEmoji')){
+          this.set('displayEmoji',false);
+          return;
+        }
+        this.transitionToRoute('home');
+      }
+      debug('key up');
+    });
     const id = this.get('model.group_id');
     const ds = FeedGroupSource.create({
       db: this.get('db'),
@@ -127,6 +136,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   }),
 
   handleDSChange(){
+
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
       this.set('feed', FeedModelWrapper.create({content:feed}));
       this.set('lastMessageDate',get(feed,'lastMessageDate'));
@@ -158,6 +168,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
   },
   reset(){
+    $(document).off("keyup.group");
     this.set('editFeed',false);
     this.set('scrolledMore',false);
     this.set('animating',false);

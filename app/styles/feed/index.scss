@@ -211,7 +211,7 @@
             .home-feed-item-public{
               @include home-feed-item-public
               &:hover{
-                background: #dadada5e;
+                background: $friends-list-hover-color;
                 border-radius: 15px;
               }
             }

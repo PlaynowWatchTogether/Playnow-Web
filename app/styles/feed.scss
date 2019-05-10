@@ -43,23 +43,11 @@
 	    width: 35px;
 	    display: flex;
 	    justify-items: center;
+			justify-content: center;
 	    place-content: center;
 			margin-left: 10px;
 			margin-right: 10px;
-			// &.feedgroups{
-			// 	.dropdown-toggle{
-			// 		img{
-			// 			width: 30px;
-			// 		}
-			// 	}
-			// }
-			// &.feedgroups{
-			// 	.dropdown-toggle{
-			// 		img{
-			// 			width: 30px;
-			// 		}
-			// 	}
-			// }
+
 			.dropdown-toggle{
 				position: relative;
 				display: flex;
@@ -103,6 +91,80 @@
 					padding-top: 0;
 				}
 			}
+			&.feedgroups{
+				.followers-content{
+					display: flex;
+					flex-direction: column;
+					font-family: $medium-font;
+					.title{
+						border-bottom: 1px solid #DEDEDE;
+						padding: 10px 20px;
+					}
+					.follower-items{
+						display: flex;
+						flex-direction: column;
+						max-height: 500px;
+						overflow-y: scroll;
+						.follower-items-empty{
+							min-height: 200px;
+							display: flex;
+							.create-new{
+								flex: 0 0 auto;
+								margin: auto;
+								@include iconned-button(#5AB9FF, 19px, 100%, 5px);
+							}
+						}
+						.follower-item-feed-title{
+							margin-left: 20px;
+							margin-top: 10px;
+							margin-bottom: 10px;
+						}
+						.follower-item-users{
+							display: flex;
+							flex-direction: column;
+							padding: 0px 10px;
+							.follower{
+								@include follower-user-request;
+							}
+						}
+					}
+				}
+			}
+			&.followers{
+				.followers-content {
+					overflow: hidden;
+					display: grid;
+					grid-template-rows: 50px auto;
+					height: 400px;
+
+					.title {
+						padding-left: 20px;
+						font-size: 18px;
+						font-weight: 600;
+						border-bottom: 1px solid #dedede;
+						display: grid;
+
+						div {
+							margin-top: auto;
+							margin-bottom: auto;
+						}
+					}
+					.follower-items {
+						overflow-y: auto;
+						padding-left: 10px;
+						padding-top: 10px;
+						padding-right: 10px;
+						display: grid;
+						grid-template-rows: repeat(auto-fit, 100px);
+						grid-row-gap: 10px;
+
+						.follower {
+							@include follower-user-request;
+						}
+					}
+
+				}
+			}
 		}
 		.dropdown-menu {
 				border-radius: 20px;
@@ -110,212 +172,6 @@
 		}
 
 	}
-	// .controls {
-	// 	height: 34px;
-	// 	display: grid;
-	// 	grid-template-columns: 40px 60px 60px;
-	//
-	// 	.friend-requests {
-	// 		width: 24px;
-	// 		height: 24px;
-	// 		cursor: pointer;
-	// 		margin: auto;
-	// 	}
-	//
-	// 	.gear-icon {
-	// 		width: 24px;
-	// 		height: 24px;
-	// 	}
-	// 	.feedgroups{
-	// 		margin: auto;
-	// 		cursor: pointer;
-	// 		.dropdown-menu {
-	// 			margin-left: -457px;
-	// 			width: 500px;
-	// 			padding-top: 0;
-	// 		}
-	// 	}
-	// 	.feedgroups{
-	// 		.followers-content{
-	// 			display: flex;
-	// 			flex-direction: column;
-	// 			font-family: $medium-font;
-	// 			.title{
-	// 				border-bottom: 1px solid #DEDEDE;
-	// 				padding: 10px 20px;
-	// 			}
-	// 			.follower-items{
-	// 				display: flex;
-	// 				flex-direction: column;
-	// 				max-height: 500px;
-	// 				overflow-y: scroll;
-	// 				.follower-items-empty{
-	// 					min-height: 200px;
-	// 					display: flex;
-	// 					.create-new{
-	// 						flex: 0 0 auto;
-	// 						margin: auto;
-	// 						@include iconned-button(#5AB9FF, 19px, 100%, 5px);
-	// 					}
-	// 				}
-	// 				.follower-item-feed-title{
-	// 					margin-left: 20px;
-	// 					margin-top: 10px;
-	// 					margin-bottom: 10px;
-	// 				}
-	// 				.follower-item-users{
-	// 					display: flex;
-	// 					flex-direction: column;
-	// 					padding: 0px 10px;
-	// 					.follower{
-	// 						@include follower-user-request;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// 	.followers {
-	// 		margin: auto;
-	// 		cursor: pointer;
-	//
-	// 		.followers-content {
-	// 			overflow: hidden;
-	// 			display: grid;
-	// 			grid-template-rows: 50px auto;
-	// 			height: 400px;
-	//
-	// 			.title {
-	// 				padding-left: 20px;
-	// 				font-size: 18px;
-	// 				font-weight: 600;
-	// 				border-bottom: 1px solid #dedede;
-	// 				display: grid;
-	//
-	// 				div {
-	// 					margin-top: auto;
-	// 					margin-bottom: auto;
-	// 				}
-	// 			}
-	// 		}
-	//
-	// 		.followers {
-	// 			width: 500px;
-	// 		}
-	//
-	// 		.dropdown-menu {
-	// 			margin-left: -457px;
-	// 			width: 500px;
-	// 			padding-top: 0;
-	// 		}
-	//
-	// 		.follower-items {
-	// 			overflow-y: auto;
-	// 			padding-left: 10px;
-	// 			padding-top: 10px;
-	// 			padding-right: 10px;
-	// 			display: grid;
-	// 			grid-template-rows: repeat(auto-fit, 100px);
-	// 			grid-row-gap: 10px;
-	//
-	// 			.follower {
-	// 				@include follower-user-request;
-	// 			}
-	// 		}
-	// 	}
-	//
-	// 	.followers, .gear {
-	// 		.dropdown-toggle {
-	// 			padding: 3px;
-	// 			position: relative;
-	// 		}
-	// 	}
-	//
-	// 	.followers, .feedgroups {
-	// 		.new-requests {
-	// 			position: absolute;
-	// 			width: 10px;
-	// 			height: 10px;
-	// 			border-radius: 50%;
-	// 			right: 11px;
-	// 			background: red;
-	// 			top: 2px;
-	// 		}
-	// 	}
-	// 	.feedgroups{
-	// 		.new-requests{
-	// 			top: 0;
-	// 			right: 6px;
-	// 		}
-	// 	}
-	//
-	// 	.followers:hover {
-	// 		.dropdown-toggle {
-	// 			background: #dadada54;
-	// 			border-radius: 10px;
-	// 		}
-	// 	}
-	//
-	// 	.gear:hover {
-	// 		.dropdown-toggle {
-	// 			background: #dadada54;
-	// 			border-radius: 10px;
-	//
-	// 		}
-	// 	}
-	// 	.feedgroups:hover {
-	// 		.dropdown-toggle {
-	// 			background: #dadada54;
-	// 			border-radius: 10px;
-	// 		}
-	// 	}
-	// 	.feedgroups{
-	// 		.chevron{
-	// 			margin-top: 7px;
-	// 		}
-	// 	}
-	// 	.feedgroups.show {
-	// 		.friend-requests, .chevron {
-	// 			filter: brightness(0) invert(1);
-	// 		}
-	// 	}
-	// 	.feedgroups.show {
-	// 		.friend-requests, .chevron {
-	// 			filter: brightness(0) invert(1);
-	// 		}
-	// 	}
-	// 	.followers.show {
-	// 		.friend-requests, .chevron {
-	// 			filter: brightness(0) invert(1);
-	// 		}
-	// 	}
-	//
-	// 	.gear {
-	// 		position: relative;
-	// 		cursor: pointer;
-	// 		margin: auto;
-	// 	}
-	//
-	// 	.gear.show {
-	// 		//padding: 5px 10px;
-	//
-	// 		img {
-	// 			filter: brightness(0) invert(1);
-	// 		}
-	// 	}
-	//
-	// 	.dropdown-menu {
-	// 		border-radius: 20px;
-	// 		box-shadow: $input-shadow;
-	// 	}
-	//
-	// 	.dropdown-item:hover:first-child {
-	// 		border-radius: 10px 10px 0 0;
-	// 	}
-	//
-	// 	.dropdown-item:hover:last-child {
-	// 		border-radius: 0 0 10px 10px;
-	// 	}
-	// }
 }
 .main-controls-wrapper{
 	@include main-controls-wrapper;

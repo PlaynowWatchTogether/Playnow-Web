@@ -33,10 +33,12 @@ export default Mixin.create({
     },
     toggleLike(){
       const act = this.get('onLikePost');
-      if (this.get('isLiked')){
-        act(this.get('model'), false);
-      }else{
-        act(this.get('model'), true);
+      if (act){
+        if (this.get('isLiked')){
+          act(this.get('model'), false);
+        }else{
+          act(this.get('model'), true);
+        }
       }
     },
     onLikeComment(comment, like){

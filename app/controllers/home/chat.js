@@ -539,7 +539,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
-    $(document).on("keyup.chat");
+    $(document).off("keyup.chat");
     this.set('displayEmoji',false);
     this.offGroupListen();
     this.set('inReplyTo', null);
@@ -781,7 +781,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     onReplyTo(message){
       this.set('inReplyTo', message);
       setTimeout(()=>{
-        $('.ember-content-editable.messageContent').focus();  
+        $('.ember-content-editable.messageContent').focus();
       }, 1000);
 
     },

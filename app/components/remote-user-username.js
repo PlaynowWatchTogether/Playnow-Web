@@ -3,10 +3,15 @@ import { computed } from '@ember/object';
 import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
 import DS from 'ember-data';
+import UserProfileView from './user-profile-view';
 
-
-export default Component.extend({
+export default UserProfileView.extend({
   db:service(),
+  click(){
+    if (this.get('detailsOnClick')){
+      this._super(...arguments);
+    }
+  },
   didInsertElement(){
     this._super(...arguments);
     this.get('db').profile(this.get('model')).then((profile)=>{

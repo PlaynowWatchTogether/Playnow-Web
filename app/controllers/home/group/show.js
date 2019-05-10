@@ -28,6 +28,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   dsObserver(obj){
     obj.handleDSChange();
   },
+  messageSortHandler(a,b){
+    return get(b,'date').getTime() - get(a,'date').getTime()
+  },
   messageConvId(){
     return this.dataSource.feedId;
   },
@@ -130,7 +133,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
     this.dataSource.open(this.dataSource.feedId);
     this.dataSource.messages(this.dataSource.feedId, (messages)=>{
-      const converted = this.convertServerMessagesToUI(messages,this.messageConvId());
+      const converted = this.convertServerMessagesToUI(messages,this.messageConvId(),{skipDate: true});
       const wrappedMessages = converted.messages;
       const uiMessages = [];
       wrappedMessages.forEach((mesCntent)=>{
@@ -155,6 +158,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
   },
   reset(){
+    this.set('editFeed',false);
+    this.set('scrolledMore',false);
+    this.set('animating',false);
     this.dataSource.reset();
     this.set('feed',null);
   },
@@ -180,6 +186,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   disableProfilePicChange: computed('isAdmin', function(){
     return !this.get('isAdmin');
   }),
+  scaleValue(start,end,scale){
+    return start-(scale*(start-end))
+  },
   actions:{
     displayAdmins(){
       $('#modalEditAdmins').modal();
@@ -345,6 +354,82 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     joinLive(){
       this.transitionToRoute('home.chat', this.dataSource.feedId, 'feed');
+    },
+    onScrollChanged(top){
+      const editing = this.get('editFeed');
+      const animating = this.get('animating');
+      if (!editing && !animating){
+        const scale = Math.max(0,Math.min(1,top/289));
+        const headerBody = $('.feed-content .feed-header-body');
+        const edit = $('.feed-content .feed-header-body .feed-edit');
+        const info = $('.feed-content .feed-header-body .feed-info');
+        const pic = $('.feed-content .feed-header .feed-pic');
+        const picHolder = $('.feed-content .feed-header .feed-pic-holder');
+        pic.find('.pic-holder').css({
+          'padding': this.scaleValue(5,2,scale)
+        });
+        pic.css({
+          'height':this.scaleValue(150,40,scale),
+          'width':this.scaleValue(150,40,scale)
+        });
+        headerBody.css({
+          'padding-bottom':this.scaleValue(10,0,scale),
+          'padding-left':this.scaleValue(60,35,scale),
+          'background':`rgba(241, 241, 241,${this.scaleValue(0,1,scale)})`
+        });
+        picHolder.css({
+          'height':this.scaleValue(150,45,scale)
+        });
+        const feedmiddle = $('.feed-content .feed-header .feed-middle');
+        feedmiddle.css({
+          'padding-top': this.scaleValue(0,4,scale),
+          'padding-left': this.scaleValue(20,10,scale)
+        });
+        const feedEdit = feedmiddle.find('.feed-edit');
+        const feedDescription = feedmiddle.find('.feed-description');
+        const feedAdmins = feedmiddle.find('.feed-admins-root');
+        const header= $('.feed-content .feed-header')
+        feedEdit.css({
+          'opacity': this.scaleValue(1,0,scale)
+        });
+        edit.css({
+          'opacity': this.scaleValue(1,0,scale),
+          'height': this.scaleValue(12,0,scale)
+        });
+        feedDescription.css({
+          'opacity': this.scaleValue(1,0,scale),
+          'height': this.scaleValue(65,0,scale),
+          'margin-top': this.scaleValue(10,0,scale)
+        });
+        info.css({
+          'opacity': this.scaleValue(1,0,scale),
+          'height': this.scaleValue(30,0,scale)
+        });
+        feedAdmins.css({
+          'opacity': this.scaleValue(1,0,scale),
+          'height': this.scaleValue(30,0,scale),
+          'margin-top': this.scaleValue(10,0,scale)
+        });
+        header.css({
+          'margin-top': this.scaleValue(45,0,scale)
+        });
+
+        if (top > 289){
+          headerBody.css('box-shadow','#8080802e 0px 4px 4px');
+        }else{
+          headerBody.css('box-shadow','none');
+        }
+        // pic.animate({
+          // width: 40px;
+        // });
+        // const old = this.get('scrolledMore')||false;
+        // if (old !== top > 25){
+        //   this.set('animating', true);
+        // }
+        // this.set('scrolledMore', top > 25);
+
+      }
+
     }
   }
 });

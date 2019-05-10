@@ -2,7 +2,8 @@ import Component from '@ember/component';
 import {computed} from '@ember/object';
 import PicturedObject from "../custom-objects/pictured-object";
 import {inject as service} from '@ember/service';
-import {htmlSafe} from '@ember/template'
+import {htmlSafe} from '@ember/template';
+import emojione from 'emojione';
 export default Component.extend({
   classNameBindings: ['unread','online', 'playing'],
   db: service(),
@@ -47,6 +48,6 @@ export default Component.extend({
     }
   }),
   lastMessageText: computed('model.lastMessage', function () {
-    return htmlSafe(window.emojione.shortnameToUnicode(this.get('model.lastMessage')||'').replace(/(<([^>]+)>)/ig,""));
+    return htmlSafe(emojione.shortnameToUnicode(this.get('model.lastMessage')||'').replace(/(<([^>]+)>)/ig,""));
   })
 });

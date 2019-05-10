@@ -1,7 +1,7 @@
 import Mixin from '@ember/object/mixin';
 import ArrayProxy from '@ember/array/proxy';
 import { computed } from '@ember/object';
-
+import { get } from '@ember/object';
 export default Mixin.create({
 
   init(){
@@ -22,6 +22,12 @@ export default Mixin.create({
     let limit = this.get('messagesLimit');
     let fltrMessages = this.store.peekAll('thread-message').filter((elem) => {
       return elem.get('convoId') === this.messageConvId();
+    }).sort((a, b)=>{
+      if (this.messageSortHandler){
+        return this.messageSortHandler(a,b);
+      }else{
+        return get(a,'date').getTime() - get(b,'date').getTime()
+      }
     }).slice(Math.max(0, length - limit), length + 1);
     return fltrMessages;
   }),

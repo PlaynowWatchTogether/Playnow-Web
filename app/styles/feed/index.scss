@@ -97,10 +97,14 @@
               padding-top: 10px;
               padding-bottom: 10px;
               cursor: pointer;
+              &:hover{
+                background: $friends-list-hover-color;
+              }
               .feed-item-content{
                 flex: 1 1 auto;
                 margin-left: 10px;
                 place-self: center;
+                align-self: center;
                 overflow-wrap: break-word;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -118,6 +122,9 @@
                 .feed-item-online{
                   flex: 0 0 auto;
                   margin-left: 10px;
+                  .feed-item-members{
+                    display: flex;
+                  }
                   .feed-item-member-item{
 
                     .member-item-pic{
@@ -137,6 +144,7 @@
                 }
               }
               .feed-item-pic{
+                flex: 0 0 auto;
                 width: 60px;
                 height: 60px;
                 display: flex;
@@ -196,18 +204,16 @@
               }
 
             }
-            .home-feed-item:hover{
-              background: #dadada5e;
-            }
+
             .feed-list{
               padding: 10px;
             }
             .home-feed-item-public{
               @include home-feed-item-public
-            }
-            .home-feed-item-public:hover{
-              background: #dadada5e;
-              border-radius: 15px;
+              &:hover{
+                background: #dadada5e;
+                border-radius: 15px;
+              }
             }
           }
         }

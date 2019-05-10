@@ -9,6 +9,7 @@ export default Controller.extend(FileUploadHelper, {
 	db: service(),
 	init(){
 		this._super(...arguments);
+		this.reset();
 		this.groupSource = FeedGroupSource.create({
 			db:this.get('db'),
 			firebaseApp: this.get('firebaseApp')});

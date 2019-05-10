@@ -750,10 +750,17 @@ body.home.chat.room {
       .search-holder{
         width: 100%;
         place-items: center;
-        .search{
-          height: 30px;
-        }
+
         @include videos-search(#60D3FC, none, 0px, #B2B1B1);
+        .search{
+          box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.16);
+          padding-left: 15px;
+          background: white;
+          height: 30px;
+          .searchInput{
+            padding-left: 0px;
+          }
+        }
       }
 
 
@@ -784,6 +791,8 @@ body.home.chat.room {
 
 
   .friendsHeader {
+    flex: 0 0 auto;
+    height: $header-height;
     display: flex;
     position: relative;
     border-bottom: 1px solid #E6E6E6;
@@ -793,7 +802,7 @@ body.home.chat.room {
     .friendsCompose {
       position: absolute;
       right: 0;
-      height: 45px;
+      height: $header-height;
       display: flex;
       padding-left: 15px;
       padding-right: 15px;
@@ -802,9 +811,14 @@ body.home.chat.room {
       }
     }
     .friendsTitle {
+      justify-content: center;
+      display: flex;
       flex: 1 1 auto;
       text-align: center;
       color: black;
+      .friends{
+        align-self: center;
+      }
     }
     .friends {
       @include top-label;
@@ -826,21 +840,49 @@ body.home.chat.room {
   .friendsSearchHolder {
     width: 100%;
     padding: 10px 20px;
-    .searchInput{
-      text-align: center;
-      ::placeholder{
-        color: #B2B1B1;
-      }
-      font-size: 95%;
-    }
+    @include videos-search(#60D3FC, block, 0px, #B2B1B1,0px);
     .search{
+      .searchInput{
+
+        padding-right: 30px !important;
+        ::placeholder{
+          color: #B2B1B1;
+          text-align: center;
+          font-size: 90%;
+        }
+
+        font-size: 90%;
+        :-webkit-input-placeholder {
+          text-align: center;
+        }
+
+        :-moz-placeholder { /* Firefox 18- */
+           text-align: center;
+        }
+
+        :-moz-placeholder {  /* Firefox 19+ */
+           text-align: center;
+        }
+
+        :-ms-input-placeholder {
+           text-align: center;
+        }
+      }
+
       padding-top: 5px;
       padding-bottom: 5px;
+    }
+    &.empty{
+      .search{
+        .searchInput{
+          text-align: center;
+        }
+      }
     }
     .close-search{
       margin-right: 10px;
     }
-    @include videos-search(#60D3FC, block, 0px, #B2B1B1)
+
   }
 
 
@@ -854,9 +896,9 @@ body.home.chat.room {
   }
 
   .friendsOutlet {
-    display: grid;
     overflow: hidden;
-    grid-template-rows: $header-height auto;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -2505,8 +2547,8 @@ CHAT
     box-shadow: $input-shadow;
     border-radius: 20px 0 0 0;
     margin-left: $table-gap;
-    display: grid;
-    grid-template-rows: $header-height auto;
+    display: flex;
+    flex-direction: column;
 
     .room-title-holder {
       border-bottom: 1px solid #E6E6E6;
@@ -3127,10 +3169,6 @@ CHAT
 .hoveredBtn:hover {
   //box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.16) !important;
   background: #28a4ff !important;
-}
-
-.trigger-search:hover {
-  background: #8cbbfd !important;
 }
 
 .profilePicWrapper {

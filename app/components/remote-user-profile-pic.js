@@ -5,7 +5,9 @@ import {Promise} from 'rsvp';
 import DS from 'ember-data';
 
 
-export default Component.extend({
+import UserProfileView from './user-profile-view';
+
+export default UserProfileView.extend({
   db:service(),
   postSenderPic: computed('model', function(){
     return DS.PromiseObject.create({

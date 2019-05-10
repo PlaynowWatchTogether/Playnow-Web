@@ -4,15 +4,17 @@ import {inject as service} from '@ember/service';
 
 export default Mixin.create({
   db:service(),
-  postCommentsCount: computed('model.commentsCount', function(){
-    return this.get('model.commentsCount') || 0
+  postCommentsCount: computed('model.Comments.@each', function(){
+    const comments = this.get('model.Comments') || {};
+    return Object.keys(comments).length;
   }),
   isLiked: computed('model.Likes.@each', function(){
     const likes = this.get('model.Likes');
     return (Object.keys(likes || {})).includes(this.get('db').myId());
   }),
-  postLikesCount: computed('model.likesCount', function(){
-    return this.get('model.likesCount') || 0
+  postLikesCount: computed('model.Likes.@each', function(){
+    const likes = this.get('model.Likes') || {};
+    return Object.keys(likes).length
   }),
   modelComments: computed('model.Comments.@each.id', function(){
     const comments = this.get('model.Comments') || {};

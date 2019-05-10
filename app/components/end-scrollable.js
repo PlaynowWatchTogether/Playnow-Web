@@ -9,7 +9,9 @@ export default Component.extend({
     this.addObserver('refreshScroll', this,'onRefreshScroll');
   },
   onRefreshScroll(obj){
-      obj.scrollDown();
+      if (!this.get('handleEnd')) {
+        obj.scrollDown();
+      }
   },
   scrollDown(){
     this.lastHeight = $(this.element)[0].scrollHeight;
@@ -69,6 +71,7 @@ export default Component.extend({
 
       if ($(this.element).height() === 0)
         return;
+      const scrollTop = $(this.element).scrollTop();
       let maxScrollY = $(this.element).find(this.get('scrollChild')).height() - $(this.element).height();
       let scrollHalf = maxScrollY / 4;
       let scrollHalfEnd = 2 * maxScrollY / 3;
@@ -81,7 +84,7 @@ export default Component.extend({
           }
         }
       } else {
-        let scrollTop = $(this.element).scrollTop();
+
         let windowHeight = $(this.element).height();
         this.updateCurrentTopChild();
         if (scrolled < scrollHalf) {
@@ -89,6 +92,10 @@ export default Component.extend({
             this.onScrolledHalf();
           }
         }
+      }
+      const scrollTopAct = this.get('onScrollChanged');
+      if (scrollTopAct){
+        scrollTopAct(scrollTop);
       }
     })
   },

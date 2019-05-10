@@ -79,6 +79,7 @@
           text-align: right;
         }
         .unread-icon {
+          flex: 0 0 auto;
           @include unread-icon;
           display: none;
           margin-left: 5px;

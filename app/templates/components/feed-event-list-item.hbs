@@ -19,6 +19,8 @@
     {{#if model.ProfilePic}}
       {{#unless hideImage}}
         {{chat-message-img classNames="feed-event-pic" model=model.ProfilePic maxWidthSelector="div"}}
+      {{else}}
+        <div class="hidden-image">Image</div>
       {{/unless}}
     {{/if}}
     <div class="feed-event-description">
@@ -29,7 +31,7 @@
     <div class="author-profile-pic">
       {{remote-user-profile-pic model=model.creatorId classNames="profilePicWrapper" alt="ProfilePic"}}
     </div>
-    {{remote-user-username model=model.creatorId classNames="author-profile-name"}}
+    {{remote-user-username model=model.creatorId classNames="author-profile-name" detailsOnClick=true}}
     {{feed-reactionable-elem
       model=model
       classNames="feed-reactions"

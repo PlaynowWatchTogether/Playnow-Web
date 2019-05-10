@@ -4,7 +4,7 @@ import { run } from '@ember/runloop';
 import { bind } from '@ember/runloop';
 export default Component.extend({
   handleSize(){
-    new window.Dotdotdot($(this.element)[0],{height: this.get('height')});
+    new window.Dotdotdot($(this.element)[0],{height: this.get('height'), truncate: 'letter'});
   },
   didInsertElement(){
     this._super(...arguments);

@@ -248,15 +248,18 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       snapshot.forEach((item) => {
         let mes = item.val();
         if (typeof mes === 'object') {
-          mes.id = item.key;
-          if (mes['serverDate']) {
-            mes['date'] = mes['serverDate']
-          } else {
-            if (mes['date'] % 1 !== 0) {
-              mes['date'] = mes['date'] * 1000;
+          const type = mes['type'];
+          if (type !== 'ShareVideo'){
+            mes.id = item.key;
+            if (mes['serverDate']) {
+              mes['date'] = mes['serverDate']
+            } else {
+              if (mes['date'] % 1 !== 0) {
+                mes['date'] = mes['date'] * 1000;
+              }
             }
+            records.push(mes);
           }
-          records.push(mes);
         }
       });
       updateCallback(records);
@@ -292,7 +295,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
         let ref = path + "/" + convId + "/Members";
         this.membersRef = ref;
         this.db.ref(ref).once('value', (snapshot) => {
-          let records = [];          
+          let records = [];
           snapshot.forEach((item) => {
             let mes = item.val();
             if (typeof mes === 'object') {
@@ -464,7 +467,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     const path = this.messageRoot();
     let ref = null;
     if (this.type === 'one2one'){
-      ref = `${path}/${convId}/Playlist/${senderId}`
+      ref = `${path}/${convId}/Playlist/v2`
     }
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist/`
@@ -484,7 +487,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     const path = this.messageRoot();
     let ref = null;
     if (this.type === 'one2one'){
-      ref = `${path}/${convId}/Playlist/${senderId}`
+      ref = `${path}/${convId}/Playlist/v2`
     }
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist`
@@ -503,7 +506,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     let ref = null;
     if (this.type === 'one2one'){
 
-      ref = `${path}/${convId}/Playlist/${senderId}`
+      ref = `${path}/${convId}/Playlist/v2`
     }
     if (this.type === 'group'){
       ref = `${path}/${convId}/Playlist`

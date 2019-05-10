@@ -21,9 +21,12 @@ export default DS.Model.extend({
     return JSON.parse(this.get('content'));
   }),
   date: computed('json.date', function () {
-    return new Date(this.get('json.date'))
+    return new Date(this.get('json.message.date'))
   }),
   displaySender: computed('json.displaySender', function () {
     return this.get('json.displaySender');
+  }),
+  senderSpace: computed('json.senderSpace', function(){
+    return this.get('json.senderSpace')
   })
 });

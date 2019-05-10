@@ -7,12 +7,13 @@ import {debug} from "@ember/debug";
 import $ from "jquery";
 import UUIDGenerator from '../mixins/uuid-generator';
 import FeedModelWrapper from '../custom-objects/feed-model-wrapper';
+import emojione from 'emojione';
 export default Controller.extend(UUIDGenerator, {
   auth: service(),
   db: service(),
   firebaseApp: service(),
   init() {
-    window.emojione.emojiSize = '64';
+    emojione.emojiSize = '64';
     this._super(...arguments);
     this.set('isDisabled', true);
     this.addObserver('model', this, 'modelObserver');

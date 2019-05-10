@@ -18,6 +18,8 @@ export default Mixin.create({
     this.set('newEventErrors',{});
     this.set('newEventUploads',[]);
     this.set('newEvent', {
+      title:'',
+      description:'',
       date:{
 
       },

@@ -5,7 +5,10 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     $(window).on('resize', ()=>{
-      this.handleSize();
+      run(()=>{
+        this.handleSize();  
+      });
+
     });
     this.handleSize();
     $(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', (e)=> { // on tab selection event
@@ -23,7 +26,7 @@ export default Component.extend({
     let height = $(this.get('parentSelector')).height();
     let parent = $(this.element).closest(this.get('parentSelector'));
 
-    const parentOffset = parent ? parent.offset().top : 0;
+    const parentOffset = parent && parent.offset() ? parent.offset().top : 0;
     const windowHeight = $(window).height();
     const maxParentHeight = windowHeight-parentOffset;
     height = maxParentHeight;

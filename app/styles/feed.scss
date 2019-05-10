@@ -20,7 +20,6 @@
 
 		.name {
 			color: black;
-			font-family: $medium-font;
 			font-size: 100%;
 			margin: auto 10px auto auto;
 		}
@@ -41,16 +40,33 @@
 
 			cursor: pointer;
 			flex: 0 0 auto;
-	    width: 45px;
+	    width: 35px;
 	    display: flex;
 	    justify-items: center;
 	    place-content: center;
+			margin-left: 10px;
+			margin-right: 10px;
+			// &.feedgroups{
+			// 	.dropdown-toggle{
+			// 		img{
+			// 			width: 30px;
+			// 		}
+			// 	}
+			// }
+			// &.feedgroups{
+			// 	.dropdown-toggle{
+			// 		img{
+			// 			width: 30px;
+			// 		}
+			// 	}
+			// }
 			.dropdown-toggle{
 				position: relative;
 				display: flex;
 				align-self: center;
+
 				img{
-					height: 24px;
+					height: 20px;
 			    cursor: pointer;
 			    margin: auto;
 				}
@@ -67,16 +83,16 @@
 			&.show{
 				.dropdown-toggle{
 					img{
-						filter: brightness(0) invert(1);
+						filter: brightness(2);
 					}
 				}
 			}
 			&:hover{
-				background: #9953E8;
-				border-radius: 15px;
+				background: #CDBAFC;
+				border-radius: 50%;
 				.dropdown-toggle{
 					img{
-						filter: brightness(50%);
+						filter: brightness(1.2);
 					}
 				}
 			}
@@ -326,6 +342,14 @@
 	    border-radius: 20px 0 0 0;
 	    margin-left: 5px;
     }
+		.error{
+			position: absolute;
+		}
+		.limit{
+			font-size: 90%;
+			color: darkgray;
+			text-align: right;
+		}
     .feed-group-title-holder{
     	border-bottom: 1px solid #E6E6E6;
 	    height: 45px;

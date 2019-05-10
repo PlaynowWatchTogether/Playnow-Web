@@ -36,16 +36,22 @@
 	    	</div>
 	    	<div class="info">
 		    	<div class="feed-group-channel-name">
-		    		{{input value=channelName placeholder="Channel name" classNames="edit"}}
+		    		{{input value=channelName placeholder="Channel name" classNames="edit" maxlength=50}}
             {{#if errors.name}}
               <div class="error">{{errors.name}}</div>
             {{/if}}
+            <div class="limit">
+              {{channelName.length}}/50
+            </div>
 		    	</div>
 		    	<div class="feed-group-channel-description">
-		    		{{textarea value=channelDescription placeholder="Channel description" classNames="edit"}}
+		    		{{textarea value=channelDescription placeholder="Channel description" classNames="edit" maxlength=150}}
             {{#if errors.description}}
               <div class="error">{{errors.description}}</div>
             {{/if}}
+            <div class="limit">
+              {{channelDescription.length}}/150
+            </div>
 		    	</div>
 		    	<div class="feed-group-location-label">
 		    		Location

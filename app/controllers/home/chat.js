@@ -151,6 +151,20 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return type!=='one2one';
   }),
   modelObserver: (obj) => {
+    $(document).on('keyup.chat',(event)=>{
+      if (27 === event.keyCode){
+        if (obj.get('displayEmoji')){
+          obj.set('displayEmoji',false);
+          return;
+        }
+        if (obj.get('inReplyTo')){
+          obj.set('inReplyTo',null);
+          return;
+        }
+        obj.transitionToRoute('home');
+      }
+      debug('key up');
+    });
     const myId = obj.get('db').myId();
     let type = obj.get('model').type;
     let convId = obj.get('model').chat_id;
@@ -525,6 +539,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
+    $(document).on("keyup.chat");
     this.set('displayEmoji',false);
     this.offGroupListen();
     this.set('inReplyTo', null);
@@ -709,7 +724,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
     if (this.get('isMaster')) {
-      this.set('playerModel', video);      
+      this.set('playerModel', video);
       ds.sendVideo(video)
     } else {
       ds.sendMessage('', [],null, {
@@ -765,6 +780,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     onReplyTo(message){
       this.set('inReplyTo', message);
+      setTimeout(()=>{
+        $('.ember-content-editable.messageContent').focus();  
+      }, 1000);
+
     },
     clearInReplyTo(){
       this.set('inReplyTo', null);

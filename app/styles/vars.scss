@@ -1,7 +1,7 @@
 $primary-gradient: linear-gradient(to bottom right, #5CD9FD, #C837EA);
 $input-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
 $message-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30);
-$friends-list-hover-color: #dadada5e;
+$friends-list-hover-color: rgba(218, 218, 218, 0.3686274509803922);
 $header-height: 45px;
 $search-icon-size: 16px;
 $search-padding: 3px;
@@ -53,9 +53,9 @@ $message-border-radius: 15.5px;
   padding: 5px 10px;
 }
 @mixin unread-icon{
-  width: 18px;
+  width: 16px;
   display: block;
-  height: 18px;
+  height: 16px;
   border-radius: 50%;
   background: #5BC8F8;
 }
@@ -85,9 +85,10 @@ $message-border-radius: 15.5px;
   }
 }
 
-@mixin  videos-search($trigger-bg: #60D3FC,$search-icon-display: block, $top-margin: 10px, $empty-color: #B2B1B1) {
+@mixin  videos-search($trigger-bg: #60D3FC,$search-icon-display: block, $top-margin: 10px, $empty-color: #B2B1B1, $close-right: 50px) {
   display: flex;
   .search {
+    align-self: center;
     margin-top: $top-margin;
     border-radius: 20px;
     background: #F0F0F0;
@@ -95,6 +96,8 @@ $message-border-radius: 15.5px;
     display: flex;
     width: 100%;
     padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
     align-items: center;
     .searchInput {
       flex: 1 1 auto;
@@ -102,6 +105,8 @@ $message-border-radius: 15.5px;
       background: none;
       border: none;
       display: block;
+      padding-left: 30px;
+      padding-right: 70px;
       &:focus {
         background: none;
         outline: none;
@@ -111,12 +116,15 @@ $message-border-radius: 15.5px;
       }
     }
     .close-search{
-      margin-right: 5px;
+      right: $close-right;
+      visibility: hidden;
+      position: absolute;
+      margin-right: 15px;
     }
 
     > .icon {
+      position: absolute;
       display: $search-icon-display;
-      margin-right: 15px;
       width: $search-icon-size;
       height: $search-icon-size;
     }
@@ -124,17 +132,23 @@ $message-border-radius: 15.5px;
 
     .trigger-search {
       cursor: pointer;
+      height: 100%;
       flex: 0 0 auto;
       padding: 0px 20px;
       background: $trigger-bg;
       border-radius: 20px;
       place-self: stretch;
       display: flex;
+      position: absolute;
+      right: 0;
       .icon{
         display: block;
         margin: auto;
         width: $search-icon-size;
         height: $search-icon-size;
+      }
+      &:hover{
+        background: darken($trigger-bg, 30%) !important;
       }
     }
 
@@ -497,6 +511,7 @@ $message-border-radius: 15.5px;
     cursor: pointer;
   }
   .error{
+    position: absolute;
     color: red;
     font-size: 50%;
   }
@@ -522,7 +537,13 @@ $message-border-radius: 15.5px;
     }
   }
   .input-field-group{
+
     @include events-create-input-holder;
+    .limit{
+      font-size: 90%;
+      color: darkgray;
+      text-align: right;
+    }
     .input-field-wrapper{
       width: 100%;
     }
@@ -637,6 +658,11 @@ $message-border-radius: 15.5px;
       margin-left: 10px;
       margin-right: 10px;
     }
+    .hidden-image{
+      color: gray;
+      text-align: center;
+      margin-top: 10px;
+    }
     .feed-event-header{
       display: flex;
       flex-direction: row;
@@ -679,6 +705,7 @@ $message-border-radius: 15.5px;
       padding-top: 10px;
       border-top: 1px solid rgba(112, 112, 112, 0.24);
       .author-profile-pic{
+        flex: 0 0 auto;
         width: 30px;
         height: 30px;
         place-self: center;
@@ -691,6 +718,10 @@ $message-border-radius: 15.5px;
         margin-left: 10px;
         flex: 1 1;
         place-self: center;
+        overflow-wrap: break-word;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
       }
       .feed-reactions{
         @include feed-elem-reactions(15px);
@@ -885,14 +916,14 @@ $message-border-radius: 15.5px;
   .nav-link.active {
     background: none;
 
-    color: #27BDD8;
+    color: #61D1FC;
     // border-bottom: 4px solid #27BDD8;
     border-bottom: none;
     padding-bottom: 0;
     border-radius: 0;
   }
   .nav-link.active::after{
-    background:  #27BDD8;
+    background:  #61D1FC;
     height: 4px;
     content: "1";
     width: 100%;

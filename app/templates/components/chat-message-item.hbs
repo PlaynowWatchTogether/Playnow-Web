@@ -38,11 +38,14 @@
           {{/unless}}
           {{#if inReplyTo}}
             <div class="in-reply-to-message">
-              {{#user-profile-view classNames="reply-author" model=inReplyTo.senderId}}
-                {{inReplyTo.senderName}}
-              {{/user-profile-view}}
-              <div class="reply-content">
-                {{emoji-parse inReplyTo.text}}
+              <div class="line"></div>
+              <div class="content">              
+                {{#user-profile-view classNames="reply-author" model=inReplyTo.senderId}}
+                  {{inReplyTo.senderName}}
+                {{/user-profile-view}}
+                <div class="reply-content">
+                  {{emoji-parse inReplyTo.text}}
+                </div>
               </div>
             </div>
           {{/if}}

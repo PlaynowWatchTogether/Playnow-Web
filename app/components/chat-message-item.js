@@ -7,7 +7,7 @@ import { htmlSafe } from '@ember/template';
 import MessageAttachmentsWrapper from '../mixins/message-attachments-wrapper';
 
 export default Component.extend(MessageAttachmentsWrapper, {
-  classNameBindings: ['mine'],
+  classNameBindings: ['mine','senderSpace:sender-space'],
   store: service(),
   auth: service(),
   attributeBindings: ['messageUid','messageTS','messageDate','messageIndex:message-index'],

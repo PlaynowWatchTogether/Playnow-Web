@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import {bind} from '@ember/runloop';
 import $ from 'jquery';
 import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
+import emojione from 'emojione';
 export default Component.extend({
   classNames: ['ember-content-editable'],
   classNameBindings: ['clearPlaceholderOnFocus:clear-on-focus'],
@@ -90,7 +91,7 @@ export default Component.extend({
 
   domChanged() {
     const text = this.element.innerHTML;
-    const rawText = window.emojione.shortnameToUnicode(text);
+    const rawText = emojione.shortnameToUnicode(text);
     this.setProperties({
       value: rawText,
       _internalValue: rawText
@@ -121,7 +122,7 @@ export default Component.extend({
     if (value === undefined || value === null) {
       this.element.innerHTML = '';
     } else {
-      this.element.innerHTML = window.emojione.shortnameToUnicode(value);
+      this.element.innerHTML = emojione.shortnameToUnicode(value);
     }
     $(this.element).data('raw-text', value)
     this.setEndOfContenteditable();

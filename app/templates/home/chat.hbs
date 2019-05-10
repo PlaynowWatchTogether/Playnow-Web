@@ -215,6 +215,7 @@
                                      displaySender=message.displaySender
                                      lastSeen=lastSeenMessage
                                      myID=myID
+                                     senderSpace=message.senderSpace
                                      displaySenderName=isNotOne2One
                                      members=members
                                      isMaster=isMaster
@@ -277,7 +278,7 @@
                                     enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
           {{#file-upload name="chatPhotos"
                          onfileadd=(action "uploadImage")}}
-            <img src="/assets/attachment.png" alt="icon" class="hovered">
+            <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
           {{/file-upload}}
 
           <div class="imgHolder">

@@ -11,7 +11,7 @@
 {{#end-scrollable classNames="friendsList" onScrolledHalf=(action "loadMore") scrollChild=".friends-wrapper"
                   handleEnd=true blockScroll=true}}
   <div class="friends-wrapper">
-    <div class="friendsSearchHolder">
+    <div class="friendsSearchHolder {{unless friendsQuery 'empty'}}">
       {{#search-holder classNames="search" searchSelector="input" closeSelector=".close-search"}}
 
         <img src="/assets/search_icon@2x.png" class="icon" alt="icon">

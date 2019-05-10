@@ -1,10 +1,11 @@
 @mixin feed-post-content{
   box-shadow: $message-shadow;
   display: flex;
-  background: #F4F4F4;
+  background: white;
   border-radius: 10px;
   flex-direction: column;
-  padding: 10px;  
+  padding: 10px;
+  align-self: center;
   .post-header{
     display: flex;
     flex-direction: row;
@@ -32,6 +33,11 @@
     font-size: 90%;
     margin-left: 10px;
     padding-bottom: 5px;
+    .emojione{
+      margin-top: -1px;
+      height: auto;
+      width: 20px;
+    }
   }
   .post-attachments{
     padding-bottom: 10px;

@@ -64,9 +64,7 @@ export default Controller.extend(UUIDGenerator, {
   }),
   hasNewRequestsFeed: computed('feedLastUpdate', function(){
     const myID = this.db.myId();
-    const adminFeeds = this.store.peekAll('feed-item').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    const adminFeeds = this.store.peekAll('feed-item').filter((elem) => {
       return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
     });
 
@@ -74,9 +72,7 @@ export default Controller.extend(UUIDGenerator, {
   }),
   feedRequests: computed('feedLastUpdate', function(){
     const myID = this.db.myId();
-    const adminFeeds = this.store.peekAll('feed-item').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    const adminFeeds = this.store.peekAll('feed-item').filter((elem) => {
       return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
     });
     const req = [];

@@ -11,7 +11,7 @@ export default Route.extend(AuthRouteMixin, {
     this.arProxy = ArrayProxy.create({content: []});
   },
   model() {
-    return this.store.peekAll('feed-item');
+    return {groups:this.store.peekAll('feed-item'),feed: this.store.peekAll('user-feed-item')};
   },
   activate() {
     if (navigator.geolocation) {

@@ -1,0 +1,33 @@
+<div class="thumbnail-holder">
+  {{thumbnail-background model=videoState.videoThumbnail classNames="thumbnail"}}
+  <div class="video-title">
+    <div class="title">
+      {{videoState.videoName}}
+    </div>
+  </div>
+  {{#if liveActive}}
+    <div class="playing-members">
+      <div class="playing-members-list">
+        {{#each model.videoWatchers as |watcher|}}
+          <div class="playing-member-item">
+            {{remote-user-profile-pic model=watcher.userId classNames="profilePicWrapper"}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+<div class="feed-live-footer">
+  <div class="post-author-pic">
+    {{remote-user-profile-pic model=videoState.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
+  </div>
+  {{remote-user-username model=videoState.senderId classNames="post-author-name"}}
+  {{#if liveActive}}
+    {{#link-to "home.chat" model.id "feed" tagName="div" classNames="post-live-join" }}
+      <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
+      <div class="label">
+        Join
+      </div>
+    {{/link-to}}
+  {{/if}}
+</div>

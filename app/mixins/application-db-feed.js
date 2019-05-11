@@ -47,9 +47,9 @@ export default Mixin.create({
             let normalizedData = this.store.normalize('feed-event', event);
             this.store.push(normalizedData);
           }
-
         })
       });
+      this.set('db.feedUpdated',new Date().getTime());
       const contrl = this.controllerFor('application');
       contrl.set('feedLastUpdate', new Date());
     })

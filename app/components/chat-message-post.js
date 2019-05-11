@@ -22,10 +22,10 @@ export default Component.extend(MessageAttachmentsWrapper, FeedReactionableElem,
     return this.wrapMessageAttachments(model);
   }),
   hasText: computed('model.text', function(){
-    return this.get('model.text').trim().length>0;
+    return (this.get('model.text')||'').trim().length>0;
   }),
   actions: {
-    
+
   }
 
 });

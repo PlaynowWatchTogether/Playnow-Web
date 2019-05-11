@@ -3,7 +3,7 @@ import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
 import {get} from '@ember/object';
 import VideoStateHandler from '../mixins/video-state-handler-mixin';
-
+import {computed} from '@ember/object';
 import {Promise} from 'rsvp';
 export default Service.extend(VideoStateHandler, {
   firebaseApp: service(),
@@ -14,6 +14,9 @@ export default Service.extend(VideoStateHandler, {
     this.messaging = this.get('firebaseApp').messaging();
     this.listeners = {};
   },
+  feedUpdatedComputed: computed('feedUpdated', function(){
+    return this.get('feedUpdated');
+  }),
   friends(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -254,6 +257,28 @@ export default Service.extend(VideoStateHandler, {
   feedsOff() {
     let ref = this.firebaseApp.database().ref("channels/feed");
     ref.off('value', this.listeners["channels/feed"]);
+  },
+  userFeedsOff(clb) {
+    const myId = this.myId();
+    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+    ref.off('value', clb);
+  },
+  userFeeds(updateCallback) {
+    const myId = this.myId();
+    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+
+    let clb = (data) => {
+      let records = [];
+      data.forEach((item) => {
+        let payload = item.val();
+        payload.id = item.key;
+        records.push(payload);
+      });
+      updateCallback(records);
+    };
+    // this.listeners["channels/feed"] = clb;
+    ref.on('value', clb);
+    return clb;
   },
   feeds(updateCallback) {
 

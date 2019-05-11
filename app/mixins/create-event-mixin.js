@@ -16,7 +16,7 @@ export default Mixin.create({
   resetNewEvent(){
     this.set('creatingEvent',false);
     this.set('newEventErrors',{});
-    this.set('newEventUploads',[]);
+    this.set('newEventUploads',null);
     this.set('newEvent', {
       title:'',
       description:'',

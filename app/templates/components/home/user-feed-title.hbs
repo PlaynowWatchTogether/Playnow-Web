@@ -1,0 +1,32 @@
+<div class="feed-icon">
+  <img src={{safe-profile-pic model.ProfilePic}} class="profilePicWrapper">
+</div>
+<div class="feed-title">
+  <span>@</span>
+  <div class="label">
+    {{model.GroupName}}
+  </div>
+</div>
+<div class="feed-action">
+  {{#if isOwner}}
+    <div class="action-follow-request">
+      Owner
+    </div>
+  {{else}}
+    {{#if isFollowing}}
+      <div class="action-following" {{action "unFollowGroup" model}}>
+        <div class="simple">Following</div>
+        <div class="action">Unfollow</div>
+      </div>
+    {{else if isRequestedFollow}}
+      <div class="action-follow-request">
+        Requested
+      </div>
+    {{else}}
+      <div class="action-follow" {{action "followGroup" model}}>
+        <img src="/assets/ic_plus@2x.png" alt="icon">
+        <div>Follow</div>
+      </div>
+    {{/if}}
+  {{/if}}
+</div>

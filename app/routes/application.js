@@ -3,8 +3,9 @@ import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
 import ApplicationDBFeed from '../mixins/application-db-feed';
+import ApplicationUserFeed from '../mixins/application-user-feed';
 
-export default Route.extend(ApplicationDBFeed, {
+export default Route.extend(ApplicationDBFeed,ApplicationUserFeed, {
   auth: service(),
   db: service(),
   firebaseApp: service(),
@@ -23,6 +24,7 @@ export default Route.extend(ApplicationDBFeed, {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
         this.handleFeedSync();
+        this.handleUserFeedSync();
 
         this.db.messaging.requestPermission().then(() => {
           debug('Notification permission granted.');

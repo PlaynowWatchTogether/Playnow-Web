@@ -28,10 +28,15 @@
               </a>
             </li>
           </ul>
-          <div class="tab-content h-100">
-            <div class="tab-pane fade show active" id="following">
-              Following
-            </div>
+          <div class="tab-content">
+            {{#fit-parent-height parentSelector=".tabs" classNames="tab-pane fade show active" id="following" minusSelector="#content-tabs"}}
+              <div class="main-content">
+                {{home/user-feed-list model=userFeed
+                  onFollowGroup=(action "followGroup")
+                  onUnFollowGroup=(action "unFollowGroup")
+                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+              </div>
+            {{/fit-parent-height}}
             <div class="tab-pane fade h-100" id="discover">
               {{#fit-parent-height parentSelector=".tab-content" classNames="feed-discover-list-root"}}
                 {{home-feed-list

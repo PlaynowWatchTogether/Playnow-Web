@@ -1,0 +1,6 @@
+{{#each model as |item| }}
+  {{home/user-feed-item model=item classNames="user-feed-item-wrapper"}}
+{{else}}
+  <div class="empty">
+  </div>
+{{/each}}

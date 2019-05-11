@@ -29,6 +29,7 @@
       font-size: 90%;
     }
   }
+
   .post-message{
     font-size: 90%;
     margin-left: 10px;
@@ -37,6 +38,23 @@
       margin-top: -1px;
       height: auto;
       width: 20px;
+    }
+  }
+  .post-body{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 20px;
+    .post-message{
+      flex: 1 1 auto;
+      margin: 0;
+      padding: 0;
+    }
+    .post-time{
+      flex: 0 0 auto;
+      color: #838383;
+      justify-self: flex-end;
+      margin-left: auto;
+      font-size: 90%;
     }
   }
   .post-attachments{

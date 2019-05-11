@@ -1,0 +1,10 @@
+@import 'user-feed-item.scss';
+
+@mixin home-user-feed{
+  display: flex;
+  flex-direction: column;
+  .user-feed-item-wrapper{
+    @include user-feed-item;
+    margin-top: 20px;
+  }
+}

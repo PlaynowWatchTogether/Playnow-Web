@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object'
 import {get} from '@ember/object';
+import { sort } from '@ember/object/computed';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedGroupSource from '../../custom-objects/feed-group-source';
 export default Controller.extend({
@@ -14,27 +15,23 @@ export default Controller.extend({
   reset(){
 
   },
-  myFeeds: computed('model.@each.lastUpdate', function(){
+  userFeedSort: ['createdAt:desc'],
+  userFeed: sort('model.feed','userFeedSort'),
+  myFeeds: computed('model.groups.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    return this.get('model.groups').filter((elem) => {
       return elem.get('creatorId') === myID;
     });
   }),
-  followedFeeds: computed('model.@each.lastUpdate', function(){
+  followedFeeds: computed('model.groups.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    return this.get('model.groups').filter((elem) => {
       return elem.get('creatorId') !== myID && elem.isFollowing(myID);
     });
   }),
-  publicFeeds: computed('model.@each.lastUpdate', function(){
+  publicFeeds: computed('model.groups.@each.lastUpdate', function(){
     const myID = this.db.myId();
-    return this.get('model').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    return this.get('model.groups').filter((elem) => {
       return elem.get('creatorId') !== myID;
     });
   }),
@@ -53,12 +50,10 @@ export default Controller.extend({
   //     return b.viewersCount - a.viewersCount;
   //   })
   // }),
-  discoverFeeds: computed('model.@each.lastUpdate','userLocation', function(){
+  discoverFeeds: computed('model.groups.@each.lastUpdate','userLocation', function(){
     const location = this.get('userLocation');
     const myID = this.db.myId();
-    return this.get('model').map((elem)=>{
-      return FeedModelWrapper.create({content:elem.get('obj')});
-    }).filter((elem) => {
+    return this.get('model.groups').filter((elem) => {
       return elem.get('creatorId') !== myID;
     }).sort((a,b)=>{
       if (location){

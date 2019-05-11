@@ -1,0 +1,200 @@
+@import '../../vars.scss';
+@import './user-feed-title.scss';
+@import './user-feed-live.scss';
+@mixin user-feed-item{
+  display: flex;
+  flex-direction: column;
+  .user-feed-item{
+    flex: 0 0 80%;
+    max-width: 80%;
+    align-self: center;
+    min-width: 80%;
+    box-shadow: $message-shadow;
+    background: white;
+    border-radius: 20px;
+  }
+  .user-feed-item-live-wrapper{
+    flex: 0 0 80%;
+    max-width: 80%;
+    min-width: 80%;
+    align-self: center;
+    &.active{
+      padding: 10px;
+      border-radius: 20px;
+      background: $primary-gradient;
+    }
+    .feed-title-holder{
+      @include user-feed-title;
+    }
+    .user-feed-item-live{
+      @include user-feed-live;
+      flex: 1 1 auto;
+      max-width: 100%;
+      min-width: 100%;
+      margin-top: 0;
+      font-size: 80%;
+    }
+  }
+  .user-feed-item-post{
+    background: none;
+    box-shadow: none;
+    .feed-title-holder{
+      @include user-feed-title;
+    }
+    .feed-post-content{
+      @include feed-post-content;
+      box-shadow: none;
+      flex: 1 1 auto;
+      width: 100%;
+      background: none;
+      border-radius: 0px;
+      padding: 0;
+      position: relative;
+      .post-content{
+        box-shadow: $message-shadow;
+        background: white;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+      }
+      .post-footer{
+        display: flex;
+        font-size: 80%;
+        border-top: 1px solid lightgray;
+        padding: 10px 20px;
+        .profilePicWrapper{
+          width: 30px;
+          height: 30px;
+        }
+        .post-author-name{
+          margin-left: 10px;
+          flex: 1 1;
+          place-self: center;
+          align-self: center;
+          overflow-wrap: break-word;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        .post-reactions{
+          @include feed-elem-reactions(15px);
+          place-content: center;
+          place-items: center;
+        }
+      }
+    }
+    .post-comments{
+      width: 100%;
+      font-size: 90%;
+      padding-top: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+      align-self: center;
+      .no-comments{
+        text-align: center;
+        color: #ACACAC;
+      }
+      .comments-header{
+        display: flex;
+        padding-bottom: 5px;
+      }
+      .comments, .likes {
+        display: flex;
+        .label {
+          font-family: $medium-font;
+        }
+        .value {
+          margin-left: 5px;
+          opacity: 0.59;
+        }
+      }
+      .likes{
+        margin-left: 10px;
+      }
+      .new-comment{
+        padding-top: 10px;
+        padding-bottom: 20px;
+        .input{
+          width: 100%;
+          border: none;
+          background: white;
+          border-radius: 15px;
+          padding-left: 20px;
+          padding-right: 10px;
+          padding-top: 5px;
+          padding-bottom: 5px;
+          outline: none;
+        }
+      }
+      .post-comment-item{
+        border-top: 1px solid #7070704a;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        .header {
+          display: flex;
+          flex-direction: row;
+          .comment-author-pic{
+            .profilePicWrapper{
+              width: 20px;
+              height: 20px;
+            }
+          }
+          .comment-author-name{
+            opacity: 0.59;
+            margin-left: 10px;
+            flex: 1 1 auto;
+          }
+          .comment-like{
+            place-self: center;
+            justify-self: flex-end;
+            img{
+              cursor: pointer;
+              width: 15px;
+            }
+          }
+        }
+        .comment-content{
+          font-size: 90%;
+          padding-left: 31px;
+        }
+      }
+
+    }
+  }
+  .user-feed-item-event{
+    background: none;
+    box-shadow: none;
+    .feed-title-holder{
+      @include user-feed-title;
+    }
+    @include events-list-item;
+    .feed-title-holder{
+      background: white;
+      box-shadow: $message-shadow;
+
+    }
+    .feed-event-content{
+      margin-top: 0px;
+      box-shadow: none;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: $message-shadow;
+      &:hover{
+        background: white;
+      }
+    }
+    .event-content{
+      .feed-event-comments{
+        padding-left: 20px;
+        padding-right: 20px;
+        .comment-content{
+          padding-left: 35px;
+        }
+        .new-comment{
+          .input{
+            background: white;
+          }
+        }
+      }
+    }
+  }
+}

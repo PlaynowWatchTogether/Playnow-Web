@@ -1,20 +1,35 @@
 <div class="post-content {{if isMine "mine"}}">
-  <div class="post-header">
-    <div class="post-author-pic">
-      {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
+  {{#unless hasFooter}}
+    <div class="post-header">
+      <div class="post-author-pic">
+        {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
+      </div>
+      <div class="post-author-name">
+        {{model.senderName}}
+      </div>
+
+      <div class="post-time">
+        {{postTimeFormatted}}
+      </div>
     </div>
-    <div class="post-author-name">
-      {{model.senderName}}
+
+    {{#if hasText}}
+      <div class="post-message">
+        {{emoji-parse model.text}}
+      </div>
+    {{/if}}
+  {{else}}
+    <div class="post-body">
+      {{#if hasText}}
+        <div class="post-message">
+          {{emoji-parse model.text}}
+        </div>
+      {{/if}}
+      <div class="post-time">
+        {{postTimeFormatted}}
+      </div>
     </div>
-    <div class="post-time">
-      {{postTimeFormatted}}
-    </div>
-  </div>
-  {{#if hasText}}
-    <div class="post-message">
-      {{emoji-parse model.text}}
-    </div>
-  {{/if}}
+  {{/unless}}
   {{#if attachments}}
     {{#unless hideAttachments}}
       <div class="post-attachments">
@@ -24,11 +39,27 @@
       </div>
     {{/unless}}
   {{/if}}
-  {{feed-reactionable-elem
-    model=model
-    classNames="post-reactions"
-    showComments=showComments
-    onLikePost=(action "toggleLike")}}
+  {{#if hasFooter}}
+    <div class="post-footer">
+      <div class="post-author-pic">
+        {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
+      </div>
+      <div class="post-author-name">
+        {{model.senderName}}
+      </div>
+      {{feed-reactionable-elem
+        model=model
+        classNames="post-reactions"
+        showComments=showComments
+        onLikePost=(action "toggleLike")}}
+    </div>
+  {{else}}
+    {{feed-reactionable-elem
+      model=model
+      classNames="post-reactions"
+      showComments=showComments
+      onLikePost=(action "toggleLike")}}
+  {{/if}}
 </div>
 {{#if showComments}}
   {{feed-commentable-elem

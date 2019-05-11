@@ -1,5 +1,6 @@
 @import '../vars.scss';
 @import 'home-feed-item-public.scss';
+@import '../component-styles/home/user-feed-list.scss';
 
 .feed-list-root{
   width: 100%;
@@ -20,6 +21,15 @@
         padding-left: 20px;
         .nav-link{
           padding: 0px 10px;
+        }
+      }
+      #following{
+        overflow-y: auto;
+        .main-content{
+          padding-bottom: 40px;
+        }
+        .home-user-feed{
+          @include home-user-feed
         }
       }
       #discover{

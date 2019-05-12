@@ -8,7 +8,7 @@
     <span class="friends noselect">Friends</span>
   </div>
 </div>
-{{#end-scrollable classNames="friendsList" onScrolledHalf=(action "loadMore") scrollChild=".friends-wrapper"
+{{#end-scrollable classNames="friendsList" skipTopChildUpdate=true onScrolledHalf=(action "loadMore") scrollChild=".friends-wrapper"
                   handleEnd=true blockScroll=true}}
   <div class="friends-wrapper">
     <div class="friendsSearchHolder {{unless friendsQuery 'empty'}}">

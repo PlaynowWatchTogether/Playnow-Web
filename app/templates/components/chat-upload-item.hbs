@@ -1,7 +1,7 @@
 
 <div class="chat-upload">
 	<button class="filepond--file-action-button filepond--action-remove-item" type="button" data-align="left" style="transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) ;opacity:1;" {{action "removeItem"}}>
-		<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M11.586 13l-2.293 2.293a1 1 0 0 0 1.414 1.414L13 14.414l2.293 2.293a1 1 0 0 0 1.414-1.414L14.414 13l2.293-2.293a1 1 0 0 0-1.414-1.414L13 11.586l-2.293-2.293a1 1 0 0 0-1.414 1.414L11.586 13z" fill="currentColor" fill-rule="nonzero"></path></svg>		
+		<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M11.586 13l-2.293 2.293a1 1 0 0 0 1.414 1.414L13 14.414l2.293 2.293a1 1 0 0 0 1.414-1.414L14.414 13l2.293-2.293a1 1 0 0 0-1.414-1.414L13 11.586l-2.293-2.293a1 1 0 0 0-1.414 1.414L11.586 13z" fill="currentColor" fill-rule="nonzero"></path></svg>
 	</button>
 	{{#if isNew}}
 		<div class="chat-upload-details">
@@ -9,14 +9,14 @@
 			<div class="chat-upload-size">{{fileSize}}</div>
 		</div>
 		<button class="filepond--file-action-button filepond--action-process-item" type="button" data-align="right" style="transform:translate3d(0px, 0px, 0) scale3d(1, 1, 1) ;opacity:1;">
-			<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M14 10.414v3.585a1 1 0 0 1-2 0v-3.585l-1.293 1.293a1 1 0 0 1-1.414-1.415l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.415L14 10.414zM9 18a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2H9z" fill="currentColor" fill-rule="evenodd"></path></svg>		
+			<svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M14 10.414v3.585a1 1 0 0 1-2 0v-3.585l-1.293 1.293a1 1 0 0 1-1.414-1.415l3-3a1 1 0 0 1 1.414 0l3 3a1 1 0 0 1-1.414 1.415L14 10.414zM9 18a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2H9z" fill="currentColor" fill-rule="evenodd"></path></svg>
 		</button>
 	{{/if}}
 	{{#if isLoading}}
 		<div class="chat-upload-loading">
 			<div class="chat-upload-name">{{fileName}}</div>
 			<div class="progress" style="height: 4px;">
-			  <div class="progress-bar" role="progressbar" style="width: {{uploadProgress}}%;" aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100"></div>
+			  <div class="progress-bar" role="progressbar" style={{uploadProgressStyle}} aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100"></div>
 			</div>
 		</div>
 	{{/if}}
@@ -24,13 +24,13 @@
 		<div class="chat-upload-details">
 			<div class="chat-upload-name">{{fileName}}</div>
 			<div class="chat-upload-state">Completed</div>
-		</div>		
+		</div>
 	{{/if}}
 	{{#if isError}}
 		<div class="chat-upload-details">
 			<div class="chat-upload-name">{{fileName}}</div>
 			<div class="chat-upload-state">Failed</div>
-		</div>		
+		</div>
 	{{/if}}
-	
+
 </div>

@@ -55,6 +55,13 @@
         background: white;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        .post-attachment-item{
+          .message-video{
+            margin-left: 0;
+            margin-right: 0;
+            outline: none;   
+          }
+        }
       }
       .post-footer{
         display: flex;

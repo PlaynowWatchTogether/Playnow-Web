@@ -60,7 +60,7 @@
                     <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
                   </div>
                 {{/if}}
-                <div class="feed-title">
+                <div class="feed-title noselect">
                   <span class="at">
                     @
                   </span>
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="feed-description">
-                  {{#text-truncator classNames="feed-description-truncated" height=90}}                  
+                  {{#text-truncator classNames="feed-description-truncated" height=90}}
                     <p>{{feed.GroupDescription}}</p>
                   {{/text-truncator}}
                 </div>
@@ -179,9 +179,6 @@
             {{/if}}
 
             <div class="feed-messages-root" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-              {{#if hasMoreMessages}}
-                <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
-              {{/if}}
               {{#each filteredMessages as |message|}}
                 {{#if message.isMessage}}
                   {{chat-message-post
@@ -207,7 +204,9 @@
                   </div>
                 </div>
               {{/unless}}
-
+              {{#if hasMoreMessages}}
+                <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+              {{/if}}
             </div>
           {{/end-scrollable}}
 

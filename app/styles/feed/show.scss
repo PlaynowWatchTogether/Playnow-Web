@@ -1,7 +1,7 @@
 @import '../vars.scss';
 @import 'feed-post-content.scss';
 @import '../friends/list-item.scss';
-$post-content-width: 60%;
+$post-content-width: 80%;
 .home.group.show {
   .feed-root {
     padding-left: 5px;
@@ -177,6 +177,7 @@ $post-content-width: 60%;
                   @include home-list-friend-item-label;
                   font-size: 150%;
                   z-index: 2;
+                  cursor: pointer;
                   font-family: $medium-font;
                 }
                 .feed-description {
@@ -401,6 +402,11 @@ $post-content-width: 60%;
                 .post-content{
                   width: $post-content-width;
                   @include feed-post-content;
+                }
+                .post-message-empty{
+                  text-align: center;
+                  color: lightgray;
+                  padding: 10px;
                 }
                 .post-comments{
                   width: $post-content-width;

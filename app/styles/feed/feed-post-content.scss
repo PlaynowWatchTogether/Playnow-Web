@@ -60,6 +60,15 @@
   .post-attachments{
     padding-bottom: 10px;
     .post-attachment-item{
+      .message-video{
+        margin-left: -10px;
+        margin-right: -10px;
+        .video-holder{
+          video{
+            width: 100%;
+          }
+        }
+      }
       .message-attachment-holder{
         background: #dedede;
         border-radius: 10px;

@@ -21,6 +21,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     this._super(...arguments);
     this.addObserver('model', this, 'modelObserver');
     this.addObserver('dataSource', this, 'dsObserver');
+    this.set('messageText','');
   },
   modelObserver(obj){
     obj.handleModelChange();
@@ -43,6 +44,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     }
   }),
   handleModelChange(){
+    $('body').on('click.title-click', '.feed-content .feed-title', ()=>{
+      $('.feed-messages-holder').scrollTop(0);      
+    });
     $(document).on('keyup.group',(event)=>{
       if (27 === event.keyCode){
         if (this.get('displayEmoji')){
@@ -168,7 +172,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     });
   },
   reset(){
+    $('body').off('click.title-click');
     $(document).off("keyup.group");
+    this.set('messageText','');
     this.set('editFeed',false);
     this.set('scrolledMore',false);
     this.set('animating',false);
@@ -176,6 +182,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     this.set('feed',null);
   },
   performSendPost(){
+    const canSend = this.get('canPerformSend');
+    if (!canSend)
+      return;
     const uploads = this.get('uploads');
 
     this.dataSource.sendPost(this.dataSource.feedId, this.get('messageText')||'',uploads);
@@ -200,6 +209,23 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   scaleValue(start,end,scale){
     return start-(scale*(start-end))
   },
+  canPerformSend: computed('messageText', 'uploads.@each.state', function(){
+    var hasUnloadedUploads = false;
+    const hasText = (this.get('messageText')||'').length > 0;
+    const hasAttachments = (this.get('uploads')||[]).length > 0;
+
+    (this.get('uploads')||[]).forEach((elem)=>{
+      if (elem.state !== 2){
+        hasUnloadedUploads = true;
+      }
+    });
+    return (hasText && hasAttachments && !hasUnloadedUploads) || (hasText && !hasAttachments) || (!hasText && hasAttachments && !hasUnloadedUploads)
+
+  }),
+  chatActionSendClass: computed('canPerformSend', function(){
+    const enabled = this.get('canPerformSend');
+    return enabled ? '' : 'disabled';
+  }),
   actions:{
     displayAdmins(){
       $('#modalEditAdmins').modal();
@@ -392,8 +418,15 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
           'height':this.scaleValue(150,45,scale)
         });
         const feedmiddle = $('.feed-content .feed-header .feed-middle');
+        const feedTitle = $('.feed-content .feed-header .feed-middle .feed-title');
+        feedTitle.css({
+          // 'padding-top': this.scaleValue(0,4,scale),
+          'font-size': `${this.scaleValue(150,100,scale)}%`,
+          'margin-top': 'auto',
+          'margin-bottom': 'auto'
+        });
         feedmiddle.css({
-          'padding-top': this.scaleValue(0,4,scale),
+          // 'padding-top': this.scaleValue(0,4,scale),
           'padding-left': this.scaleValue(20,10,scale)
         });
         const feedEdit = feedmiddle.find('.feed-edit');

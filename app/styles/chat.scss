@@ -130,7 +130,9 @@
   &.group{
     .titleHolder{
       &:hover{
-        text-decoration: underline;
+        .name, .single-name{
+          text-decoration: underline;
+        }
       }
     }
   }

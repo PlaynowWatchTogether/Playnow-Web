@@ -17,6 +17,10 @@
       <div class="post-message">
         {{emoji-parse model.text}}
       </div>
+    {{else}}
+      <div class="post-message-empty">
+        No description added
+      </div>
     {{/if}}
   {{else}}
     <div class="post-body">

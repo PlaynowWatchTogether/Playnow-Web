@@ -33,28 +33,30 @@ export default Component.extend({
     }
   },
   updateCurrentTopChild(){
-    var currentMaxOffScreen = null;
-    const rootOffset = $(this.element).offset().top;
-    const childrens = $(this.element).find(this.get('scrollChild')).children(this.get('itemTimeSelector'));
-    const fixedHolder = $('.message-scroll-date-holder').offset();
-    if (!fixedHolder)
-      return;
-    childrens.each((index,child)=>{
-        const offset = $(child).offset();
-        const childOffset = offset.top - rootOffset-20;
-        const headerOffset = fixedHolder.top - rootOffset;
-        if (childOffset <= headerOffset){
-            currentMaxOffScreen = child;
-            $(child).css('opacity',0);
-        }else{
-          $(child).css('opacity',1);
-        }
-    });
-    if (!currentMaxOffScreen && childrens.length>0){
-      currentMaxOffScreen = childrens[0];
-    }
-    if (this.get('onTopChildChanged')){
-      this.get('onTopChildChanged')(currentMaxOffScreen);
+    if (!this.get('skipTopChildUpdate')){
+      var currentMaxOffScreen = null;
+      const rootOffset = $(this.element).offset().top;
+      const childrens = $(this.element).find(this.get('scrollChild')).children(this.get('itemTimeSelector'));
+      const fixedHolder = $('.message-scroll-date-holder').offset();
+      if (!fixedHolder)
+        return;
+      childrens.each((index,child)=>{
+          const offset = $(child).offset();
+          const childOffset = offset.top - rootOffset-20;
+          const headerOffset = fixedHolder.top - rootOffset;
+          if (childOffset <= headerOffset){
+              currentMaxOffScreen = child;
+              $(child).css('opacity',0);
+          }else{
+            $(child).css('opacity',1);
+          }
+      });
+      if (!currentMaxOffScreen && childrens.length>0){
+        currentMaxOffScreen = childrens[0];
+      }
+      if (this.get('onTopChildChanged')){
+        this.get('onTopChildChanged')(currentMaxOffScreen);
+      }
     }
   },
   didInsertElement() {

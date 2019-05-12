@@ -30,7 +30,7 @@
 			height: 25px;
 		}
 		&:hover{
-				background: #9953E8;
+				background: #CDBAFC;
 		}
 	}
 	.controls{
@@ -68,19 +68,19 @@
 					background: red;
 				}
 			}
-			&.show{
-				.dropdown-toggle{
-					img{
-						filter: brightness(2);
-					}
-				}
-			}
 			&:hover{
 				background: #CDBAFC;
 				border-radius: 50%;
 				.dropdown-toggle{
 					img{
 						filter: brightness(1.2);
+					}
+				}
+			}
+			&.show{
+				.dropdown-toggle{
+					img{
+						filter: brightness(2) !important;
 					}
 				}
 			}
@@ -181,7 +181,13 @@
 
 .home.group{
   .mainPage {
+		.col-friends{
+			flex: 0 0 25%;
+			max-width: 25%;
+		}
     .row-friends {
+			display: flex;
+			flex-direction: column;
       background: white;
       height: 100%;
       box-shadow: $input-shadow;

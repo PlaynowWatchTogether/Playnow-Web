@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
-
+import { htmlSafe } from '@ember/template';
 export default Component.extend({
 
 	classNames: 'chat-upload-item',
@@ -32,6 +32,10 @@ export default Component.extend({
 	isError: computed('model.state', function(){
 		return this.get('model.state') === 3;
 	}),
+	uploadProgressStyle: computed('uploadProgress', function(){
+		const progress = this.get('uploadProgress');
+		return htmlSafe(`width: ${progress}%`);
+	}),
 	uploadProgress: computed('model.progress', function(){
 		return this.get('model.progress');
 	}),
@@ -44,7 +48,7 @@ export default Component.extend({
 	}),
 	actions:{
 		removeItem(){
-			this.get('onRemove')(this.get('model'));		
+			this.get('onRemove')(this.get('model'));
 		}
 	}
 });

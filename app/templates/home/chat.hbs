@@ -30,7 +30,12 @@
 
             </div>
           {{else}}
-            {{#if chatModel.group}}
+            {{#if isCompose}}
+              <div class="title-holder">
+                <span class="compose-name noselect">{{chatModel.title}}</span>
+              </div>
+
+            {{else if chatModel.group}}
               <div class="title noselect">
                 {{#if chatModel.hasProfilePic}}
                   <div class="profilePicWrapper">

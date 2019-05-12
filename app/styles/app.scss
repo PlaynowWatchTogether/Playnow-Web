@@ -674,9 +674,20 @@ body > .ember-view {
     background: #28a4ff !important;
   }
 }
-
+.col-friends{
+  flex: 0 0 25%;
+  max-width: 25%;
+}
 body.home.index, body.home.create {
   .mainPage {
+    .col-friends{
+      flex: 0 0 25%;
+      max-width: 25%;
+      .row-friends{
+        display: flex;
+        flex-direction: column;
+      }
+    }
     .row-friends {
       background: white;
       height: 100%;
@@ -773,11 +784,8 @@ body.home.chat.room {
   }
 
   .root {
-
+    display: flex;
     overflow: hidden;
-
-    padding-right: 0;
-    padding-left: 0;
   }
 
   .col-outlet {
@@ -797,8 +805,6 @@ body.home.chat.room {
     position: relative;
     border-bottom: 1px solid #E6E6E6;
     place-items: center;
-    margin-left: -15px;
-    margin-right: -15px;
     .friendsCompose {
       position: absolute;
       right: 0;
@@ -868,7 +874,11 @@ body.home.chat.room {
            text-align: center;
         }
       }
-
+      &:focus{
+        ::placeholder{
+          text-align: left;
+        }
+      }
       padding-top: 5px;
       padding-bottom: 5px;
     }
@@ -876,9 +886,17 @@ body.home.chat.room {
       .search{
         .searchInput{
           text-align: center;
+          &:focus{
+              text-align: left;
+
+          }
+          ::placeholder{
+            text-align: center;
+          }
         }
       }
     }
+
     .close-search{
       margin-right: 10px;
     }
@@ -888,11 +906,15 @@ body.home.chat.room {
 
 
   .friendsList {
-    margin-left: -15px;
-    margin-right: -15px;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     clear: both;
     text-align: center;
+    .friends-wrapper{
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .friendsOutlet {
@@ -1432,9 +1454,10 @@ CHAT
           height: 44px;
           margin: auto auto auto 10px;
           display: grid;
+          margin: auto;
         }
 
-        .single-name {
+        .single-name, .compose-name {
           margin-top: auto;
           margin-bottom: auto;
         }

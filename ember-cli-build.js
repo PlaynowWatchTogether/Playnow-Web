@@ -7,6 +7,10 @@ module.exports = function(defaults) {
     sassOptions: {
       extension: 'scss'
     },
+    fingerprint: {
+      enabled: true,
+      generateAssetMap: true
+    }
     // nodeModulesToVendor: [
     //   'node_modules/ntp-time-sync/dist/index.js'
     // ]

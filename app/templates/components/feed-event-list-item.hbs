@@ -38,19 +38,25 @@
       showComments=showComments
       onLikePost=onLikePost}}
     <div class="feed-action">
-      {{#if isCreator}}
+      {{#if model.isPast}}
         <div class="action-owner">
-          Creator
+          Past
         </div>
-      {{else if isMember}}
-        {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent")}}
       {{else}}
-        <div class="action-join" {{action "joinEvent"}}>
-          <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
-          <div class="label">
-            Join
+        {{#if isCreator}}
+          <div class="action-owner">
+            Creator
           </div>
-        </div>
+        {{else if isMember}}
+          {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent")}}
+        {{else}}
+          <div class="action-join" {{action "joinEvent"}}>
+            <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
+            <div class="label">
+              Join
+            </div>
+          </div>
+        {{/if}}
       {{/if}}
     </div>
   </div>

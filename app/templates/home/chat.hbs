@@ -31,7 +31,7 @@
             </div>
           {{else}}
             {{#if isCompose}}
-              <div class="title-holder">
+              <div class="title-holder-compose">
                 <span class="compose-name noselect">{{chatModel.title}}</span>
               </div>
 
@@ -48,6 +48,11 @@
                 <span class="name">{{chatModel.title}}</span>
               </div>
             {{else}}
+              <div class="back">
+                {{#link-to "home"}}
+                  <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+                {{/link-to}}
+              </div>
               {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
                 {{#if chatModel.hasProfilePic}}
                   <div class="profilePicWrapper">
@@ -64,11 +69,6 @@
                 </div>
               {{/user-profile-view}}
             {{/if}}
-            <div class="back">
-              {{#link-to "home"}}
-                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
-              {{/link-to}}
-            </div>
           {{/if}}
 
         </div>

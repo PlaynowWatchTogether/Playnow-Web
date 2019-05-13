@@ -1,7 +1,7 @@
 @import '../vars.scss';
 @import 'feed-post-content.scss';
 @import '../friends/list-item.scss';
-$post-content-width: 80%;
+$post-content-width: 75%;
 .home.group.show {
   .feed-root {
     padding-left: 5px;
@@ -187,6 +187,9 @@ $post-content-width: 80%;
                   white-space: normal;
                   height: 4.5em;
                   overflow: hidden;
+                  .empty{
+                    color: lightgray;
+                  }
                 }
                 .feed-admins-root {
                   display: flex;

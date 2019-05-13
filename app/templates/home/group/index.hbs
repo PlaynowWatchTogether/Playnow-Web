@@ -2,7 +2,7 @@
   <div class="content h-100">
     <div class="feed-group-title-holder">
       <div class="title">
-        <span class="noselect">Create Channel</span>
+        <span class="noselect">Create Group</span>
       </div>
       <div class="back">
         {{#link-to "home"}}
@@ -29,14 +29,14 @@
 			          </div>
 	    			{{else}}
 		    			<span class="placeholder-title">
-		    				Select channel picture
+		    				Select group picture
 		    			</span>
 	    			{{/if}}
 	    		{{/file-upload}}
 	    	</div>
 	    	<div class="info">
 		    	<div class="feed-group-channel-name">
-		    		{{input value=channelName placeholder="Channel name" classNames="edit" maxlength=50}}
+		    		{{input value=channelName placeholder="Group name" classNames="edit" maxlength=50}}
             {{#if errors.name}}
               <div class="error">{{errors.name}}</div>
             {{/if}}
@@ -45,7 +45,7 @@
             </div>
 		    	</div>
 		    	<div class="feed-group-channel-description">
-		    		{{textarea value=channelDescription placeholder="Channel description" classNames="edit" maxlength=150}}
+		    		{{textarea value=channelDescription placeholder="Group description" classNames="edit" maxlength=150}}
             {{#if errors.description}}
               <div class="error">{{errors.description}}</div>
             {{/if}}

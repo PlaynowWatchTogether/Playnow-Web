@@ -111,6 +111,9 @@ export default Controller.extend({
 
       ds.joinEvent(get(group,'id'),get(event,'id'));
     },
+    openDetails(group){
+      this.transitionToRoute('home.group.show', get(group,'id'));
+    },
     onLeaveEvent(group, event){
       const ds = FeedGroupSource.create({
         db: this.get('db'),

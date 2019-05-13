@@ -7,6 +7,9 @@ import FeedActionsMixins from '../../mixins/feed/feed-actions';
 export default Component.extend(FeedActionsMixins, {
   store: service(),
   db: service(),
+  click(){
+    this.get('openDetails')(this.get('localFeed'));
+  },
   isLive: computed('model.type', function(){
     return this.get('model.type') === 'live';
   }),

@@ -6,7 +6,10 @@ export default Component.extend(FeedActionsMixins, {
   store: service(),
   db: service(),
   isOwner: computed('model', function(){
-    return this.get('model').isOwner(this.db.myId());
+    if (this.get('model')){
+      return this.get('model').isOwner(this.db.myId());
+    }
+    return false;
   }),
   isFollowing: computed('model.Followers', function(){
     return this.get('model').isFollowing(this.db.myId());

@@ -483,7 +483,11 @@
       height: 44px;
       margin: auto auto auto 10px;
       display: grid;
-      // margin: auto;
+    }
+    .title-holder-compose{
+      display: flex;
+      height: 44px;
+      margin: auto;
     }
 
     .single-name, .compose-name {
@@ -1038,6 +1042,9 @@
           border-radius: $message-border-radius;
           overflow: hidden;
           box-shadow: $message-shadow;
+          video{
+            border-radius: $message-border-radius;
+          }
 
         }
 

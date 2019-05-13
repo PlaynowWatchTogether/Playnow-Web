@@ -68,9 +68,13 @@
                 </div>
 
                 <div class="feed-description">
-                  {{#text-truncator classNames="feed-description-truncated" height=90}}
-                    <p>{{feed.GroupDescription}}</p>
-                  {{/text-truncator}}
+                  {{#if feed.GroupDescription}}
+                    {{#text-truncator classNames="feed-description-truncated" height=90}}
+                      <p>{{feed.GroupDescription}}</p>
+                    {{/text-truncator}}
+                  {{else}}
+                  <div class="empty">No description added</div>
+                  {{/if}}
                 </div>
 
               {{/if}}

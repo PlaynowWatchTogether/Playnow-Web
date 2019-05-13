@@ -32,6 +32,7 @@
             {{#fit-parent-height parentSelector=".tabs" classNames="tab-pane fade show active" id="following" minusSelector="#content-tabs"}}
               <div class="main-content">
                 {{home/user-feed-list model=userFeed
+                  openDetails=(action "openDetails")
                   onFollowGroup=(action "followGroup")
                   onUnFollowGroup=(action "unFollowGroup")
                   onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}

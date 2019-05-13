@@ -1,5 +1,10 @@
 import Component from '@ember/component';
 
 export default Component.extend({
-  classNames:"home-user-feed"
+  classNames:"home-user-feed",
+  actions: {
+    openDetails(feed){
+      this.get('openDetails')(feed);
+    }
+  }
 });

@@ -45,7 +45,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   }),
   handleModelChange(){
     $('body').on('click.title-click', '.feed-content .feed-title', ()=>{
-      $('.feed-messages-holder').scrollTop(0);      
+      $('.feed-messages-holder').scrollTop(0);
     });
     $(document).on('keyup.group',(event)=>{
       if (27 === event.keyCode){

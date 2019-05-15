@@ -16,23 +16,18 @@
     {{#if hasText}}
       <div class="post-message">
         {{emoji-parse model.text}}
-      </div>
-    {{else}}
-      <div class="post-message-empty">
-        No description added
-      </div>
+      </div>          
     {{/if}}
   {{else}}
-    <div class="post-body">
-      {{#if hasText}}
-        <div class="post-message">
-          {{emoji-parse model.text}}
-        </div>
-      {{/if}}
-      <div class="post-time">
-        {{postTimeFormatted}}
+    {{#if hasText}}
+      <div class="post-body">
+
+          <div class="post-message">
+            {{emoji-parse model.text}}
+          </div>
+
       </div>
-    </div>
+    {{/if}}
   {{/unless}}
   {{#if attachments}}
     {{#unless hideAttachments}}
@@ -42,6 +37,11 @@
         {{/each}}
       </div>
     {{/unless}}
+  {{/if}}
+  {{#if hasFooter}}
+    <div class="post-time">
+      {{postTimeFormatted}}
+    </div>
   {{/if}}
   {{#if hasFooter}}
     <div class="post-footer">

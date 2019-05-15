@@ -2,15 +2,22 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object'
 import {get} from '@ember/object';
+import { debug } from '@ember/debug';
 import { sort } from '@ember/object/computed';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedGroupSource from '../../custom-objects/feed-group-source';
+import { addObserver } from '@ember/object/observers';
 export default Controller.extend({
   db: service(),
   firebaseApp: service(),
   auth: service(),
   init() {
     this._super(...arguments);
+    addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
+  },
+  feedUpdated(obj){
+    debug('feedUpdated');
+    obj.set('lastUpdate',new Date().getTime());
   },
   reset(){
 
@@ -50,8 +57,8 @@ export default Controller.extend({
   //     return b.viewersCount - a.viewersCount;
   //   })
   // }),
-  discoverFeeds: computed('model.groups.@each.lastUpdate','userLocation', function(){
-    const location = this.get('userLocation');
+  discoverFeeds: computed('model.groups.@each.lastUpdate','db.userLocation', function(){
+    const location = this.get('db.userLocation');
     const myID = this.db.myId();
     return this.get('model.groups').filter((elem) => {
       return elem.get('creatorId') !== myID;

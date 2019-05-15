@@ -1,8 +1,8 @@
-<div class="reaction-comments" {{action "toggleReactionComments"}}>
+<div class="reaction-comments" {{action "toggleReactionComments" bubbles=false}}>
   <img src="/assets/ic-feed-post-comments@2x.png" alt="post reactions comments">
   <div class="label">{{postCommentsCount}}</div>
 </div>
-<div class="reaction-likes" {{action 'toggleLike'}}>
+<div class="reaction-likes" {{action 'toggleLike' bubbles=false}}>
   {{#if isLiked}}
     <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
   {{else}}

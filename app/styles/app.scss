@@ -2,6 +2,10 @@
 @import 'chat.scss';
 @import 'friends/list-item.scss';
 @import 'component-styles/home/user-feed-list.scss';
+@import 'main.scss';
+@import 'component-styles/videos-list.scss';
+@import 'component-styles/crunchyroll-login.scss';
+
 .seo-h1{
   display:none;
 }
@@ -562,7 +566,7 @@ body > .ember-view {
     .registerEdit {
       height: 32px;
       font-size: 80%;
-      width: 60px;
+      // width: 60px;
       min-height: 32px;
       min-width: 60px;
     }
@@ -674,21 +678,12 @@ body > .ember-view {
     background: #28a4ff !important;
   }
 }
-.col-friends{
-  flex: 0 0 25%;
-  max-width: 25%;
-}
 body.home.index, body.home.create {
   .mainPage {
-    .col-friends{
-      flex: 0 0 25%;
-      max-width: 25%;
-      .row-friends{
-        display: flex;
-        flex-direction: column;
-      }
-    }
+
     .row-friends {
+      display: flex;
+      flex-direction: column;
       background: white;
       height: 100%;
       box-shadow: $input-shadow;
@@ -3574,4 +3569,7 @@ CHAT
     top: 0;
     right: 0;
     bottom: 0;
+}
+#videosModalCrunchyrollLogin {
+  @include crunchyroll-login-ui;
 }

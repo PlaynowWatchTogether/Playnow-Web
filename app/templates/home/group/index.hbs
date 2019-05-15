@@ -1,13 +1,13 @@
 <div class="create-feed-group  h-100">
   <div class="content h-100">
     <div class="feed-group-title-holder">
-      <div class="title">
-        <span class="noselect">Create Group</span>
-      </div>
       <div class="back">
         {{#link-to "home"}}
-          <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon">
+          <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
         {{/link-to}}
+      </div>
+      <div class="title">
+        <span class="noselect">Create Group</span>
       </div>
     </div>
     <div class="feed-group-create-content">
@@ -58,6 +58,7 @@
 		    	</div>
 		    	<div class="feed-group-location">
             {{place-autocomplete-field
+               value=userLocationReverse
                inputClass="place-autocomplete--input edit"
                placeChangedCallback=(action "channelLocationChanged")
                placeholder="Location"

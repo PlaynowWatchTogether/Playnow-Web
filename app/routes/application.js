@@ -23,6 +23,14 @@ export default Route.extend(ApplicationDBFeed,ApplicationUserFeed, {
   afterModel() {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position)=>{
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              this.set('db.userLocation', {lat: lat, lng: lng});
+            });
+        }
         this.handleFeedSync();
         this.handleUserFeedSync();
 

@@ -1,5 +1,5 @@
 {{#each model as |item| }}
-  {{home/user-feed-item model=item classNames="user-feed-item-wrapper" openDetails=(action "openDetails")}}
+  {{home/user-feed-item model=item classNames="user-feed-item-wrapper" openDetails=(action "openDetails") lastUpdate=lastUpdate}}
 {{else}}
   <div class="empty">
   </div>

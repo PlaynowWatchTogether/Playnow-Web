@@ -11,14 +11,20 @@ export default Component.extend({
   didInsertElement: function didInsertElement() {
     this._super.apply(this, arguments);
 
-    $(window).on('resize', this.handleSize.bind(this));
-    $(document).on( 'shown.bs.tab', 'a[data-toggle="tab"]', (e)=> { // on tab selection event
+    $(window).on(`resize.${this.elementId}`, this.handleSize.bind(this));
+    $(document).on( `shown.bs.tab.${this.elementId}`, 'a[data-toggle="tab"]', (e)=> { // on tab selection event
       run(()=>{
         this.handleSize();
       });
     });
   },
+  willDestroyElement(){
+    this._super(...arguments);
+    $(window).off(`resize.${this.elementId}`);
+    $(document).off( `shown.bs.tab.${this.elementId}`);
+  },
   didRender: function didRender() {
+    this._super(...arguments);
     this.handleSize();
   },
   handleSize: function handleSize() {
@@ -27,8 +33,5 @@ export default Component.extend({
       parentWidth = $(this.element).width();
     }
     $(this.element).css('height', parentWidth * (9 / 16));
-  },
-  willDestroyElement: function willDestroyElement() {
-    this._super.apply(this, arguments);
   }
 });

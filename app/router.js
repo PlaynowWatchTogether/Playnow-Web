@@ -20,7 +20,8 @@ Router.map(function() {
   });
   this.route('search', {path: '/search/:query'});
   this.route('mobile');
-  this.route('404');  
+  this.route('404');
+  this.route('auth');  
 });
 
 export default Router;

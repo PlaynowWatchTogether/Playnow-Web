@@ -1,7 +1,7 @@
 @import 'vars.scss';
 @import 'feed/show.scss';
 @import 'feed/index.scss';
-
+@import 'component-styles/videos-list.scss';
 @mixin main-controls-wrapper{
 	background: #D7C6FF;
 	border-radius: 15px;
@@ -181,10 +181,6 @@
 
 .home.group{
   .mainPage {
-		.col-friends{
-			flex: 0 0 25%;
-			max-width: 25%;
-		}
     .row-friends {
 			display: flex;
 			flex-direction: column;
@@ -215,13 +211,12 @@
     .feed-group-title-holder{
     	border-bottom: 1px solid #E6E6E6;
 	    height: 45px;
-	    display: grid;
-	    grid-template-columns: auto min-content;
+	    display: flex;
 	    padding-right: 20px;
 	    .title{
-	      height: 100%;
-		    margin-left: 20px;
+	      height: 45px;
 		    display: grid;
+				margin: auto;
 		    grid-template-columns: auto;
 		    span {
 					@include top-label;
@@ -231,9 +226,15 @@
 
 	    }
 	    .back {
-	    	text-align: center;
-			margin: auto;
-		}
+				height: 45px;
+				margin: auto;
+				display: flex;
+				place-items: center;
+				padding: 0px 15px;
+				align-items: center;
+				position: absolute;
+			}
+
     }
     .feed-group-create-content{
 			display: flex;

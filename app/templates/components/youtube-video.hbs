@@ -1,5 +1,9 @@
 {{yield}}
-{{thumbnail-background model=videoThumbnail classNames="thumbnail"}}
+{{#thumbnail-background model=videoThumbnail classNames="thumbnail"}}
+  <div class="video-icon">
+    <img src={{model.iconUrl}}>
+  </div>
+{{/thumbnail-background}}
 <div class="title-holder">
   {{#text-truncator height=55 classNames="videoTitle"}}
     <span>
@@ -14,20 +18,29 @@
 <div class="channel-desc">
   {{viewsCount}} {{channelDesc}}
 </div>
+
 {{#if displayRequest}}
   <div class="request-overlay">
-  	<div class="request-btn" role="button" {{action "requestVideo"}}>
+  	<div class="request-btn" role="button" {{action "requestVideo" bubbles=false}}>
   		Request
   	</div>
   </div>
 {{/if}}
 {{#if isRemovable}}
-  <div class="youtube-video-remove" {{action 'removeVideo'}}>
+  <div class="youtube-video-remove" {{action 'removeVideo' bubbles=false}}>
     <img src="/assets/ic-video-remove-icon@2x.png" alt='remove video' class="icon">
   </div>
 {{/if}}
 {{#if canAdd}}
-  <div class="youtube-video-add" {{action 'addVideo'}}>
-    <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
-  </div>
+  {{#if isOnPlaylist}}
+    <div class="youtube-video-add">
+      <img src="/assets/ic_check@2x.png" alt='added video' class="icon">
+      <div class="label">Added</div>
+    </div>
+  {{else}}
+    <div class="youtube-video-add" {{action 'addVideo' bubbles=false}}>
+      <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
+      <div class="label">My playlist</div>
+    </div>
+  {{/if}}
 {{/if}}

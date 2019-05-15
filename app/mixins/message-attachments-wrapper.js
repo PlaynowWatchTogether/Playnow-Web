@@ -2,6 +2,8 @@ import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
   wrapMessageAttachments(model){
+    if (!model)
+      return [];
     const type = model['type'];
     const attachments = [];
     if (type === 'photo'){//back compatible photo

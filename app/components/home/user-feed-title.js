@@ -12,9 +12,15 @@ export default Component.extend(FeedActionsMixins, {
     return false;
   }),
   isFollowing: computed('model.Followers', function(){
-    return this.get('model').isFollowing(this.db.myId());
+    if (this.get('model')){
+      return this.get('model').isFollowing(this.db.myId());
+    }
+    return false;
   }),
   isRequestedFollow: computed('model.FollowRequests', function(){
-    return this.get('model').isRequestedFollow(this.db.myId());
+    if (this.get('model')){
+      return this.get('model').isRequestedFollow(this.db.myId());
+    }
+    return false;
   }),
 });

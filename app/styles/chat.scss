@@ -46,7 +46,11 @@
               flex: 0 0 auto;
               font-family: $medium-font;
             }
-
+            .chat-videos-list{
+              .login-providers{
+                @include videos-auth-list;
+              }
+            }
             .youtube-items {
               @include youtube-videos
 
@@ -129,8 +133,8 @@
   }
   &.group{
     .titleHolder{
-      &:hover{
-        .name, .single-name{
+      .name, .single-name{
+        &:hover{
           text-decoration: underline;
         }
       }
@@ -165,6 +169,8 @@ body.home.chat{
             border-top-right-radius: $main-table-radius;
             .titleHolder{
               .back{
+                display: flex;
+                align-items: center;
                 left:0;
               }
             }

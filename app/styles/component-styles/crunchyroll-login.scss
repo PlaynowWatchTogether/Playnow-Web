@@ -1,0 +1,78 @@
+@import '../vars.scss';
+@mixin crunchyroll-login-ui{
+  .modal-content{
+    border-radius: 20px;
+    background-color: #F4F4F4;
+    place-items: center;
+    align-items: center;
+    max-width: 80%;
+    padding: 20px 40px;
+    .modal-body{
+      display: flex;
+      flex-direction: column;
+      .cr-title{
+        text-align: center;
+        font-size: 120%;
+        span{
+          font-family: $medium-font;
+        }
+      }
+      .cr-subtitle{
+        font-family: $medium-font;
+        color: #9D9D9D;
+        margin-top: 10px;
+        text-align: center;
+      }
+      img{
+        width: 50px;
+        align-self: center;
+        margin-top: 10px;
+      }
+      .username-label{
+        margin-left: 15px;
+        margin-bottom: 5px;
+        margin-top: 10px;
+        font-family: $medium-font;
+        font-size: 110%;
+      }
+      .password-label{
+        margin-left: 15px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-family: $medium-font;
+        font-size: 110%;
+      }
+      .edit{
+        border-radius: 20px;
+        border: none;
+        padding: 5px 10px;
+        outline: none;
+        margin-right: 20px;
+        box-shadow: $message-shadow;
+      }
+      .link-button{
+        display: flex;
+        place-content: center;
+        align-content: center;
+        margin-top: 20px;
+        .button{
+          @include simple-button(#62CDFB);
+          width: 160px;
+          text-align: center;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          border-radius: 30px;
+          font-size: 90%;
+          font-family: $medium-font;
+        }
+      }
+      .error{
+        font-size: 60%;
+        color: red;
+      }
+
+    }
+
+  }
+
+}

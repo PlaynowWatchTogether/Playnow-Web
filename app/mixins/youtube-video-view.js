@@ -1,22 +1,24 @@
 import Mixin from '@ember/object/mixin';
 import {computed} from '@ember/object';
+import {get} from '@ember/object';
+
 import moment from 'moment';
 export default Mixin.create({
   videoThumbnail: computed('model', function () {
     let m = this.get('model');
-    return m['snippet']['thumbnails']['medium']['url']
+    return get(m,'thumbnail');
   }),
   videoTitle: computed('model', function () {
     let m = this.get('model');
-    return m['snippet']['title'];
+    return get(m,'title');
   }),
   channelTitle: computed('model', function () {
     let m = this.get('model');
-    return m['snippet']['channelTitle'];
+    return get(m,'description');
   }),
   channelDesc: computed('model', function () {
     let m = this.get('model');
-    return moment(m['snippet']['publishedAt']).fromNow()
+    return moment(get(m,'createdAt')).fromNow()
   }),
   viewsCount: computed('model', function () {
     let m = this.get('model');

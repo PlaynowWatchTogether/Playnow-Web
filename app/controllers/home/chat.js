@@ -749,7 +749,13 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return (master || senderId === this.db.myId());
   }),
   actions: {
-
+    onProviderChanged(){
+      if (this.get('searchMode') === 'video') {
+        
+      } else {
+        this.queryMusic(true);
+      }
+    },
     topChildChanged(child){
       let tm = this.get('messageDateTimeout');
       if (tm){
@@ -954,7 +960,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       const m = this.get('chatModel');
       const type = this.get('model.type');
       if (!m || type!=='feed')
-        this.transitionToRoute('home');
+        return this.transitionToRoute('home');
       return this.transitionToRoute('home.group.show',{group_id: m.feed.id});
     },
     playlistVideoAdd(video){
@@ -963,5 +969,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     playlistVideoRemove(video){
       return this.dataSource.removePlaylistItem(video);
     },
+    onScrollToMessage(uid){
+      this.setLimitToMessageUID(uid);
+    }
   }
 });

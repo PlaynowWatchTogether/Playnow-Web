@@ -4,12 +4,12 @@ import { computed } from '@ember/object';
 
 export default Component.extend({
   modelDate: computed('model', function(){
-    return this.get('model.eventDate').format("dddd, MMM D");
+    return (this.get('model.eventDate')||moment()).format("dddd, MMM D");
   }),
   modelStart: computed('model', function(){
-    return this.get('model.eventStart').format("hh:mm A");
+    return (this.get('model.eventStart')||moment()).format("hh:mm A");
   }),
   modelEnd: computed('model', function(){
-    return this.get('model.eventEnd').format("hh:mm A");
+    return (this.get('model.eventEnd')||moment()).format("hh:mm A");
   }),
 });

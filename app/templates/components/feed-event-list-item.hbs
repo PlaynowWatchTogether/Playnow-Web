@@ -48,9 +48,9 @@
             Creator
           </div>
         {{else if isMember}}
-          {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent")}}
+          {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent" bubbles=false)}}
         {{else}}
-          <div class="action-join" {{action "joinEvent"}}>
+          <div class="action-join" {{action "joinEvent" bubbles=false}}>
             <img src="/assets/ic_plus@2x.png" alt='add video' class="icon">
             <div class="label">
               Join

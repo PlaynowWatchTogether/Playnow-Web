@@ -13,15 +13,7 @@ export default Route.extend(AuthRouteMixin, {
   model() {
     return {groups:this.store.peekAll('feed-item'),feed: this.store.peekAll('user-feed-item')};
   },
-  activate() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position)=>{
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const controller = this.controllerFor('home.index');
-          controller.set('userLocation', {lat: lat, lng: lng});
-        });
-    }
+  activate() {    
     this._super(...arguments);
     $('body').addClass('index');
   },

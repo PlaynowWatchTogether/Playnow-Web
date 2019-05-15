@@ -7,7 +7,7 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend({
   db: service(),
-
+  attributeBindings: ['style'],
   displayProfile(profile) {
     let pictured = PicturedObject.create({content: profile});
     let profileModal = $('#profileModal');

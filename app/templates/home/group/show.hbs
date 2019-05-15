@@ -1,7 +1,7 @@
 <div class="feed-root h-100">
   <div class="feed-parent">
 
-    <div class="feed-wrapper {{if scrolledMore 'collapsed'}} h-100">
+    <div class="feed-wrapper {{if scrolledMore 'collapsed'}} h-100 ">
       {{#file-dropzone classNames="feed-content" name="chatPhotos" as |dropzone|}}
         {{#if dropzone.active}}
           {{#if dropzone.valid}}
@@ -20,7 +20,7 @@
           {{/link-to}}
         </div>
         <div class="feed-header">
-          <div class="feed-header-body">
+          <div class="feed-header-body {{if editFeed "edit"}}">
             <div class="feed-pic-holder">
               <div class="feed-pic {{if feed.isPlaying "active"}}">
                 <div class="pic-holder">

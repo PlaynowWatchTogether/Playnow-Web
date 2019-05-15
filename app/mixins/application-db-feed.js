@@ -49,7 +49,7 @@ export default Mixin.create({
           }
         })
       });
-      this.set('db.feedUpdated',new Date().getTime());
+      this.get('db').set('feedUpdated',new Date());
       const contrl = this.controllerFor('application');
       contrl.set('feedLastUpdate', new Date());
     })

@@ -14,6 +14,33 @@ export default Controller.extend(FileUploadHelper, {
 			db:this.get('db'),
 			firebaseApp: this.get('firebaseApp')});
 	},
+	activate(){
+		const loc = this.get('db.userLocation');
+    Ember.addObserver(this.get('db'),'userLocation',this,'locationChanged');
+		if (loc!=null){
+			this.locationChanged(this);
+		}
+	},
+	locationChanged(obj){
+		const loc = this.get('db.userLocation');
+    debug('========= location changed');
+		if (!obj.get('userLocationReverse') && !obj.get('channelLocation')){
+			var geocoder = new google.maps.Geocoder();
+			geocoder.geocode({'location': loc}, (results, status) =>{
+          if (status === 'OK') {
+						if (results.length > 0){
+							this.set('channelLocation',{
+								lat:results[0].geometry.location.lat(),
+								lng:results[0].geometry.location.lng()
+							})
+							this.set('userLocationReverse',results[0].formatted_address)
+						}
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+      });
+		}
+  },
 	reset(){
 		this.set('errors',{});
 		this.set('channelName','');

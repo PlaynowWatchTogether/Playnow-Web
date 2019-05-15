@@ -6,7 +6,9 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom: 1px solid lightgray;
-  padding: 10px 20px;
+  align-items: center;
+  padding: 5px 30px;
+  padding-right: 25px;
   .feed-icon{
     background: white;
     padding: 2px;
@@ -27,9 +29,11 @@
     white-space: nowrap;
     overflow: hidden;
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     margin-left: 10px;
     place-items: center;
+    align-items: center;
+    font-size: 80%;
     span{
       font-family: $medium-font;
     }

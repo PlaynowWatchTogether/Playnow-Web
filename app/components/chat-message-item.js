@@ -98,7 +98,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let type = model['type'];
     return type === 'ShareVideo';
   }),
-  attachments: computed('model', function(){
+  attachments: computed('model.{type,attachments}', function(){
     let model = this.get('model');
 
     return this.wrapMessageAttachments(model);
@@ -256,6 +256,12 @@ export default Component.extend(MessageAttachmentsWrapper, {
     $(this.element).find('.with-tooltip').tooltip({container: 'body',boundary: 'window'});
   },
   actions: {
+    scrollToMessage(uid){
+      const act = this.get('onScrollToMessage');
+      if (act){
+        act(uid);
+      }
+    },
     videoShareClick(){
 
     },

@@ -31,11 +31,17 @@
             </div>
           {{else}}
             {{#if isCompose}}
+              <div class="back" {{action "goBack"}} role="button">
+                <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+              </div>
               <div class="title-holder-compose">
                 <span class="compose-name noselect">{{chatModel.title}}</span>
               </div>
 
             {{else if chatModel.group}}
+              <div class="back" {{action "goBack"}} role="button">
+                <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+              </div>
               <div class="title noselect">
                 {{#if chatModel.hasProfilePic}}
                   <div class="profilePicWrapper">
@@ -225,6 +231,7 @@
                                      members=members
                                      isMaster=isMaster
                                      memberColors=memberColors
+                                     onScrollToMessage=(action "onScrollToMessage")
                                      onPhotoSelect=(action "onPhotoSelect")
                                      onReplyTo=(action "onReplyTo")}}
 
@@ -322,6 +329,7 @@
               onVideoPick=(action "videoPick")
               playlistModel=playlistModel
               canEditPlaylist=isMaster
+              onProviderChanged=(action "onProviderChanged")
               onPlaylistAddVideo=(action "playlistVideoAdd")
               onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
           </div>

@@ -22,7 +22,7 @@ export default Component.extend({
     this.getMeta(this.get('model'), (width, height)=>{
       run(()=>{
         const aspect = height/width;
-        const targetWidth = Math.min(width, maxWidth);
+        const targetWidth = maxWidth;
         let targetHeight = targetWidth*aspect;
         if (targetHeight>targetWidth){
           targetHeight = targetWidth;

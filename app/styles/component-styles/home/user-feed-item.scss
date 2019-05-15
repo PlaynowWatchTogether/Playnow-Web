@@ -4,20 +4,21 @@
 @mixin user-feed-item{
   display: flex;
   flex-direction: column;
+  $user-feed-item-width: 76.9%;
   .user-feed-item{
     cursor: pointer;
-    flex: 0 0 80%;
-    max-width: 80%;
+    flex: 0 0 $user-feed-item-width;
+    max-width: $user-feed-item-width;
     align-self: center;
-    min-width: 80%;
+    min-width: $user-feed-item-width;
     box-shadow: $message-shadow;
     background: white;
     border-radius: 20px;
   }
   .user-feed-item-live-wrapper{
-    flex: 0 0 80%;
-    max-width: 80%;
-    min-width: 80%;
+    flex: 0 0 $user-feed-item-width;
+    max-width: $user-feed-item-width;
+    min-width: $user-feed-item-width;
     align-self: center;
     &.active{
       padding: 10px;
@@ -33,7 +34,12 @@
       max-width: 100%;
       min-width: 100%;
       margin-top: 0;
-      font-size: 80%;
+      font-size: 100%;
+      .feed-live-footer{
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-left: 20px;
+      }
     }
   }
   .user-feed-item-post{
@@ -51,11 +57,32 @@
       border-radius: 0px;
       padding: 0;
       position: relative;
+      font-size: 100%;
       .post-content{
+
         box-shadow: $message-shadow;
         background: white;
         border-bottom-left-radius: 20px;
         border-bottom-right-radius: 20px;
+        .post-body{
+          min-height: 72px;
+        }
+        .post-message{
+          margin-top: auto;
+          margin-bottom: auto;
+          font-size: 110%;
+          margin-left: 10px;
+        }
+        .post-time{
+          color: #838383;
+          font-size: 80%;
+          text-align: right;
+          padding-right: 10px;
+          margin-bottom: 5px;
+        }
+        .post-attachments{
+          padding-bottom: 0px;
+        }
         .post-attachment-item{
           .message-video{
             margin-left: 0;
@@ -66,9 +93,12 @@
       }
       .post-footer{
         display: flex;
-        font-size: 80%;
+        font-size: 100%;
         border-top: 1px solid lightgray;
         padding: 10px 20px;
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-left: 20px;
         .profilePicWrapper{
           width: 30px;
           height: 30px;
@@ -87,6 +117,20 @@
           @include feed-elem-reactions(15px);
           place-content: center;
           place-items: center;
+          font-size: 100%;
+          margin-right: 0px;
+          .reaction-comments{
+            margin-right: 8px;
+            grid-column-gap: 2px;
+            img{
+                width: 25px;
+            }
+          }
+          .reaction-likes{
+            img{
+              width: 25px;
+            }
+          }
         }
       }
     }
@@ -175,6 +219,7 @@
       @include user-feed-title;
     }
     @include events-list-item;
+    font-size: 100%;
     .feed-title-holder{
       background: white;
       box-shadow: $message-shadow;
@@ -182,10 +227,58 @@
     }
     .feed-event-content{
       margin-top: 0px;
+      padding-bottom: 10px;
       box-shadow: none;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
       box-shadow: $message-shadow;
+      .feed-event-date-root{
+        margin-left: 0px;
+        margin-right: 0px;
+      }
+      .feed-event-header{
+        margin-right: 15px;
+      }
+      .feed-event-description{
+        margin-left: 0;
+        margin-right: 0;
+      }
+      .feed-event-footer{
+        padding-right: 15px;
+        padding-top: 10px;
+        padding-left: 20px;
+        .feed-reactions{
+          font-size: 100%;
+          margin-right: 12px;
+          .reaction-comments{
+            margin-right: 8px;
+            grid-column-gap: 2px;
+            img{
+                width: 25px;
+            }
+          }
+          .reaction-likes{
+            img{
+              width: 25px;
+            }
+          }
+        }
+        .feed-action{
+          .action-join, .action-joined, .action-owner{
+            font-size: 130%;
+            padding: 4px 17px;
+          }
+        }
+      }
+      .feed-event-body{
+        margin-left: 20px;
+        .feed-event-header{
+          .feed-event-title{
+            text-shadow: 1px 1px 2px lightgrey;
+            font-size: 145%;
+          }
+        }
+      }
       &:hover{
         background: white;
       }

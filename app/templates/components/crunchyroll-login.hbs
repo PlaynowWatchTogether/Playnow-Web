@@ -1,0 +1,36 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="cr-title">
+        Link you <span>Crunchyroll account</span>
+      </div>
+      <div class="cr-subtitle">
+        you must link your account to search Crunchyroll videos
+      </div>
+      <img src="/assets/ic-video-provider-crunchroll-active@2x.png" alt="crunchyroll" class="icon">
+      <div class="username-label">
+        Email or Username
+      </div>
+      {{input classNames="edit" value=username autocomplete=false}}
+      {{#if errors.username}}
+        <div class="error">
+          {{errors.username}}
+        </div>
+      {{/if}}
+      <div class="password-label">
+        Password
+      </div>
+      {{input classNames="edit" value=password autocomplete=false}}
+      {{#if errors.password}}
+        <div class="error">
+          {{errors.password}}
+        </div>
+      {{/if}}
+      <div class="link-button">
+        <div class="button" role="button" {{action "login"}}>
+          Link
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

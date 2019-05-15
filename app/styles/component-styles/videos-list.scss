@@ -1,0 +1,134 @@
+@import '../vars.scss';
+@import './youtube-video.scss';
+@import './videos-list-auth-ui.scss';
+@mixin youtube-videos{
+    .loading-holder {
+      margin-top: 20px;
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+    // display: grid;
+    // grid-template-columns: 50% 50%;
+    // grid-column-gap: 5px;
+    // grid-row-gap: 10px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .chat-playlist{
+      @include chat-playlist
+    }
+    .login-providers{
+      @include videos-auth-list;
+    }
+}
+
+
+@mixin chat-playlist{
+  padding-top: 10px;
+  .youtube-item{
+    margin-top: 10px;
+  }
+  .playlist-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    place-items: center;
+    .playlist-title{
+      font-size: 120%;
+      font-family: $medium-font;
+    }
+    .playlist-edit{
+      cursor: pointer;
+      img{
+        width: 20px;
+      }
+    }
+    .playlist-save{
+      color: #4D9CB4;
+      font-size: 80%;
+      cursor: pointer;
+    }
+  }
+  .playlist-empty{
+    text-align: center;
+    padding: 20px 0px;
+    color: #989898;
+  }
+  .playlist-search-error{
+    text-align: center;
+    padding: 20px 0px;
+    color: #989898;
+  }
+  .playlist-add{
+    background: white;
+    border-radius: 20px;
+    border: 1px solid #C4C3C3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 90%;
+    margin-top: 10px;
+    input{
+      flex: 1 1 auto;
+      border: none;
+      outline: none;
+      background: none;
+    }
+    img{
+      width: 30px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+  }
+  .playlist-add-video-item{
+    @include playlist-add-video-item
+  }
+}
+@mixin playlist-add-video-item{
+  background: #E8E8E8;
+  border-radius: $video-round-corner;
+  padding: 10px;
+  margin-top: 10px;
+  .add-video-holder{
+    display: flex;
+    justify-content: center;
+    .add-video{
+      @include simple-button(#02E7B2)
+    }
+  }
+  .video-item{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    align-items: center;
+    .thumbnail{
+      border-radius: $video-round-corner;
+      flex: 1 1 50%;
+    }
+    .details{
+      padding-left: 10px;
+      .title-holder{
+        padding-right: 10px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        .videoTitle{
+          font-size: 80%;
+          font-family: $medium-font;
+          margin-bottom: 0;
+        }
+      }
+      .channel-title{
+        font-size: 65%;
+        color: #696969;
+      }
+      .channel-desc{
+        font-size: 65%;
+        color: #696969;
+      }
+
+    }
+  }
+}

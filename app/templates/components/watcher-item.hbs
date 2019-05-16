@@ -1,9 +1,7 @@
 {{#if display}}
-	{{#user-profile-view model=model.id}}
-	  <div class="profile-back" style={{myStyle}}></div>
-
-	  <div class="profilePicWrapper" style={{myStyle}}>
+	{{#user-profile-view model=model.id classNames="pic"}}
+	  <div class="profilePicWrapper">
 	    <img src={{profilePic}} class="profilePic" alt="icon">
 	  </div>
-	{{/user-profile-view}}  
+	{{/user-profile-view}}
 {{/if}}

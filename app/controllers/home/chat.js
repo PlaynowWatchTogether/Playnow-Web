@@ -454,8 +454,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     body.on('click', '.youtube-music-holder .controls .pause-btn', pauseAction);
     body.on('click', '.youtube-music-holder .controls .close-btn', closeAction);
     // let holder = $('#youtubeHolder');
-    body.on('click', '#youtubeHolder .controlsOverlay .control .pause', pauseAction);
-    body.on('click', '#youtubeHolder .controlsOverlay .control .play', playAction);
+    body.on('click', '#youtubeHolder .controlsOverlay .pause-action', pauseAction);
+    body.on('click', '#youtubeHolder .controlsOverlay .play-action', playAction);
     body.on('click', '#youtubeHolder .controlsOverlay .close', closeAction);
 
     let slideChange = (event) => {
@@ -551,6 +551,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
+    this.closeFullScreen();
     $(document).off("keyup.chat");
     this.set('displayEmoji',false);
     this.offGroupListen();
@@ -598,6 +599,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
   },
   closeVideo() {
+    this.closeFullScreen();
     let vsh = this.get('videoStateHandler');
     this.set('hasPlayer', false);
     vsh.closeVideo();
@@ -760,6 +762,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     return (master || senderId === this.db.myId());
   }),
+  closeFullScreen(){
+    $('body').removeClass('fullscreen-video');
+    $('.controlsOverlay').removeClass('fullscreen-video');
+    this.set('videoPlayerState',1);
+    this.set('isFullScreen',false);
+  },
   actions: {
     onProviderChanged(){
       if (this.get('searchMode') === 'video') {
@@ -986,6 +994,29 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     onScrollToMessage(uid){
       this.setLimitToMessageUID(uid);
+    },
+    videoPlayerFullWindow(){
+      $('.controlsOverlay').addClass('fullscreen-video');
+      $('body').addClass('fullscreen-video');
+      this.set('videoPlayerState',1);
+      this.set('isFullScreen',true);
+    },
+    videoPlayerFullWindowOff(){
+      this.closeFullScreen();
+    },
+    videoPlayerCollapse(){
+      this.set('videoPlayerState',0);
+    },
+    videoPlayerExpand(){
+      this.set('videoPlayerState',1);
+    },
+    videoPlayerMute(){
+      this.set('videoMute',1);
+      if (window.globalPlayer.isMuted()){
+        window.globalPlayer.unMute();
+      }else{
+        window.globalPlayer.mute();
+      }
     }
   }
 });

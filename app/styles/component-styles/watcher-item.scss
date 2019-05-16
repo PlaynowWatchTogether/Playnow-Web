@@ -1,0 +1,21 @@
+@import '../vars.scss';
+@mixin video-watchers-holder{
+  .watcher{
+    @include video-watcher-item;
+  }
+}
+@mixin video-watcher-item($size:35px, $padding: 4px){
+  .pic{
+    width: $size;
+    height: $size;
+    background: white;
+    border-radius: 50%;
+    padding: $padding;
+    box-shadow: $message-shadow;
+  }
+  .profilePicWrapper {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+  }
+}

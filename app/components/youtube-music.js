@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object'
+import SearchVideoResult from '../custom-objects/search-video-result';
 
 export default Component.extend({
   songTitle: computed('model', function () {
@@ -35,6 +36,6 @@ export default Component.extend({
     return m['snippet']['thumbnails']['medium']['url']
   }),
   click() {
-    this.clickAction(this.get('model'));
+    this.clickAction(SearchVideoResult.create({data: this.get('model')}));
   }
 });

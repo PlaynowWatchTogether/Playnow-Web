@@ -15,6 +15,7 @@ export default Route.extend(AuthRouteMixin, {
     let body = $('body');
     body.removeClass('chat');
     body.removeClass('room');
+    body.removeClass('fullscreen-video');
   },
   afterModel(model) {
     let body = $('body');
@@ -22,7 +23,9 @@ export default Route.extend(AuthRouteMixin, {
       body.addClass('room');
     } else {
       body.removeClass('room');
+
     }
+
   },
   resetController(controller) {
     controller.reset()

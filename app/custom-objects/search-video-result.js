@@ -15,6 +15,12 @@ export default EmberObject.extend({
     }
     return '';
   }),
+  category: computed('data', function(){
+    if (this.get('data').kind === 'youtube#video'){
+      return this.data.snippet.categoryId;
+    }
+    return '';
+  }),
   iconUrl: computed('data', function(){
     if (this.get('data').kind === 'youtube#video'){
       return '/assets/ic-video-provider-youtube-active@2x.png';

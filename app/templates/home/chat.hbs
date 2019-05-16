@@ -54,7 +54,7 @@
                 <span class="name">{{chatModel.title}}</span>
               </div>
             {{else}}
-              <div class="back"  {{action "goBack"}} role="button">                
+              <div class="back"  {{action "goBack"}} role="button">
                   <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
               </div>
               {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
@@ -107,7 +107,9 @@
                                     videoLoadedAction=(action "videoLoaded")
                                     playerState=(action "playerStateAction")
                                     isLoading=playerLoading
+                                    videoPlayerState=videoPlayerState
                                     playerSeconds=playerSeconds
+                                    videoMute=videoMute
                                     onVideoEnd=(action "onVideoEnd")
                                     slidingProgress=slidingProgress}}
 
@@ -116,27 +118,51 @@
             <div class="controlsOverlay">
               <div class="controlsHolder">
                 <img src="/assets/ic_video_close.png" class="close" alt="icon">
-                <div class="pause-control"></div>
                 <div class="control">
-                  <div class="play">
+                  <div class="play play-action">
                     <img src="/assets/ic_icon_play_video.png" alt="icon">
                   </div>
-                  <div class="pause">
+                  <div class="pause pause-action">
                     <img src="/assets/ic_icon_pause_video.png" alt="icon">
                   </div>
                 </div>
-
-                <span class="video-title noselect"></span>
-                {{#if canAutoplay}}
-                  <div class="switch-holder">
-                    <div class="label noselect">Auto play</div>
-                    <label class="switch">
-                      <input type="checkbox" id="autoplay-checkbox" checked>
-                      <span class="switcher round"></span>
-
-                    </label>
+                <div class="overlay-footer">
+                  <div class="control">
+                    <div class="footer-play play-action">
+                      <img src="/assets/ic_icon_play_video.png" alt="icon">
+                    </div>
+                    <div class="footer-pause pause-action">
+                      <img src="/assets/ic_icon_pause_video.png" alt="icon">
+                    </div>
                   </div>
-                {{/if}}
+                  <span class="video-title noselect"></span>
+                  <div class="mute" role="button" {{action "videoPlayerMute"}}>
+                    <img src="/assets/ic_volume_off@2x.png" alt="mute">
+                  </div>
+                  <div class="full" role="button" {{action "videoPlayerFullWindow"}}>
+                    <img src="/assets/ic_fullwindow_on@2x.png" alt="mute">
+                  </div>
+                  <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
+                    <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
+                  </div>
+
+                  <div class="collapse-video" role="button" {{action "videoPlayerCollapse"}}>
+                    <img src="/assets/ic_video_collapse@2x.png" alt="mute">
+                    <div class="label">
+                      close
+                    </div>
+                  </div>
+                  {{#if canAutoplay}}
+                    <div class="switch-holder">
+                      <div class="label noselect">Auto play</div>
+                      <label class="switch">
+                        <input type="checkbox" id="autoplay-checkbox" checked>
+                        <span class="switcher round"></span>
+
+                      </label>
+                    </div>
+                  {{/if}}
+                </div>
                 <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
               </div>
             </div>
@@ -190,111 +216,131 @@
                 </div>
               </div>
               <div class="controls">
+                <div class="collapse-video" role="button" {{action "videoPlayerExpand"}}>
+                  <img src="/assets/ic_video_expand@2x.png" alt="mute">
+                  <div class="label">
+                    open
+                  </div>
+                </div>
                 <img src="/assets/ic_music_play.png" class="play-btn" alt="icon">
                 <img src="/assets/ic_music_pause.png" class="pause-btn" alt="icon">
                 <img src="/assets/ic_music_close.png" class="close-btn" alt="icon">
+
               </div>
               <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
             </div>
           </div>
         {{/if}}
-        {{#end-scrollable classNames="messagesHolder"
-                          blockScroll=blockAutoscroll
-                          onScrolledHalf=(action "loadMore")
-                          onTopChildChanged=(action "topChildChanged")
-                          scrollChild=".messagesWrappper"
-                          itemTimeSelector=".chat-message-time-item"}}
-          {{#if isLoadingMessages}}
-            <div class="loading-holder h-100">
-              <div class="lds-ripple">
-                <div></div>
-                <div></div>
+        <div class="messages-holder-full">
+          <div class="messages-holder-content">
+            {{#end-scrollable classNames="messagesHolder"
+                              blockScroll=blockAutoscroll
+                              onScrolledHalf=(action "loadMore")
+                              onTopChildChanged=(action "topChildChanged")
+                              scrollChild=".messagesWrappper"
+                              itemTimeSelector=".chat-message-time-item"}}
+              {{#if isLoadingMessages}}
+                <div class="loading-holder h-100">
+                  <div class="lds-ripple">
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              {{/if}}
+              <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
+                {{#if hasMoreMessages}}
+                  <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+                {{/if}}
+                {{#each filteredMessages as |message|}}
+                  {{#if message.isMessage}}
+                    {{#chat-message-item model=message.message classNames="messageHolder"
+                                         canClick=isMaster
+                                         onClick=(action "onMessageClick")
+                                         displaySender=message.displaySender
+                                         lastSeen=lastSeenMessage
+                                         myID=myID
+                                         senderSpace=message.senderSpace
+                                         displaySenderName=isNotOne2One
+                                         members=members
+                                         isMaster=isMaster
+                                         memberColors=memberColors
+                                         onScrollToMessage=(action "onScrollToMessage")
+                                         onPhotoSelect=(action "onPhotoSelect")
+                                         onReplyTo=(action "onReplyTo")}}
+
+                    {{/chat-message-item}}
+                  {{/if}}
+                  {{#if message.isDate}}
+                    {{#chat-message-time model=message.date classNames="chat-message-time-item noselect"}}
+
+                    {{/chat-message-time}}
+                  {{/if}}
+                  {{#if message.isLoading}}
+                    {{chat-message-loading classNames="chat-message-loading" model=message.message}}
+                  {{/if}}
+                {{/each}}
+                {{#unless isLoadingMessages}}
+                  <div class="typing-indicators">
+                    {{#each typingIndicatorProfiles as |indicator|}}
+                      <div class="indicator">
+                        <div class="profilePicWrapper">
+                          <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+                        </div>
+                        <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
+                      </div>
+                    {{/each}}
+                  </div>
+                  <div class="message-scroll-date-holder">
+                    <div class="title">
+                      Today
+                    </div>
+                  </div>
+                {{/unless}}
+
+              </div>
+            {{/end-scrollable}}
+            {{#if inReplyTo}}
+              <div class="in-reply-to">
+                <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
+                <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
+                <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
+                  <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png">
+                </div>
+              </div>
+            {{/if}}
+            {{#if uploads}}
+              <div class="message-uploads {{if inReplyTo "has-in-reply"}}">
+                {{#each uploads as |upload|}}
+                  {{chat-upload-item model=upload
+                    onRemove=(action "onRemoveUpload")}}
+                {{/each}}
+              </div>
+            {{/if}}
+            <div class="newMessageHolder {{if inReplyTo "has-in-reply"}} {{if uploads "has-uploads"}}">
+              {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
+
+              {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
+                                        enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
+              {{#file-upload name="chatPhotos"
+                             onfileadd=(action "uploadImage")}}
+                <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
+              {{/file-upload}}
+
+              <div class="imgHolder">
+
+                <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
+              </div>
+            </div>
+          </div>
+          {{#if isFullScreen}}
+            <div class="messages-holder-sidebar">
+              <div class="sidebar-header">
+              </div>
+              <div class="sidebar-members">
+
               </div>
             </div>
           {{/if}}
-          <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-            {{#if hasMoreMessages}}
-              <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
-            {{/if}}
-            {{#each filteredMessages as |message|}}
-              {{#if message.isMessage}}
-                {{#chat-message-item model=message.message classNames="messageHolder"
-                                     canClick=isMaster
-                                     onClick=(action "onMessageClick")
-                                     displaySender=message.displaySender
-                                     lastSeen=lastSeenMessage
-                                     myID=myID
-                                     senderSpace=message.senderSpace
-                                     displaySenderName=isNotOne2One
-                                     members=members
-                                     isMaster=isMaster
-                                     memberColors=memberColors
-                                     onScrollToMessage=(action "onScrollToMessage")
-                                     onPhotoSelect=(action "onPhotoSelect")
-                                     onReplyTo=(action "onReplyTo")}}
-
-                {{/chat-message-item}}
-              {{/if}}
-              {{#if message.isDate}}
-                {{#chat-message-time model=message.date classNames="chat-message-time-item noselect"}}
-
-                {{/chat-message-time}}
-              {{/if}}
-              {{#if message.isLoading}}
-                {{chat-message-loading classNames="chat-message-loading" model=message.message}}
-              {{/if}}
-            {{/each}}
-            {{#unless isLoadingMessages}}
-              <div class="typing-indicators">
-                {{#each typingIndicatorProfiles as |indicator|}}
-                  <div class="indicator">
-                    <div class="profilePicWrapper">
-                      <img class="profilePic" src={{indicator.profilePic}} alt="icon">
-                    </div>
-                    <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
-                  </div>
-                {{/each}}
-              </div>
-              <div class="message-scroll-date-holder">
-                <div class="title">
-                  Today
-                </div>
-              </div>
-            {{/unless}}
-
-          </div>
-        {{/end-scrollable}}
-        {{#if inReplyTo}}
-          <div class="in-reply-to">
-            <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
-            <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
-            <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
-              <img alt="close in reply to" src="/assets/ic_clear_24px@2x.png">
-            </div>
-          </div>
-        {{/if}}
-        {{#if uploads}}
-          <div class="message-uploads {{if inReplyTo "has-in-reply"}}">
-            {{#each uploads as |upload|}}
-              {{chat-upload-item model=upload
-                onRemove=(action "onRemoveUpload")}}
-            {{/each}}
-          </div>
-        {{/if}}
-        <div class="newMessageHolder {{if inReplyTo "has-in-reply"}} {{if uploads "has-uploads"}}">
-          {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
-
-          {{custom-content-editable value=messageText model=model placeholder="Type a message" classNames="messageContent"
-                                    enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-          {{#file-upload name="chatPhotos"
-                         onfileadd=(action "uploadImage")}}
-            <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
-          {{/file-upload}}
-
-          <div class="imgHolder">
-
-            <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
-          </div>
         </div>
       {{/file-dropzone}}
     </div>

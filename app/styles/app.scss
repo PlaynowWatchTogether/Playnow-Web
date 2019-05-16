@@ -5,6 +5,8 @@
 @import 'main.scss';
 @import 'component-styles/videos-list.scss';
 @import 'component-styles/crunchyroll-login.scss';
+@import 'component-styles/youtube-video-player.scss';
+@import 'component-styles/watcher-item.scss';
 
 .seo-h1{
   display:none;
@@ -1077,7 +1079,12 @@ CHAT
 
           .controls {
             margin: auto 20px auto auto;
-
+            .pause-btn{
+              display: none;
+            }
+            .play-btn{
+              display: none;
+            }
             img {
               width: 30px;
               cursor: pointer;
@@ -1085,7 +1092,19 @@ CHAT
           }
         }
       }
-
+      .youtube-music-holder[play-state="1"]{//playing
+        .pause-btn{
+          display: flex;
+        }
+      }
+      .youtube-music-holder[play-state="2"]{//paused
+        .play-btn{
+          display: flex;
+        }
+        // .pause{
+          // display: flex;
+        // }
+      }
       #youtubeHolder {
         height: 360px;
         display: none;
@@ -1296,42 +1315,20 @@ CHAT
 
         .watchers-holder {
           pointer-events: none;
+          @include video-watchers-holder
           position: absolute;
-          display: flex;
           padding-left: 20px;
           padding-top: 10px;
-          width: 80%;
-
-          .watcher {
-            position: relative;
-            pointer-events: all;
-            .profile-back {
-              position: absolute;
-              top: -2px;
-              left: -2px;
-              background: #fff;
-              width: 34px;
-              height: 34px;
-              border-radius: 50%;
-              box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.16);
-            }
-          }
 
           .watchers-streamer {
 
-            .profile-back {
+            .pic {
               background: $primary-gradient;
             }
           }
           .watchers-other {
             display: flex;
             width: 100%;
-          }
-
-          .profilePicWrapper {
-            z-index: 1;
-            width: 30px;
-            height: 30px;
           }
         }
 
@@ -1352,19 +1349,10 @@ CHAT
               animation-duration: 1s;
               animation-iteration-count: infinite;
             }
-
-            .profile-back {
-
-              width: 148px;
-              height: 148px;
-              top: -4px;
-              left: -4px;
+            .pic {
               background: $primary-gradient;
-            }
-            .profilePicWrapper {
               width: 140px;
               height: 140px;
-
             }
 
             @keyframes pulse {
@@ -3174,21 +3162,6 @@ CHAT
     div {
       margin: auto;
     }
-  }
-}
-
-#youtubeHolder.active {
-  #ytplayer {
-    filter: blur(15px);
-  }
-
-  .controlsHolder {
-    display: none;
-    pointer-events: none;
-  }
-
-  .video-title, .switch-holder, .close, .control, input.slider {
-    display: none !important;
   }
 }
 

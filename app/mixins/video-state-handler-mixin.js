@@ -13,6 +13,7 @@ export default Mixin.create({
     values['videoId'] = video.get('id');
     values['videoName'] = video.get('title');
     values['videoThumbnail'] = video.get('thumbnail');
+    values['videoCategory'] = video.get('category');
     values['videoUrl'] = video.get('url');
     values['senderId'] = myId;
     values['seconds'] = 0;

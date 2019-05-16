@@ -111,13 +111,13 @@ export default Component.extend({
       $('#youtubeHolder .overlay').height(height);
       $('#youtubeHolder .controlsOverlay').height(height);
       $('#youtubeHolder #ytplayer').height(height);
-      $('#youtubeHolder .watchers-holder').height(height);
+      $('.watchers-holder').height(height);
     });
     let height = 9 * holder.width() / 16;
     holder.height(height);
     $('#youtubeHolder .overlay').height(height);
     $('#youtubeHolder .controlsOverlay').height(height);
-    $('#youtubeHolder .watchers-holder').height(height);
+    $('.watchers-holder').height(height);
     if (this.get('video.video.videoType') === 'youtube#video'){
       debug('Create yt player width ' + $('#youtubeHolder').width());
       window.globalPlayer = new YT.Player('ytplayer', {
@@ -147,7 +147,7 @@ export default Component.extend({
       }
       $('#youtubeHolder #ytplayer #video').height(height);
       $('#youtubeHolder #ytplayer #video').width(holder.width());
-      const player = videojs($('#video')[0], {autoplay: false, controls: false});
+      const player = videojs($('#video')[0], {autoplay: false, controls: false,fill:true});
       window.globalPlayer = VideoJSProxy.create({player: player});
       player.on('loadstart', ()=>{
         debug('VIDEOJS - loadstart');

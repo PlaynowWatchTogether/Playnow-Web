@@ -167,23 +167,6 @@
               </div>
             </div>
             <div class="loading-overlay {{loadingOverlayClass}}"></div>
-            <div class="watchers-holder {{watchersClass}}">
-
-              <div class="watchers-streamer">
-                {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
-
-                  {{/watcher-item}}
-                {{/each}}
-              </div>
-              <div class="watchers-other">
-                {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
-
-                  {{/watcher-item}}
-                {{/each}}
-              </div>
-            </div>
           {{/if}}
         </div>
         {{#unless hasPlayer}}
@@ -339,6 +322,24 @@
               <div class="sidebar-members">
 
               </div>
+            </div>
+          {{/if}}
+        </div>
+        <div class="watchers-holder {{watchersClass}}">
+          {{#if hasPlayer}}
+            <div class="watchers-streamer">
+              {{#each watchers as |watcher index|}}
+                {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
+
+                {{/watcher-item}}
+              {{/each}}
+            </div>
+            <div class="watchers-other">
+              {{#each watchers as |watcher index|}}
+                {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
+
+                {{/watcher-item}}
+              {{/each}}
             </div>
           {{/if}}
         </div>

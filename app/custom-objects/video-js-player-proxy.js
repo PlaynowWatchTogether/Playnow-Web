@@ -8,5 +8,14 @@ export default EmberObject.extend({
   },
   getDuration(){
     return this.player.duration();
+  },
+  isMuted(){
+    return this.player.muted();
+  },
+  mute(){
+    this.player.muted(true);
+  },
+  unMute(){
+    this.player.muted(false);
   }
 });

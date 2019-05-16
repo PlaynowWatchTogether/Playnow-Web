@@ -3573,3 +3573,8 @@ CHAT
 #videosModalCrunchyrollLogin {
   @include crunchyroll-login-ui;
 }
+#ytplayer{
+  .vjs-hidden,.vjs-loading-spinner,.vjs-text-track-display,.vjs-big-play-button,.vjs-control-bar,{
+    display: none;
+  }
+}

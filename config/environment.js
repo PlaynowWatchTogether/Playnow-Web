@@ -18,6 +18,8 @@ module.exports = function (environment) {
     },
 
     APP: {
+      usingCors: false,
+		  corsWithCreds: false
       // Here you can pass flags/options to your application instance
       // when it is created
     },

@@ -5,7 +5,9 @@ import {timer} from 'rxjs';
 import {debug} from "@ember/debug";
 
 import $ from 'jquery';
+import { get } from '@ember/object';
 import {run} from '@ember/runloop';
+import VideoJSProxy from '../custom-objects/video-js-player-proxy';
 
 export default Component.extend({
   classNameBindings: ['isLoading:loading'],
@@ -49,10 +51,13 @@ export default Component.extend({
     $('#youtubeHolder').hide();
     $('#youtubePlaceHolder').hide();
     $('#youtubeHolder .overlay').hide();
+    videojs.removeHook('setup', this.setupVideoJS);
     let player = this.get('player');
     this.playerSubj.subscribe({
       next: () => {
-        player.destroy();
+        if (player.destroy){
+          player.destroy();
+        }
       }
     });
   },
@@ -71,7 +76,11 @@ export default Component.extend({
         this.controlHideSubject.next(1);
       });
     });
-
+    this.setupVideoJS =  (player)=> {
+      window.playerObj.set('player', player);
+      window.playerObj.playerReady();
+    };
+    videojs.hook('setup',this.setupVideoJS);
     let holder = $('#youtubeHolder');
     $(window).on('resize', function () {
       let height = 9 * holder.width() / 16;
@@ -86,24 +95,115 @@ export default Component.extend({
     $('#youtubeHolder .overlay').height(height);
     $('#youtubeHolder .controlsOverlay').height(height);
     $('#youtubeHolder .watchers-holder').height(height);
-    debug('Create yt player width ' + $('#youtubeHolder').width());
-    window.globalPlayer = new YT.Player('ytplayer', {
-      height: height,
-      width: holder.width(),
-      playerVars: {
-        controls: 0,
-        modestbranding: 1,
-        iv_load_policy: 3,
-        fs: 0,
-        enablejsapi: 1,
-        disablekb: 1,
-        cc_load_policy: 0,
-        showinfo: 0
+    if (this.get('video.video.videoType') === 'youtube#video'){
+      debug('Create yt player width ' + $('#youtubeHolder').width());
+      window.globalPlayer = new YT.Player('ytplayer', {
+        height: height,
+        width: holder.width(),
+        playerVars: {
+          controls: 0,
+          modestbranding: 1,
+          iv_load_policy: 3,
+          fs: 0,
+          enablejsapi: 1,
+          disablekb: 1,
+          cc_load_policy: 0,
+          showinfo: 0
+        }
+      });
+      this.set('player', window.globalPlayer);
+    }else{
+      if (
+        this.get('video.video.videoType') === 'khan#media' ||
+        this.get('video.video.videoType') === 'crunchyroll#media'
+      ){
+        var video = $('<video />', {
+            id: 'video'
+        });
+        video.appendTo($('#ytplayer'));
       }
-    });
-    this.set('player', window.globalPlayer);
+      $('#youtubeHolder #ytplayer #video').height(height);
+      $('#youtubeHolder #ytplayer #video').width(holder.width());
+      const player = videojs($('#video')[0], {autoplay: false, controls: false});
+      window.globalPlayer = VideoJSProxy.create({player: player});
+      player.on('loadstart', ()=>{
+        debug('VIDEOJS - loadstart');
+
+      });
+      player.on('waiting',()=>{
+        debug('VIDEOJS - loadstart');
+      });
+      player.on('loadeddata', ()=>{
+        debug('VIDEOJS - loadeddata');
+        window.playerObj.playerStateChanged({data: 5});
+      });
+      player.on('playing',()=>{
+        debug('VIDEOJS - playing');
+        window.playerObj.playerStateChanged({data: 1});
+      });
+      player.on('pause',()=>{
+        debug('VIDEOJS - paused');
+        window.playerObj.playerStateChanged({data: 2});
+      });
+      player.on('ended', ()=>{
+        debug('VIDEOJS - ended');
+        window.playerObj.playerStateChanged({data: 0});
+      });
+      player.on('play', ()=>{
+        debug('VIDEOJS - play');
+      });
+      player.on('stalled', ()=>{
+        debug('VIDEOJS - stalled');
+      })
+
+      this.set('player', player);
+    }
+
     this.actionObserver(this);
     this.videoObserver(this);
+  },
+  sendPlayedPlay(){
+    let player = this.get('player');
+    if (player.playVideo){
+      player.playVideo();
+    }else if (player.play){
+      player.play();
+    }
+  },
+  sendPlayedPause(){
+    let player = this.get('player');
+    if (player.pauseVideo){
+      player.pauseVideo();
+    }else if (player.pause){
+      player.pause();
+    }
+  },
+  sendPlayerSeek(seconds){
+    let player = this.get('player');
+    window.playerObj.secondsToPlay = seconds;
+    window.playerObj.isPrebuffering=true;
+    if (player.seekTo){
+      // player.seekTo(seconds);
+      player.playVideo();
+      // window.playerObj.playerStateChanged({data: 5});
+    } else if (player.currentTime){
+      const sendPlay = player.paused()
+      player.currentTime(seconds);
+
+      if (sendPlay){
+        // window.playerObj.playerStateChanged({data: 5});
+        player.play();
+      }
+
+    }
+  },
+  sendPlayerSeekTo(seconds){
+    let player = this.get('player');
+    if (player.seekTo){
+      player.seekTo(seconds);
+    } else if (player.currentTime){
+      player.currentTime(seconds);
+    }
   },
   onSlidingProgress(obj) {
     obj.controlHideSubject.next(2)
@@ -119,23 +219,23 @@ export default Component.extend({
           if (val === 1) {
             if (action === 1) {
               window.playerObj.isPlaying = true;
-              player.playVideo();
+              obj.sendPlayedPlay();
             } else if (action === 2) {
-              player.pauseVideo();
+              obj.sendPlayedPause();
             } else if (action === 3) {
               window.playerObj.isPlaying = true;
-              player.playVideo();
+              obj.sendPlayedPlay();
             } else if (action === 4) {
-              player.pauseVideo();
+              obj.sendPlayedPause();
             } else if (action === 10) {
               // player.stopVideo()
             } else if (action === 5) {
-              player.seekVideo(this.get('playerSeconds'))
+              obj.sendPlayerSeek(this.get('playerSeconds'));
             } else {
               return;
             }
             this.set('playerAction', 0);
-            window.playerObj.playerState({
+            window.playerObj.get('playerState')({
               state: window.playerObj.lastState,
               buffering: window.playerObj.isPrebuffering,
               playing: window.playerObj.isPlaying
@@ -149,17 +249,22 @@ export default Component.extend({
   },
   playerObserver(obj) {
     let pl = obj.get('player');
-    pl.addEventListener('onStateChange', this.playerStateChanged);
-    pl.addEventListener('onReady', this.playerReady);
+    if (pl.addEventListener){
+      pl.addEventListener('onStateChange', this.playerStateChanged);
+      pl.addEventListener('onReady', this.playerReady);
+    }
     debug('playerChanged');
   },
   playerReady() {
     window.playerObj.playerSubj.next(1);
   },
+  videoJSPlayerStateChanged(){
+
+  },
   playerStateChanged(event) {
     debug('playerStateChanged ' + event.data);
     window.playerObj.lastState = event.data;
-    window.playerObj.playerState({
+    window.playerObj.get('playerState')({
       state: event.data,
       buffering: window.playerObj.isPrebuffering,
       playing: window.playerObj.isPlaying
@@ -173,8 +278,8 @@ export default Component.extend({
     } else if (event.data === 1) {//playing
       if (window.playerObj.isPrebuffering) {
         window.playerObj.isPrebuffering = false;
-        event.target.pauseVideo();
-        event.target.seekTo(window.playerObj.secondsToPlay);
+        window.playerObj.sendPlayedPause();
+        window.playerObj.sendPlayerSeekTo(window.playerObj.secondsToPlay);
         window.playerObj.videoLoadedAction();
       } else {
         $('#youtubeHolder .controlsOverlay .play').hide();
@@ -200,16 +305,45 @@ export default Component.extend({
       $('.youtube-music-holder .controls .pause-btn').hide();
       window.playerObj.isPrebuffering = true;
       if (window.playerObj.secondsToPlay === 0.0 || window.playerObj.secondsToPlay === 0) {
-        event.target.playVideo();
+        window.playerObj.sendPlayedPlay();
       } else {
-        event.target.seekTo(window.playerObj.secondsToPlay);
-        event.target.playVideo();
+        window.playerObj.sendPlayerSeekTo(window.playerObj.secondsToPlay);
+        window.playerObj.sendPlayedPlay();
       }
     }
 
   },
   modelObserver() {
     debug('model');
+  },
+  queueVideoToPlayer(player,video,seconds){
+    if (get(video,'videoType') === 'youtube#video'){
+      player.cueVideoById(video['videoId'], seconds);
+    }else if (get(video,'videoType') === 'crunchyroll#media'){
+      player.src([
+        {
+          type: 'application/x-mpegURL',
+          src: get(video,'videoUrl')
+        }
+      ]);
+      player.ready(()=>{
+        debug('on ready');
+      });
+    }else{
+
+      player.src([
+        {
+          type: 'video/mp4',
+          src: get(video,'videoUrl')
+        }
+      ]);
+      player.ready(()=>{
+        debug('on ready');
+      });
+    }
+  },
+  getVideoState(){
+    return 1;
   },
   videoObserver(obj) {
     let v = obj.get('video');
@@ -221,13 +355,13 @@ export default Component.extend({
       next: (val) => {
         if (val === 1) {
           obj.secondsToPlay = v.seconds;
-          player.cueVideoById(v.video['videoId'], v.seconds);
-          if (v.video.videoType === 'youtubeVideo') {
+          obj.queueVideoToPlayer(player,v.video,v.seconds);
+          if (obj.getVideoState()==1){
             $('.youtube-music-holder').hide();
             $('#youtubeHolder').show();
             $('#youtubePlaceHolder').show();
             $('#youtubeHolder .overlay').show();
-          } else {
+          }else{
             $('#youtubeHolder').hide();
             $('.youtube-music-holder').show();
           }

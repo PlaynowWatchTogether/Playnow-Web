@@ -62,6 +62,29 @@ export default EmberObject.extend({
       return this.data.data.lastWatched;
     }
     return '';
+  }),
+  kind: computed('data', function(){
+    return this.data.kind;
+  }),
+  url: computed('data.url', function(){
+    if (this.data.kind === 'khan#media'){
+      return this.data.data.video.downloadUrls.mp4;
+    } else if (this.data.kind === 'crunchyroll#media'){
+      return this.data.url;
+    }
+
+    return '';
+  }),
+  id: computed('data', function(){
+    if (this.get('data').kind === 'youtube#video'){
+      return this.get('data')['id'];
+    }
+    if (this.data.kind === 'crunchyroll#media'){
+      return `${this.data.data.media_id}_${this.data.data.series_id}`;
+    }
+    if (this.data.kind === 'khan#media'){
+      return this.data.data.video.readable_id || this.data.data.video.readableId;
+    }
 
   })
 

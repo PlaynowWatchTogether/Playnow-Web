@@ -24,14 +24,18 @@ export default Service.extend({
     return this.get('storage.crunchyroll');
   },
   isLoggedIn: computed('creds', function(){
-    return typeof this._storedCreds() !== 'undefined'
+    const creds = this._storedCreds();
+    return creds && creds.session_id
   }),
   _rcpRequest(method, type, data, headers){
     return new Promise((resolve, reject)=>{
       $.ajax({
-        url: `http://www.crunchyroll.com/xml?req=${method}`,
+        crossDomain: true,
+        url: 'https://jsonp.afeld.me/',
         type: type,
-        data: data
+        data: {
+          url: `http://www.crunchyroll.com/xml?req=${method}&${$.param(data)}`
+        }
       }).done((data)=>{
         resolve(data);
       })
@@ -48,6 +52,17 @@ export default Service.extend({
       })
     });
 
+  },
+  videoDetails(video){
+    const creds = this._storedCreds();
+    const session = creds.session_id;
+
+    return this._rcpRequest('RpcApiVideoEncode_GetStreamInfo','GET',{
+      media_id: video.get('data.data.media_id'),
+      video_format:100,
+      video_quality:80,
+      ses_id: session
+    })
   },
   queryStream(data){
     const creds = this._storedCreds();
@@ -95,34 +110,42 @@ export default Service.extend({
           let limit = this.get('crunchyrollLimit')||10;
           let offset = this.get('crunchyrollOffset')||0;
 
-          const seriesOffset = this.get('crunchyrollSeriesOffset')
+          const seriesOffset = this.get('crunchyrollSeriesOffset')||0;
           if (offset+limit > this.filteredData(q).length){
             this._internalRequest('list_series','POST',{session_id: creds.session_id, 'media_type':'anime', limit: 10, offset:seriesOffset }).then((data)=>{
-              this.set('crunchyrollSeriesOffset',seriesOffset+10);
-              this.queryStream(data.data).then((streams)=>{
-                new Promise((r)=>{
-                  const wholeData = $.map(streams, (elem)=>elem.data).reduce(function(a, b){
-                    return a.concat(b);
-                  }, []);
-                  wholeData.forEach((crunchItem)=>{
-                    let normalizedData = this.store.normalize('crunchyroll-video', {
-                      id: `${crunchItem.series_id}-${crunchItem.media_id}`,
-                      title: crunchItem.name,
-                      rawData: JSON.stringify(crunchItem),
-                      createdAt: moment(crunchItem.created).unix()
+              if (data.error){
+                if (data.code === 'bad_session'){
+                    this.logout();
+                    resolve([]);
+                    return
+                }
+              }else{
+                this.set('crunchyrollSeriesOffset',seriesOffset+10);
+                this.queryStream(data.data).then((streams)=>{
+                  new Promise((r)=>{
+                    const wholeData = $.map(streams, (elem)=>elem.data).reduce(function(a, b){
+                      return a.concat(b);
+                    }, []);
+                    wholeData.forEach((crunchItem)=>{
+                      let normalizedData = this.store.normalize('crunchyroll-video', {
+                        id: `${crunchItem.series_id}-${crunchItem.media_id}`,
+                        title: crunchItem.name,
+                        rawData: JSON.stringify(crunchItem),
+                        createdAt: moment(crunchItem.created).unix()
+                      });
+                      this.store.push(normalizedData);
                     });
-                    this.store.push(normalizedData);
+                    // this.wholeData.pushObjects($.map(wholeData, (elem)=> { return {kind:'crunchyroll#media',data: elem} }));
+                    r();
+                  }).then(()=>{
+                    this.loadLocalData(q,offset,limit,resolve,reject);
                   });
-                  // this.wholeData.pushObjects($.map(wholeData, (elem)=> { return {kind:'crunchyroll#media',data: elem} }));
-                  r();
-                }).then(()=>{
-                  this.loadLocalData(q,offset,limit,resolve,reject);
-                });
+                }).catch((error)=>{
+                  debug(error);
+                  resolve([]);
+                })
+              }
 
-              }).catch((error)=>{
-                debug(error);
-                resolve([]);
-              })
             }).catch((error)=>{
               debug(error);
               resolve([]);
@@ -142,6 +165,9 @@ export default Service.extend({
         }
     });
 
+  },
+  logout(){
+    this._storeCreds(null);
   },
   login(username, password){
     return new Promise((resolve, reject)=>{

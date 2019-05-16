@@ -54,10 +54,8 @@
                 <span class="name">{{chatModel.title}}</span>
               </div>
             {{else}}
-              <div class="back">
-                {{#link-to "home"}}
+              <div class="back"  {{action "goBack"}} role="button">                
                   <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
-                {{/link-to}}
               </div>
               {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
                 {{#if chatModel.hasProfilePic}}

@@ -2,17 +2,18 @@ import Mixin from '@ember/object/mixin';
 import {debug} from '@ember/debug';
 
 export default Mixin.create({
-  sendVideoInternal(db,myId,convId,messageRoot,video,mode = 'youtubeVideo'){    
+  sendVideoInternal(db,myId,convId,messageRoot,video){
     let path = messageRoot;
     let ref = path + "/" + convId + "/videoState";
     let values = {};
     values['type'] = 'new';
     values['syncAt'] = new Date().getTime() / 1000.0;
     values['updatedAt'] = new Date().getTime() / 1000.0;
-    values['videoType'] = mode;
-    values['videoId'] = video['id'];
-    values['videoName'] = video['snippet']['title'];
-    values['videoThumbnail'] = video['snippet']['thumbnails']['high']['url'];
+    values['videoType'] = video.get('kind');
+    values['videoId'] = video.get('id');
+    values['videoName'] = video.get('title');
+    values['videoThumbnail'] = video.get('thumbnail');
+    values['videoUrl'] = video.get('url');
     values['senderId'] = myId;
     values['seconds'] = 0;
     debug('sendVideo ' + JSON.stringify(values));

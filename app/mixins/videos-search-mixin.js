@@ -26,6 +26,30 @@ export default Mixin.create(YoutubeSearch, {
       return moment(get(b,'createdAt')).unix() - moment(get(a,'createdAt')).unix();
     });
   },
+  videoDetails(video){
+    return new Promise((resolve, reject)=>{
+      const data = video.get('data');
+      if (data.kind === 'youtube#video'){
+
+        resolve(video);
+      }else if (data.kind === 'crunchyroll#media'){
+        this.crunchyrollAuth.videoDetails(video).then((details)=>{
+          $.each(details.children[0].children, (k)=>{
+            if (details.children[0].children[k].nodeName === 'file' ){
+              video.set('data.url',details.children[0].children[k].textContent);
+            }
+          });
+          resolve(video);
+        })
+
+
+      }else if (data.kind === 'khan#media'){
+        resolve(video);
+      }else {
+        reject('unknown');
+      }
+    });
+  },
   queryVideos(reset){
     return new Promise((resolve, reject)=>{
       if (reset) {

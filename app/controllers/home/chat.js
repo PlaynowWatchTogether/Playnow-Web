@@ -36,9 +36,21 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       delegate: {
         loadVideo: (video, seconds) => {
           run(() => {
-            this.set('hasPlayer', true);
-            this.set('playerAction', 0);
-            this.set('playerVideo', {video: video, seconds: seconds});
+            const oldValue = this.get('hasPlayer');
+            if (oldValue){
+              this.set('hasPlayer', false);
+              this.set('playerAction', 0);
+              this.set('playerVideo', null);
+              setTimeout(()=>{
+                this.set('hasPlayer', true);
+                this.set('playerAction', 0);
+                this.set('playerVideo', {video: video, seconds: seconds});
+              },1000);
+            }else{
+              this.set('hasPlayer', true);
+              this.set('playerAction', 0);
+              this.set('playerVideo', {video: video, seconds: seconds});
+            }
           });
         },
         updateState: (state, seconds = 0, syncAt = null) => {
@@ -751,7 +763,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   actions: {
     onProviderChanged(){
       if (this.get('searchMode') === 'video') {
-        
+
       } else {
         this.queryMusic(true);
       }
@@ -874,7 +886,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }
         return;
       }
-      this.shareVideo(video, true);
+      this.videoDetails(video).then((details)=>{
+        this.shareVideo(details, true);
+      });
+
     },
     musicPick(video) {
       if (this.get('isCompose')) {

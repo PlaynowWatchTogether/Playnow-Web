@@ -150,7 +150,7 @@ export default EmberObject.extend({
 
   },
   loadVideo(video, seconds) {
-    let newVideo = this.currentVideo['id'] === video['id'];
+    let newVideo = this.currentVideo['videoId'] !== video['videoId'];
     if (newVideo) {
       this.currentVideo = video;
       this.delegate.loadVideo(video, seconds)

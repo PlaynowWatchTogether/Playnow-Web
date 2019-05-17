@@ -8,6 +8,7 @@ import MessagingMessageHelper from '../../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../../mixins/messaging-messsage-pager';
 import MessageObject from '../../../custom-objects/message-object';
 import CreateEventMixin from '../../../mixins/create-event-mixin';
+import SearchVideoResult from '../../../custom-objects/search-video-result';
 import moment from 'moment';
 import { get } from '@ember/object';
 import $ from 'jquery';
@@ -133,7 +134,11 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
 
     const feed = this.get('feed');
     if (feed){
-      return {title:`${get(feed,'GroupName')}'s playlist`, videos: Object.values((get(feed,'Playlist') || {}))}
+      const playlist = Object.values((get(feed,'Playlist') || {}));
+      const items = $.map(Object.values(playlist), (elem)=>{
+        return SearchVideoResult.create({data: elem});
+      })
+      return {title:`${get(feed,'GroupName')}'s playlist`, videos: items}
     }else{
       return null;
     }

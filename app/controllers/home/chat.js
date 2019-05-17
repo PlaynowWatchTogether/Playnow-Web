@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import MessageDataSource from '../../custom-objects/message-data-source';
 import VideoStateHandler from '../../custom-objects/video-state-handler';
 import PicturedObject from '../../custom-objects/pictured-object';
+import SearchVideoResult from '../../custom-objects/search-video-result';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {run} from '@ember/runloop';
@@ -337,7 +338,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     ds.updateWatching('', 'closed');
     let one_day = 1000 * 60 * 60 * 24;
     ds.loadPlaylist((playlist)=>{
-      obj.set('chatModel.Playlist', playlist);
+      const items = $.map(Object.values(playlist), (elem)=>{
+        return SearchVideoResult.create({data: elem});
+      })
+      obj.set('chatModel.Playlist', items);
     });
     ds.videoWatchers((watchers) => {
       if (watchers) {
@@ -1024,10 +1028,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       this.set('videoPlayerState',1);
     },
     onPlayerUpdate(){
-      if (window.globalPlayer.isMuted){
+      if (window.globalPlayer && window.globalPlayer.isMuted){
         this.set('videoMute',window.globalPlayer.isMuted());
       }
-      this.set('playerReady', true);
+      if (window.globalPlayer){
+        this.set('playerReady', true);
+      }
     },
     videoPlayerMute(){
       const muted = window.globalPlayer.isMuted()

@@ -81,6 +81,9 @@ export default EmberObject.extend({
 
     return '';
   }),
+  playlistId: computed('data', function(){
+    return this.get('data.playlistId');
+  }),
   id: computed('data', function(){
     if (this.get('data').kind === 'youtube#video'){
       return this.get('data')['id'];

@@ -758,6 +758,9 @@ $post-content-width: 63.8%;
             .searchHolder{
               @include videos-search;
             }
+            .login-providers{
+              @include videos-auth-list;
+            }
             .youtube-items {
               @include youtube-videos
 

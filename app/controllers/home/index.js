@@ -7,6 +7,8 @@ import { sort } from '@ember/object/computed';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedGroupSource from '../../custom-objects/feed-group-source';
 import { addObserver } from '@ember/object/observers';
+import DS from 'ember-data';
+import {Promise} from 'rsvp';
 export default Controller.extend({
   db: service(),
   firebaseApp: service(),
@@ -23,24 +25,51 @@ export default Controller.extend({
 
   },
   userFeedSort: ['createdAt:desc'],
-  userFeed: sort('model.feed','userFeedSort'),
-  myFeeds: computed('model.groups.@each.lastUpdate', function(){
-    const myID = this.db.myId();
-    return this.get('model.groups').filter((elem) => {
-      return elem.get('creatorId') === myID;
+  userFeed: computed('sortedUserFeed', function(){
+    return this.get('sortedUserFeed').slice(0,10);
+  }),
+  sortedUserFeed: sort('model.feed','userFeedSort'),
+  // userFeed: computed('model.feed',function(){
+  //   return DS.PromiseArray.create({
+  //     promise: new Promise((resolve)=>{
+  //       const myID = this.db.myId();
+  //       resolve(this.get('model.feed'));
+  //     })
+  //   });
+  // }),
+  myFeeds: computed('model.groups', function(){
+    return DS.PromiseArray.create({
+      promise: new Promise((resolve)=>{
+        const myID = this.db.myId();
+
+        resolve(this.get('model.groups').filter((elem) => {
+          return elem.get('creatorId') === myID;
+        }));
+
+      })
+    });
+
+  }),
+  followedFeeds: computed('model.groups', function(){
+    return DS.PromiseArray.create({
+      promise: new Promise((resolve)=>{
+        const myID = this.db.myId();
+        resolve(this.get('model.groups').filter((elem) => {
+          return elem.get('creatorId') !== myID && elem.isFollowing(myID);
+        }));
+      })
     });
   }),
-  followedFeeds: computed('model.groups.@each.lastUpdate', function(){
-    const myID = this.db.myId();
-    return this.get('model.groups').filter((elem) => {
-      return elem.get('creatorId') !== myID && elem.isFollowing(myID);
+  publicFeeds: computed('model.groups', function(){
+    return DS.PromiseArray.create({
+      promise: new Promise((resolve)=>{
+        const myID = this.db.myId();
+        resolve(this.get('model.groups').filter((elem) => {
+          return elem.get('creatorId') !== myID;
+        }));
+      })
     });
-  }),
-  publicFeeds: computed('model.groups.@each.lastUpdate', function(){
-    const myID = this.db.myId();
-    return this.get('model.groups').filter((elem) => {
-      return elem.get('creatorId') !== myID;
-    });
+
   }),
   // filteredModel: computed('model.@each.lastUpdate', 'roomQuery', function () {
   //   let q = this.get('roomQuery');
@@ -58,27 +87,32 @@ export default Controller.extend({
   //   })
   // }),
   discoverFeeds: computed('model.groups.@each.lastUpdate','db.userLocation', function(){
-    const location = this.get('db.userLocation');
-    const myID = this.db.myId();
-    return this.get('model.groups').filter((elem) => {
-      return elem.get('creatorId') !== myID;
-    }).sort((a,b)=>{
-      if (location){
-        let aD = Number.MAX_SAFE_INTEGER;
-        let bD = Number.MAX_SAFE_INTEGER;
-        const locA = get(a,'GroupLocation.l');
-        const locB = get(b,'GroupLocation.l');
-        if (typeof(locA) === 'object'){
-          aD = this.distance(locA[1],locA[0],location.lng,location.lat);
-        }
-        if (typeof(locB) === 'object'){
-          bD = this.distance(locB[1],locB[0],location.lng,location.lat);
-        }
-        return aD - bD;
-      }else{
-        return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
-      }
+    return DS.PromiseArray.create({
+      promise: new Promise((resolve)=>{
+        const location = this.get('db.userLocation');
+        const myID = this.db.myId();
+        resolve(this.get('model.groups').filter((elem) => {
+          return elem.get('creatorId') !== myID;
+        }).sort((a,b)=>{
+          if (location){
+            let aD = Number.MAX_SAFE_INTEGER;
+            let bD = Number.MAX_SAFE_INTEGER;
+            const locA = get(a,'GroupLocation.l');
+            const locB = get(b,'GroupLocation.l');
+            if (typeof(locA) === 'object'){
+              aD = this.distance(locA[1],locA[0],location.lng,location.lat);
+            }
+            if (typeof(locB) === 'object'){
+              bD = this.distance(locB[1],locB[0],location.lng,location.lat);
+            }
+            return aD - bD;
+          }else{
+            return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
+          }
+        }));
+      })
     });
+
   }),
   toRad(val) {
     return val * Math.PI / 180;

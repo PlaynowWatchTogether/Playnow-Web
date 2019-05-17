@@ -263,6 +263,22 @@ export default Service.extend(VideoStateHandler, {
     let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
     ref.off('value', clb);
   },
+  userFeedsOnce(updateCallback) {
+    const myId = this.myId();
+    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+
+    let clb = (data) => {
+      let records = [];
+      data.forEach((item) => {
+        let payload = item.val();
+        payload.id = item.key;
+        records.push(payload);
+      });
+      updateCallback(records);
+    };
+    // this.listeners["channels/feed"] = clb;
+    ref.once('value', clb);    
+  },
   userFeeds(updateCallback) {
     const myId = this.myId();
     let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);

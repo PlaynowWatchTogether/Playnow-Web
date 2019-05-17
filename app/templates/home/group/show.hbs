@@ -262,7 +262,7 @@
               onPlaylistAddVideo=(action "playlistVideoAdd")
               onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
               {{#if feed.isPlaying}}
-                {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive")}}
+                {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
               {{/if}}
             {{/chat-videos-list}}
           </div>
@@ -346,7 +346,7 @@
                   deleteEvent=(action "onDeleteEvent")}}
               {{else}}
                 {{#if feed.isPlaying}}
-                  {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive")}}
+                  {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
                 {{/if}}
                 <div class="events-list-root">
                   <div class="events-list-label">

@@ -36,7 +36,7 @@
                   openDetails=(action "openDetails")
                   onFollowGroup=(action "followGroup")
                   onUnFollowGroup=(action "unFollowGroup")
-                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
               </div>
             {{/fit-parent-height}}
             <div class="tab-pane fade h-100" id="discover">
@@ -45,9 +45,9 @@
                   model=discoverFeeds
                   isPublic=true
                   classNames="feed-list"
-                  onFollowGroup=(action "followGroup")
-                  onUnFollowGroup=(action "unFollowGroup")
-                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+                  onFollowGroup=(action "followGroup" bubbles=false)
+                  onUnFollowGroup=(action "unFollowGroup" bubbles=false)
+                  onJoinEvent=(action "onJoinEvent" bubbles=false) onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
 
               {{/fit-parent-height}}
             </div>
@@ -82,9 +82,9 @@
                   model=publicFeeds
                   isPublic=true
                   classNames="feed-list"
-                  onFollowGroup=(action "followGroup")
-                  onUnFollowGroup=(action "unFollowGroup")
-                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent")}}
+                  onFollowGroup=(action "followGroup" bubbles=false)
+                  onUnFollowGroup=(action "unFollowGroup" bubbles=false)
+                  onJoinEvent=(action "onJoinEvent" bubbles=false) onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
               </div>
             </div>
           </div>

@@ -31,13 +31,13 @@
 </div>
 <div class="feed-event-actions">
   {{#if isCreator}}
-    <div class="action-owner" {{action "deleteEvent"}}>
+    <div class="action-owner" {{action "deleteEvent" bubbles=false}}>
       Delete
     </div>
   {{else if isMember}}
     {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent")}}
   {{else}}
-    <div class="action-join" {{action "joinEvent"}}>
+    <div class="action-join" {{action "joinEvent" bubbles=false}}>
       <img src="/assets/ic_plus@2x.png" alt='join event' class="icon">
       <div class="label">
         Join

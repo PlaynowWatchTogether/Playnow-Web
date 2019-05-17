@@ -31,8 +31,7 @@ export default Route.extend(ApplicationDBFeed,ApplicationUserFeed, {
               this.set('db.userLocation', {lat: lat, lng: lng});
             });
         }
-        this.handleFeedSync();
-        this.handleUserFeedSync();
+        this.handleFeedSync();        
 
         this.db.messaging.requestPermission().then(() => {
           debug('Notification permission granted.');

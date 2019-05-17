@@ -14,12 +14,7 @@ export default Mixin.create({
       });
       feeds.forEach((feed) => {
         feed['rawData'] = JSON.stringify(feed);
-        feed['lastUpdate'] = new Date().getUTCMilliseconds();
-        // feed['Followers'] = JSON.stringify(feed.Followers || {});
-        // feed['FollowRequests'] = JSON.stringify(feed.FollowRequests || {});
-        // feed['Playlist'] = JSON.stringify(feed.Playlist || {});
-        // feed['Admins'] = JSON.stringify(feed.Admins || {});
-        // feed['videoWatchingContent'] = JSON.stringify(feed.videoWatching || {});
+        feed['lastUpdate'] = new Date().getUTCMilliseconds();    
 
         let normalizedData = this.store.normalize('feed-item', feed);
         this.store.push(normalizedData);
@@ -47,11 +42,12 @@ export default Mixin.create({
             let normalizedData = this.store.normalize('feed-event', event);
             this.store.push(normalizedData);
           }
-        })
+        });
       });
       this.get('db').set('feedUpdated',new Date());
       const contrl = this.controllerFor('application');
       contrl.set('feedLastUpdate', new Date());
+      this.handleUserFeedSync();
     })
   }
 });

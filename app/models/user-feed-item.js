@@ -9,8 +9,21 @@ export default DS.Model.extend(ProxyMixin, {
   feedId: attr('string'),
   lastUpdate: attr('number'),
   rawData: attr('string'),
+  rawLocalFeed: attr('string'),
+  rawFeedMessage: attr('string'),
+  rawFeedEvent: attr('string'),
   content:computed('rawData', function(){
     return JSON.parse(this.get('rawData')) || {};
+  }),
+  localFeed: computed('rawLocalFeed', function(){
+    return JSON.parse(this.get('rawLocalFeed')) || {};
+  }),
+  feedMessage: computed('rawFeedMessage', function(){
+    return JSON.parse(this.get('rawFeedMessage')) || {};
+  }),
+  feedEvent: computed('rawFeedEvent', function(){
+    return JSON.parse(this.get('rawFeedEvent')) || {};
   })
+
 
 });

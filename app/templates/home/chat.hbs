@@ -110,6 +110,7 @@
                                     videoPlayerState=videoPlayerState
                                     playerSeconds=playerSeconds
                                     videoMute=videoMute
+                                    onPlayerUpdate=(action "onPlayerUpdate")
                                     onVideoEnd=(action "onVideoEnd")
                                     slidingProgress=slidingProgress}}
 
@@ -137,7 +138,11 @@
                   </div>
                   <span class="video-title noselect"></span>
                   <div class="mute" role="button" {{action "videoPlayerMute"}}>
-                    <img src="/assets/ic_volume_off@2x.png" alt="mute">
+                    {{#if videoMute}}
+                      <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
+                    {{else}}
+                      <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
+                    {{/if}}
                   </div>
                   <div class="full" role="button" {{action "videoPlayerFullWindow"}}>
                     <img src="/assets/ic_fullwindow_on@2x.png" alt="mute">
@@ -199,6 +204,13 @@
                 </div>
               </div>
               <div class="controls">
+                <div class="mute" role="button" {{action "videoPlayerMute"}}>
+                  {{#if videoMute}}
+                    <img src="/assets/ic_mute_on_black@2x.png" alt="mute">
+                  {{else}}
+                    <img src="/assets/ic_mute_off_black@2x.png" alt="mute">
+                  {{/if}}
+                </div>
                 <div class="collapse-video" role="button" {{action "videoPlayerExpand"}}>
                   <img src="/assets/ic_video_expand@2x.png" alt="mute">
                   <div class="label">
@@ -326,20 +338,36 @@
           {{/if}}
         </div>
         <div class="watchers-holder {{watchersClass}}">
-          {{#if hasPlayer}}
-            <div class="watchers-streamer">
-              {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
+          {{#if displayWatchers}}
+            <div class="watchers">
+              <div class="watchers-streamer">
+                {{#each watchers as |watcher index|}}
+                  {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
 
-                {{/watcher-item}}
-              {{/each}}
+                  {{/watcher-item}}
+                {{/each}}
+              </div>
+              <div class="watchers-other">
+                {{#each watchers as |watcher index|}}
+                  {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
+
+                  {{/watcher-item}}
+                {{/each}}
+              </div>
             </div>
-            <div class="watchers-other">
-              {{#each watchers as |watcher index|}}
-                {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
-
-                {{/watcher-item}}
-              {{/each}}
+          {{/if}}
+          {{#if isFullScreen}}
+            <div class="controls">
+              <div class="mute" role="button" {{action "videoPlayerMute"}}>
+                {{#if videoMute}}
+                  <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
+                {{else}}
+                  <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
+                {{/if}}
+              </div>
+              <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
+                <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
+              </div>
             </div>
           {{/if}}
         </div>

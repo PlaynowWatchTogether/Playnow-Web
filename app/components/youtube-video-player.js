@@ -180,6 +180,7 @@ export default Component.extend({
       })
 
       this.set('player', player);
+      this.get('onPlayerUpdate')();
     }
 
     this.actionObserver(this);
@@ -291,6 +292,7 @@ export default Component.extend({
     debug('playerChanged');
   },
   playerReady() {
+    window.playerObj.get('onPlayerUpdate')();
     window.playerObj.playerSubj.next(1);
   },
   videoJSPlayerStateChanged(){

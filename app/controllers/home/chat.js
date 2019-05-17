@@ -39,6 +39,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
             const oldValue = this.get('hasPlayer');
             if (oldValue){
               this.set('hasPlayer', false);
+              this.set('playerReady',false);
               this.set('playerAction', 0);
               this.set('playerVideo', null);
               setTimeout(()=>{
@@ -106,6 +107,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.queryVideos(true);
     this.queryMusic(true);
   },
+  displayWatchers: computed('hasPlayer','playerReady', function(){
+    const hasPlayer = this.get('hasPlayer');
+    const ready = this.get('playerReady');
+    return hasPlayer && ready;
+
+  }),
   messageConvId(){
     const dsConv = this.get('dataSource').convId();
     const type = this.get('model.type');
@@ -140,15 +147,20 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     debug(JSON.stringify(this.get('playerState')));
     return 'loading'
   }),
-  watchersClass: computed('playerState', function () {
+  watchersClass: computed('playerState','videoPlayerState', function () {
     let l = this.get('playerState');
+    const videoState = this.get('videoPlayerState');
+    const classes = [];
     if (l) {
-      if (l.buffering)
-        return 'loading';
-      if (!l.playing)
-        return 'loading'
+      if (l.buffering){
+        classes.push('loading');
+      }else if (!l.playing)
+        classes.push('loading');
     }
-    return ''
+    if (videoState === 0){
+      classes.push('state-collapsed');
+    }
+    return classes.join(' ');
   }),
 
   messageTextObserver: (obj) => {
@@ -551,6 +563,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
+    this.set('playerReady',false);
     this.closeFullScreen();
     $(document).off("keyup.chat");
     this.set('displayEmoji',false);
@@ -1010,13 +1023,20 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     videoPlayerExpand(){
       this.set('videoPlayerState',1);
     },
+    onPlayerUpdate(){
+      if (window.globalPlayer.isMuted){
+        this.set('videoMute',window.globalPlayer.isMuted());
+      }
+      this.set('playerReady', true);
+    },
     videoPlayerMute(){
-      this.set('videoMute',1);
-      if (window.globalPlayer.isMuted()){
+      const muted = window.globalPlayer.isMuted()
+      if (muted){
         window.globalPlayer.unMute();
       }else{
         window.globalPlayer.mute();
       }
+      this.set('videoMute',!muted);
     }
   }
 });

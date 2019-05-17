@@ -1,5 +1,8 @@
 @import '../vars.scss';
 @mixin video-watchers-holder{
+  .watchers{
+    width: 100%;
+  }
   .watcher{
     @include video-watcher-item;
   }

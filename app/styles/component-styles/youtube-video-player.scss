@@ -1,14 +1,64 @@
 @import './watcher-item.scss';
-$sidebar-width: 150px;
+$sidebar-width: 125px;
 body.fullscreen-video{
   .feed-content-wrapper{
     .watchers-holder{
+      margin-left: 0 !important;
+      padding-left: 0 !important;
+      padding-top: 55px !important;
+      margin-top: 0 !important;
+      align-self: center !important;
+      flex-direction: column !important;
       top: 0;
-      display: none;
+      display: flex !important;
       padding: 0;
       right: 0px !important;
       position: fixed !important;
       width: $sidebar-width !important;
+      height: 100% !important;
+      .watchers{
+        flex: 1 1 auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      &.loading{
+
+        .watchers-streamer{
+          margin: 0 !important;
+        }
+        .watchers-other{
+          margin-top: 0 !important;
+
+        }
+        .watchers{
+          display: flex !important;
+          height: auto !important;
+        }
+      }
+      .controls{
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        place-items: flex-end;
+        align-items: flex-end;
+        padding-bottom: 20px;
+        padding-right: 20px;
+      }
+      .mute, .full-off{
+        display: flex;
+        cursor: pointer;
+        pointer-events: all;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        align-items: center;
+        margin-bottom: 20px;
+        pointer-events: all;
+        img{
+          width: 30px;
+          height: auto;
+        }
+      }
       .watchers-streamer,.watchers-other{
         height: min-content !important;
         display: flex !important;
@@ -21,11 +71,7 @@ body.fullscreen-video{
         }
       }
     }
-    &.mouse-on{
-      .watchers-holder {
-        display: flex;
-      }
-    }
+
   }
   #youtubeHolder{
     position: fixed !important;
@@ -65,9 +111,17 @@ body.fullscreen-video{
         }
       }
 
+      .close{
+        display: none !important;
+      }
       .full-off{
-        display: flex !important;
-
+        display: none !important;
+      }
+      .mute{
+        display: none !important;
+      }
+      .switch-holder{
+        display: none !important;
       }
       .collapse-video{
         display: none !important;
@@ -76,49 +130,27 @@ body.fullscreen-video{
         display: none !important;
       }
     }
-    // .watchers-holder {
-    //   display: flex;
-    //   z-index: 300;
-    //   width: 200px !important;
-    //   right: 0px !important;
-    //   padding-left: 0px !important;
-    //   padding-bottom: 40px;
-    //   flex-direction: column !important;
-    //   padding-top: 40px !important;
-    //   overflow: scroll;
-    //   height: 100% !important;
-    //   pointer-events: all !important;
-    //   .watchers-streamer,.watchers-other{
-    //     height: min-content !important;
-    //     display: flex !important;
-    //     place-content: center !important;
-    //     align-content: center !important;
-    //     width: 100% !important;
-    //     .pic{
-    //       width: 120px !important;
-    //       height: 120px !important;
-    //     }
-    //   }
-    // }
   }
   .messages-holder-full{
     z-index: 200;
     top: 0;
     position: fixed;
     right: 0;
-    width: 50%;
+    width: 35.6%;
     display: flex;
     flex-direction: row !important;
     bottom: 0px;
     height: 100%;
     display: none !important;
-    padding-bottom: 60px;
+    padding-bottom: 15px;
     pointer-events: none;
+    flex-wrap: nowrap !important;
     .messages-holder-content{
       background: rgba(0, 0, 0, 0.5);
       border-bottom-left-radius: 20px;
       flex: 1 0 auto;
       pointer-events: all;
+      width: 100px;
       .in-reply-to{
         color: white;
         .reply-text{
@@ -132,10 +164,20 @@ body.fullscreen-video{
       .messagesHolder{
         .message-scroll-date-holder{
           padding-right: $sidebar-width !important;
+          place-content: center;
+          align-content: center;
+          .title{
+            margin-right: 40px;
+          }
+        }
+        .message-text-holder{
+          flex: 1 1 90% !important;
+          max-width: 90% !important;
         }
         .message-text{
           color: white !important;
           background: #212121 !important;
+
           &.mine{
             background: #585858 !important;
           }
@@ -143,6 +185,15 @@ body.fullscreen-video{
         }
       }
       .newMessageHolder{
+        border-top: none !important;
+        background: #2C2C2C !important;
+        border-radius: 40px !important;
+        margin-left: 20px !important;
+        margin-right: 20px !important;
+        margin-bottom: 20px !important;
+        .in-reply-to{
+          border-top: none !important;
+        }
         .messageContent{
           color: white !important;
         }
@@ -153,8 +204,7 @@ body.fullscreen-video{
       flex: 0 0 auto;
       pointer-events: all;
       min-width: $sidebar-width;
-      display: flex;
-      background: #000;
+      display: flex;      
       flex-direction: column;
       .sidebar-members{
 

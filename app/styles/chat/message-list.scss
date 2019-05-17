@@ -55,7 +55,7 @@
       box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.16);
       padding-bottom: 5px;
       display: grid;
-      grid-template-columns: auto 50% 150px;
+      grid-template-columns: auto 50% min-content;
 
       .watchers {
         margin-top: auto;
@@ -113,6 +113,11 @@
           width: 30px;
           margin: 0px 10px;
           cursor: pointer;
+        }
+        .mute{
+          img{
+            width: 25px;
+          }
         }
         .collapse-video{
           cursor: pointer;
@@ -287,6 +292,7 @@
           padding: 0px 10px;
           align-self: center;
           .footer-play, .footer-pause{
+            cursor: pointer;
             display: flex;
             display: none;
             align-items: center;

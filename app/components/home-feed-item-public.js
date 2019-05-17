@@ -5,16 +5,16 @@ import moment from 'moment';
 import FeedEventModelWrapper from '../custom-objects/feed-event-model-wrapper';
 export default Component.extend({
   db: service(),
-  isFollowing: computed('model', function(){
+  isFollowing: computed('model.lastUpdate', function(){
     return this.get('model').isFollowing(this.db.myId());
   }),
   isRequestedFollow: computed('model.FollowRequests', function(){
     return this.get('model').isRequestedFollow(this.db.myId());
   }),
-  viewsNumber: computed('model', function(){
+  viewsNumber: computed('model.lastUpdate', function(){
     return this.get('model.followersCount');
   }),
-  recentAction: computed('model', function(){
+  recentAction: computed('model.lastUpdate', function(){
     const playing = this.get('model.isPlaying');
     if (playing){
       return {isOnline: true, video: this.get('model.videoState')};
@@ -31,14 +31,14 @@ export default Component.extend({
     }
     return {isEvent:true, event: FeedEventModelWrapper.create({content:event})};
   }),
-  canShowRecent: computed('model', function(){
+  canShowRecent: computed('model.lastUpdate', function(){
     const isPublic = this.get("model.isPublic");
     if (isPublic)
       return true;
     const myID = this.get('db').myId();
     return this.get('model').isMember(myID);
   }),
-  hasRecentAction: computed('model', function(){
+  hasRecentAction: computed('model.lastUpdate', function(){
     const playing = this.get('model.isPlaying');
     if (playing){
       return true;

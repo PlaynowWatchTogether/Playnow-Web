@@ -1,7 +1,19 @@
 @import '../vars.scss';
 @mixin video-watchers-holder{
+  &.fullscreen{
+    place-items: center;
+    align-items: center;
+    .broadcast-stream{
+      pointer-events: all;
+      margin-bottom: 10px;
+      padding-right: 0px;
+      display: flex;
+      width: min-content;
+    }
+  }
   .watchers{
     width: 100%;
+    display: flex;
   }
   .watcher{
     @include video-watcher-item;

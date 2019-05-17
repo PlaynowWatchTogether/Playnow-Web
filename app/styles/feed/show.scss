@@ -38,6 +38,10 @@ $post-content-width: 63.8%;
             height: 45px;
             display: flex;
             cursor: pointer;
+            place-content: center;
+            align-content: center;
+            place-items: center;
+            align-items: center;
             a{
               margin: auto;
             }
@@ -297,6 +301,7 @@ $post-content-width: 63.8%;
                   }
                 }
                 .feed-actions{
+                  pointer-events: all;
                   padding-top: 10px;
                   .action-following, .action-follow-request{
                     background: #F4F4F4;

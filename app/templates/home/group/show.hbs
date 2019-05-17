@@ -1,7 +1,7 @@
 <div class="feed-root h-100">
   <div class="feed-parent">
 
-    <div class="feed-wrapper {{if scrolledMore 'collapsed'}} h-100 ">
+    <div class="feed-wrapper {{if scrolledMore "collapsed"}} h-100 ">
       {{#file-dropzone classNames="feed-content" name="chatPhotos" as |dropzone|}}
         {{#if dropzone.active}}
           {{#if dropzone.valid}}
@@ -14,11 +14,9 @@
             {{/if}}
           {{/if}}
         {{/if}}
-        <div class="back">
-          {{#link-to "home"}}
-            <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
-          {{/link-to}}
-        </div>
+        {{#link-to "home" classNames="back" tagName="div"}}
+          <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+        {{/link-to}}
         <div class="feed-header">
           <div class="feed-header-body {{if editFeed "edit"}}">
             <div class="feed-pic-holder">
@@ -29,7 +27,7 @@
                                    disabled=disableProfilePicChange
                                    accept="image/*"
                                    onfileadd=(action "updateFeedPic")}}
-                                   <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
+                      <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
                     {{/file-upload}}
                     {{#unless disableProfilePicChange}}
                       <div class="hover">
@@ -44,7 +42,7 @@
             </div>
             <div class="feed-middle {{if editFeed "edit"}}">
               {{#if editFeed}}
-                <div class="feed-edit-save" {{action "saveEdit"}}>
+                <div class="feed-edit-save" {{action "saveEdit"}} role="button">
                   Done
                 </div>
                 <div class="feed-title-edit">
@@ -56,7 +54,7 @@
                 </div>
               {{else}}
                 {{#if isAdmin}}
-                  <div class="feed-edit" {{action "enableEdit"}}>
+                  <div class="feed-edit" {{action "enableEdit"}} role="button">
                     <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
                   </div>
                 {{/if}}
@@ -73,7 +71,7 @@
                       <p>{{feed.GroupDescription}}</p>
                     {{/text-truncator}}
                   {{else}}
-                  <div class="empty">No description added</div>
+                    <div class="empty">No description added</div>
                   {{/if}}
                 </div>
 
@@ -86,7 +84,7 @@
                   {{/each}}
                 </div>
                 {{#if editFeed}}
-                  <div class="feed-admins-edit" {{action "displayAdmins"}}>
+                  <div class="feed-admins-edit" {{action "displayAdmins"}} role="button">
                     <img src="/assets/ic_plus@2x.png" alt="icon">
                     <div>Add Admin</div>
                   </div>
@@ -105,7 +103,7 @@
                   </div>
                 {{else}}
                   {{#if isFollowing}}
-                    <div class="action-following" {{action "unFollowGroup"}}>
+                    <div class="action-following" {{action "unFollowGroup"}} role="button">
                       <div class="simple">Following</div>
                       <div class="action">Unfollow</div>
                     </div>
@@ -114,7 +112,7 @@
                       Requested
                     </div>
                   {{else}}
-                    <div class="action-follow" {{action "followGroup"}}>
+                    <div class="action-follow" {{action "followGroup"}} role="button">
                       <img src="/assets/ic_plus@2x.png" alt="icon">
                       <div>Follow</div>
                     </div>
@@ -245,7 +243,7 @@
           </div>
           {{#unless creatingEvent}}
             {{#if isAdmin}}
-              <div class="create-event" {{action "showCreateEvent"}}>
+              <div class="create-event" {{action "showCreateEvent"}} role="button">
                 <img src="/assets/ic_calendar_icon@2x.png" alt="create event">
                 <div class="label">Create Event</div>
               </div>
@@ -271,7 +269,9 @@
           <div class="tab-pane fade  show active" id="events">
             {{#if creatingEvent}}
               <div class="events-create-root">
-                <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action "cancelCreateEvent"}}>
+                <div class="back"  {{action "cancelCreateEvent"}} role="button">
+                  <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+                </div>
                 <div class="create-label">
                   Create Event
                 </div>
@@ -310,7 +310,7 @@
                         {{#file-upload name="eventPic"
                                        accept="image/*"
                                        onfileadd=(action "uploadEventPic")}}
-                                       <img src="/assets/ic-feed-events-attach-img@2x.png" role="button">
+                          <img src="/assets/ic-feed-events-attach-img@2x.png" role="button" alt="attach">
                         {{/file-upload}}
                       </div>
                     {{/if}}
@@ -330,7 +330,7 @@
                 </div>
 
                 <div class="create">
-                  <div class="create-btn" {{action "createEvent"}}>
+                  <div class="create-btn" {{action "createEvent"}} role="button">
                     Create
                   </div>
                 </div>

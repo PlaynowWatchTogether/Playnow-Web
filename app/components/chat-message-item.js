@@ -98,7 +98,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let type = model['type'];
     return type === 'ShareVideo';
   }),
-  attachments: computed('model.{type,attachments}', function(){
+  attachments: computed(function(){
     let model = this.get('model');
 
     return this.wrapMessageAttachments(model);
@@ -171,7 +171,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let model = this.get('model');
     return model['media_thumbnail'] && model['media_thumbnail'].length > 0;
   }),
-  attachmentUrl: computed('model', function(){
+  attachmentUrl: computed(function(){
     let model = this.get('model');
     return model.attachment.url;
   }),

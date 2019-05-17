@@ -49,7 +49,10 @@ export default Component.extend(VideoSearchMixin, {
     },
     videoProvidersChanged(provider, newState){
       this.queryVideos(true);
-      this.get('onProviderChanged')(provider,newState);
+      const act = this.get('onProviderChanged');
+      if (act){
+        act(provider,newState);
+      }
     }
   }
 });

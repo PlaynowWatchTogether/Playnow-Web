@@ -266,12 +266,13 @@ $message-border-radius: 15.5px;
   display: flex;
   flex-direction: column;
   position: relative;
-  .back-icon{
-    margin: 10px;
+  .back{
+    padding: 10px;
     align-self: flex-start;
     position: absolute;
     cursor: pointer;
   }
+
   .error{
     position: absolute;
     color: red;

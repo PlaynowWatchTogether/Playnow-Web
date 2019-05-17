@@ -11,12 +11,15 @@ import $ from 'jquery';
 import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import MessagingUploadsHandler from '../../mixins/messaging-uploads-handler';
 import MessagingMessageHelper from '../../mixins/messaging-message-helper';
 import MessagingMessagePager from '../../mixins/messaging-messsage-pager';
 import VideoSearchMixin from '../../mixins/videos-search-mixin';
 import ChatModelHelper from '../../mixins/chat-model-helper';
+import BroadcastStreamer from '../../custom-objects/broadcast-streamer';
+import ObjectProxy from '@ember/object/proxy';
+import ArrayProxy from '@ember/array/proxy';
 
 export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, ChatModelHelper, {
   firebaseApp: service(),
@@ -32,6 +35,20 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.messageText = '';
     this.composeChips = [];
     this.memberColors={};
+    this.streamer = BroadcastStreamer.create({
+      streamPublished: (streamId)=>{
+        const ds = this.get('dataSource');
+        ds.publishStream(streamId);
+      },
+      streamRemoved:(streamId)=>{
+        const ds = this.get('dataSource');
+        ds.removeStream(streamId);
+      }
+    });
+    this.set('streamingModel',{
+      mic: false,
+      video: false
+    })
     this.videoStateHandler = VideoStateHandler.create({
       ntp: this.get('ntp'),
       delegate: {
@@ -114,6 +131,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return hasPlayer && ready;
 
   }),
+  localStreamId(){
+    const dsConv = this.get('dataSource').convId();
+    const type = this.get('model.type');
+    const id = this.get('db').myId();
+    return `${id}-${dsConv}`;
+  },
   messageConvId(){
     const dsConv = this.get('dataSource').convId();
     const type = this.get('model.type');
@@ -399,7 +422,38 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       obj.get('dataSource').sendMessage(obj.get('messageToSend'));
       obj.set('messageToSend', null);
     }
+    ds.streamListen((streams)=>{
+      const myId = obj.get('db').myId();
+      const remoteStreams = obj.get('remoteStreams')||ArrayProxy.create({content: []});
+      streams.forEach((stream)=>{
+        if (stream.userId!==myId){
+          let findLocal = null;
+          remoteStreams.forEach((localStream)=>{
+            if (get(localStream,'userId') === get(stream,'userId')){
+              findLocal = localStream;
+            }
+          });
+          if (findLocal){
+              set(findLocal,'content',stream);
+          }else{
+            remoteStreams.pushObject(ObjectProxy.create({content:stream}));
+          }
+        }
+      });
+      remoteStreams.forEach((localStream)=>{
+        let findRemote = false;
+        streams.forEach((remoteStream)=>{
+          if (get(localStream,'userId') === get(remoteStream,'userId')){
+            findRemote = localStream;
+          }
+        });
+        if (!findRemote){
+          remoteStreams.removeObject(localStream)
+        }
+      })
+      obj.set('remoteStreams',remoteStreams);
 
+    });
     ds.messages((messages) => {
       const converted = obj.convertServerMessagesToUI(messages,obj.messageConvId());
       const wrappedMessages = converted.messages;
@@ -558,6 +612,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     const playlist = get(chat,'Playlist')
     if (playlist){
       let title = 'Playlist';
+      if (this.get('model.type') === 'one2one'){
+        title = 'Our Playlist';
+      }
       if (this.get('model.type') === 'feed'){
         title = `${get(chat,'feed.GroupName')}'s playlist`;
       }
@@ -567,7 +624,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
+    const localStreamId = this.localStreamId();
     this.set('playerReady',false);
+    this.set('streamingModel.mic',false);
+    this.set('streamingModel.video',false);
+    this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+
     this.closeFullScreen();
     $(document).off("keyup.chat");
     this.set('displayEmoji',false);
@@ -590,6 +652,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     if (ds) {
       this.set('playerAction', 10);
       ds.removeWatching();
+      ds.removeStream(localStreamId);
       ds.stop()
     }
     this.set('hasPlayer', false);
@@ -1043,6 +1106,15 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         window.globalPlayer.mute();
       }
       this.set('videoMute',!muted);
+    },
+    onToggleMic(){
+      this.toggleProperty('streamingModel.mic');
+      this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+    },
+    onToggleCamera(){
+      this.toggleProperty('streamingModel.video');
+      this.streamer.startStreaming(
+        '#streamer-holder .local-stream', this.localStreamId(), this.get('streamingModel'));
     }
   }
 });

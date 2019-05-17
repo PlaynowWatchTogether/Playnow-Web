@@ -1,4 +1,5 @@
 @import './chat/message-list.scss';
+@import './component-styles/streaming-control.scss';
 
 @mixin chat-controller{
   display: flex;
@@ -88,7 +89,81 @@
         }
 
       }
+      #streamer-holder{
+        pointer-events: none;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        top: 45px;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        z-index: 500;
+        .local-stream{
+          margin-right: 10px;
 
+          #localVideo{
+            margin-left: 10px;
+            width: 200px;
+            border-radius: 20px;
+          }
+        }
+        .remote-streams{
+          flex-wrap: wrap;
+          display: flex;
+          flex-direction: row;
+          .remote-stream{
+            display: flex;
+            place-items: center;
+            align-items: center;
+            margin-right: 10px;
+            .flowplayer{
+              width: 200px;
+              display: flex;
+              position: relative;
+              align-items: baseline;
+              .fp-chromecast-engine{
+                display: none;
+              }
+              .fp-engine{
+                display: block;
+                width: 100%;
+                border-radius: 20px
+              }
+              .fp-ui{
+                display: none;
+              }
+              a{
+                // display: none !important;
+                left: 15px !important;
+                bottom: 5px !important;
+              }
+              .fp-captions{
+                display: none;
+              }
+            }
+          }
+        }
+        &.fullscreen{
+          right: 0;
+          top: 50px;
+          position: fixed;
+          width: min-content;
+          flex-direction: column;
+          padding-right: 0;
+          margin-right: 0;
+          .local-stream{
+            margin-right: 0;
+            margin-bottom: 10px;
+          }
+          .remote-streams{
+            .remote-stream{
+              margin-right: 0;
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
     }
     .feed-sidebar{
       flex: 0 0 33%;
@@ -206,6 +281,9 @@
       }
     }
 
+  }
+  .broadcast-stream{
+    @include streaming-control;
   }
   &.group{
     .titleHolder{

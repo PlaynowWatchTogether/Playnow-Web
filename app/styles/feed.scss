@@ -40,7 +40,6 @@
 
 			cursor: pointer;
 			flex: 0 0 auto;
-	    width: 35px;
 	    display: flex;
 	    justify-items: center;
 			justify-content: center;
@@ -52,6 +51,8 @@
 				position: relative;
 				display: flex;
 				align-self: center;
+				width: 35px;
+				height: 100%;
 
 				img{
 					height: 20px;
@@ -60,8 +61,8 @@
 				}
 				.new-requests{
 					position: absolute;
-					right: -5px;
-					top: 0;
+					right: 2px;
+					top: 6px;
 					width: 10px;
 					height: 10px;
 					border-radius: 50%;

@@ -9,8 +9,8 @@
   flex-direction: row;
   background: #F4F4F4;
   .feed-content{
-    flex: 1 1 69%;
-    max-width: 69%;
+    flex: 1 1 69.4%;
+    max-width: 69.4%;
     .tabs {
       margin-left: auto;
       margin-right: auto;
@@ -60,9 +60,8 @@
     }
   }
   .feed-sidebar{
-    flex: 1 1 31%;
-    max-width: 31%;
-    border-left: 1px solid #E8E8E8;
+    flex: 1 1 30.6%;
+    max-width: 30.6%;
     display: flex;
     .side-content{
       flex-direction: column;
@@ -71,6 +70,7 @@
       width: 100%;
       padding-right: 16px;
       .side-wrapper{
+        padding-top: 10px;
         .feeds-item{
           display: flex;
           flex-direction: column;
@@ -155,8 +155,8 @@
               }
               .feed-item-pic{
                 flex: 0 0 auto;
-                width: 60px;
-                height: 60px;
+                width: 55px;
+                height: 55px;
                 display: flex;
                 border-radius: 50%;
                 padding: 2px;

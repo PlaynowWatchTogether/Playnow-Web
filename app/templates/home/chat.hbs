@@ -72,6 +72,11 @@
                   {{/if}}
                 </div>
               {{/user-profile-view}}
+              {{streaming-control
+                classNames="broadcast-stream"
+                model=streamingModel
+                onToggleMic=(action "onToggleMic")
+                onToggleCamera=(action "onToggleCamera")}}
             {{/if}}
           {{/if}}
 
@@ -337,7 +342,14 @@
             </div>
           {{/if}}
         </div>
-        <div class="watchers-holder {{watchersClass}}">
+        <div class="watchers-holder {{watchersClass}} {{if isFullScreen 'fullscreen'}}">
+          {{#if isFullScreen}}
+            {{streaming-control
+              classNames="broadcast-stream"
+              model=streamingModel
+              onToggleMic=(action "onToggleMic")
+              onToggleCamera=(action "onToggleCamera")}}
+          {{/if}}
           {{#if displayWatchers}}
             <div class="watchers">
               <div class="watchers-streamer">
@@ -370,6 +382,16 @@
               </div>
             </div>
           {{/if}}
+        </div>
+        <div id="streamer-holder" class="{{if isFullScreen 'fullscreen'}}">
+          <div class="local-stream">
+          </div>
+          <div class="remote-streams">
+            {{#each remoteStreams as |stream|}}
+              {{remote-stream model=stream classNames="remote-stream"}}
+            {{/each}}
+          </div>
+
         </div>
       {{/file-dropzone}}
     </div>

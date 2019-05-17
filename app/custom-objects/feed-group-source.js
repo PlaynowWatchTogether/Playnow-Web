@@ -55,7 +55,7 @@ export default EmberObject.extend(ChatPlaylistHandler, {
       this.db.profile(myID).then((profile)=>{
         payload["creatorName"] = `${profile['FirstName']} ${profile['LastName']}`;
         payload["creatorId"] = profile["id"];
-        payload["creatorAvatar"] = profile["ProfilePic"];
+        payload["creatorAvatar"] = profile["ProfilePic"]||'';
         payload[`Admins/${myID}/id`] = myID;
         const id = this.generateFeedId();
         this.feedRef(id).update(payload).then(()=>{

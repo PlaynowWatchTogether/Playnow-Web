@@ -4,9 +4,6 @@ import {htmlSafe} from '@ember/template'
 import $ from 'jquery';
 import {run} from '@ember/runloop';
 export default Component.extend({
-  style: computed('model', function () {
-    return htmlSafe(`background-image: url(${this.get('model')}); background-position: center;background-size: cover;`);
-  }),
   getMeta(url, callback) {
     var img = new Image();
     img.src = url;
@@ -29,6 +26,9 @@ export default Component.extend({
         }
         $(self.element).addClass('loaded');
         $(self.element).find('.img-fluid').css({
+          'background-position': 'center',
+          'background-size': 'cover',
+          'background-image': `url("${this.get('model')}")`,
           'height':targetHeight,
           'width': targetWidth
         });

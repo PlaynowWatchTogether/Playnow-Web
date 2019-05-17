@@ -516,5 +516,57 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     }
     return this.removePlaylistItemInternal(this.db.ref(ref),video);
   },
+  streamListen(updateCallback){
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Stream";
+    let valueListener = (snapshot) => {
+      let records = [];
+      snapshot.forEach((item) => {
+        let mes = item.val();
+        records.push(mes);
+      });
+      updateCallback(records);
+    };
+    this.listeners[ref] = valueListener;
+    this.db.ref(ref).on('value', valueListener)
+  },
+  publishStream(streamId){
+    const convId = this.convId();
+    const path = this.messageRoot();
+    const senderId = this.myId;
+    let ref = null;
+    if (this.type === 'one2one'){
+
+      ref = `${path}/${convId}/Stream`
+    }
+    if (this.type === 'group'){
+      ref = `${path}/${convId}/Stream`
+    }
+    if (this.type === 'feed'){
+      ref = `channels/feed/${convId}/Stream`
+    }
+    const dbRef = this.db.ref(ref).child(`${senderId}`);
+    dbRef.onDisconnect().remove();
+    return dbRef.set({userId:senderId, stream:streamId});
+  },
+  removeStream(streamId){
+    const convId = this.convId();
+    const path = this.messageRoot();
+    const senderId = this.myId;
+    let ref = null;
+    if (this.type === 'one2one'){
+
+      ref = `${path}/${convId}/Stream`
+    }
+    if (this.type === 'group'){
+      ref = `${path}/${convId}/Stream`
+    }
+    if (this.type === 'feed'){
+      ref = `channels/feed/${convId}/Stream`
+    }
+    const dbRef = this.db.ref(ref).child(`${senderId}`);
+    return dbRef.remove();
+  }
 
 });

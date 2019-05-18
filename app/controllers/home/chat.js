@@ -124,7 +124,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     this.queryVideos(true);
     this.queryMusic(true);
-    $('body').on('click','.messages-holder-full',(event)=>{      
+    $('body').on('click','.messages-holder-full',(event)=>{
       $('.ember-content-editable.messageContent').focus();
     });
   },
@@ -458,36 +458,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     });
     ds.messages((messages) => {
-      const converted = obj.convertServerMessagesToUI(messages,obj.messageConvId());
-      const wrappedMessages = converted.messages;
-      const lastRecord = converted.lastRecord;
-      const uiMessages = [];
-      if (lastRecord){
-        ds.sendSeen(lastRecord.uid);
-      }
-      const type = obj.get('model.type');
-      wrappedMessages.forEach((mesCntent)=>{
-
-        let normalizedData = obj.store.normalize('thread-message', {
-          id: mesCntent.id,
-          convoId: mesCntent.convId,
-          isMessage: mesCntent.isMessage,
-          isDate: mesCntent.isDate,
-          content: JSON.stringify(mesCntent)
-        });
-
-        obj.store.push(normalizedData);
-
-        uiMessages.push(MessageObject.create({
-          content: mesCntent
-        }));
-      })
-      obj.set('blockAutoscroll', false);
-      obj.set('isLoadingMessages', false);
-      obj.updateMessages(uiMessages);
-
-      // obj.notifyPropertyChange('messages');
-      // obj.set('messages', uiMessages);
+      obj.updateRemoteMessages(messages);
     });
 
     let pauseAction = () => {
@@ -683,6 +654,38 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   searchModeObserver: () => {
 
   },
+  updateRemoteMessages(messages){
+    const ds = this.get('dataSource');
+    const converted = this.convertServerMessagesToUI(messages,this.messageConvId());
+    const wrappedMessages = converted.messages;
+    const lastRecord = converted.lastRecord;
+    const uiMessages = [];
+    if (lastRecord && !lastRecord.isLocal){
+      ds.sendSeen(lastRecord.uid);
+    }
+    const type = this.get('model.type');
+    wrappedMessages.forEach((mesCntent)=>{
+
+      let normalizedData = this.store.normalize('thread-message', {
+        id: mesCntent.id,
+        convoId: mesCntent.convId,
+        isMessage: mesCntent.isMessage,
+        isDate: mesCntent.isDate,
+        content: JSON.stringify(mesCntent)
+      });
+
+      this.store.push(normalizedData);
+
+      uiMessages.push(MessageObject.create({
+        content: mesCntent
+      }));
+    })
+    this.set('remoteMessages', messages);
+    this.set('blockAutoscroll', false);
+    this.set('isLoadingMessages', false);
+    this.updateMessages(uiMessages);
+
+  },
   closeVideo() {
     this.closeFullScreen();
     let vsh = this.get('videoStateHandler');
@@ -815,7 +818,16 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let ds = this.get('dataSource');
     let reply = this.get('inReplyTo');
     let uploads = this.get('uploads');
-    ds.sendMessage(this.get('messageText'),uploads, reply);
+    ds.sendMessage(this.get('messageText'),uploads, reply).then((newMessage)=>{
+      const local = JSON.parse(JSON.stringify(newMessage));
+      local.isLocal = true;
+      local.date = new Date().getTime();
+      local.id = newMessage.uid;
+      const localMessages = this.get('remoteMessages');
+      localMessages.pushObject(local);
+      this.updateRemoteMessages(localMessages);
+    });
+
     this.resetUploads();
     this.set('inReplyTo', null);
     this.set('messageText', '');

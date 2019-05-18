@@ -1034,6 +1034,26 @@
               filter: invert(1);
             }
           }
+          .local-message{
+            background: $primary-gradient;
+            padding: 2px;
+            display: flex;
+            width: 15px;
+            height: 15px;
+            right: -17px;
+            bottom: 0;
+            text-align: right;
+            grid-column-start: 2;
+            position: absolute;
+            border-radius: 50%;
+            .local-message-inside{
+              background: white;
+              margin: auto;
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+          }
           .last-seen {
             text-align: right;
             grid-column-start: 2;

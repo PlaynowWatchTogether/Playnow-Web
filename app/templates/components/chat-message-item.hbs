@@ -69,6 +69,12 @@
         {{/unless}}
       </div>
 
+      {{#if isLocal}}
+        <div class="local-message">
+          <div class="local-message-inside">
+          </div>
+        </div>
+      {{/if}}
       {{#if isLastSeen}}
         <div class="last-seen">
           <div class="profilePicWrapper">

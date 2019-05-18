@@ -414,52 +414,60 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     });
   },
   sendMessage(text, attachments=[], inReplyTo = null, video=null) {
-    let senderId = this.myId;
-    let path = this.messageRoot();
-    let convId = this.convId();
-    let msgUid = new Date().getTime().toString() + senderId;
-    let message = {};
-    message['uid'] = msgUid;
-    message['date'] = new Date().getTime() / 1000;
-    message['serverDate'] = this.fb.firebase_.database.ServerValue.TIMESTAMP;
-    message['convoId'] = convId;
-    message['senderId'] = senderId;
-    message['senderName'] = this.auth.current.get('userName');
-    message['type'] = 'text';
-    if (video) {
-      message['type'] = 'VideoRequest';
-      message['video'] = video;
-      message['isMusic'] = video.isMusic;
-    }
-    message['attachments']=[];
-    attachments.forEach((attachment)=>{
-      if (attachment.state === 2){
-        message['attachments'].push({
-          name: attachment.file.name,
-          size: attachment.file.size,
-          type: attachment.file.type,
-          url: attachment.url
-        });
+    return new Promise((resolve)=>{
+      let senderId = this.myId;
+      let path = this.messageRoot();
+      let convId = this.convId();
+      let msgUid = new Date().getTime().toString() + senderId;
+      let message = {};
+      message['uid'] = msgUid;
+      message['date'] = new Date().getTime() / 1000;
+      message['serverDate'] = this.fb.firebase_.database.ServerValue.TIMESTAMP;
+      message['convoId'] = convId;
+      message['senderId'] = senderId;
+      message['senderName'] = this.auth.current.get('userName');
+      message['type'] = 'text';
+      if (video) {
+        message['type'] = 'VideoRequest';
+        message['video'] = video;
+        message['isMusic'] = video.isMusic;
       }
-    });
-    if (inReplyTo){
-      message['inReplyTo'] = inReplyTo;
-    }
-    message['userId'] = senderId;
-    message['message'] = 'web';
-    message['text'] = text;
-    let ref = path + "/" + convId + "/Messages/" + msgUid;
-    this.db.ref(ref).update(message).then(() => {
-      if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
-        this.profile(this.myId).then((myProfile) => {
-          this.membersOnce().then((members) => {
-            members.forEach((member) => {
-              this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
-            });
+      message['attachments']=[];
+      attachments.forEach((attachment)=>{
+        if (attachment.state === 2){
+          message['attachments'].push({
+            name: attachment.file.name,
+            size: attachment.file.size,
+            type: attachment.file.type,
+            url: attachment.url
           });
-        });
+        }
+      });
+      if (inReplyTo){
+        message['inReplyTo'] = inReplyTo;
       }
+      message['userId'] = senderId;
+      message['message'] = 'web';
+      message['text'] = text;
+      let ref = path + "/" + convId + "/Messages/" + msgUid;
+      resolve(message);
+      setTimeout(()=>{
+        this.db.ref(ref).update(message).then(() => {
+
+          if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
+            this.profile(this.myId).then((myProfile) => {
+              this.membersOnce().then((members) => {
+                members.forEach((member) => {
+                  this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
+                });
+              });
+            });
+          }
+        });
+      },1000);
+
     });
+
   },
   loadPlaylist(callback){
     const senderId = this.myId;

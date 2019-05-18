@@ -199,6 +199,9 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let model = this.get('model');
     return model['text'].autoLink();
   }),
+  isLocal: computed('model.isLocal', function(){
+    return this.get('model.isLocal');
+  }),
   isLastSeen: computed('lastSeen', function () {
     let ret = false;
     let seen = this.get('lastSeen');

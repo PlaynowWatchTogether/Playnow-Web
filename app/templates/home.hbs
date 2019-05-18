@@ -2,7 +2,7 @@
 
   <div class="col-friends h-100">
     <div class="row-friends h-100">
-      {{#home-friends-list classNames="h-100 friendsOutlet" model=sortedFriends}}
+      {{#home-friends-list classNames="h-100 friendsOutlet" model=sortedFriends onOpenCompose=(action "onOpenCompose")}}
         {{#if loading}}
           <div class="loading-holder h-100">
             <div class="lds-ripple">

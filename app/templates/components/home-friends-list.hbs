@@ -1,8 +1,8 @@
 <div class="friendsHeader">
   <div class="friendsCompose">
-    {{#link-to "home.chat" "compose" "group"}}
+    <div class="compose" {{action "openCompose"}} role="button">        
       <img src="/assets/friends_compose@2x.png" class="composeIcon" alt="icon">
-    {{/link-to}}
+    </div>
   </div>
   <div class="friendsTitle">
     <span class="friends noselect">Friends</span>

@@ -13,16 +13,26 @@ export default Component.extend({
     this._super(...arguments);
     const self = this;
     let maxWidth = 200;
+    let maxHeight = -1;
     if (this.get('maxWidthSelector')){
       maxWidth = $(this.element).closest(this.get('maxWidthSelector')).width();
+      maxHeight = $(this.element).closest(this.get('maxWidthSelector')).height();
     }
     this.getMeta(this.get('model'), (width, height)=>{
       run(()=>{
         const aspect = height/width;
-        const targetWidth = maxWidth;
+        let targetWidth = maxWidth;
+        let margin=0;
         let targetHeight = targetWidth*aspect;
         if (targetHeight>targetWidth){
           targetHeight = targetWidth;
+        }
+        if (maxHeight!=-1){
+          if (targetHeight<maxHeight){
+            targetHeight = maxHeight;
+            targetWidth = targetHeight/aspect;
+            margin=-(Math.abs(targetWidth-maxWidth))/2;
+          }
         }
         $(self.element).addClass('loaded');
         $(self.element).find('.img-fluid').css({
@@ -30,7 +40,8 @@ export default Component.extend({
           'background-size': 'cover',
           'background-image': `url("${this.get('model')}")`,
           'height':targetHeight,
-          'width': targetWidth
+          'width': targetWidth,
+          'margin-left':margin
         });
       });
 

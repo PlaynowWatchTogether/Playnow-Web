@@ -124,6 +124,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     this.queryVideos(true);
     this.queryMusic(true);
+    $('body').on('click','.messages-holder-full',(event)=>{      
+      $('.ember-content-editable.messageContent').focus();
+    });
   },
   displayWatchers: computed('hasPlayer','playerReady', function(){
     const hasPlayer = this.get('hasPlayer');
@@ -612,7 +615,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     const playlist = get(chat,'Playlist')
     if (playlist){
       let title = 'Playlist';
-      if (this.get('model.type') === 'one2one'){
+      if (this.get('model.type') === 'one2one' || this.get('model.type') === 'group'){
         title = 'Our Playlist';
       }
       if (this.get('model.type') === 'feed'){
@@ -624,11 +627,13 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   }),
   reset() {
-    const localStreamId = this.localStreamId();
-    this.set('playerReady',false);
-    this.set('streamingModel.mic',false);
-    this.set('streamingModel.video',false);
-    this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+    if (!this.get('isCompose')){
+      const localStreamId = this.localStreamId();
+      this.set('playerReady',false);
+      this.set('streamingModel.mic',false);
+      this.set('streamingModel.video',false);
+      this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+    }
 
     this.closeFullScreen();
     $(document).off("keyup.chat");
@@ -652,7 +657,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     if (ds) {
       this.set('playerAction', 10);
       ds.removeWatching();
-      ds.removeStream(localStreamId);
+      ds.removeStream(this.localStreamId());
       ds.stop()
     }
     this.set('hasPlayer', false);

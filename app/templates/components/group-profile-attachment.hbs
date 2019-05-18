@@ -1,10 +1,6 @@
 {{#if isPhoto}}
-	<div class="message-img">
-	  <a rel={{attachmentUrl}} href={{attachmentUrl}} data-lightbox={{attachmentUrl}} >
-	    <img rel={{attachmentUrl}} src={{attachmentUrl}} class="img-fluid">
-	  </a>
-	</div>
-{{else}}	
+	{{chat-message-img model=attachmentUrl classNames="message-img" maxWidthSelector='.group-profile-attachment'}}	
+{{else}}
   <div class="message-attachment-holder">
     <a href={{attachmentUrl}} target="_blank" class="message-attachment-link">
       <div class="message-attachment-wrapper">
@@ -13,8 +9,8 @@
         </div>
         <div class="message-attachment-name">
           {{attachmentName}}
-        </div>      
-      </div>  
+        </div>
+      </div>
     </a>
-  </div>	
-{{/if}} 
+  </div>
+{{/if}}

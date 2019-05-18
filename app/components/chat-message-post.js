@@ -10,18 +10,18 @@ import FeedReactionableElem from '../mixins/feed-reactionable-elem';
 export default Component.extend(MessageAttachmentsWrapper, FeedReactionableElem, {
   db: service(),
   classNameBindings:['isMine:mine'],
-  isMine: computed('model', function(){
+  isMine: computed(function(){
     return this.get('model.senderId') === this.get('db').myId();
   }),
-  postTimeFormatted: computed('model.date', function(){
+  postTimeFormatted: computed(function(){
       return moment(this.get('model.date')).format('ddd, hh:mm A');
   }),
 
-  attachments: computed('model', function(){
+  attachments: computed(function(){
     let model = this.get('model');
     return this.wrapMessageAttachments(model);
   }),
-  hasText: computed('model.text', function(){
+  hasText: computed(function(){
     return (this.get('model.text')||'').trim().length>0;
   }),
   actions: {

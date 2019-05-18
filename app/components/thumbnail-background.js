@@ -6,7 +6,7 @@ import {run} from '@ember/runloop';
 export default Component.extend({
   attributeBindings: ['style'],
   style: computed('model', function () {
-    return htmlSafe(`background-image: url(${this.get('model')})`);
+    return htmlSafe(`background-image: url("${this.get('model')}")`);
   }),
   didInsertElement: function didInsertElement() {
     this._super.apply(this, arguments);

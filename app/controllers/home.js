@@ -13,18 +13,15 @@ export default Controller.extend({
     triggerSearch() {
       $('.trigger-search').addClass('active');
       this.transitionToRoute('search', {query: this.get('searchQuery')});
+    },
+    onOpenCompose(){
+      this.transitionToRoute("home.chat","compose","group");
     }
   },
-  contactList: computed('friends.@each.{latestMessageDate,FirstName,LastName,profilePic,isOnline,videoIsPlaying}', 'groups.@each.{latestMessageDate,videoType}', function () {
-    let f = (this.get('friends') || []).map((elem) => {
-      return FriendListItemObj.create({type: 'friend', content: elem})
-    });
-    let g = (this.get('groups') || []).map((elem) => {
-      return FriendListItemObj.create({type: 'group', content: elem})
-    });
-    return f.concat(g)
+  storeFriends: computed(function(){
+    return this.store.peekAll('home-friend');
   }),
-  sortedFriends: sort('contactList.@each.{latestMessageDate,FirstName,LastName,profilePic,videoType,}', function (a, b) {
+  sortedFriends: sort('storeFriends.@each.{latestMessageDate,FirstName,LastName,profilePic,isOnline,videoIsPlaying}', function (a, b) {
     if (a.get('latestMessageDate') > b.get('latestMessageDate')) {
       return -1;
     } else if (a.get('latestMessageDate') < b.get('latestMessageDate')) {

@@ -71,6 +71,7 @@
           margin-top: auto;
           margin-bottom: auto;
           font-size: 110%;
+          word-break: break-word;
           margin-left: 10px;
         }
         .post-time{
@@ -272,6 +273,9 @@
       }
       .feed-event-body{
         margin-left: 20px;
+        .feed-event-pic{
+          margin-left: -20px
+        }
         .feed-event-header{
           .feed-event-title{
             text-shadow: 1px 1px 2px lightgrey;

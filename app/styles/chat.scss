@@ -284,6 +284,9 @@
   }
   .broadcast-stream{
     @include streaming-control;
+    position: absolute;
+    right: 0;
+    height: 45px;
   }
   &.group{
     .titleHolder{

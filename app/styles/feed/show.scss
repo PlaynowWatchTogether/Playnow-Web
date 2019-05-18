@@ -432,6 +432,7 @@ $post-content-width: 63.8%;
                     padding-left: 10px;
                     padding-right: 10px;
                     font-size: 100%;
+                    word-break: break-word;
                   }
                   .post-header{
                     padding-left: 8px;
@@ -802,11 +803,21 @@ $post-content-width: 63.8%;
                 place-items: center;
                 padding-left: 10px;
                 padding-right: 10px;
-                .back-icon{
-                  cursor: pointer;
-                  flex: 0 0 auto;
+                .back{
                   position: absolute;
+                  width: 40px;
+                  height: 45px;
+                  display: flex;
+                  cursor: pointer;
+                  place-content: center;
+                  align-content: center;
+                  place-items: center;
+                  align-items: center;
+                  .back-icon{
+
+                  }
                 }
+
                 .create-label{
                   flex: 1 1 auto;
                   text-align: center;

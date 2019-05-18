@@ -39,6 +39,9 @@ export default Component.extend({
   actions: {
     loadMore() {
       this.set('limit', this.get('limit') + 10);
+    },
+    openCompose(){
+      this.get('onOpenCompose')();
     }
   }
 });

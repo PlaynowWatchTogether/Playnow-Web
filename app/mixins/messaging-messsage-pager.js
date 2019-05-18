@@ -26,6 +26,10 @@ export default Mixin.create({
           $('.messagesHolder').addClass('loading');
           $('.messagesHolder').animate({'scrollTop':$('.messagesHolder').scrollTop()+elem.offset().top-145-elem.height()}, ()=>{
             $('.messagesHolder').removeClass('loading');
+            elem.addClass('blinks');
+            setTimeout(()=>{
+              elem.removeClass('blinks');
+            },2000);
           });
         });
     },500);

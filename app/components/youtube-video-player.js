@@ -118,7 +118,7 @@ export default Component.extend({
     $('#youtubeHolder .overlay').height(height);
     $('#youtubeHolder .controlsOverlay').height(height);
     $('.watchers-holder').height(height);
-    if (this.get('video.video.videoType') === 'youtube#video'){
+    if (this.get('video.video.videoType') === 'youtube#video' || this.get('video.video.videoType') === 'youtube#music'){
       debug('Create yt player width ' + $('#youtubeHolder').width());
       window.globalPlayer = new YT.Player('ytplayer', {
         height: height,
@@ -356,7 +356,7 @@ export default Component.extend({
     debug('model');
   },
   queueVideoToPlayer(player,video,seconds){
-    if (get(video,'videoType') === 'youtube#video'){
+    if (get(video,'videoType') === 'youtube#video' || get(video,'videoType') === 'youtube#music'){
       player.cueVideoById(video['videoId'], seconds);
     }else if (get(video,'videoType') === 'crunchyroll#media'){
       player.src([
@@ -383,8 +383,8 @@ export default Component.extend({
   },
   getVideoState:computed(function(){
     const v = this.get('video');
-    const category = v.video.videoCategory;
-    if (category === "10"){
+    const category = v.video.videoType;
+    if (category === "youtube#music"){
         return 0;
     }
     return 1;

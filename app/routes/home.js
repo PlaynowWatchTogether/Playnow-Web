@@ -4,8 +4,8 @@ import MessageDataSource from "../custom-objects/message-data-source";
 import {hash} from 'rsvp';
 import $ from 'jquery';
 import {Promise} from 'rsvp';
-export default Route.extend({
-  db: service(),
+import ApplicationFriendsMixin from '../mixins/application-friends-mixin';
+export default Route.extend(ApplicationFriendsMixin, {
   firebaseApp: service(),
   auth: service(),
   gcmManager: service(),
@@ -32,112 +32,13 @@ export default Route.extend({
       profile: this.store.find('user', this.get('user').uid)
     });
   },
-  handleGroupMessages(groups) {
-    const myId = this.get('db').myId();
-    this.groupListeners.forEach((mds) => {
-      mds.stop();
-    });
-    this.groupListeners.clear();
-    groups.forEach((friend) => {
-      let mds = MessageDataSource.create({
-        type: 'group',
-        gcmManager: this.gcmManager,
-        group: friend,
-        myId: this.firebaseApp.auth().currentUser.uid,
-        db: this.firebaseApp.database(),
-        auth: this.auth
-      });
-      mds.membersOnce().then((members) => {
-        let pics = members.slice(0, 3).map((elem) => {
-          return elem['ProfilePic'];
-        });
-        let normalizedData = this.store.normalize('group', {id: friend.id, groupPics: pics.concat(',')});
-        this.store.push(normalizedData);
-      });
-
-      mds.messages((groupMessages) => {
-        let sorted = groupMessages.sort(function (a, b) {
-          return b['date'] - a['date'];
-        });
-
-        let notEmpty = sorted.filter((elem) => {
-          return elem['text'] && elem['text'].length > 0
-        });
-
-        let last = notEmpty.firstObject;
-        if (last) {
-          let name = last.senderName;
-          if (last.senderId === myId){
-            name = 'You';
-          }
-          let normalizedData = this.store.normalize('group', {id: friend.id, lastMessage: `${name} ${last.text}`});
-          this.store.push(normalizedData);
-        }
-      });
-      this.groupListeners.push(mds);
-    })
-
-  },
   activate() {
     this._super(...arguments);
     let ctrl = this.controllerFor('home');
-    ctrl.set('friends', this.store.peekAll('friends'));
-    ctrl.set('groups', this.store.peekAll('group'));
-    ctrl.set('loading', true);
-    const myId = this.get('db').myId();
-    this.get('db').friends((friends) => {
-
-      friends.forEach((friend) => {
-        let normalizedData = this.store.normalize('friends', friend);
-        this.store.push(normalizedData);
-
-        let mds = MessageDataSource.create({
-          gcmManager: this.gcmManager,
-          type: 'one2one',
-          user: friend,
-          myId: this.firebaseApp.auth().currentUser.uid,
-          db: this.firebaseApp.database(),
-          auth: this.auth
-        });
-        mds.messagesOnce((messages) => {
-
-          let sorted = messages.sort(function (a, b) {
-            return b['date'] - a['date'];
-          });
-          let notEmpty = sorted.filter((elem) => {
-            return elem['text'] && elem['text'].length > 0
-          });
-
-          let last = notEmpty.firstObject;
-          if (last) {
-            let name = last.senderName;
-            if (last.senderId === myId){
-              name = 'You';
-            }
-            let normalizedData = this.store.normalize('friends', {id: friend.id, lastMessage: `${name}: ${last.text}`});
-            this.store.push(normalizedData);
-          }
-        })
-
-
-      });
-      ctrl.set('loading', false);
-
-    }, () => {
-
-    });
-    this.get('db').groups((friends) => {
-
-      friends.forEach((friend) => {
-        friend['videoType'] = friend['videoType'] || '';
-        let normalizedData = this.store.normalize('group', friend);
-        this.store.push(normalizedData);
-      });
-      this.handleGroupMessages(friends);
-      ctrl.set('loading', false);
-    }, () => {
-
-    });
+    // ctrl.set('friends', this.store.peekAll('friends'));
+    // ctrl.set('groups', this.store.peekAll('group'));
+    // ctrl.set('loading', true);    
+    this.syncFriends();
     $('body').addClass('home');
   },
   deactivate() {

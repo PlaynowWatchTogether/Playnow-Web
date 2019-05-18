@@ -802,6 +802,7 @@ body.home.chat.room {
     position: relative;
     border-bottom: 1px solid #E6E6E6;
     place-items: center;
+    align-items: center;
     .friendsCompose {
       position: absolute;
       right: 0;
@@ -809,8 +810,9 @@ body.home.chat.room {
       display: flex;
       padding-left: 15px;
       padding-right: 15px;
-      a{
-          margin: auto;
+      cursor: pointer;
+      .compose{
+        display: flex;
       }
     }
     .friendsTitle {
@@ -3234,6 +3236,7 @@ CHAT
       display: flex;
       flex-wrap: wrap;
       .group-profile-attachment{
+        overflow: hidden;
         width: 150px;
         height: 150px;
         margin-right: 20px;

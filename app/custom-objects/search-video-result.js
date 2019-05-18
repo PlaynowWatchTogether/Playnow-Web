@@ -4,7 +4,7 @@ import {Promise} from 'rsvp';
 import { computed } from '@ember/object';
 export default EmberObject.extend({
   thumbnail: computed('data', function(){
-    if (this.data.kind === 'youtube#video'){
+    if (this.data.kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.data['snippet']['thumbnails']['medium']['url'];
     }
     if (this.data.kind === 'crunchyroll#media'){
@@ -16,13 +16,13 @@ export default EmberObject.extend({
     return '';
   }),
   category: computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.data.snippet.categoryId;
     }
     return '';
   }),
   iconUrl: computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return '/assets/ic-video-provider-youtube-active@2x.png';
     }
     if (this.data.kind === 'crunchyroll#media'){
@@ -34,7 +34,7 @@ export default EmberObject.extend({
     return ''
   }),
   title: computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.get('data')['snippet']['title'];
     }
     if (this.data.kind === 'crunchyroll#media'){
@@ -46,7 +46,7 @@ export default EmberObject.extend({
     return '';
   }),
   description: computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.get('data')['snippet']['channelTitle'];
     }
     if (this.data.kind === 'crunchyroll#media'){
@@ -58,7 +58,7 @@ export default EmberObject.extend({
     return '';
   }),
   createdAt:computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.get('data')['snippet']['publishedAt'];
     }
     if (this.data.kind === 'crunchyroll#media'){
@@ -85,7 +85,7 @@ export default EmberObject.extend({
     return this.get('data.playlistId');
   }),
   id: computed('data', function(){
-    if (this.get('data').kind === 'youtube#video'){
+    if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
       return this.get('data')['id'];
     }
     if (this.data.kind === 'crunchyroll#media'){

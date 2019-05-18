@@ -29,7 +29,7 @@ export default Mixin.create(YoutubeSearch, {
   videoDetails(video){
     return new Promise((resolve, reject)=>{
       const data = video.get('data');
-      if (data.kind === 'youtube#video'){
+      if (data.kind === 'youtube#video' || data.kind === 'youtube#music'){
 
         resolve(video);
       }else if (data.kind === 'crunchyroll#media'){

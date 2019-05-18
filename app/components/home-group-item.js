@@ -23,7 +23,7 @@ export default Component.extend({
   }),
   playing: computed('model.videoType', function () {
     let type = this.get('model.videoType');
-    return type === 'youtubeVideo' || type === 'youtubeMusic'
+    return type ? 'playing':'';
   }),
   members: computed('model.groupPics', function () {
     let profilePics = this.get('model.groupPics');

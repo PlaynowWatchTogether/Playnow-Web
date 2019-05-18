@@ -1,5 +1,7 @@
 <div class="events-show-header">
-  <img class="back-icon" src="/assets/ic_arrow_back@2x.png" alt="icon" {{action 'cancelShowEvent'}}>
+  <div class="back"  {{action 'cancelShowEvent' bubbles=false}} role="button">
+    <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+  </div>
   <div class="create-label">
     {{model.title}}
   </div>

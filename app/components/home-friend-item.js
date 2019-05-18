@@ -23,31 +23,12 @@ export default Component.extend({
   unread: computed('model.hasNewMessages', function () {
     return this.get('model.hasNewMessages');
   }),
-  displayName: computed('model.Username', 'model.firstName', 'model.lastName', function () {
-    let username = this.get('model.Username');
-    let firstName = this.get('model.firstName');
-    let lastName = this.get('model.lastName');
-
-    if (!username) {
-      return [firstName, lastName].join(" ");
-    }
-    if (username.includes('@')) {
-      return username.split('@')[0]
-    }
-    return username;
-  }),
   modelObserver() {
 
   },
   lastMessageText: computed('model.lastMessage', function () {
     return htmlSafe(emojione.shortnameToUnicode(this.get('model.lastMessage')||'').replace(/(<([^>]+)>)/ig,""));
   }),
-  didInsertElement() {
-    this._super(...arguments);
-
-    // this.get('db')
-
-  },
   willDestroyElement() {
     let ds = this.get('dataSource');
     if (ds) {

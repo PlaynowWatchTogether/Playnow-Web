@@ -40,7 +40,7 @@ export default Service.extend({
     gapi.client.init({
         'apiKey': 'AIzaSyAC97r5YG4QYJfVwHXusD8YbhWrycChPqM',
         'clientId': '491254045283-1r5el6pld31hbq0o57ajrbsbpjuka3vq.apps.googleusercontent.com',
-        'scope': 'https://www.googleapis.com/auth/youtube.force-ssl',
+        'scope': 'https://www.googleapis.com/auth/youtube.readonly',
         'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest']
     }).then(() =>{
         window.youtubeService.initComplete();
@@ -106,10 +106,14 @@ export default Service.extend({
     return new Promise((resolve) => {
       let category = music ? "&videoCategoryId=10" : '';
       let pageQ = page ? '&pageToken=' + page : '';
+      let kind = music ? 'youtube#music': 'youtube#video';
       $.getJSON(VIDEOS_URL + '?' + API_KEY + '&part=id,snippet,statistics&type=video&videoEmbeddable=true&chart=mostPopular&maxResults=10' + category + pageQ, null, (data) => {
         resolve({
           nextPage: data['nextPageToken'],
-          items: data['items'],
+          items: data['items'].map((elem)=>{
+            elem['kind']=kind;
+            return elem;
+          }),
           pageInfo: data['pageInfo']
         });
       })

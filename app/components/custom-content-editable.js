@@ -147,9 +147,11 @@ export default Component.extend({
   },
 
   keyDown(event) {
-    if (event.keyCode === 27) {
+    var key = event.key || event.keyCode;
+
+    if (key === 'Escape' || key === 'Esc' || key === 27) {
       this.get('escape-press')(event);
-    } else if (event.keyCode === 13) {
+    } else if (key === 'Enter' || key === 13) {
       if (!event.ctrlKey) {
 
         this.get('enter')(event);

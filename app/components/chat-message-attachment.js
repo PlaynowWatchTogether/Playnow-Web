@@ -1,6 +1,10 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 export default Component.extend({
+  classNameBindings:['isActive:active'],
+  isActive: computed('currentPosition','index',function(){
+    return this.get('currentPosition') === this.get('index');
+  }),
   isPhoto: computed(function () {
     let model = this.get('model');
     let type = model['type'];

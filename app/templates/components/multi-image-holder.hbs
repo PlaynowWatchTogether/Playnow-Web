@@ -1,0 +1,11 @@
+<div class="control-prev control {{if hasPrev 'visible'}}" role="button" {{action "displayPrev" bubbles=false}}>
+  <img src="/assets/ic_multiple_images_next.svg" alt="prev">
+</div>
+<div class="images">
+  {{#each model as |image index|}}
+    {{chat-message-attachment model=image classNames=itemClass index=index currentPosition=currentPosition maxWidthSelector=maxWidthSelector}}
+  {{/each}}
+</div>
+<div class="control-next control {{if hasNext 'visible'}}"  role="button" {{action "displayNext" bubbles=false}}>
+  <img src="/assets/ic_multiple_images_next.svg" alt="prev">
+</div>

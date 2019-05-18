@@ -16,7 +16,7 @@
     {{#if hasText}}
       <div class="post-message">
         {{emoji-parse model.text}}
-      </div>          
+      </div>
     {{/if}}
   {{else}}
     {{#if hasText}}
@@ -29,9 +29,12 @@
       </div>
     {{/if}}
   {{/unless}}
-  {{#if attachments}}
+  {{#if allAttachments}}
     {{#unless hideAttachments}}
       <div class="post-attachments">
+        {{#if imageAttachments}}
+          {{multi-image-holder classNames="multi-image-holder" model=imageAttachments itemClass="post-attachment-item" maxWidthSelector='.post-attachments'}}
+        {{/if}}
         {{#each attachments as |attachment|}}
           {{chat-message-attachment model=attachment classNames="post-attachment-item" maxWidthSelector='.post-attachments'}}
         {{/each}}

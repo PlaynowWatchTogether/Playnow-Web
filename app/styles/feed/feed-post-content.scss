@@ -1,3 +1,5 @@
+@import '../component-styles/multi-image-holder.scss';
+
 @mixin feed-post-content{
   box-shadow: $message-shadow;
   display: flex;
@@ -59,6 +61,9 @@
   }
   .post-attachments{
     padding-bottom: 10px;
+    .multi-image-holder{
+      @include multi-image-holder;
+    }
     .post-attachment-item{
       .message-video{
         margin-left: -10px;
@@ -92,7 +97,7 @@
     }
     .message-img{
       .img-fluid{
-        
+
       }
     }
   }

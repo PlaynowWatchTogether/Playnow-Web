@@ -1,0 +1,50 @@
+@import '../vars.scss';
+@mixin multi-image-holder{
+  position: relative;
+  .control{
+    box-shadow: $message-shadow;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    display: none;
+    align-items: center;
+    place-items: center;
+    top: 50%;
+    padding: 15px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    &:hover{
+      background: rgb(218, 218, 218);
+    }
+    &.visible{
+      display: flex;
+    }
+    &.control-next{
+      right: 15px;
+    }
+    &.control-prev{
+      left: 15px;
+      img{
+        -moz-transform: scaleX(-1);
+       -o-transform: scaleX(-1);
+       -webkit-transform: scaleX(-1);
+       transform: scaleX(-1);
+       filter: FlipH;
+       -ms-filter: "FlipH";
+      }
+    }
+    img{
+      width: 15px;
+      height: 15px;
+    }
+  }
+  .images{
+    display: flex;
+    .post-attachment-item{
+      display: none;
+      &.active{
+        display: block;
+      }
+    }
+  }
+}

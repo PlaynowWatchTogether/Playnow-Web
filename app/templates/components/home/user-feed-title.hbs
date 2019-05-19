@@ -14,7 +14,7 @@
     </div>
   {{else}}
     {{#if isFollowing}}
-      <div class="action-following" {{action "unFollowGroup" model}}>
+      <div class="action-following" {{action "unFollowGroup" model bubbles=false}}>
         <div class="simple">Following</div>
         <div class="action">Unfollow</div>
       </div>
@@ -23,7 +23,7 @@
         Requested
       </div>
     {{else}}
-      <div class="action-follow" {{action "followGroup" model}}>
+      <div class="action-follow" {{action "followGroup" model bubbles=false}}>
         <img src="/assets/ic_plus@2x.png" alt="icon">
         <div>Follow</div>
       </div>

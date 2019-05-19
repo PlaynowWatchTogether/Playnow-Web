@@ -25,8 +25,7 @@ export default Component.extend(FeedActionsMixins, {
   click(event){
     if ($(event.target).closest('.post-comments').length>0){
       return;
-    }
-    this.get('openDetails')(this.get('localFeed'));
+    }  
   },
   isLive: computed('model.type', function(){
     return this.get('model.type') === 'live';
@@ -49,5 +48,10 @@ export default Component.extend(FeedActionsMixins, {
   }),
   localFeed: computed('model.localFeed',function(){
     return FeedModelWrapper.create({content:this.get('model.localFeed')});
-  })
+  }),
+  actions:{
+    openDetails(){
+      this.get('openDetails')(this.get('localFeed'));
+    }
+  }
 });

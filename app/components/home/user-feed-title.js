@@ -5,6 +5,9 @@ import FeedActionsMixins from '../../mixins/feed/feed-actions';
 export default Component.extend(FeedActionsMixins, {
   store: service(),
   db: service(),
+  click(){
+    this.get('clickAction')();
+  },
   isOwner: computed('model', function(){
     if (this.get('model')){
       return this.get('model').isOwner(this.db.myId());

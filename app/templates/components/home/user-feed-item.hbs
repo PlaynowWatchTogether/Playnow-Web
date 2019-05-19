@@ -1,13 +1,13 @@
 {{#if isLive}}
   <div class="user-feed-item-live-wrapper {{if liveActive "active"}}">
     <div class="user-feed-item-live user-feed-item">
-      {{home/user-feed-title model=localFeed classNames="feed-title-holder"}}
+      {{home/user-feed-title model=localFeed classNames="feed-title-holder" clickAction=(action "openDetails")}}
       {{home/user-feed-live model=localFeed videoState=model.content liveActive=liveActive}}
     </div>
   </div>
 {{else if isEvent}}
   <div class="user-feed-item-event user-feed-item">
-    {{home/user-feed-title model=localFeed classNames="feed-title-holder"}}
+    {{home/user-feed-title model=localFeed classNames="feed-title-holder" clickAction=(action "openDetails")}}
     {{feed-event-list-item
       model=localEvent
       classNames="event-content"
@@ -19,7 +19,7 @@
   </div>
 {{else if isMessage}}
   <div class="user-feed-item-post user-feed-item">
-    {{home/user-feed-title model=localFeed classNames="feed-title-holder"}}
+    {{home/user-feed-title model=localFeed classNames="feed-title-holder" clickAction=(action "openDetails")}}
     {{chat-message-post
       model=localFeedMessage
       hasFooter=true

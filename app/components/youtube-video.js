@@ -29,7 +29,18 @@ export default Component.extend(YoutubeVideoView, {
       this.clickAction(this.get('model'));
     },
     removeVideo(){
-      this.removeAction(this.get('model'))
+      if (this.get('isRemovable')){
+        this.removeAction(this.get('model'))
+      }else{
+        const videoId = this.get('model.id');
+        const videos = this.get('playlistModel.videos')||[];
+        videos.forEach((vid)=>{
+          if (get(vid,'id') === videoId){
+            this.removeAction(vid);
+            return;
+          }
+        });
+      }
     },
     addVideo(){
       this.addAction(this.get('model'));

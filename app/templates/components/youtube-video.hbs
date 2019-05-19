@@ -33,7 +33,7 @@
 {{/if}}
 {{#if canAdd}}
   {{#if isOnPlaylist}}
-    <div class="youtube-video-add">
+    <div class="youtube-video-add" {{action 'removeVideo' bubbles=false}} role="button">
       <img src="/assets/ic_done_24px.svg" alt='added video' class="icon">
       <div class="label">Added</div>
     </div>

@@ -14,7 +14,7 @@
       </div>
     {{/search-holder}}
   </div>
-  {{videos-list-auth-ui classNames="login-providers" providers=videoProviders onProviderChanged=(action "videoProvidersChanged")}}  
+  {{videos-list-auth-ui classNames="login-providers" providers=videoProviders onProviderChanged=(action "videoProvidersChanged")}}
   {{yield}}
   {{#if playlistModel}}
     {{chat-videos-playlist
@@ -46,6 +46,7 @@
                        canAdd=canEditPlaylist
                        playlistModel=playlistModel
                        addAction=(action "videoAddToPlaylist")
+                       removeAction=(action 'playlistVideoRemove')
                        displayRequest=displayVideoRequest}}
 
       {{/youtube-video}}

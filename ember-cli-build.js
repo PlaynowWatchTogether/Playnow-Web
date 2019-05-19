@@ -9,6 +9,7 @@ module.exports = function(defaults) {
     },
     fingerprint: {
       enabled: true,
+      exclude:['assets/gcm-icon.png'],
       generateAssetMap: true
     }
     // nodeModulesToVendor: [

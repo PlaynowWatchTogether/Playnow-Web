@@ -144,9 +144,10 @@
                   <span class="video-title noselect"></span>
                   <div class="mute" role="button" {{action "videoPlayerMute"}}>
                     {{#if videoMute}}
-                      <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
-                    {{else}}
                       <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
+                    {{else}}
+                      <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
+
                     {{/if}}
                   </div>
                   <div class="full" role="button" {{action "videoPlayerFullWindow"}}>
@@ -211,9 +212,10 @@
               <div class="controls">
                 <div class="mute" role="button" {{action "videoPlayerMute"}}>
                   {{#if videoMute}}
-                    <img src="/assets/ic_mute_on_black@2x.png" alt="mute">
-                  {{else}}
                     <img src="/assets/ic_mute_off_black@2x.png" alt="mute">
+
+                  {{else}}
+                    <img src="/assets/ic_mute_on_black@2x.png" alt="mute">
                   {{/if}}
                 </div>
                 <div class="collapse-video" role="button" {{action "videoPlayerExpand"}}>
@@ -233,6 +235,7 @@
         {{/if}}
         <div class="messages-holder-full">
           <div class="messages-holder-content">
+
             {{#end-scrollable classNames="messagesHolder"
                               blockScroll=blockAutoscroll
                               onScrolledHalf=(action "loadMore")
@@ -241,10 +244,7 @@
                               itemTimeSelector=".chat-message-time-item"}}
               {{#if isLoadingMessages}}
                 <div class="loading-holder h-100">
-                  <div class="lds-ripple">
-                    <div></div>
-                    <div></div>
-                  </div>
+                  {{loading-view}}
                 </div>
               {{/if}}
               <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
@@ -290,17 +290,12 @@
                       </div>
                     {{/each}}
                   </div>
-                  <div class="message-scroll-date-holder">
-                    <div class="title">
-                      Today
-                    </div>
-                  </div>
                 {{/unless}}
 
               </div>
             {{/end-scrollable}}
             {{#if inReplyTo}}
-              <div class="in-reply-to">
+              <div class="in-reply-to {{if isFullScreen 'fullscreen'}}">
                 <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
                 <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
                 <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
@@ -329,6 +324,11 @@
               <div class="imgHolder">
 
                 <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
+              </div>
+            </div>
+            <div class="message-scroll-date-holder">
+              <div class="title">
+                Today
               </div>
             </div>
           </div>
@@ -372,9 +372,9 @@
             <div class="controls">
               <div class="mute" role="button" {{action "videoPlayerMute"}}>
                 {{#if videoMute}}
-                  <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
-                {{else}}
                   <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
+                {{else}}
+                  <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
                 {{/if}}
               </div>
               <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
@@ -433,7 +433,7 @@
                                     onScrolledHalf=(action "scrolledHalfYoutubeMusic") scrollParent=".tab-content"
                                     loading=loadingMusic}}
               <div class="searchHolder">
-                {{#search-holder classNames="search" }}
+                {{#search-holder classNames="search" tagName="form"}}
                   <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
                   {{input value=searchQueryMusic classNames="searchInput" placeholder="Search content"
                           insert-newline=(action "triggerSearch") autocomplete="off" name="musicSearch"}}
@@ -445,10 +445,7 @@
               </div>
               {{#if isLoadingMusic}}
                 <div class="loading-holder h-100">
-                  <div class="lds-ripple">
-                    <div></div>
-                    <div></div>
-                  </div>
+                  {{loading-view}}
                 </div>
               {{/if}}
               {{#each youtubeMusicItems as |video|}}

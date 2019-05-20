@@ -41,6 +41,7 @@ body.fullscreen-video{
         flex-direction: column;
         place-items: flex-end;
         align-items: flex-end;
+        align-self: flex-end;
         padding-bottom: 20px;
         padding-right: 20px;
       }
@@ -82,6 +83,7 @@ body.fullscreen-video{
     z-index: 100;
     height: 100% !important;
     #ytplayer{
+      padding-right: $sidebar-width;
       background: #000;
       height: 100% !important;
       width: 100% !important;
@@ -151,16 +153,6 @@ body.fullscreen-video{
       flex: 1 0 auto;
       pointer-events: all;
       width: 100px;
-      .in-reply-to{
-        color: white;
-        .reply-text{
-          border-left-color: white !important;
-          color: white !important;
-        }
-        .reply-close{
-          filter: invert(1);
-        }
-      }
       .messagesHolder{
         .message-scroll-date-holder{
           padding-right: $sidebar-width !important;

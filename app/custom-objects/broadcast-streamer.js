@@ -70,7 +70,7 @@ export default EmberObject.extend({
           OfferToReceiveVideo : false
 
       };
-      var mediaConstraints = {          
+      var mediaConstraints = {
           audio : true,
           video: {width: {exact: 320}, height: {exact: 240}}
       };

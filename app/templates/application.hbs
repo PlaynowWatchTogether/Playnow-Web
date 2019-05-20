@@ -6,7 +6,7 @@
           <img src="/assets/main.png" class="play-icon" alt="icon">
         </a>
         <div class="search-holder">
-          {{#search-holder classNames="search" }}
+          {{#search-holder classNames="search" tagName="form"}}
             <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
             {{input value=searchQuery classNames="searchInput" placeholder="Search"
                     insert-newline=(action "triggerSearch") autocomplete='off'}}

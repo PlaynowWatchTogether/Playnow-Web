@@ -60,6 +60,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
               this.set('playerReady',false);
               this.set('playerAction', 0);
               this.set('playerVideo', null);
+              this.set('videoPlayerState',1);
               setTimeout(()=>{
                 this.set('hasPlayer', true);
                 this.set('playerAction', 0);
@@ -204,6 +205,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   modelObserver: (obj) => {
     $(document).on('keyup.chat',(event)=>{
       if (27 === event.keyCode){
+        if (obj.get('isFullScreen')){
+          obj.closeFullScreen();
+          return;
+        }
         if (obj.get('displayEmoji')){
           obj.set('displayEmoji',false);
           return;

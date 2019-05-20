@@ -10,7 +10,7 @@ export default Component.extend({
 
   },
   mediaUrl:computed('model', function(){
-    return `http://stream.tunebrains.com/WebRTCApp/streams/${this.get('model.stream')}.ts`;
+    return `https://stream.tunebrains.com/WebRTCApp/streams/${this.get('model.stream')}.ts`;
   }),
   videoElemId: computed(function(){
     return `${this.elementId}-video`;
@@ -44,7 +44,7 @@ export default Component.extend({
 			}
 
 			flowplayer(`#${this.get('videoElemId')}`, {
-				poster : "http://stream.tunebrains.com/WebRTCApp/previews/" + preview + ".png",
+				poster : "https://stream.tunebrains.com/WebRTCApp/previews/" + preview + ".png",
 				autoplay : true,
 				ratio : 9 / 16,
 				fullscreen : false,
@@ -53,7 +53,7 @@ export default Component.extend({
 					live : liveStream,
 					sources : [ {
 						type : type,
-						src : "http://stream.tunebrains.com/WebRTCApp/streams/" + name + "." + extension + "?token=" + token
+						src : "https://stream.tunebrains.com/WebRTCApp/streams/" + name + "." + extension + "?token=" + token
 					} ]
 				},
 				hlsjs: {
@@ -65,7 +65,7 @@ export default Component.extend({
 		},
   tryToPlay(name, token)
   {
-  	fetch("http://stream.tunebrains.com/WebRTCApp/streams/"+ name +".m3u8", {method:'HEAD'})
+  	fetch("https://stream.tunebrains.com/WebRTCApp/streams/"+ name +".m3u8", {method:'HEAD'})
   	.then((response) =>{
   		if (response.status == 200) {
   			// adaptive m3u8 exists,play it
@@ -74,7 +74,7 @@ export default Component.extend({
   		else
   		{
   			//adaptive m3u8 not exists, try m3u8 exists.
-  			fetch("http://stream.tunebrains.com/WebRTCApp/streams/"+ name +".m3u8", {method:'HEAD'})
+  			fetch("https://stream.tunebrains.com/WebRTCApp/streams/"+ name +".m3u8", {method:'HEAD'})
   			.then((response) =>{
   				if (response.status == 200) {
   					//m3u8 exists, play it
@@ -82,7 +82,7 @@ export default Component.extend({
   				}
   				else {
   					//no m3u8 exists, try vod file
-  					fetch("http://stream.tunebrains.com/WebRTCApp/streams/"+ name +".mp4", {method:'HEAD'})
+  					fetch("https://stream.tunebrains.com/WebRTCApp/streams/"+ name +".mp4", {method:'HEAD'})
   					.then((response)=> {
   						if (response.status == 200) {
   							//mp4 exists, play it

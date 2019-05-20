@@ -11,6 +11,9 @@ export default Mixin.create({
   },
   queryYoutubeMusic(reset) {
     return new Promise((resolve) => {
+      if (reset){
+        this.set('youtubeMusicItemsPage',null);
+      }
       let q = this.get('searchQueryMusic');
       let page = this.get('youtubeMusicItemsPage');
       if (reset) {
@@ -48,6 +51,9 @@ export default Mixin.create({
   },
   queryYoutubeVideos(reset) {
     return new Promise((resolve) => {
+      if (reset){
+        this.set('youtubeVideoItemsPage',null);
+      }
       let q = this.get('searchQueryVideo');
       let page = this.get('youtubeVideoItemsPage');
       if (!q || q.length === 0) {

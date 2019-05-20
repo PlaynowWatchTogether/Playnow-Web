@@ -16,10 +16,7 @@
 <div class="friendsList">
 
   {{#if loading}}
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
+    {{loading-view}}
   {{/if}}
   {{#each model as |friend|}}
     <div class="friend row">

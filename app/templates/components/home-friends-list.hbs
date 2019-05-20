@@ -1,6 +1,6 @@
 <div class="friendsHeader">
   <div class="friendsCompose">
-    <div class="compose" {{action "openCompose"}} role="button">        
+    <div class="compose" {{action "openCompose"}} role="button">
       <img src="/assets/friends_compose@2x.png" class="composeIcon" alt="icon">
     </div>
   </div>
@@ -12,10 +12,10 @@
                   handleEnd=true blockScroll=true}}
   <div class="friends-wrapper">
     <div class="friendsSearchHolder {{unless friendsQuery 'empty'}}">
-      {{#search-holder classNames="search" searchSelector="input" closeSelector=".close-search"}}
+      {{#search-holder classNames="search" searchSelector="input" closeSelector=".close-search" tagName="form"}}
 
         <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-        {{input value=friendsQuery classNames="searchInput" placeholder="Search in messaging" autocomplete='off'}}
+        {{input value=friendsQuery classNames="searchInput" placeholder="Search in messaging" name="search-friends" autocomplete="disabled"}}
         <img src="/assets/ic_music_close.png" class="close-search" alt="close">
       {{/search-holder}}
     </div>

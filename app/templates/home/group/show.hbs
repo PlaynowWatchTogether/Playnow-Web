@@ -145,10 +145,7 @@
                             scrollChild=".feed-messages-root"}}
             {{#if isLoadingMessages}}
               <div class="loading-holder h-100">
-                <div class="lds-ripple">
-                  <div></div>
-                  <div></div>
-                </div>
+                {{loading-view}}
               </div>
             {{else}}
               <div class="feed-post-holder">

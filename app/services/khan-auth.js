@@ -35,7 +35,7 @@ export default Service.extend({
   },
   login(){
     return new Promise((resolve, reject)=>{
-      const request_data={url:'https://www.khanacademy.org/api/auth2/request_token', method: 'POST',data:{oauth_callback: 'http://localhost:4200/auth'}};
+      const request_data={url:'https://www.khanacademy.org/api/auth2/request_token', method: 'POST',data:{oauth_callback: `${location.origin}/auth`}};
       $.ajax({
         url: 'https://www.khanacademy.org/api/auth2/request_token',
         type: 'POST',

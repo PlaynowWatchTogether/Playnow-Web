@@ -1,6 +1,6 @@
 <div class="modal-dialog modal-dialog-centered" role="document">
   <div class="modal-content">
-    <div class="modal-body">
+    <form class="modal-body">
       <div class="cr-title">
         Link you <span>Crunchyroll account</span>
       </div>
@@ -20,7 +20,7 @@
       <div class="password-label">
         Password
       </div>
-      {{input classNames="edit" value=password autocomplete=false  type="password"}}
+      {{input classNames="edit" value=password autocomplete=false  type="password" insert-newline=(action "login")}}
       {{#if errors.password}}
         <div class="error">
           {{errors.password}}
@@ -31,6 +31,6 @@
           Link
         </div>
       </div>
-    </div>
+    </form>
   </div>
 </div>

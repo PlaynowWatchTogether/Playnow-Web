@@ -3,7 +3,7 @@
                          loading=loadingVideo}}
 
   <div class="searchHolder">
-    {{#search-holder classNames="search" }}
+    {{#search-holder classNames="search" tagName="form"}}
 
       <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
       {{input value=searchQuery classNames="searchInput" placeholder="Search content"
@@ -31,10 +31,7 @@
   </div>
   {{#if isLoadingVideo}}
     <div class="loading-holder h-100">
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
+      {{loading-view}}
     </div>
   {{else}}
   {{/if}}

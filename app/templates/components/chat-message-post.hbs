@@ -4,13 +4,16 @@
       <div class="post-author-pic">
         {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
       </div>
-      <div class="post-author-name">
-        {{model.senderName}}
+      <div class="post-header-content">
+        <div class="post-author-name">
+          {{model.senderName}}
+        </div>
+        <div class="post-time">
+          {{postTimeFormatted}}
+        </div>
       </div>
 
-      <div class="post-time">
-        {{postTimeFormatted}}
-      </div>
+
     </div>
 
     {{#if hasText}}
@@ -51,7 +54,7 @@
       <div class="post-author-pic">
         {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
       </div>
-      {{remote-user-username model=model.senderId classNames="post-author-name" detailsOnClick=true}}      
+      {{remote-user-username model=model.senderId classNames="post-author-name" detailsOnClick=true}}
       {{feed-reactionable-elem
         model=model
         classNames="post-reactions"

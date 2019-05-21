@@ -94,17 +94,6 @@
               {{/users-chat-compose}}
             </div>
           </div>
-        {{else}}
-          <div class="chat-members {{membersClass}}">
-            {{#each membersProfiles as |member|}}
-              <div class="member {{member.className}}">
-                {{#user-profile-view classNames="profilePicWrapper" model=member.id}}
-                  <img class="profilePic" src={{member.profilePic}} alt="icon">
-                {{/user-profile-view}}
-                <div class="profile-back"></div>
-              </div>
-            {{/each}}
-          </div>
         {{/if}}
         <div id="youtubeHolder" class={{playerLoadingClass}}>
           {{#if hasPlayer}}
@@ -132,6 +121,12 @@
                     <img src="/assets/ic_icon_pause_video.png" alt="icon">
                   </div>
                 </div>
+                <div class="collapse-video" role="button" {{action "videoPlayerCollapse"}}>
+                  <img src="/assets/ic_video_collapse@2x.png" alt="mute">
+                  <div class="label">
+                    close
+                  </div>
+                </div>
                 <div class="overlay-footer">
                   <div class="control">
                     <div class="footer-play play-action">
@@ -151,18 +146,12 @@
                     {{/if}}
                   </div>
                   <div class="full" role="button" {{action "videoPlayerFullWindow"}}>
-                    <img src="/assets/ic_fullwindow_on@2x.png" alt="mute">
+                    <img src="/assets/ic_fullwindow_on.svg" alt="mute">
                   </div>
                   <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
                     <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
                   </div>
 
-                  <div class="collapse-video" role="button" {{action "videoPlayerCollapse"}}>
-                    <img src="/assets/ic_video_collapse@2x.png" alt="mute">
-                    <div class="label">
-                      close
-                    </div>
-                  </div>
                   {{#if canAutoplay}}
                     <div class="switch-holder">
                       <div class="label noselect">Auto play</div>
@@ -187,20 +176,6 @@
           <div class="youtube-music-holder">
             <div class="music-player">
               <div class="watchers {{watchersClass}}">
-                <div class="watchers-streamer">
-                  {{#each watchers as |watcher index|}}
-                    {{#watcher-item model=watcher index=index streamer=true}}
-
-                    {{/watcher-item}}
-                  {{/each}}
-                </div>
-                <div class="watchers-other">
-                  {{#each watchers as |watcher index|}}
-                    {{#watcher-item model=watcher index=index streamer=false}}
-
-                    {{/watcher-item}}
-                  {{/each}}
-                </div>
               </div>
               <div class="details noselect">
                 <img class="thumbnail" src="" alt="icon">
@@ -295,7 +270,7 @@
               </div>
             {{/end-scrollable}}
             {{#if inReplyTo}}
-              <div class="in-reply-to {{if isFullScreen 'fullscreen'}}">
+              <div class="in-reply-to {{if isFullScreen "fullscreen"}}">
                 <div class="reply-name">Replying to {{inReplyTo.senderName}}</div>
                 <div class="reply-text">{{emoji-parse inReplyTo.text}}</div>
                 <div class="reply-close" role="button" {{action "clearInReplyTo"}}>
@@ -342,58 +317,33 @@
             </div>
           {{/if}}
         </div>
-        <div class="watchers-holder {{watchersClass}} {{if isFullScreen 'fullscreen'}}">
-          {{#if isFullScreen}}
-            {{streaming-control
-              classNames="broadcast-stream"
-              model=streamingModel
-              onToggleMic=(action "onToggleMic")
-              onToggleCamera=(action "onToggleCamera")}}
-          {{/if}}
-          {{#if displayWatchers}}
-            <div class="watchers">
-              <div class="watchers-streamer">
-                {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=true classNames="watcher"}}
 
-                  {{/watcher-item}}
-                {{/each}}
-              </div>
-              <div class="watchers-other">
-                {{#each watchers as |watcher index|}}
-                  {{#watcher-item model=watcher index=index streamer=false classNames="watcher"}}
 
-                  {{/watcher-item}}
-                {{/each}}
-              </div>
-            </div>
-          {{/if}}
-          {{#if isFullScreen}}
-            <div class="controls">
-              <div class="mute" role="button" {{action "videoPlayerMute"}}>
-                {{#if videoMute}}
-                  <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
-                {{else}}
-                  <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
-                {{/if}}
-              </div>
-              <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
-                <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
-              </div>
-            </div>
-          {{/if}}
-        </div>
-        <div id="streamer-holder" class="{{if isFullScreen 'fullscreen'}}">
-          <div class="local-stream">
-          </div>
-          <div class="remote-streams">
-            {{#each remoteStreams as |stream|}}
-              {{remote-stream model=stream classNames="remote-stream"}}
-            {{/each}}
-          </div>
-
-        </div>
       {{/file-dropzone}}
+    </div>
+    <div class="messages-side-bar {{if isFullScreen "fullscreen"}}">
+      {{#if isFullScreen}}
+        {{streaming-control
+          classNames="broadcast-stream"
+          model=streamingModel
+          onToggleMic=(action "onToggleMic")
+          onToggleCamera=(action "onToggleCamera")}}
+      {{/if}}
+      {{chat-members model=chatMembers classNames="streamer-holder" fullscreen=isFullScreen}}
+      {{#if isFullScreen}}
+        <div class="controls">
+          <div class="mute" role="button" {{action "videoPlayerMute"}}>
+            {{#if videoMute}}
+              <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
+            {{else}}
+              <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
+            {{/if}}
+          </div>
+          <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
+            <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
+          </div>
+        </div>
+      {{/if}}
     </div>
     <div class="feed-sidebar">
       <div class="feed-sidebar-wrapper">

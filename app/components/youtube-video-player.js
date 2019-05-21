@@ -86,9 +86,7 @@ export default Component.extend({
     $(document).on('mouseenter', (event) => {
       run(() => {
         debug(`mouse enter ${event.target.id}`);
-        // if ($('body').hasClass('fullscreen-video')){
-          $('.feed-content-wrapper').addClass('mouse-on');
-        // }
+        $('.feed-content-wrapper').addClass('mouse-on');        
       });
     });
     $(document).on('mouseleave', (event) => {

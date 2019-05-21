@@ -7,6 +7,7 @@ import { sort } from '@ember/object/computed';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedGroupSource from '../../custom-objects/feed-group-source';
 import { addObserver } from '@ember/object/observers';
+import { removeObserver } from '@ember/object/observers';
 import DS from 'ember-data';
 import {Promise} from 'rsvp';
 export default Controller.extend({
@@ -15,28 +16,39 @@ export default Controller.extend({
   auth: service(),
   init() {
     this._super(...arguments);
+    this.set('isLoadingUserFeed',true);
+
+  },
+  activate(){
+    this.set('isLoadingUserFeed',true);
     addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
+    this.loadUserFeed();
+  },
+  loadUserFeed(){
+    new Promise((resolve)=>{
+      setTimeout(()=>{
+        resolve(this.get('sortedUserFeed'));
+      },1000);
+
+    }).then((data)=>{
+      this.set('isLoadingUserFeed',false);
+      this.set('userFeed', data.slice(0,10));
+    })
   },
   feedUpdated(obj){
     debug('feedUpdated');
     obj.set('lastUpdate',new Date().getTime());
+    this.loadUserFeed();
   },
   reset(){
-
+    removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
+    this.set('userFeed',null);
   },
   userFeedSort: ['createdAt:desc'],
-  userFeed: computed('sortedUserFeed', function(){
-    return this.get('sortedUserFeed').slice(0,10);
+  userFeedLocal: computed(function(){
+    return this.store.peekAll('user-feed-item');
   }),
-  sortedUserFeed: sort('model.feed','userFeedSort'),
-  // userFeed: computed('model.feed',function(){
-  //   return DS.PromiseArray.create({
-  //     promise: new Promise((resolve)=>{
-  //       const myID = this.db.myId();
-  //       resolve(this.get('model.feed'));
-  //     })
-  //   });
-  // }),
+  sortedUserFeed: sort('userFeedLocal','userFeedSort'),
   myFeeds: computed('model.groups', function(){
     return DS.PromiseArray.create({
       promise: new Promise((resolve)=>{

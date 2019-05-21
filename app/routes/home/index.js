@@ -11,11 +11,13 @@ export default Route.extend(AuthRouteMixin, {
     this.arProxy = ArrayProxy.create({content: []});
   },
   model() {
-    return {groups:this.store.peekAll('feed-item'),feed: this.store.peekAll('user-feed-item')};
+    return {groups:this.store.peekAll('feed-item')};
   },
-  activate() {    
+  activate() {
     this._super(...arguments);
     $('body').addClass('index');
+    const controller = this.controllerFor('home.index');
+    controller.activate();
   },
   deactivate() {
     this._super(...arguments);

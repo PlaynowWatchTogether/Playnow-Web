@@ -26,7 +26,7 @@ export default EmberObject.extend({
   	};
 
   	this.webRTCAdaptor = new WebRTCAdaptor({
-  		websocket_url : "ws://stream.tunebrains.com/WebRTCApp/websocket",
+  		websocket_url : "wss://stream.tunebrains.com/WebRTCApp/websocket",
   		mediaConstraints : mediaConstraints,
   		peerconnection_config : pc_config,
   		sdp_constraints : sdpConstraints,
@@ -75,7 +75,7 @@ export default EmberObject.extend({
           video: {width: {exact: 320}, height: {exact: 240}}
       };
       this.webRTCAdaptor = new WebRTCAdaptor({
-          websocket_url : "ws://stream.tunebrains.com/WebRTCApp/websocket",
+          websocket_url : "wss://stream.tunebrains.com/WebRTCApp/websocket",
           mediaConstraints : mediaConstraints,
           peerconnection_config : pc_config,
           sdp_constraints : sdpConstraints,
@@ -136,6 +136,7 @@ export default EmberObject.extend({
         }else{
           this.webRTCAdaptor.unmuteLocalMic();
         }
+        this.streamPublished(streamId);
       }else{
         //stop streaming
         if (this.webRTCAdaptor){

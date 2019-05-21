@@ -539,7 +539,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     this.listeners[ref] = valueListener;
     this.db.ref(ref).on('value', valueListener)
   },
-  publishStream(streamId){
+  publishStream(streamId,model){
     const convId = this.convId();
     const path = this.messageRoot();
     const senderId = this.myId;
@@ -556,7 +556,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     }
     const dbRef = this.db.ref(ref).child(`${senderId}`);
     dbRef.onDisconnect().remove();
-    return dbRef.set({userId:senderId, stream:streamId});
+    return dbRef.set({userId:senderId, stream:streamId,mic: model.mic, video: model.video});
   },
   removeStream(streamId){
     const convId = this.convId();

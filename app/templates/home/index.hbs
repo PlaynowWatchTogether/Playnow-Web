@@ -33,6 +33,7 @@
               <div class="main-content">
                 {{home/user-feed-list model=userFeed
                   lastUpdate=lastUpdate
+                  isLoading=isLoadingUserFeed
                   openDetails=(action "openDetails")
                   onFollowGroup=(action "followGroup")
                   onUnFollowGroup=(action "unFollowGroup")

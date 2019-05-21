@@ -47,12 +47,12 @@ export default Service.extend({
     });
   },
   _storeCreds(creds){
-    this.set('storage.youtube',creds);
-    this.set('creds',creds);
+    window.localStorage.setItem("storage:videos-auth-youtube",JSON.stringify(creds));
+    this.set('creds', this._storedCreds());
   },
   _storedCreds(){
-    return this.get('storage.youtube');
-  },
+    return JSON.parse(window.localStorage.getItem("storage:videos-auth-youtube"))||{};
+  },  
   isLoggedIn: computed('creds', function(){
     return this.GoogleAuth!=null && this.GoogleAuth.isSignedIn.get();
   }),

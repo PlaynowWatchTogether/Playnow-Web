@@ -1,0 +1,8 @@
+<div class="local-stream">
+  {{chat-member-local model=model.my classNames="member local"}}
+</div>
+<div class="remote-streams">
+  {{#each model.remote as |chatMember|}}
+      {{chat-member model=chatMember classNames="member remote"}}
+  {{/each}}
+</div>

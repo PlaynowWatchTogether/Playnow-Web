@@ -6,17 +6,16 @@ import { computed } from '@ember/object';
 
 export default Service.extend({
   USER_URL: 'https://www.khanacademy.org/api/v1/user',
-  storage: storageFor('videos-auth'),
   init(){
     this._super(...arguments);
     this.set('creds', this._storedCreds());
     this.wholeData = [];
   },
   _storeCreds(creds){
-    this.set('storage.khan',creds);
+    window.localStorage.setItem("storage:videos-auth-khan",JSON.stringify(creds));
   },
   _storedCreds(){
-    return this.get('storage.khan') || {};
+    return JSON.parse(window.localStorage.getItem("storage:videos-auth-khan"))||{};
   },
   isLoggedIn: computed('creds', function(){
     const creds = this._storedCreds();
@@ -42,18 +41,22 @@ export default Service.extend({
         data: this.oauth.authorize(request_data)
       }).done((data)=> {
         const newwindow=window.open(`https://www.khanacademy.org/api/auth2/authorize?${data}`,'Khan auth','width=560,height=600,toolbar=0,menubar=0,location=0');
-        if (window.focus) {newwindow.focus()}
-        var timer = setInterval(()=> {
-            if(newwindow.closed) {
-                clearInterval(timer);
-                this.set('creds', this._storedCreds());
-                if (this.get('isLoggedIn')){
-                  resolve();
-                }else{
-                  reject('Failed to login');
-                }
-            }
-        }, 1000);
+        if (newwindow){
+          if (window.focus) {newwindow.focus()}
+          var timer = setInterval(()=> {
+              if(newwindow.closed) {
+                  clearInterval(timer);
+                  this.set('creds', this._storedCreds());
+                  if (this.get('isLoggedIn')){
+                    resolve();
+                  }else{
+                    reject('Failed to login');
+                  }
+              }
+          }, 1000);
+        }else{
+          reject('Failed to login');
+        }
       });
     });
 

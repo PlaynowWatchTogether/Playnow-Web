@@ -351,23 +351,26 @@
             height: 20px;
           }
         }
-        .collapse-video{
-          cursor: pointer;
-          flex: 0 0 auto;
-          display: none;
-          align-items: center;
-          padding: 0px 10px;
-          align-self: center;
-          margin-left: 10px;
-          flex-direction: column;
-          img{
-            width: 20px;
-          }
-          .label{
-            font-size: 60%;
-            color: white;
-            text-align: center;
-          }
+
+      }
+      .collapse-video{
+        cursor: pointer;
+        flex: 0 0 auto;
+        display: none;
+        align-items: center;
+        padding: 0px 10px;
+        align-self: flex-end;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        flex-direction: column;
+        img{
+          width: 20px;
+        }
+        .label{
+          font-size: 60%;
+          color: white;
+          text-align: center;
         }
       }
       .close {

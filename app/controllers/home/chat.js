@@ -35,10 +35,14 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.messageText = '';
     this.composeChips = [];
     this.memberColors={};
+    this.chatMembersArray = ObjectProxy.create({content:{
+      my: ObjectProxy.create({content:null}),
+      remote: ArrayProxy.create({content:[]})
+    }});
     this.streamer = BroadcastStreamer.create({
       streamPublished: (streamId)=>{
         const ds = this.get('dataSource');
-        ds.publishStream(streamId);
+        ds.publishStream(streamId, this.get('streamingModel'));
       },
       streamRemoved:(streamId)=>{
         const ds = this.get('dataSource');
@@ -123,7 +127,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.set('playerState', {});
     this.set('searchMode', 'video');
 
-    this.queryVideos(true);
+    // this.queryVideos(true);
     this.queryMusic(true);
     $('body').on('click','.messages-holder-full',(event)=>{
       $('.ember-content-editable.messageContent').focus();
@@ -376,6 +380,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     });
     ds.videoWatchers((watchers) => {
       if (watchers) {
+        obj.set('allWatchers', watchers);
         obj.videoStateHandler.updateWatchers(watchers, 0);
         let watcherProfiles = [];
         let allWatcherProfiles = [];
@@ -398,9 +403,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           });
           obj.set('watchers', senders.concat(others));
         })
-        Promise.all(allWatcherProfiles).then((profiles) => {
-          obj.set('allWatchers', profiles);
-        })
+        Promise.all(allWatcherProfiles);
       }
     });
     ds.videoState((vs) => {
@@ -602,13 +605,16 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       return null;
     }
   }),
+  streamerHolderSelector(){
+    return '.streamer-holder .local-stream .member.local .video-holder';
+  },
   reset() {
     if (!this.get('isCompose')){
       const localStreamId = this.localStreamId();
       this.set('playerReady',false);
       this.set('streamingModel.mic',false);
       this.set('streamingModel.video',false);
-      this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'));
     }
 
     this.closeFullScreen();
@@ -626,7 +632,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
     this.set('searchMode', 'video');
     this.set('isLoadingMessages', false);
-    this.queryVideos(true);
+    // this.queryVideos(true);
     this.queryMusic(true);
 
     let ds = this.get('dataSource');
@@ -721,6 +727,56 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   }),
   myID: computed('model', function () {
     return this.get('db').myId();
+  }),
+  chatMembers: computed('allWatchers','isFullScreen','remoteStreams.@each.{mic,video,stream}','streamingModel.mic','streamingModel.video',function(){
+    const myId = this.get('db').myId();
+    const remote = [];
+    let local = null;
+
+    (this.get('allWatchers')||[]).forEach((elem)=>{
+      if (get(elem,'userId') === myId){
+        local = elem;
+        set(local,'streaming',this.get('streamingModel'));
+      }else{
+        let remoteStream = null;
+        set(elem,'streaming',null);
+        (this.get('remoteStreams')||[]).forEach((stream)=>{
+          if (get(stream,'userId') === get(elem,'userId')){
+            set(elem,'streaming',stream);
+          }
+        });
+        remote.push(elem);
+      }
+    });
+
+    this.get('chatMembersArray.content.remote').forEach((localElem)=>{
+      let foundLocal = null;
+      remote.forEach((elem)=>{
+        if (get(elem,'userId') === get(localElem,'userId')){
+          foundLocal = elem;
+        }
+      });
+      if (foundLocal){
+        localElem.set('content',foundLocal);
+      }else{
+        this.get('chatMembersArray.content.remote').removeObject(localElem);
+      }
+    });
+
+    remote.forEach((elem)=>{
+      let foundLocal = null;
+      this.get('chatMembersArray.content.remote').forEach((localElem)=>{
+        if (get(elem,'userId') === get(localElem,'userId')){
+          foundLocal = elem;
+        }
+      });
+      if (!foundLocal){
+        this.get('chatMembersArray.content.remote').pushObject(ObjectProxy.create({content:elem}));
+      }
+    });
+    // this.get('chatMembersArray').set('content.remote', remote);
+    this.get('chatMembersArray').set('content.my.content', local || {userId: myId});
+    return this.get('chatMembersArray');
   }),
   membersProfiles: computed('allWatchers', function () {
     let members = this.get('allWatchers');
@@ -925,7 +981,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         let vsh = this.get('videoStateHandler');
         let master = vsh.isMaster;
         let senderId = this.get('playerVideo.video.senderId');
-        if (this.get('playerVideo.video.videoType') === 'youtubeVideo' && (master || senderId === this.db.myId())) {
+        if (this.get('playerVideo.video.videoType') === 'youtube#video' && (master || senderId === this.db.myId())) {
           this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
             this.shareVideo(video);
           });
@@ -935,9 +991,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       } else {
         let ds = this.get('dataSource');
         if (ds) {
-          this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
-            ds.sendVideoEnd(video)
-          });
+          if (this.get('playerVideo.video.videoType') === 'youtube#video'){
+            this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
+              ds.sendVideoEnd(video)
+            });
+          }
 
 
         }
@@ -1131,12 +1189,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     onToggleMic(){
       this.toggleProperty('streamingModel.mic');
-      this.streamer.startStreaming('#streamer-holder .local-stream', this.localStreamId(),this.get('streamingModel'));
+      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'));
     },
     onToggleCamera(){
       this.toggleProperty('streamingModel.video');
       this.streamer.startStreaming(
-        '#streamer-holder .local-stream', this.localStreamId(), this.get('streamingModel'));
+        this.streamerHolderSelector(), this.localStreamId(), this.get('streamingModel'));
     }
   }
 });

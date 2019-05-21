@@ -9,20 +9,20 @@ import { mergeMap } from 'rxjs/operators';
 import { inject as service } from "@ember/service";
 import moment from 'moment';
 import { sort } from '@ember/object/computed';
-export default Service.extend({
-  storage: storageFor('videos-auth'),
+export default Service.extend({  
   store: service(),
   init(){
     this._super(...arguments);
     this.set('creds', this._storedCreds());
   },
   _storeCreds(creds){
-    this.set('storage.crunchyroll',creds);
+    window.localStorage.setItem("storage:videos-auth-crunchyroll",JSON.stringify(creds));
     this.set('creds', this._storedCreds());
   },
   _storedCreds(){
-    return this.get('storage.crunchyroll');
+    return JSON.parse(window.localStorage.getItem("storage:videos-auth-crunchyroll"))||{};
   },
+
   isLoggedIn: computed('creds', function(){
     const creds = this._storedCreds();
     return creds && creds.session_id

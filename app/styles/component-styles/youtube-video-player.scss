@@ -59,6 +59,20 @@ body.fullscreen-video{
           width: 30px;
           height: auto;
         }
+
+      }
+      .mute{
+        .off{
+          display: none;
+        }
+        &.active{
+          .off{
+            display: block;
+          }
+          .on{
+            display: none;
+          }
+        }
       }
       .watchers-streamer,.watchers-other{
         height: min-content !important;

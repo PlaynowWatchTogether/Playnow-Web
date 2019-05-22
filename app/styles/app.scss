@@ -1571,7 +1571,8 @@ CHAT
             display: inline-block;
             margin-top: 5px;
             .text {
-              word-break: break-word;
+              word-break: break-all;
+              word-wrap: break-word;
               padding-left: 10px;
               padding-right: 10px;
               padding-top: 5px;
@@ -1749,7 +1750,8 @@ CHAT
               padding-right: 10px;
               padding-top: 5px;
               padding-bottom: 5px;
-              word-break: break-word;
+              word-break: break-all;
+              word-wrap: break-word;
             }
           }
           .message-text.multiple-first{

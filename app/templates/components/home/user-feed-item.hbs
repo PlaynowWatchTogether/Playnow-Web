@@ -23,6 +23,7 @@
     {{chat-message-post
       model=localFeedMessage
       hasFooter=true
+      onClickBody=(action "onClickPostBody")
       classNames="feed-post-content"
       onLikePost=(action "onLikePost" localFeed)
       onLikeComment=(action "onLikeComment" localFeed)

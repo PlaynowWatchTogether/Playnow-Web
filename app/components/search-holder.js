@@ -3,6 +3,10 @@ import $ from 'jquery';
 import {debug} from '@ember/debug';
 
 export default Component.extend({
+  submit(e){
+    e.preventDefault();
+    return false;
+  },
   didInsertElement() {
     this._super(...arguments);
     let element = this;

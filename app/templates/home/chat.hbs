@@ -137,13 +137,10 @@
                     </div>
                   </div>
                   <span class="video-title noselect"></span>
-                  <div class="mute" role="button" {{action "videoPlayerMute"}}>
-                    {{#if videoMute}}
-                      <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
-                    {{else}}
-                      <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
+                  <div class="mute {{if videoMute "active"}}" role="button" {{action "videoPlayerMute"}}>
 
-                    {{/if}}
+                      <img src="/assets/ic_mute_off_white@2x.png" alt="mute off" class="off">
+                      <img src="/assets/ic_mute_on_white@2x.png" alt="mute on" class="on">
                   </div>
                   <div class="full" role="button" {{action "videoPlayerFullWindow"}}>
                     <img src="/assets/ic_fullwindow_on.svg" alt="mute">
@@ -185,13 +182,9 @@
                 </div>
               </div>
               <div class="controls">
-                <div class="mute" role="button" {{action "videoPlayerMute"}}>
-                  {{#if videoMute}}
-                    <img src="/assets/ic_mute_off_black@2x.png" alt="mute">
-
-                  {{else}}
-                    <img src="/assets/ic_mute_on_black@2x.png" alt="mute">
-                  {{/if}}
+                <div class="mute {{if videoMute "active"}}" role="button" {{action "videoPlayerMute"}}>
+                  <img src="/assets/ic_mute_off_black@2x.png" class="off" alt="mute off">
+                  <img src="/assets/ic_mute_on_black@2x.png" class="on" alt="mute on">
                 </div>
                 <div class="collapse-video" role="button" {{action "videoPlayerExpand"}}>
                   <img src="/assets/ic_video_expand@2x.png" alt="mute">
@@ -221,53 +214,55 @@
                 <div class="loading-holder h-100">
                   {{loading-view}}
                 </div>
-              {{/if}}
-              <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-                {{#if hasMoreMessages}}
-                  <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
-                {{/if}}
-                {{#each filteredMessages as |message|}}
-                  {{#if message.isMessage}}
-                    {{#chat-message-item model=message.message classNames="messageHolder"
-                                         canClick=isMaster
-                                         onClick=(action "onMessageClick")
-                                         displaySender=message.displaySender
-                                         lastSeen=lastSeenMessage
-                                         myID=myID
-                                         senderSpace=message.senderSpace
-                                         displaySenderName=isNotOne2One
-                                         members=members
-                                         isMaster=isMaster
-                                         memberColors=memberColors
-                                         onScrollToMessage=(action "onScrollToMessage")
-                                         onPhotoSelect=(action "onPhotoSelect")
-                                         onReplyTo=(action "onReplyTo")}}
+              {{else}}
+                <div class="messagesWrappper" data-total={{totalMessages}} data-limit={{messagesLimit}}>
+                  {{#if hasMoreMessages}}
+                    <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+                  {{/if}}
+                  {{#each filteredMessages as |message|}}
+                    {{#if message.isMessage}}
+                      {{#chat-message-item model=message.message classNames="messageHolder"
+                                           canClick=isMaster
+                                           onClick=(action "onMessageClick")
+                                           displaySender=message.displaySender
+                                           lastSeen=lastSeenMessage
+                                           isSeen=message.isSeen
+                                           myID=myID
+                                           senderSpace=message.senderSpace
+                                           displaySenderName=isNotOne2One
+                                           members=members
+                                           isMaster=isMaster
+                                           memberColors=memberColors
+                                           onScrollToMessage=(action "onScrollToMessage")
+                                           onPhotoSelect=(action "onPhotoSelect")
+                                           onReplyTo=(action "onReplyTo")}}
 
-                    {{/chat-message-item}}
-                  {{/if}}
-                  {{#if message.isDate}}
-                    {{#chat-message-time model=message.date classNames="chat-message-time-item noselect"}}
+                      {{/chat-message-item}}
+                    {{/if}}
+                    {{#if message.isDate}}
+                      {{#chat-message-time model=message.date classNames="chat-message-time-item noselect"}}
 
-                    {{/chat-message-time}}
-                  {{/if}}
-                  {{#if message.isLoading}}
-                    {{chat-message-loading classNames="chat-message-loading" model=message.message}}
-                  {{/if}}
-                {{/each}}
-                {{#unless isLoadingMessages}}
-                  <div class="typing-indicators">
-                    {{#each typingIndicatorProfiles as |indicator|}}
-                      <div class="indicator">
-                        <div class="profilePicWrapper">
-                          <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+                      {{/chat-message-time}}
+                    {{/if}}
+                    {{#if message.isLoading}}
+                      {{chat-message-loading classNames="chat-message-loading" model=message.message}}
+                    {{/if}}
+                  {{/each}}
+                  {{#unless isLoadingMessages}}
+                    <div class="typing-indicators">
+                      {{#each typingIndicatorProfiles as |indicator|}}
+                        <div class="indicator">
+                          <div class="profilePicWrapper">
+                            <img class="profilePic" src={{indicator.profilePic}} alt="icon">
+                          </div>
+                          <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
                         </div>
-                        <img src="/assets/ic_typing_indicator.png" class="typing-icon" alt="icon">
-                      </div>
-                    {{/each}}
-                  </div>
-                {{/unless}}
+                      {{/each}}
+                    </div>
+                  {{/unless}}
 
-              </div>
+                </div>
+              {{/if}}
             {{/end-scrollable}}
             {{#if inReplyTo}}
               <div class="in-reply-to {{if isFullScreen "fullscreen"}}">
@@ -301,11 +296,13 @@
                 <div {{action "sendMessage"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Send</div>
               </div>
             </div>
-            <div class="message-scroll-date-holder">
-              <div class="title">
-                Today
+            {{#unless isLoadingMessages}}
+              <div class="message-scroll-date-holder ">
+                <div class="title">
+                  Today
+                </div>
               </div>
-            </div>
+            {{/unless}}
           </div>
           {{#if isFullScreen}}
             <div class="messages-holder-sidebar">
@@ -332,12 +329,9 @@
       {{chat-members model=chatMembers classNames="streamer-holder" fullscreen=isFullScreen}}
       {{#if isFullScreen}}
         <div class="controls">
-          <div class="mute" role="button" {{action "videoPlayerMute"}}>
-            {{#if videoMute}}
-              <img src="/assets/ic_mute_off_white@2x.png" alt="mute">
-            {{else}}
-              <img src="/assets/ic_mute_on_white@2x.png" alt="mute">
-            {{/if}}
+          <div class="mute {{if videoMute "active"}}" role="button" {{action "videoPlayerMute"}}>
+            <img src="/assets/ic_mute_off_white@2x.png" alt="mute off" class="off">
+            <img src="/assets/ic_mute_on_white@2x.png" alt="mute on" class="on">
           </div>
           <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
             <img src="/assets/ic_fill_window_off@2x.png" alt="mute">

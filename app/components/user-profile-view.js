@@ -65,8 +65,8 @@ export default Component.extend({
     profileModal.modal();
 
   },
-  click() {
-
+  click(event) {
+    event.preventDefault();
     let model = this.get('model');
     if (typeof model === 'object') {
       this.displayProfile(model)
@@ -75,6 +75,6 @@ export default Component.extend({
         this.displayProfile(profile);
       })
     }
-    return false
+    return true;
   }
 });

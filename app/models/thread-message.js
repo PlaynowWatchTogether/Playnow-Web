@@ -5,6 +5,7 @@ const {attr} = DS;
 export default DS.Model.extend({
   convoId: attr('string'),
   content: attr('string'),
+  isSeen: attr('boolean'),
   message: computed('json.message', function () {
     return this.get('json.message')
   }),
@@ -19,7 +20,7 @@ export default DS.Model.extend({
   }),
   json: computed('content', function () {
     return JSON.parse(this.get('content'));
-  }),
+  }),  
   date: computed('json.date', function () {
     return new Date(this.get('json.message.date'))
   }),

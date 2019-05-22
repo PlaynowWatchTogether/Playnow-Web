@@ -20,6 +20,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   auth: service(),
   init(){
     this._super(...arguments);
+    this.set('feed', FeedModelWrapper.create({content:null}));
     this.addObserver('model', this, 'modelObserver');
     this.addObserver('dataSource', this, 'dsObserver');
     this.set('messageText','');
@@ -107,8 +108,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   isRequestedFollow: computed('feed', function(){
     return Object.keys(this.get('feed.FollowRequests')||{}).includes(this.db.myId());
   }),
-  groupAdmins: computed('feed', function(){
-    return Object.values(this.get('feed.Admins') || {});
+  groupAdmins: computed('feed.AdminsArray.@each.id', function(){
+    return this.get('feed').get('AdminsArray');
   }),
   isMember: computed('feed', function(){
     const admin = this.get('isAdmin');
@@ -130,7 +131,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       return 0;
     }
   }),
-  playlistModel: computed('feed', function(){
+  playlistModel: computed('feed.Playlist.@each.id', function(){
 
     const feed = this.get('feed');
     if (feed){
@@ -147,7 +148,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   handleDSChange(){
 
     this.dataSource.listen(this.dataSource.feedId, (feed)=>{
-      this.set('feed', FeedModelWrapper.create({content:feed}));
+      this.set('feed.content', feed);
+      this.notifyPropertyChange('feed');
       this.set('lastMessageDate',get(feed,'lastMessageDate'));
     });
     this.dataSource.open(this.dataSource.feedId);
@@ -179,12 +181,13 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   reset(){
     $('body').off('click.title-click');
     $(document).off("keyup.group");
+
     this.set('messageText','');
     this.set('editFeed',false);
     this.set('scrolledMore',false);
     this.set('animating',false);
-    this.dataSource.reset();
-    this.set('feed',null);
+    this.dataSource.reset(this.dataSource.feedId);
+    this.set('feed.content',null);
   },
   performSendPost(){
     const canSend = this.get('canPerformSend');
@@ -192,7 +195,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       return;
     const uploads = this.get('uploads');
 
-    this.dataSource.sendPost(this.dataSource.feedId, this.get('messageText')||'',uploads);
+    const message = (this.get('messageText')||'').replace(/(<br class="leave"><br class="leave">)/ig,"\n").replace(/(<br class="leave">)/ig,"\n").replace(/(<([^>]+)>)/ig,"");
+    this.dataSource.sendPost(this.dataSource.feedId, message,uploads);
     this.resetUploads();
     this.set('messageText', '');
   },

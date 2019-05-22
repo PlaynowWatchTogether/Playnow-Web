@@ -56,6 +56,19 @@
             width: 30px;
           }
         }
+        .mute{
+          .off{
+            display: none;
+          }
+          &.active{
+            .off{
+              display: block;
+            }
+            .on{
+              display: none;
+            }
+          }
+        }
       }
 
     }
@@ -241,7 +254,7 @@
             .searchHolder{
               @include videos-search;
               .search{
-                height: 40px;
+                height: 35px;
               }
             }
             .chat-videos-list > div > .title{
@@ -253,6 +266,12 @@
             .chat-videos-list{
               .login-providers{
                 @include videos-auth-list;
+              }
+              .empty-search{
+                text-align: center;
+                width: 100%;
+                padding: 20px 0px;
+                color: #989898;
               }
             }
             .youtube-items {
@@ -276,7 +295,7 @@
             .searchHolder{
               @include videos-search;
               .search{
-                height: 40px;
+                height: 35px;
               }
             }
             .youtube-items.music {

@@ -23,10 +23,10 @@
     {{/if}}
   {{else}}
     {{#if hasText}}
-      <div class="post-body">
+      <div class="post-body" {{action "onClickBody" bubbles=false}}>
 
           <div class="post-message">
-            {{emoji-parse model.text}}
+            {{emoji-parse modelText}}
           </div>
 
       </div>
@@ -45,12 +45,12 @@
     {{/unless}}
   {{/if}}
   {{#if hasFooter}}
-    <div class="post-time">
+    <div class="post-time" {{action "onClickBody" bubbles=false}}>
       {{postTimeFormatted}}
     </div>
   {{/if}}
   {{#if hasFooter}}
-    <div class="post-footer">
+    <div class="post-footer" >
       <div class="post-author-pic">
         {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper" alt="ProfilePic"}}
       </div>

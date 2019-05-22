@@ -241,7 +241,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
       let receiver = null;
       members.forEach((elem) => {
         if (elem.id !== model.senderId) {
-          receiver = this.store.find('user', elem.id);
+          receiver = elem;
         }
       });
       return receiver;

@@ -52,7 +52,7 @@ export default Service.extend({
   },
   _storedCreds(){
     return JSON.parse(window.localStorage.getItem("storage:videos-auth-youtube"))||{};
-  },  
+  },
   isLoggedIn: computed('creds', function(){
     return this.GoogleAuth!=null && this.GoogleAuth.isSignedIn.get();
   }),
@@ -76,7 +76,8 @@ export default Service.extend({
         let elem = items[0];
         let video = {
           id: elem['id']['videoId'],
-          snippet: elem['snippet']
+          snippet: elem['snippet'],
+          kind: 'youtube#video'
         };
         resolve(video);
       })

@@ -40,12 +40,16 @@
     <div class="feed-action">
       {{#if model.isPast}}
         <div class="action-owner">
-          Past
+          <div class="label">
+            Past
+          </div>
         </div>
       {{else}}
         {{#if isCreator}}
           <div class="action-owner">
-            Creator
+            <div class="label">
+              Creator
+            </div>
           </div>
         {{else if isMember}}
           {{multi-state-button model=isMember classNames="action-joined" titleTrue="Joined" titleFalse="Leave" clickAction=(action "unJoinEvent" bubbles=false)}}

@@ -69,18 +69,23 @@
         {{/unless}}
       </div>
 
-      {{#if isLocal}}
-        <div class="local-message">
-          <div class="local-message-inside">
+      {{#if mine}}
+        {{#if isLocal}}
+          <div class="local-message">
+            <div class="local-message-inside">
+            </div>
           </div>
-        </div>
-      {{/if}}
-      {{#if isLastSeen}}
-        <div class="last-seen">
-          <div class="profilePicWrapper">
-            <img src={{receiver.safeProfilePic}} class="profilePic" alt="icon" role="button">
-          </div>
-        </div>
+        {{else}}
+          {{#if isSeen}}
+            <div class="last-seen">
+              {{remote-user-profile-pic model=receiver.id classNames="profilePicWrapper"}}                              
+            </div>
+          {{else}}
+            <div class="sent-message">
+              <img src="/assets/ic_done_24px.svg" alt='sent-message' class="icon sent-message-inside">
+            </div>
+          {{/if}}
+        {{/if}}
       {{/if}}
     {{/if}}
 {{/if}}

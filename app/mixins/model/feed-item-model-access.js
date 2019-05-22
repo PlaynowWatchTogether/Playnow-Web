@@ -1,6 +1,41 @@
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
+import { get } from '@ember/object';
+import ObjectProxy from '@ember/object/proxy';
+import ArrayProxy from '@ember/array/proxy';
 export default Mixin.create({
+  init(){
+    this._super(...arguments);
+    this.set('AdminsArrayInternal', ArrayProxy.create({content:[]}));
+    this.addObserver('content', this,'contentObserver');
+  },
+  contentObserver(obj){
+    if (!obj.get('content')){
+      obj.get('AdminsArrayInternal').setObjects([]);
+      return;
+    }
+    const admins = ArrayProxy.create(
+      {
+        content:Object.values(this.get('content.Admins')||{})
+      }
+    )
+    const localAdmins = obj.get('AdminsArrayInternal');
+    admins.forEach((remote)=>{
+      const local = localAdmins.findBy('id',get(remote,'id'));
+      if (!local){
+        localAdmins.addObject(ObjectProxy.create({content:remote}));
+      }else{
+        local.set('content',remote);
+      }
+    });
+    localAdmins.forEach((local)=>{
+      const remote = admins.findBy('id',get(local,'id'));
+      if (!remote){
+        localAdmins.removeObject(local);
+      }
+    })
+    // obj.get('AdminsArrayInternal').setObjects();
+  },
   isOwner(id){
     return this.get('content.creatorId') === id;
   },
@@ -75,5 +110,8 @@ export default Mixin.create({
   }),
   isPublic: computed('content', function(){
     return this.get('content.GroupAccess') === 1;
+  }),
+  AdminsArray: computed('AdminsArrayInternal', function(){
+    return this.get('AdminsArrayInternal');
   })
 });

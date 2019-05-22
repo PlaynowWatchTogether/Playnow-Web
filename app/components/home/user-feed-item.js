@@ -25,7 +25,7 @@ export default Component.extend(FeedActionsMixins, {
   click(event){
     if ($(event.target).closest('.post-comments').length>0){
       return;
-    }  
+    }
   },
   isLive: computed('model.type', function(){
     return this.get('model.type') === 'live';
@@ -52,6 +52,9 @@ export default Component.extend(FeedActionsMixins, {
   actions:{
     openDetails(){
       this.get('openDetails')(this.get('localFeed'));
+    },
+    onClickPostBody(){
+
     }
   }
 });

@@ -446,7 +446,8 @@ $post-content-width: 63.8%;
                     padding-left: 25px;
                     padding-right: 25px;
                     font-size: 100%;
-                    word-break: break-word;
+                    word-break: break-all;
+                    word-wrap: break-all;
                   }
                   .post-header{
                     padding-left: 10px;
@@ -650,6 +651,12 @@ $post-content-width: 63.8%;
                   outline: none;
                   font-size: 90%;
                   padding: 5px 10px 5px;
+                  br{
+                    display: none;
+                  }
+                  br.leave{
+                    display: block;
+                  }
                 }
                 .ember-content-editable:empty{
                   color: #a9a9a9;
@@ -780,9 +787,18 @@ $post-content-width: 63.8%;
             }
             .searchHolder{
               @include videos-search;
+              .search{
+                height: 35px;
+              }
             }
             .login-providers{
               @include videos-auth-list;
+            }
+            .empty-search{
+              text-align: center;
+              width: 100%;
+              padding: 20px 0px;
+              color: #989898;
             }
             .youtube-items {
               @include youtube-videos

@@ -16,7 +16,7 @@ export default Component.extend({
       this.set('searchResults', []);
     });
   },
-  groupAdmins: computed('model', function(){
+  groupAdmins: computed('model.Admins', function(){
     const creatorId = this.get('model.creatorId');
     return Object.values(this.get('model.Admins') || {}).sort((a,b)=>{
       const adminA = a.id===creatorId;

@@ -1,7 +1,7 @@
 import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
-  convertServerMessagesToUI(messages, convId, options={}){
+  convertServerMessagesToUI(messages, convId, options={}, lastSeenMessageIds){
     let uiMessages = [];
     let lastDate = new Date(0);
     let sorted = messages.sort(function (a, b) {
@@ -11,7 +11,6 @@ export default Mixin.create({
     if (sorted.length > 0) {
       lastRecord = sorted[sorted.length-1];
     }
-
     const wrappedMessages = [];
     sorted.forEach(function (mes, index) {
       const displaySender = index < messages.length - 1 ? messages[index + 1].senderId !== mes.senderId : true;
@@ -66,6 +65,7 @@ export default Mixin.create({
         elem.message.messageIndex = index;
       });
     });
+
     return {messages: wrappedMessages, lastRecord: lastRecord}
   }
 });

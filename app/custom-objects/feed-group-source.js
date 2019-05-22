@@ -18,10 +18,10 @@ export default EmberObject.extend(ChatPlaylistHandler, {
     const myID = this.db.myId();
     return `${new Date().getTime()}@${myID}`;
   },
-  reset(){
+  reset(id){
     const myID = this.db.myId();
     const ref = this.feedRef(this.feedId).child(`videoWatching/${myID}`);
-    ref.remove();
+    ref.remove();    
   },
   open(convId){
     const myID = this.db.myId();

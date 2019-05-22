@@ -31,6 +31,12 @@
     <img src="/assets/ic-video-remove-icon@2x.png" alt='remove video' class="icon">
   </div>
 {{/if}}
+{{#if displayAdded}}
+  <div class="youtube-video-add" {{action 'removeVideo' bubbles=false}} role="button">
+    <img src="/assets/ic_done_24px.svg" alt='added video' class="icon">
+    <div class="label">Added</div>
+  </div>
+{{/if}}
 {{#if canAdd}}
   {{#if isOnPlaylist}}
     <div class="youtube-video-add" {{action 'removeVideo' bubbles=false}} role="button">

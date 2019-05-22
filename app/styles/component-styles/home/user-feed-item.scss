@@ -36,9 +36,10 @@
       margin-top: 0;
       font-size: 100%;
       .feed-live-footer{
-        padding-right: 15px;
-        padding-top: 10px;
-        padding-left: 20px;
+        padding-right: 30px;
+        padding-top: 7.5px;
+        padding-bottom: 7.5px;
+        padding-left: 30px;
       }
     }
   }
@@ -47,6 +48,7 @@
     box-shadow: none;
     .feed-title-holder{
       @include user-feed-title;
+      box-shadow: $message-shadow;
     }
     .feed-post-content{
       @include feed-post-content;
@@ -66,19 +68,21 @@
         border-bottom-right-radius: 20px;
         .post-body{
           min-height: 72px;
+          padding: 10px 35px;
         }
         .post-message{
           margin-top: auto;
           margin-bottom: auto;
           font-size: 110%;
-          word-break: break-word;
+          word-break: break-all;
+          word-wrap: break-all;
           margin-left: 10px;
         }
         .post-time{
           color: #838383;
           font-size: 80%;
           text-align: right;
-          padding-right: 10px;
+          padding-right: 30px;
           margin-bottom: 5px;
         }
         .post-attachments{
@@ -96,10 +100,7 @@
         display: flex;
         font-size: 100%;
         border-top: 1px solid lightgray;
-        padding: 10px 20px;
-        padding-right: 15px;
-        padding-top: 10px;
-        padding-left: 20px;
+        padding: 7.5px 30px;
         .profilePicWrapper{
           width: 30px;
           height: 30px;
@@ -228,7 +229,7 @@
     }
     .feed-event-content{
       margin-top: 0px;
-      padding-bottom: 10px;
+      padding-bottom: 0;
       box-shadow: none;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
@@ -245,9 +246,10 @@
         margin-right: 0;
       }
       .feed-event-footer{
-        padding-right: 15px;
-        padding-top: 10px;
-        padding-left: 20px;
+        padding-right: 30px;
+        padding-top: 6.5px;
+        padding-bottom: 6.5px;
+        padding-left: 30px;
         .feed-reactions{
           font-size: 100%;
           margin-right: 12px;
@@ -268,6 +270,9 @@
           .action-join, .action-joined, .action-owner{
             font-size: 130%;
             padding: 4px 17px;
+            .label, .action-true,.action-false{
+              font-size: 80%;
+            }
           }
         }
       }

@@ -159,6 +159,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       this.sendTyping(false)
     }, 5000)
   },
+
   lastMessageSeen(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
@@ -237,6 +238,13 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     })
+  },
+  messageSeen(uid){
+    let convId = this.convId();
+    let path = this.messageRoot();
+    const senderId = this.myId;
+    let ref = `${path}/${convId}/Messages/${uid}/seen/${senderId}`;
+    return this.db.ref(ref).set(true);
   },
   messages(updateCallback) {
     let convId = this.convId();

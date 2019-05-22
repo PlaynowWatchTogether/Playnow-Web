@@ -118,6 +118,17 @@
           img{
             width: 25px;
           }
+          .off{
+            display: none;
+          }
+          &.active{
+            .off{
+              display: block;
+            }
+            .on{
+              display: none;
+            }
+          }
         }
         .collapse-video{
           cursor: pointer;
@@ -323,6 +334,17 @@
           align-self: center;
           img{
             width: 20px;
+          }
+          .off{
+            display: none;
+          }
+          &.active{
+            .off{
+              display: block;
+            }
+            .on{
+              display: none;
+            }
           }
         }
         .full-off{
@@ -999,7 +1021,8 @@
             display: inline-block;
             margin-top: 2px;
             .text {
-              word-break: break-word;
+              word-break: break-all;
+              word-wrap: break-all;
               padding-left: 15px;
               padding-right: 15px;
               padding-top: 5px;
@@ -1036,6 +1059,24 @@
             }
             img:hover{
               filter: invert(1);
+            }
+          }
+          .sent-message{
+            background: $primary-gradient;
+            padding: 3px;
+            display: flex;
+            width: 15px;
+            height: 15px;
+            right: -17px;
+            bottom: 0;
+            text-align: right;
+            grid-column-start: 2;
+            position: absolute;
+            border-radius: 50%;
+            .sent-message-inside{
+              margin: auto;
+              width: 100%;
+              height: 100%;
             }
           }
           .local-message{
@@ -1202,7 +1243,8 @@
               place-content: center;
               .text {
                 color: white;
-                word-break: break-word;
+                word-break: break-all;
+                word-wrap: break-all;
               }
               &.multiple-first{
                 border-bottom-left-radius: $message-border-radius;
@@ -1388,6 +1430,12 @@
           outline: none;
           font-size: 90%;
           padding: 5px 10px 5px;
+          br{
+            display: none;
+          }
+          br.leave{
+            display: block;
+          }
           .emojione{
             margin-top: -1px;
             height: auto;

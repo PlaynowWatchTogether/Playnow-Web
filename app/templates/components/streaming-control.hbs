@@ -1,15 +1,8 @@
-<div class="icon-mic" {{action "toggleMic"}}>
-  {{#if isStreamingMic}}
-    <img src="/assets/ic-stream-mic-on@2x.png" class="img on">    
-  {{else}}
+<div class="icon-mic {{if isStreamingMic "active"}}" {{action "toggleMic"}}>
+    <img src="/assets/ic-stream-mic-on@2x.png" class="img on">
     <img src="/assets/ic-stream-mic-off@2x.png" class="img off">
-  {{/if}}
 </div>
-<div class="icon-camera" {{action "toggleCamera"}}>
-  {{#if isStreamingCamera}}
-    <img src="/assets/ic-stream-camera-on@2x.png" class="img on">
-  {{else}}
+<div class="icon-camera {{if isStreamingCamera "active"}}" {{action "toggleCamera"}}>
+    <img src="/assets/ic-stream-camera-on@2x.png" class="img on">  
     <img src="/assets/ic-stream-camera-off@2x.png" class="img off">
-
-  {{/if}}
 </div>

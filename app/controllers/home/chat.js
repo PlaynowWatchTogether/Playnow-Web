@@ -416,6 +416,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     ds.lastMessageSeen((lastSeen) => {
       if (ds.type === 'one2one') {
         obj.set('lastSeenMessage', lastSeen);
+        // const localMessages = obj.get('remoteMessages')||[];
+        // obj.updateRemoteMessages(localMessages);
       }
     });
     ds.members((members) => {
@@ -667,26 +669,39 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   },
   updateRemoteMessages(messages){
     const ds = this.get('dataSource');
-    const converted = this.convertServerMessagesToUI(messages,this.messageConvId());
+    const lastSeenMessage = this.get('lastSeenMessage');
+    const converted = this.convertServerMessagesToUI(messages,this.messageConvId(),{}, lastSeenMessage);
     const wrappedMessages = converted.messages;
     const lastRecord = converted.lastRecord;
     const uiMessages = [];
+    const myId = this.get('db').myId();
     if (lastRecord && !lastRecord.isLocal){
       ds.sendSeen(lastRecord.uid);
     }
+
     const type = this.get('model.type');
     wrappedMessages.forEach((mesCntent)=>{
-
+      let isSeen = false;
+      if (mesCntent.isMessage){
+        if (ds.type === 'one2one') {
+          if (mesCntent.message.senderId === myId && mesCntent.message.seen){
+            isSeen = mesCntent.message.seen[ds.user.id];
+          }
+        }
+      }
       let normalizedData = this.store.normalize('thread-message', {
         id: mesCntent.id,
         convoId: mesCntent.convId,
         isMessage: mesCntent.isMessage,
         isDate: mesCntent.isDate,
+        isSeen: isSeen,
         content: JSON.stringify(mesCntent)
       });
 
       this.store.push(normalizedData);
-
+      if (mesCntent.isMessage && !mesCntent.message.isLocal){
+        ds.messageSeen(mesCntent.message.uid);
+      }
       uiMessages.push(MessageObject.create({
         content: mesCntent
       }));
@@ -879,7 +894,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let ds = this.get('dataSource');
     let reply = this.get('inReplyTo');
     let uploads = this.get('uploads');
-    ds.sendMessage(this.get('messageText'),uploads, reply).then((newMessage)=>{
+    const message = (this.get('messageText')||'').replace(/(<([^>]+)>)/ig,"");
+    ds.sendMessage(message,uploads, reply).then((newMessage)=>{
       const local = JSON.parse(JSON.stringify(newMessage));
       local.isLocal = true;
       local.date = new Date().getTime();
@@ -983,7 +999,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         let senderId = this.get('playerVideo.video.senderId');
         if (this.get('playerVideo.video.videoType') === 'youtube#video' && (master || senderId === this.db.myId())) {
           this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
-            this.shareVideo(video);
+            this.shareVideo(SearchVideoResult.create({data: video}));
           });
         } else {
           this.closeVideo();
@@ -993,7 +1009,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         if (ds) {
           if (this.get('playerVideo.video.videoType') === 'youtube#video'){
             this.youtubeSearch.related(this.get('playerVideo.video.videoId')).then((video) => {
-              ds.sendVideoEnd(video)
+              ds.sendVideoEnd(SearchVideoResult.create({data: video}))
             });
           }
 

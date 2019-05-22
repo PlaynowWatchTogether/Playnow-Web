@@ -17,7 +17,8 @@ export default EmberObject.extend({
   }),
   category: computed('data', function(){
     if (this.get('data').kind === 'youtube#video' || this.data.kind === 'youtube#music'){
-      return this.data.snippet.categoryId;
+      let defCategory = this.get('data').kind === 'youtube#video' ? "" : "10";
+      return this.data.snippet.categoryId || defCategory;
     }
     return '';
   }),

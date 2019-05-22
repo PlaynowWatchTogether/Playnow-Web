@@ -159,7 +159,7 @@ export default Component.extend({
         return false;
       } else {
         this.get('insert-newline')(event);
-        this.element.innerText += '\n\n';
+        this.element.innerHTML += '<br class="leave"><br class="leave">';
         event.preventDefault();
         return false;
       }

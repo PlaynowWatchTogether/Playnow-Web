@@ -1,3 +1,4 @@
+
 {{#each model as |feed|}}
   {{#if isPublic}}
     {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}
@@ -14,8 +15,12 @@
     {{/link-to}}
   {{/if}}
 {{else}}
+{{#if isLoading}}
+  {{loading-view}}
+{{else}}
   <div class="empty">
     No groups
   </div>
+{{/if}}
 
 {{/each}}

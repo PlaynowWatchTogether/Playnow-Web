@@ -29,21 +29,36 @@
             </li>
           </ul>
           <div class="tab-content">
-            {{#fit-parent-height parentSelector=".tabs" classNames="tab-pane fade show active" id="following" minusSelector="#content-tabs"}}
-              <div class="main-content">
-                {{home/user-feed-list model=userFeed
-                  lastUpdate=lastUpdate
-                  isLoading=isLoadingUserFeed
-                  openDetails=(action "openDetails")
-                  onFollowGroup=(action "followGroup")
-                  onUnFollowGroup=(action "unFollowGroup")
-                  onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
-              </div>
-            {{/fit-parent-height}}
-            <div class="tab-pane fade h-100" id="discover">
+            {{#end-scrollable classNames="main-content-scroll tab-pane fade show active"
+                              blockScroll=true
+                              handleEnd=true
+                              id='following'
+                              onScrolledHalf=(action "loadMoreUserFeed")
+                              scrollChild=".main-content"}}
+              {{#fit-parent-height parentSelector=".tabs" minusSelector="#content-tabs"}}
+
+                  <div class="main-content">
+                    {{home/user-feed-list model=userFeed.items
+                      lastUpdate=lastUpdate
+                      isLoading=userFeed.isLoading
+                      openDetails=(action "openDetails")
+                      onFollowGroup=(action "followGroup")
+                      onUnFollowGroup=(action "unFollowGroup")
+                      onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
+                  </div>
+
+              {{/fit-parent-height}}
+            {{/end-scrollable}}
+            {{#end-scrollable classNames="tab-pane fade show active"
+                              blockScroll=true
+                              handleEnd=true
+                              id='discover'
+                              onScrolledHalf=(action "loadMoreDiscover")
+                              scrollChild=".feed-list"}}
               {{#fit-parent-height parentSelector=".tab-content" classNames="feed-discover-list-root"}}
                 {{home-feed-list
-                  model=discoverFeeds
+                  model=groupPublic.items
+                  isLoading=groupPublic.isLoading
                   isPublic=true
                   classNames="feed-list"
                   onFollowGroup=(action "followGroup" bubbles=false)
@@ -51,19 +66,23 @@
                   onJoinEvent=(action "onJoinEvent" bubbles=false) onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
 
               {{/fit-parent-height}}
-            </div>
+            {{/end-scrollable}}
           </div>
         </div>
       </div>
       <div class="feed-sidebar">
-        <div class="side-content">
+        {{#end-scrollable classNames="side-content"
+                          blockScroll=true
+                          handleEnd=true
+                          onScrolledHalf=(action "loadMoreSide")
+                          scrollChild=".side-wrapper"}}
           <div class="side-wrapper">
             <div class="feeds-own feeds-item">
               <div class="title noselect">
                 Your groups
               </div>
               <div class="list">
-                {{home-feed-list model=myFeeds}}
+                {{home-feed-list model=groupOwner.items isLoading=groupOwner.isLoading classNames="groups-owner items-holder"}}
               </div>
             </div>
             <div class="feeds-follows feeds-item">
@@ -71,7 +90,7 @@
                 Following groups
               </div>
               <div class="list">
-                {{home-feed-list model=followedFeeds}}
+                {{home-feed-list model=groupFollowing.items isLoading=groupFollowing.isLoading classNames="groups-following items-holder"}}
               </div>
             </div>
             <div class="feed-public feeds-item">
@@ -80,16 +99,17 @@
               </div>
               <div class="list">
                 {{home-feed-list
-                  model=publicFeeds
+                  model=groupPublicSide.items
+                  isLoading=groupPublicSide.isLoading
                   isPublic=true
-                  classNames="feed-list"
+                  classNames="feed-list items-holder"
                   onFollowGroup=(action "followGroup" bubbles=false)
                   onUnFollowGroup=(action "unFollowGroup" bubbles=false)
                   onJoinEvent=(action "onJoinEvent" bubbles=false) onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
               </div>
             </div>
           </div>
-        </div>
+        {{/end-scrollable}}
 
       </div>
     {{/fit-parent-height}}

@@ -9,10 +9,7 @@ export default Route.extend(AuthRouteMixin, {
   init() {
     this._super(...arguments);
     this.arProxy = ArrayProxy.create({content: []});
-  },
-  model() {
-    return {groups:this.store.peekAll('feed-item')};
-  },
+  },  
   activate() {
     this._super(...arguments);
     $('body').addClass('index');

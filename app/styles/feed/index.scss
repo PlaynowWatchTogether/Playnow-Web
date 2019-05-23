@@ -23,8 +23,12 @@
           padding: 0px 10px;
         }
       }
+      .tab-content{
+        .main-content-scroll{
+          overflow-y: auto;
+        }
+      }
       #following{
-        overflow-y: auto;
         .main-content{
           padding-bottom: 40px;
         }
@@ -33,8 +37,9 @@
         }
       }
       #discover{
+        overflow-y: scroll;
         .feed-discover-list-root{
-          overflow: scroll;
+
         }
         .feed-list{
           padding: 10px;
@@ -70,6 +75,12 @@
       overflow-x: hidden;
       width: 100%;
       padding-right: 16px;
+      .list{
+        .items-holder{
+          display: flex;
+          flex-direction: column;
+        }
+      }
       .side-wrapper{
         padding-top: 10px;
         padding-left: 3px;

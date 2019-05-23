@@ -6,6 +6,7 @@ import { debug } from '@ember/debug';
 import { sort } from '@ember/object/computed';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedGroupSource from '../../custom-objects/feed-group-source';
+import UserFeedPager from '../../custom-objects/user-feed-pager';
 import { addObserver } from '@ember/object/observers';
 import { removeObserver } from '@ember/object/observers';
 import DS from 'ember-data';
@@ -16,115 +17,139 @@ export default Controller.extend({
   auth: service(),
   init() {
     this._super(...arguments);
-    this.set('isLoadingUserFeed',true);
+    this.set('groupPublic',UserFeedPager.create({
+      content: [],
+      limit: 10,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.get('discoverFeeds'));
+          },1000);
+
+        });
+      }
+    }));
+    this.set('groupPublicSide',UserFeedPager.create({
+      content: [],
+      limit: 10,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.publicFeeds());
+          },1000);
+
+        });
+      }
+    }));
+    this.set('groupOwner',UserFeedPager.create({
+      content: [],
+      limit: -1,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.myFeeds());
+          },1000);
+
+        });
+      }
+    }));
+    this.set('groupFollowing',UserFeedPager.create({
+      content: [],
+      limit: -1,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.followedFeeds());
+          },1000);
+
+        });
+      }
+    }));
+    this.set('userFeed', UserFeedPager.create({
+      content: [],
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.get('sortedUserFeed'));
+          },1000);
+
+        });
+      }
+    }));
 
   },
   activate(){
-    this.set('isLoadingUserFeed',true);
-    addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
-    this.loadUserFeed();
-  },
-  loadUserFeed(){
-    new Promise((resolve)=>{
-      setTimeout(()=>{
-        resolve(this.get('sortedUserFeed'));
-      },1000);
+    this.get('userFeed').load(true);
+    this.get('groupOwner').load(true);
+    this.get('groupFollowing').load(true);
+    this.get('groupPublicSide').load(true);
+    this.get('groupPublic').load(true);
 
-    }).then((data)=>{
-      this.set('isLoadingUserFeed',false);
-      this.set('userFeed', data.slice(0,10));
-    })
+    addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
+
   },
   feedUpdated(obj){
     debug('feedUpdated');
     obj.set('lastUpdate',new Date().getTime());
-    this.loadUserFeed();
+    this.get('groupPublicSide').load(false);
+    this.get('userFeed').load(false);
+    this.get('groupOwner').load(false);
+    this.get('groupFollowing').load(false);
+    this.get('groupPublic').load(false);
   },
   reset(){
     removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
-    this.set('userFeed',null);
+    this.get('userFeed').reset();
+    this.get('groupOwner').reset();
+    this.get('groupFollowing').reset();
+    this.get('groupPublicSide').reset();
+    this.get('groupPublic').reset();
   },
   userFeedSort: ['createdAt:desc'],
   userFeedLocal: computed(function(){
     return this.store.peekAll('user-feed-item');
   }),
   sortedUserFeed: sort('userFeedLocal','userFeedSort'),
-  myFeeds: computed('model.groups', function(){
-    return DS.PromiseArray.create({
-      promise: new Promise((resolve)=>{
-        const myID = this.db.myId();
-
-        resolve(this.get('model.groups').filter((elem) => {
-          return elem.get('creatorId') === myID;
-        }));
-
-      })
+  myFeeds(){
+    const myID = this.db.myId();
+    return this.store.peekAll('feed-item').filter((elem) => {
+      return elem.get('creatorId') === myID;
     });
-
-  }),
-  followedFeeds: computed('model.groups', function(){
-    return DS.PromiseArray.create({
-      promise: new Promise((resolve)=>{
-        const myID = this.db.myId();
-        resolve(this.get('model.groups').filter((elem) => {
-          return elem.get('creatorId') !== myID && elem.isFollowing(myID);
-        }));
-      })
+  },
+  followedFeeds(){
+    const myID = this.db.myId();
+    return this.store.peekAll('feed-item').filter((elem) => {
+      return elem.get('creatorId') !== myID && elem.isFollowing(myID);
     });
-  }),
-  publicFeeds: computed('model.groups', function(){
-    return DS.PromiseArray.create({
-      promise: new Promise((resolve)=>{
-        const myID = this.db.myId();
-        resolve(this.get('model.groups').filter((elem) => {
-          return elem.get('creatorId') !== myID;
-        }));
-      })
+  },
+  publicFeeds(){
+    const myID = this.db.myId();
+    return this.store.peekAll('feed-item').filter((elem) => {
+      return elem.get('creatorId') !== myID;
     });
-
-  }),
-  // filteredModel: computed('model.@each.lastUpdate', 'roomQuery', function () {
-  //   let q = this.get('roomQuery');
-  //   return this.get('model').filter((elem) => {
-  //     if (!q || q.length === 0)
-  //       return true;
-  //     let title = get(elem, 'videoName');
-  //     if (title) {
-  //       return title.toLowerCase().includes(q.toLowerCase());
-  //     } else {
-  //       return false;
-  //     }
-  //   }).sort((a, b) => {
-  //     return b.viewersCount - a.viewersCount;
-  //   })
-  // }),
-  discoverFeeds: computed('model.groups.@each.lastUpdate','db.userLocation', function(){
-    return DS.PromiseArray.create({
-      promise: new Promise((resolve)=>{
-        const location = this.get('db.userLocation');
-        const myID = this.db.myId();
-        resolve(this.get('model.groups').filter((elem) => {
-          return elem.get('creatorId') !== myID;
-        }).sort((a,b)=>{
-          if (location){
-            let aD = Number.MAX_SAFE_INTEGER;
-            let bD = Number.MAX_SAFE_INTEGER;
-            const locA = get(a,'GroupLocation.l');
-            const locB = get(b,'GroupLocation.l');
-            if (typeof(locA) === 'object'){
-              aD = this.distance(locA[1],locA[0],location.lng,location.lat);
-            }
-            if (typeof(locB) === 'object'){
-              bD = this.distance(locB[1],locB[0],location.lng,location.lat);
-            }
-            return aD - bD;
-          }else{
-            return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
-          }
-        }));
-      })
+  },
+  discoverFeeds: computed('lastUpdate','db.userLocation', function(){
+    const location = this.get('db.userLocation');
+    const myID = this.db.myId();
+    return this.store.peekAll('feed-item').filter((elem) => {
+      return elem.get('creatorId') !== myID;
+    }).sort((a,b)=>{
+      if (location){
+        let aD = Number.MAX_SAFE_INTEGER;
+        let bD = Number.MAX_SAFE_INTEGER;
+        const locA = get(a,'GroupLocation.l');
+        const locB = get(b,'GroupLocation.l');
+        if (typeof(locA) === 'object'){
+          aD = this.distance(locA[1],locA[0],location.lng,location.lat);
+        }
+        if (typeof(locB) === 'object'){
+          bD = this.distance(locB[1],locB[0],location.lng,location.lat);
+        }
+        return aD - bD;
+      }else{
+        return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
+      }
     });
-
   }),
   toRad(val) {
     return val * Math.PI / 180;
@@ -141,6 +166,19 @@ export default Controller.extend({
     return d;
   },
   actions:{
+    loadMoreSide(){
+      this.get('groupPublicSide').loadMore();
+      debug('loadMoreSide');
+
+    },
+    loadMoreDiscover(){
+      this.get('groupPublic').loadMore();
+      debug('loadMoreDiscover');
+    },
+    loadMoreUserFeed(){
+      this.get('userFeed').loadMore();
+      debug('loadMoreUserFeed');
+    },
     discoverFeedClicked(){
 
     },

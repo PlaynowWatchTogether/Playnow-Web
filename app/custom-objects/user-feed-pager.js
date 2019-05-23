@@ -10,7 +10,11 @@ export default ArrayProxy.extend({
       this.set('isLoading', true);
   },
   items: computed('content.@each','limit', function(){
-    return this.get('content').slice(0,this.limit);
+    if (this.get('limit')==-1){
+      return this.get('content');
+    }else{
+      return this.get('content').slice(0,this.get('limit'));
+    }
   }),
   load(reset){
     if (reset){

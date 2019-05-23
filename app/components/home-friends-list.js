@@ -14,7 +14,6 @@ export default Component.extend({
   queriedModel: computed('model.@each.latestMessageDate', 'friendsQuery', 'limit', function () {
     if (!this.get('friendsQuery') || this.get('friendsQuery').length === 0) {
       return this.get('model').sort((a, b) => {
-        debug('compare ' + b.get('filterTitle') + ':' + b.get('latestMessageDate') + ' and ' + a.get('filterTitle') + ':' + a.get('latestMessageDate'));
         return b.get('latestMessageDate') - a.get('latestMessageDate')
       }).filter(() => {
         return true;

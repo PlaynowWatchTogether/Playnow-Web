@@ -2,8 +2,8 @@
 
   <div class="col-friends h-100">
     <div class="row-friends h-100">
-      {{#home-friends-list classNames="h-100 friendsOutlet" model=sortedFriends onOpenCompose=(action "onOpenCompose")}}
-        {{#if loading}}
+      {{#home-friends-list classNames="h-100 friendsOutlet" model=friendsPager.items isLoading=friendsPager.isLoading onOpenCompose=(action "onOpenCompose")}}
+        {{#if friendsPager.isLoading}}
           <div class="loading-holder h-100">
             {{loading-view}}
           </div>

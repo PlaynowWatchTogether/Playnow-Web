@@ -37,8 +37,9 @@ export default Route.extend(ApplicationFriendsMixin, {
     let ctrl = this.controllerFor('home');
     // ctrl.set('friends', this.store.peekAll('friends'));
     // ctrl.set('groups', this.store.peekAll('group'));
-    // ctrl.set('loading', true);    
+    // ctrl.set('loading', true);
     this.syncFriends();
+    ctrl.activate();
     $('body').addClass('home');
   },
   deactivate() {

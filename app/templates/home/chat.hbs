@@ -72,11 +72,13 @@
                   {{/if}}
                 </div>
               {{/user-profile-view}}
-              {{streaming-control
-                classNames="broadcast-stream"
-                model=streamingModel
-                onToggleMic=(action "onToggleMic")
-                onToggleCamera=(action "onToggleCamera")}}
+              {{#if isOne2One}}
+                {{streaming-control
+                  classNames="broadcast-stream"
+                  model=streamingModel
+                  onToggleMic=(action "onToggleMic")
+                  onToggleCamera=(action "onToggleCamera")}}
+              {{/if}}
             {{/if}}
           {{/if}}
 
@@ -320,11 +322,13 @@
     </div>
     <div class="messages-side-bar {{if isFullScreen "fullscreen"}}">
       {{#if isFullScreen}}
-        {{streaming-control
-          classNames="broadcast-stream"
-          model=streamingModel
-          onToggleMic=(action "onToggleMic")
-          onToggleCamera=(action "onToggleCamera")}}
+        {{#if isOne2One}}
+          {{streaming-control
+            classNames="broadcast-stream"
+            model=streamingModel
+            onToggleMic=(action "onToggleMic")
+            onToggleCamera=(action "onToggleCamera")}}
+        {{/if}}
       {{/if}}
       {{chat-members model=chatMembers classNames="streamer-holder" fullscreen=isFullScreen}}
       {{#if isFullScreen}}

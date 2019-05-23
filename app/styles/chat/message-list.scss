@@ -199,10 +199,10 @@
         align-self: center;
         // display: flex;
         margin-left: 10px;
-        margin-right: 20px;
         flex: 0 0 auto;
         display: none;
         flex-direction: row;
+        margin-right: 10px;
         .label {
           margin-right: 10px;
           color: white;
@@ -297,6 +297,7 @@
         display: flex;
         flex-direction: row;
         padding-bottom: 10px;
+        padding-right: 10px;
         .control{
           flex: 0 0 auto;
           align-items: center;

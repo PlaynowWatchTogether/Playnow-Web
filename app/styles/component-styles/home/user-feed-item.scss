@@ -4,7 +4,7 @@
 @mixin user-feed-item{
   display: flex;
   flex-direction: column;
-  $user-feed-item-width: 76.9%;
+  $user-feed-item-width: 75%;
   .user-feed-item{
     cursor: pointer;
     flex: 0 0 $user-feed-item-width;

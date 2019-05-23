@@ -1,9 +1,11 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
+import { inject as service} from '@ember/service';
 import BroadcastStreamer from '../custom-objects/broadcast-streamer';
 import $ from 'jquery';
 import { debug } from '@ember/debug';
 export default Component.extend({
+  db: service(),
   init(){
     this._super(...arguments);
     this.streamer = BroadcastStreamer.create();
@@ -17,11 +19,11 @@ export default Component.extend({
   }),
   didInsertElement(){
     this._super(...arguments);
-    // this.streamer.playStream(this.get('videoElemId'),this.get('model.stream'));
-    this.tryToPlay(this.get('model.stream'));
+    this.streamer.playStream(this.get('videoElemId'),this.get('model.stream'), this.get('db').myId());
+    // this.tryToPlay(this.get('model.stream'));
   },
   willDestroyElement(){
-    // this.streamer.stopStream(this.get('videoElemId'),this.get('model.stream'));
+    this.streamer.stopStream(this.get('videoElemId'),this.get('model.stream'),this.get('db').myId());
     this._super(...arguments);
   },
   initializePlayer(name, extension, token) {

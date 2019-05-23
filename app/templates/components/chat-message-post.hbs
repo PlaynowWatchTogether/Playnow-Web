@@ -17,7 +17,7 @@
     </div>
 
     {{#if hasText}}
-      <div class="post-message">
+      <div class="post-message"  {{action "onClickBody" bubbles=false}}>
         {{emoji-parse model.text}}
       </div>
     {{/if}}

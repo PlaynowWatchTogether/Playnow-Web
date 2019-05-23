@@ -32,7 +32,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     } else if (this.type === 'group') {
       return this.group['id'];
     } else if (this.type === 'feed') {
-      return this.feed['id'];
+      return this.feed.get('id');
     } else {
       return "";
     }

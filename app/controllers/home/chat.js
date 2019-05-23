@@ -20,6 +20,7 @@ import ChatModelHelper from '../../mixins/chat-model-helper';
 import BroadcastStreamer from '../../custom-objects/broadcast-streamer';
 import ObjectProxy from '@ember/object/proxy';
 import ArrayProxy from '@ember/array/proxy';
+import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 
 export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, ChatModelHelper, {
   firebaseApp: service(),
@@ -206,6 +207,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let type = this.get('model').type;
     return type!=='one2one';
   }),
+  isOne2One: computed('model', function(){
+    let type = this.get('model').type;
+    return type ==='one2one';
+  }),
   modelObserver: (obj) => {
     $(document).on('keyup.chat',(event)=>{
       if (27 === event.keyCode){
@@ -292,12 +297,14 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
         });
       }else if (type === 'feed'){
-        obj.db.feed(convId).then((feed)=>{
-          const isAdmin = feed.creatorId === myId;// || Object.keys(feed.Admins || {}).includes(myId());
+        obj.db.feed(convId).then((remoteFeed)=>{
+
+          const feed = FeedModelWrapper.create({content:remoteFeed})
+          const isAdmin = feed.isAdmin(myId);
           obj.set('chatModel', {
             hasProfilePic: true,
-            title: 'Live @' + feed.GroupName,
-            ProfilePic: feed.ProfilePic,
+            title: 'Live @' + feed.get('GroupName'),
+            ProfilePic: feed.get('ProfilePic'),
             feed: feed,
             isAdmin: isAdmin
           });
@@ -312,7 +319,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           }));
 
 
-          obj.videoStateHandler.isMaster = isAdmin;
+          obj.videoStateHandler.isMaster = feed.get('videoState.senderId') === obj.firebaseApp.auth().currentUser.uid;
           obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
         })
       }
@@ -409,6 +416,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     ds.videoState((vs) => {
       if (vs) {
         run(() => {
+          if (ds.feed){
+            obj.videoStateHandler.isMaster = get(vs,'senderId') === obj.firebaseApp.auth().currentUser.uid;
+          }
           obj.videoStateHandler.handleVideoState(vs);
         });
       }
@@ -542,16 +552,27 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       debug('got video in path ' + obj.get('id'));
     }
   },
-  displayVideoRequest: computed('isMaster', function(){
-    return !this.get('isMaster');
+  displayVideoRequest: computed('canSendVideo', function(){
+    return !this.get('canSendVideo');
+  }),
+  canSendVideo:computed('dataSource','model','feed', function(){
+    let ds = this.get('dataSource');
+    let type = this.get('model').type;
+    if (ds) {
+      if (type==='feed'){
+        return ds.feed.isAdmin(this.firebaseApp.auth().currentUser.uid);
+      }else{
+        return this.get('isMaster');
+      }
+    } else
+      return false;
   }),
   isMaster: computed('dataSource', function () {
     let ds = this.get('dataSource');
     let type = this.get('model').type;
     if (ds) {
       if (type==='feed'){
-        const isAdmin =this.get('chatModel.isAdmin');
-        return isAdmin;
+        return ds.feed.get('videoState.senderId') === this.firebaseApp.auth().currentUser.uid;
       }else{
         return ds.convId() === this.firebaseApp.auth().currentUser.uid || type !== 'room';// TODO:  fix
       }
@@ -616,7 +637,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       this.set('playerReady',false);
       this.set('streamingModel.mic',false);
       this.set('streamingModel.video',false);
-      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'));
+      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'), this.get('db').myId());
     }
 
     this.closeFullScreen();
@@ -909,9 +930,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.set('inReplyTo', null);
     this.set('messageText', '');
   },
+
   shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
-    if (this.get('isMaster')) {
+    if (this.get('canSendVideo')) {
       this.set('playerModel', video);
       ds.sendVideo(video)
     } else {
@@ -1160,7 +1182,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       const type = this.get('model.type');
       if (!m || type!=='feed')
         return this.transitionToRoute('home');
-      return this.transitionToRoute('home.group.show',{group_id: m.feed.id});
+      return this.transitionToRoute('home.group.show',{group_id: m.feed.get('id')});
     },
     playlistVideoAdd(video){
       return this.dataSource.addPlaylistItem(video);
@@ -1205,12 +1227,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     onToggleMic(){
       this.toggleProperty('streamingModel.mic');
-      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'));
+      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'),this.get('db').myId());
     },
     onToggleCamera(){
       this.toggleProperty('streamingModel.video');
       this.streamer.startStreaming(
-        this.streamerHolderSelector(), this.localStreamId(), this.get('streamingModel'));
+        this.streamerHolderSelector(), this.localStreamId(), this.get('streamingModel'),this.get('db').myId());
     }
   }
 });

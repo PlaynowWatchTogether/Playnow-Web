@@ -43,9 +43,7 @@ export default Component.extend(MessageAttachmentsWrapper, FeedReactionableElem,
   actions: {
     onClickBody(){
       const act = this.get('onClickBody');
-      if (act){
-        this.toggleProperty('showComments');
-      }
+      this.toggleProperty('showComments');      
     }
   }
 

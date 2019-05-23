@@ -6,146 +6,149 @@ import $ from 'jquery';
 export default EmberObject.extend({
   init(){
     this._super(...arguments);
-    this.webRTCAdaptor = null;
+    this.oldAudio = false;
+    this.oldVideo = false;
+  },
+  createConnection(streamId){
+    return new Promise((resolve,reject)=>{
+      this.connection = new RTCMultiConnection();
+          // its mandatory in v3
+      // this.connection.enableScalableBroadcast = true;
+
+      // by default, socket.io server is assumed to be deployed on your own URL
+      this.connection.socketURL = 'https://stream.tunebrains.com/';
+
+      // comment-out below line if you do not have your own socket.io server
+      // connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+      this.connection.socketMessageEvent = 'video-broadcast-demo';
+      this.connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: false,
+          OfferToReceiveVideo: false
+      };
+
+      this.connection.onbeforeunload = (event)=>{
+        debug('onbeforeunload');
+      };
+      this.connection.onclose = (event)=>{
+        debug('onclose');
+      };
+      this.connection.onleave = (event)=>{
+        debug('onleave');
+      };
+      this.connection.onstream = (event)=> {
+        debug(`onstream ${event.type}`);
+
+        // this.videoPreview.volume = 0;
+
+        if(event.type === 'local') {
+          this.videoPreview.muted = true;
+          this.videoPreview.volume = 0;
+          try {
+              this.videoPreview.setAttributeNode(document.createAttribute('muted'));
+          } catch (e) {
+              this.videoPreview.setAttribute('muted', true);
+          }
+          if (this.streamPublished){
+            this.streamPublished(streamId);
+          }
+        }else{
+          this.videoPreview.muted = false
+        }
+        this.videoPreview.srcObject = event.stream;
+        this.videoPreview.play();
+      };
+      this.connection.onstreamended = (event)=> {
+        debug('onstreamended');
+        if (this.streamRemoved){
+          this.streamRemoved(streamId);
+          $('#localVideo').remove();
+        }
+        this._handleClose(streamId);
+      };
+
+      resolve();
+    })
   },
   createLocalVideo(parent){
-    var video = $('<video autoplay muted id="localVideo"/>');
+    var video = $('<video muted id="localVideo"/>');
     video.appendTo($(parent));
-  },
-  playStream(videoElem, streamId){
-    var pc_config = null;
-
-  	var sdpConstraints = {
-  		OfferToReceiveAudio : true,
-  		OfferToReceiveVideo : true
-
-  	};
-  	var mediaConstraints = {
-  		video : true,
-  		audio : true
-  	};
-
-  	this.webRTCAdaptor = new WebRTCAdaptor({
-  		websocket_url : "wss://stream.tunebrains.com/WebRTCApp/websocket",
-  		mediaConstraints : mediaConstraints,
-  		peerconnection_config : pc_config,
-  		sdp_constraints : sdpConstraints,
-  		remoteVideoId : videoElem,
-  		isPlayMode: true,
-  		callback : (info)=> {
-  			if (info == "initialized") {
-  				debug("initialized");
-  			  this.webRTCAdaptor.play(streamId);
-  			} else if (info == "play_started") {
-  				//play_started
-  				debug("play started");
-
-  			} else if (info == "play_finished") {
-  				// play finishedthe stream
-  				debug("play finished");
-
-  			}
-  		},
-  		callbackError : (error)=> {
-  			debug("error callback: " + error);
-  		}
-  	});
+    return video[0];
   },
   stopStream(videoElem, streamId){
-    if (this.webRTCAdaptor){
-      this.webRTCAdaptor.stop(streamId);
-      this.webRTCAdaptor = null;
+
+    // if (this.webRTCAdaptor){
+      // this.webRTCAdaptor.stop(streamId);
+      // this.webRTCAdaptor = null;
+    // }
+  },
+  _handleMute(streamId,model){
+    const localStream = this.connection.attachStreams[0];
+    localStream.getVideoTracks().forEach((track)=>{
+      track.enabled = model.video;
+    });
+    localStream.getAudioTracks().forEach((track)=>{
+      track.enabled = model.mic;
+    })
+    if (this.streamPublished){
+      this.streamPublished(streamId);
     }
   },
-  startStreaming(videoElem, streamId, model){
-    if (!this.webRTCAdaptor){
+  _handleClose(videoElem){
+    if (this.connection){
+      this.connection.getAllParticipants().forEach((pid)=> {
+           this.connection.disconnectWith(pid);
+      });
+
+       // stop all local cameras
+      this.connection.attachStreams.forEach((localStream)=> {
+        localStream.stop();
+      });
+
+       // close socket.io connection
+      this.connection.closeSocket();
+      this.connection = null;
+    }
+  },
+  startStreaming(videoElem, streamId, model,userId){
+    if (!this.connection){
       if (!model.mic && !model.video){
         return;
       }
-      this.createLocalVideo(videoElem);
-      var pc_config = null;
 
-      var sdpConstraints = {
-          OfferToReceiveAudio : false,
-          OfferToReceiveVideo : false
+      this.createConnection(streamId).then(()=>{
+        this.videoPreview = this.createLocalVideo(videoElem);
+        this.connection.session = {
+            audio: true,
+            video: true,
+            oneway: true
+        };
+        this.connection.open(streamId, () =>{
+          this._handleMute(streamId, model);
+        });
 
-      };
-      var mediaConstraints = {
-          audio : true,
-          video: {width: {exact: 320}, height: {exact: 240}}
-      };
-      this.webRTCAdaptor = new WebRTCAdaptor({
-          websocket_url : "wss://stream.tunebrains.com/WebRTCApp/websocket",
-          mediaConstraints : mediaConstraints,
-          peerconnection_config : pc_config,
-          sdp_constraints : sdpConstraints,
-          localVideoId : 'localVideo',
-          callback : (info) =>{
-              if (info == "initialized") {
-                  debug("initialized");
-                  if (!model.video){
-                    this.webRTCAdaptor.turnOffLocalCamera()
-                  }else{
-                    this.webRTCAdaptor.turnOnLocalCamera()
-                  }
-                  if (!model.mic){
-                    this.webRTCAdaptor.muteLocalMic();
-                  }else{
-                    this.webRTCAdaptor.unmuteLocalMic();
-                  }
-                  this.webRTCAdaptor.publish(streamId);
-              } else if (info == "publish_started") {
-                  //stream is being published
-                  debug("publish started");
-                  this.streamPublished(streamId);
-                  $('#localVideo').addClass('streaming');
-              } else if (info == "publish_finished"){
-                  //stream is finished
-                  $('#localVideo').removeClass('streaming');
-                  this.streamRemoved(streamId);
-                  $('#localVideo').remove();
-                  debug("publish finished");
-              } else if (info == "screen_share_extension_available") {
-                                  //screen share extension is avaiable
-                  debug("screen share extension available");
-              } else if (info == "screen_share_stopped") {
-                                   //"Stop Sharing" is clicked in chrome screen share dialog
-                  debug("screen share stopped");
-              }
-          },
-          callbackError : (error) =>{
-              //some of the possible errors, NotFoundError, SecurityError,PermissionDeniedError
-              if (this.webRTCAdaptor){
-                this.webRTCAdaptor.stop(streamId);
-                this.webRTCAdaptor = null;
-              }
-              this.streamRemoved(streamId);
-              // $('#localVideo').remove();
-              debug("error callback: " + error);
-          }
       });
     }else{
       if (model.mic || model.video){
-        if (!model.video){
-          this.webRTCAdaptor.turnOffLocalCamera()
-        }else{
-          this.webRTCAdaptor.turnOnLocalCamera()
-        }
-        if (!model.mic){
-          this.webRTCAdaptor.muteLocalMic();
-        }else{
-          this.webRTCAdaptor.unmuteLocalMic();
-        }
-        this.streamPublished(streamId);
+        this._handleMute(streamId, model);
       }else{
-        //stop streaming
-        if (this.webRTCAdaptor){
-          this.webRTCAdaptor.stop(streamId);
-          this.webRTCAdaptor = null;
-        }
-        // $('#localVideo').remove();
+        this._handleClose();
+        $('#localVideo').remove();
       }
     }
-
+  },
+  playStream(videoElem,streamId){
+    this.createConnection(streamId).then(()=>{
+      this.connection.sdpConstraints.mandatory = {
+          OfferToReceiveAudio: true,
+          OfferToReceiveVideo: true
+      };
+      this.connection.session = {
+          audio: true,
+          video: true,
+          oneway: true
+      };
+      this.videoPreview = $(`#${videoElem}`)[0];
+      this.connection.join(streamId);
+    });
   }
 })

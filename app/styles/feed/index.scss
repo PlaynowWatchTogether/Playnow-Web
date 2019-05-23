@@ -67,6 +67,7 @@
       flex-direction: column;
       display: flex;
       overflow-y: auto;
+      overflow-x: hidden;
       width: 100%;
       padding-right: 16px;
       .side-wrapper{
@@ -90,7 +91,7 @@
           }
           .list{
             .empty{
-              color: #898989;
+              color: #b9b9b9;
               margin: auto;
               text-align: center;
               padding-top: 10px;
@@ -137,7 +138,7 @@
                     display: flex;
                   }
                   .feed-item-member-item{
-
+                    height: 30px;
                     .member-item-pic{
                       width: 25px;
                       height: 25px;

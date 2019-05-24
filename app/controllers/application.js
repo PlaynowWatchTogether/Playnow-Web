@@ -8,6 +8,7 @@ import $ from "jquery";
 import UUIDGenerator from '../mixins/uuid-generator';
 import FeedModelWrapper from '../custom-objects/feed-model-wrapper';
 import emojione from 'emojione';
+import { addObserver } from '@ember/object/observers';
 export default Controller.extend(UUIDGenerator, {
   auth: service(),
   db: service(),
@@ -16,7 +17,12 @@ export default Controller.extend(UUIDGenerator, {
     emojione.emojiSize = '64';
     this._super(...arguments);
     this.set('isDisabled', true);
+    addObserver(this.get('db'),'currentUser',this,'dbCurrentUser');
+
     this.addObserver('model', this, 'modelObserver');
+  },
+  dbCurrentUser(){
+    this.set('model',this.get('db.currentUser'));
   },
   modelObserver(obj) {
     let m = obj.get('model');

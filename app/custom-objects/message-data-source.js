@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
 import {inject as service} from '@ember/service';
 import {debug} from "@ember/debug";
+import {get} from '@ember/object';
 import {Promise} from 'rsvp';
 import VideoStateHandlerMixin from '../mixins/video-state-handler-mixin';
 import ChatPlaylistHandler from '../mixins/chat-playlist-handler';
@@ -24,9 +25,13 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
   },
   convId() {
     if (this.type === 'one2one') {
-      return [this.myId, this.user.id].sort((a, b) => {
-        return b.localeCompare(a)
-      }).join("");
+      const a = this.myId;
+      const b = get(this.user,'id');
+      if (a > b) {
+          return a + b;
+      } else {
+          return b + a;
+      }
     } else if (this.type === 'room') {
       return this.room.id;
     } else if (this.type === 'group') {
@@ -459,20 +464,21 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       message['text'] = text;
       let ref = path + "/" + convId + "/Messages/" + msgUid;
       resolve(message);
-      setTimeout(()=>{
-        this.db.ref(ref).update(message).then(() => {
+      this.db.ref(ref).update(message).then(() => {
 
-          if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
-            this.profile(this.myId).then((myProfile) => {
-              this.membersOnce().then((members) => {
-                members.forEach((member) => {
-                  this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
-                });
+        if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
+          this.profile(this.myId).then((myProfile) => {
+            this.membersOnce().then((members) => {
+              members.forEach((member) => {
+                this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
               });
             });
-          }
-        });
-      },1000);
+          });
+        }
+      });
+      // setTimeout(()=>{
+
+      // },1000);
 
     });
 

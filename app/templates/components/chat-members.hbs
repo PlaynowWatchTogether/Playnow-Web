@@ -1,8 +1,8 @@
 <div class="local-stream">
-  {{chat-member-local model=model.my classNames="member local"}}
+  {{chat-member-local model=model.my classNames="member local" large=large lastUpdate=lastUpdate isLoading=isPlayerLoading}}
 </div>
 <div class="remote-streams">
   {{#each model.remote as |chatMember|}}
-      {{chat-member model=chatMember classNames="member remote"}}
+      {{chat-member model=chatMember classNames="member remote" large=large lastUpdate=lastUpdate}}
   {{/each}}
 </div>

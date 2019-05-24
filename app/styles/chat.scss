@@ -18,8 +18,13 @@
       z-index: 200;
       display: flex;
       flex-direction: column;
+
       .streamer-holder{
         @include chat-members;
+      }
+
+      &.minimized{
+        top: 170px;
       }
       &.fullscreen{
         right: 0;
@@ -70,13 +75,53 @@
           }
         }
       }
+      &.loading{
+        top: 100px;
+        margin-left: 0;
+        width: 636px;
+        height: 359px;
+        place-items: center;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        .streamer-holder{
+          position: relative;
+          .local-stream{
+            @keyframes pulse {
+              from {
+                transform: scale(1);
+              }
+              50% {
+                transform: scale(0.85);
+              }
+              to {
+                transform: scale(1);
+              }
+            }
+            .member {
+              animation-name: pulse;
+              animation-duration: 1s;
+              animation-iteration-count: infinite;
+            }
+          }
+          .remote-streams{
+            position: absolute;
+            left: 150px;
+            top: 90px;
+            align-items: flex-end;
+          }
+        }
 
+      }
     }
     .feed-content{
       flex: 0 0 67%;
       max-width: 67%;
       .feed-content-wrapper{
         @include chat-message-list;
+        // &.fullscreen{
+          // &.mouse-on{}
+        // }
       }
 
       .watchers-holder {

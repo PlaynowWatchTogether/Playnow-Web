@@ -9,7 +9,7 @@ export default ArrayProxy.extend({
       this._super(...arguments);
       this.set('isLoading', true);
   },
-  items: computed('content.@each','limit', function(){
+  items: computed('content.@each.id','limit', function(){
     if (this.get('limit')==-1){
       return this.get('content');
     }else{
@@ -25,6 +25,7 @@ export default ArrayProxy.extend({
       if (items){
         this.setObjects(items);
       }
+      this.notifyPropertyChange('items');
       this.set('isLoading', false);
     });
   },

@@ -5,6 +5,8 @@ import {get} from '@ember/object';
 import VideoStateHandler from '../mixins/video-state-handler-mixin';
 import {computed} from '@ember/object';
 import {Promise} from 'rsvp';
+import ObjectProxy from '@ember/object/proxy';
+
 export default Service.extend(VideoStateHandler, {
   firebaseApp: service(),
   store: service(),
@@ -17,6 +19,30 @@ export default Service.extend(VideoStateHandler, {
   feedUpdatedComputed: computed('feedUpdated', function(){
     return this.get('feedUpdated');
   }),
+  authClb(clb){
+    let called = false;
+    var unsubscribe = null;
+    const listener = (user)=> {
+     clb(user);
+     if (unsubscribe){
+       unsubscribe();
+     }
+   };
+   unsubscribe = this.firebaseApp.auth().onAuthStateChanged(listener);
+  },
+  friend(id){
+    return new Promise((resolve,reject)=>{
+      const myId = this.myId();
+      let ref = this.firebaseApp.database().ref(`Users/${myId}/Friends/${id}`);
+      ref.once('value', (data)=>{
+        const payload = data.val();
+        payload["id"] = data.key;
+        resolve(ObjectProxy.create({content:payload}));
+      }, (error)=>{
+        reject(error);
+      });
+    })
+  },
   friends(resolve, reject) {
     this.firebaseApp.auth().onAuthStateChanged((user) => {
       if (user) {
@@ -140,8 +166,10 @@ export default Service.extend(VideoStateHandler, {
     let ref = this.firebaseApp.database().ref("Users/" + user);
     let clb = (snapshot) => {
       let payload = snapshot.val();
-      payload['id'] = snapshot.key;
-      updateCallback(payload);
+      if (payload){
+        payload['id'] = snapshot.key;
+        updateCallback(payload);
+      }
     };
     ref.on('value', clb)
   },
@@ -277,7 +305,7 @@ export default Service.extend(VideoStateHandler, {
       updateCallback(records);
     };
     // this.listeners["channels/feed"] = clb;
-    ref.once('value', clb);    
+    ref.once('value', clb);
   },
   userFeeds(updateCallback) {
     const myId = this.myId();

@@ -10,6 +10,7 @@ export default Controller.extend({
   db: service(),
   init() {
     this._super(...arguments);
+    this.addObserver('lastUpdate',this,'friendsUpdated');
     this.set('friendsPager',UserFeedPager.create({
       content: [],
       limit: -1,
@@ -22,6 +23,10 @@ export default Controller.extend({
         });
       }
     }));
+  },
+  friendsUpdated(obj){
+    debug('friendsUpdated');
+    this.get('friendsPager').load(false);
   },
   activate(){
     debug('home controller activate');
@@ -36,7 +41,7 @@ export default Controller.extend({
       this.transitionToRoute("home.chat","compose","group");
     }
   },
-  storeFriends: computed(function(){
+  storeFriends: computed('lastUpdate',function(){
     return this.store.peekAll('home-friend');
   }),
   sortedFriends: sort('storeFriends.@each.{latestMessageDate,FirstName,LastName,profilePic,isOnline,videoIsPlaying}', function (a, b) {

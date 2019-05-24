@@ -28,7 +28,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
       }
     }
   }),
-  messageTextClass: computed('model', function(){
+  messageTextClass: computed('model.{messageIndex,maxIndex}', function(){
     const model = this.get('model');
     const index = model.messageIndex;
     const max = model.maxIndex;
@@ -43,40 +43,37 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return 'multiple-middle';
   }),
-  user: computed('model', function () {
-    return this.store.find('user', this.get('model').senderId);
-  }),
-  messageIndex: computed('model', function(){
+  messageIndex: computed('model.messageIndex', function(){
     return this.get('model.messageIndex');
   }),
-  messageDate: computed('model', function(){
+  messageDate: computed(function(){
     return moment(this.get('model.date')).format('MM-DD-YYYY');
   }),
-  messageTS: computed('model', function(){
+  messageTS: computed('model.date', function(){
     return this.get('model.date');
   }),
-  messageUid: computed('model', function () {
+  messageUid: computed('model.uid', function () {
     return this.get('model.uid');
   }),
   mine: computed('model', 'auth.uid', function () {
     return this.get('model').senderId === this.auth.get('uid')
   }),
-  textAuthorId: computed('model', function(){
+  textAuthorId: computed(function(){
     return this.get('model.senderId');
   }),
-  inReplyTo: computed('model', function(){
+  inReplyTo: computed(function(){
     return this.get('model.inReplyTo');
   }),
-  isAttachment: computed('model', function(){
+  isAttachment: computed(function(){
     let model = this.get('model');
     let type = model['type'];
     return type === 'attachment' || type === 'photo' || type === 'Video';
   }),
-  isLoading: computed('model', function(){
+  isLoading: computed(function(){
     let model = this.get('model');
     return model['isLoading'];
   }),
-  senderName: computed('model', function(){
+  senderName: computed(function(){
     return this.get('model.senderName');
   }),
   randomColor(){
@@ -87,13 +84,13 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return color;
   },
-  shareVideoTitle: computed('model', function(){
+  shareVideoTitle: computed(function(){
     const model = this.get('model');
     const video = model.video;
     return `${video.title} | ${video.channelTitle}`;
 
   }),
-  isShareVideo: computed('model', function(){
+  isShareVideo: computed(function(){
     let model = this.get('model');
     let type = model['type'];
     return type === 'ShareVideo';
@@ -117,7 +114,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return htmlSafe('');
   }),
-  photoThumbnail: computed('model', function(){
+  photoThumbnail: computed(function(){
       let model = this.get('model');
       if (model.type === 'photo'){
         return this.get('model.thumbnail');
@@ -127,7 +124,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
         return '';
       }
   }),
-  isPhoto: computed('model', function () {
+  isPhoto: computed(function () {
     let model = this.get('model');
     let type = model['type'];
     if (type === 'photo'){
@@ -138,7 +135,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return false;
   }),
-  isVideo: computed('model', function () {
+  isVideo: computed(function () {
     let model = this.get('model');
     let type = model['type'];
     if (type === 'Video'){
@@ -149,11 +146,11 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return false;
   }),
-  attachmentName: computed('model', function(){
+  attachmentName: computed(function(){
     let model = this.get('model');
     return model.attachment.name;
   }),
-  videoSrc: computed('model', function () {
+  videoSrc: computed(function () {
     let model = this.get('model');
     if (model.type === 'Video'){
       return model['media'];
@@ -163,11 +160,11 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return '';
   }),
-  videoThumbnail: computed('model', function () {
+  videoThumbnail: computed(function () {
     let model = this.get('model');
     return model['media_thumbnail'];
   }),
-  hasVideoThumbnail: computed('model', function () {
+  hasVideoThumbnail: computed(function () {
     let model = this.get('model');
     return model['media_thumbnail'] && model['media_thumbnail'].length > 0;
   }),
@@ -175,27 +172,27 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let model = this.get('model');
     return model.attachment.url;
   }),
-  isVideoRequest: computed('model', function () {
+  isVideoRequest: computed(function () {
     let model = this.get('model');
     let type = model['type'];
     return type === 'VideoRequest';
   }),
-  requestTitle: computed('model', function () {
+  requestTitle: computed(function () {
     let model = this.get('model');
     return model['senderName'] + ' requested to watch:';
   }),
-  requestThumbnail: computed('model', function () {
+  requestThumbnail: computed(function () {
     let model = this.get('model');
     return model['video']['imageURL'];
   }),
-  requestChannel: computed('model', function () {
+  requestChannel: computed(function () {
     let model = this.get('model');
     return model['video']['title'];
   }),
-  videoRequestClass: computed('canClick', function () {
+  videoRequestClass: computed(function () {
     return this.get('canClick') ? 'clickable' : '';
   }),
-  bodyMessage: computed('model', function () {
+  bodyMessage: computed(function () {
     let model = this.get('model');
     return model['text'].autoLink();
   }),
@@ -216,14 +213,14 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return ret;
   }),
-  tooltipPlacement: computed('model', 'auth.uid', function(){
+  tooltipPlacement: computed(function(){
     if (this.get('model').senderId === this.auth.get('uid')){
       return 'right';
     }else{
       return 'left';
     }
   }),
-  tooltipValue: computed('model', function(){
+  tooltipValue: computed(function(){
     let mesDate = this.get('model.date')
     if (this.get('model.serverDate')) {
       mesDate = this.get('model.serverDate');
@@ -234,7 +231,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     }
     return moment(mesDate).format("ddd, hh:mm A")
   }),
-  receiver: computed('model', 'members', function () {
+  receiver: computed(function () {
     let members = this.get('members');
     let model = this.get('model');
     if (members) {

@@ -4,6 +4,7 @@
   height: 50px;
   padding: 2px;
   border-radius: 50%;
+  animation: width 1s,height 1s;
   .member-wrapper{
     background: white;
     pointer-events: none;
@@ -14,6 +15,7 @@
     height: 100%;
     padding: 2px;
   }
+
   .member-content{
     width: 100%;
     height: 100%;
@@ -25,6 +27,24 @@
       width: 100%;
       height: 100%;
     }
+    .muted-holder{
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42px;
+      height: 42px;
+      align-items: flex-end;
+      place-items: flex-end;
+      align-content: center;
+      place-content: center;
+      &.active{
+        display: flex;
+      }
+      img{
+        width: 10px;
+      }
+    }
     .mic-holder{
       display: none;
       position: absolute;
@@ -32,6 +52,7 @@
       left: 0;
       width: 42px;
       height: 42px;
+      animation: width,height;
       align-items: center;
       place-items: center;
       align-content: center;
@@ -46,6 +67,28 @@
     .video-holder{
       transform: translate3d(0,0,0);
       display: none;
+      .loading-view{
+        display: none;
+        position: absolute;
+        left: 50%;
+        margin-left: -32px;
+      }
+      &.loading{
+        .loading-view{
+          display: flex;
+        }
+      }
+    }
+    .overlay{
+      display: none;
+      background: #000;
+      opacity: 0.5;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
     }
 
   }
@@ -72,47 +115,37 @@
       .video-holder{
         display: flex;
         display: flex;
-        width: 67px;
+        width: 56px;
+        height: 42px;
         position: absolute;
-        height: 50px;
         left: -11px;
-        top: -4px;
+        top: 0;
         video{
-          width: 67px;
-          height: 50px;
+          width: 56px;
+          height: 42px;
         }
-        .fp-engine{
-          top: 0;
-          position: absolute;
-        }
-        .fp-ui{
-          display: none;
-        }
-        .fp-captions{
-          display: none;
-        }
-        a{
-          top: 0;
-          left: 0;
-          bottom: auto;
-        }
-        .fp-player{
-          height: 50px;
-        }
-        .fp-ratio{
-          display: none;
-        }
-
       }
+
     }
   }
   &.large{
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     padding: 5px;
+    .muted-holder{
+      width: 136px;
+      height: 136px;
+      img{
+        width: 30px;
+      }
+    }
+    .overlay{
+      width: 136px;
+      height: 136px;
+    }
     .mic-holder{
-      width: 86px;
-      height: 86px;
+      width: 136px;
+      height: 136px;
       img{
         width: unset;
       }
@@ -120,30 +153,31 @@
     .member-wrapper{
       .member-content{
         .video-holder{
-          height: 100px;
-          width: 134px;
-          left: -21px;
-          top: -7px;
+          height: 136px;
+          width: 182px;
+          left: -23px;
           video{
-            height: 100px;
-            width: 134px;
-          }
-          .fp-player{
-            height: 100px;
+            height: 136px;
+            width: 182px;
           }
         }
       }
     }
 
   }
-
+  &:hover{
+    .overlay{
+      display: flex;
+    }
+  }
 }
 @mixin chat-members{
   display: flex;
   flex-direction: row;
-  z-index: 200;
+  z-index: 200;  
   .member{
     @include chat-member;
+    cursor: pointer;
   }
   .remote-streams{
     display: flex;
@@ -151,26 +185,30 @@
   }
   &.fullscreen{
     flex-direction: column;
-    &.large{
-      .member{
+    .member{
+      &.large{
         width: 120px;
         height: 120px;
         .member-content{
           .mic-holder{
-            width: 112px;
-            height: 112px;
+            height: 106px;
+            width: 106px;
+          }
+          .overlay{
+            width: 106px;
+            height: 106px;
+          }
+          .muted-holder{
+            height: 106px;
+            width: 106px;
           }
           .video-holder{
-            height: 120px;
-            width: 160px;
+            height: 106px;
+            width: 142px;
             left: -20px;
             video{
-              height: 120px;
-              width: 160px;
-            }
-            .fp-engine{
-              height: 120px;
-              width: 160px;
+              height: 106px;
+              width: 142px;
             }
           }
         }

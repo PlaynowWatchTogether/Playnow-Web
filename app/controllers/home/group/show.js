@@ -123,6 +123,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       return false;
     }
   }),
+  canPost:computed('feed',function(){
+    return this.get('isAdmin') || this.get('isFollowing')
+  }),
   groupViews:computed('feed', function(){
     const feed = this.get('feed');
     if (feed){

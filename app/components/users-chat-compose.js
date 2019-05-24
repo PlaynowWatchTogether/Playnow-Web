@@ -14,11 +14,14 @@ export default Component.extend({
   hasChips: computed('chips.@each', function () {
     return this.get('chips').length > 0;
   }),
+  willDestroyElement(){    
+    this._super(...arguments);
+  },
   didInsertElement() {
     this._super(...arguments);
-    let uid = this.firebaseApp.auth().currentUser.uid;
+    let uid = this.get('db').myId();
     let ref = this.firebaseApp.database().ref('Users/' + uid + "/Friends");
-    ref.on('value', (data) => {
+    this.friendsListener = (data) => {
       let records = [];
       data.forEach((elem) => {
         let payload = elem.val();
@@ -33,7 +36,8 @@ export default Component.extend({
         records.push(payload);
       });
       this.set('friends', records)
-    })
+    }
+    ref.once('value',this.friendsListener);
   },
   suggestionTemplate: function (data) {
     let profilePic = '';

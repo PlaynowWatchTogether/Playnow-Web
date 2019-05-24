@@ -31,20 +31,26 @@ export default Component.extend(FileUploadHelper, {
 		}
 		ds.chatAttachments(this.get('store'), (update)=>{
 			debug('got update');
-			this.set('lastAttachmentUpdate', new Date().getTime());
+			if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
+				this.set('lastAttachmentUpdate', new Date().getTime());
+			}
 		});
 		ds.members((members)=>{
-			this.set('members',members);
+			if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
+				this.set('members',members);
+			}
 		});
 		this.get('db').listenGroup(this.get('model.chat_id'), (group)=>{
-			this.set('title', group.GroupName);
-			let profilePic =group.ProfilePic;
+			if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
+				this.set('title', group.GroupName);
+				let profilePic =group.ProfilePic;
 
-			if (!profilePic || profilePic.length===0){
-				profilePic = '/assets/monalisa.png';
-			} 
-			this.set('profilePic', profilePic);
-			this.set('title', group.GroupName);
+				if (!profilePic || profilePic.length===0){
+					profilePic = '/assets/monalisa.png';
+				}
+				this.set('profilePic', profilePic);
+				this.set('title', group.GroupName);
+			}
 		})
 	},
 	modelObserver(obj) {
@@ -60,10 +66,10 @@ export default Component.extend(FileUploadHelper, {
 		return this.get('store').peekAll('chat-attachment').filter((elem)=>{
 			return elem.get('convId') === this.get('model.chat_id');
 		});
-	}),	
+	}),
 	actions:{
 		uploadGroupProfileImage(file){
-			
+
 			const myID = this.get('db').myId();
 	        let metadata = {
 	          cacheControl: 'public,max-age=86400'
@@ -71,11 +77,11 @@ export default Component.extend(FileUploadHelper, {
 	        let ref = this.firebaseApp.storage().ref('Media/Files/' + myID + "/" + this.generateUUID() + '.png');
 
 	        ref.put(file.blob, metadata).then((snapshot) => {
-	          snapshot.ref.getDownloadURL().then((downloadURL) => {	            
-	            this.get('db').updateGroupPic(this.get('model.chat_id'),downloadURL);	            
+	          snapshot.ref.getDownloadURL().then((downloadURL) => {
+	            this.get('db').updateGroupPic(this.get('model.chat_id'),downloadURL);
 	          });
 	        });
-		    
+
 		},
 		updateGroupName(){
 			const newName = this.get('editableTitle');
@@ -84,7 +90,7 @@ export default Component.extend(FileUploadHelper, {
 			}
 			const db = this.get('db');
 			db.updateGroupName(this.get('model.chat_id'), newName).then(()=>{
-				this.set('isDisabled',true);				
+				this.set('isDisabled',true);
 				this.notifyPropertyChange('title');
 			});
 		},
@@ -100,11 +106,9 @@ export default Component.extend(FileUploadHelper, {
 			const db = this.get('db');
 			db.group(this.get('model.chat_id')).then((data)=>{
 				db.addGroupMembers(data["id"],data["GroupName"],chips).then(()=>{
-					this.set('composeChips',[]);		
+					this.set('composeChips',[]);
 				});
 			});
-			
-			
 		},
 		onChipAdd(data) {
 	      let exists = this.get('composeChips').filter((elem) => {

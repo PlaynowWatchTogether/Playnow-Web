@@ -21,6 +21,9 @@ import BroadcastStreamer from '../../custom-objects/broadcast-streamer';
 import ObjectProxy from '@ember/object/proxy';
 import ArrayProxy from '@ember/array/proxy';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
+import {Subject, BehaviorSubject, interval} from 'rxjs';
+import {debounce} from 'rxjs/operators';
+import {timer} from 'rxjs';
 
 export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, ChatModelHelper, {
   firebaseApp: service(),
@@ -36,6 +39,15 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.messageText = '';
     this.composeChips = [];
     this.memberColors={};
+    this.controlHideSubject = new Subject();
+    this.controlHideSubject.pipe(debounce(() => interval(3000))).subscribe({
+      next: () => {
+        if ($('body').hasClass('fullscreen-video') && !$('.messages-holder-full').hasClass('mouse-on') && !$('.messageContent').is(":focus")){
+          $('.messages-holder-full').fadeOut();
+        }
+      }
+    });
+
     this.chatMembersArray = ObjectProxy.create({content:{
       my: ObjectProxy.create({content:null}),
       remote: ArrayProxy.create({content:[]})
@@ -60,6 +72,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         loadVideo: (video, seconds) => {
           run(() => {
             const oldValue = this.get('hasPlayer');
+            let holder = $('#youtubePlaceHolder');
+            let height = 9 * holder.width() / 16;
+            holder.height(height);
+
+            $('#youtubePlaceHolder').show();
+
             if (oldValue){
               this.set('hasPlayer', false);
               this.set('playerReady',false);
@@ -68,11 +86,13 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
               this.set('videoPlayerState',1);
               setTimeout(()=>{
                 this.set('hasPlayer', true);
+                // this.set('refreshScroll',new Date());
                 this.set('playerAction', 0);
                 this.set('playerVideo', {video: video, seconds: seconds});
               },1000);
             }else{
               this.set('hasPlayer', true);
+              // this.set('refreshScroll',new Date());
               this.set('playerAction', 0);
               this.set('playerVideo', {video: video, seconds: seconds});
             }
@@ -125,7 +145,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.addObserver('messageText', this, 'messageTextObserver');
     this.addObserver('searchMode', this, 'searchModeObserver');
     this.searchModeObserver(this);
-    this.set('playerState', {});
+    this.set('playerState', null);
     this.set('searchMode', 'video');
 
     // this.queryVideos(true);
@@ -170,11 +190,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let l = this.get('playerState');
     if (l) {
       if (l.buffering)
-        return 'active';
+        return true;
       if (!l.playing)
-        return 'active'
+        return true;
     }
-    return ''
+    return false;
   }),
   loadingOverlayClass: computed('playerState', function () {
     debug(JSON.stringify(this.get('playerState')));
@@ -211,7 +231,40 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let type = this.get('model').type;
     return type ==='one2one';
   }),
+  displayName(friend) {
+
+    let username = friend.get('Username');
+    let firstName = friend.get('firstName');
+    let lastName = friend.get('lastName');
+
+    if (!username) {
+      return [firstName, lastName].join(" ");
+    }
+
+    if (username.includes('@')) {
+      return username.split('@')[0];
+    }
+
+    return username;
+  },
   modelObserver: (obj) => {
+    $(document).on('mousemove', () => {
+      run(() => {
+        $('.messages-holder-full').fadeIn();
+        obj.controlHideSubject.next(1);
+      });
+    });
+    $(document).on('mouseenter','.messages-holder-full', (event) => {
+      run(() => {
+        $('.messages-holder-full').addClass('mouse-on');
+      });
+    });
+    $(document).on('mouseleave','.messages-holder-full', (event) => {
+      run(() => {
+        $('.messages-holder-full').removeClass('mouse-on');
+      });
+    });
+
     $(document).on('keyup.chat',(event)=>{
       if (27 === event.keyCode){
         if (obj.get('isFullScreen')){
@@ -245,11 +298,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
 
     if ('one2one' === type) {
-      obj.store.find('friends', convId).then((friend) => {
+
+      obj.get('db').friend(convId).then((friend) => {
         obj.set('chatModel', {
           hasProfilePic: true,
-          title: friend.get('displayName'),
-          ProfilePic: friend.get('safeProfilePic'),
+          title: obj.displayName(friend),
+          ProfilePic: friend.get('ProfilePic'),
           user: friend
         });
         obj.set('dataSource', MessageDataSource.create({
@@ -706,7 +760,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       if (mesCntent.isMessage){
         if (ds.type === 'one2one') {
           if (mesCntent.message.senderId === myId && mesCntent.message.seen){
-            isSeen = mesCntent.message.seen[ds.user.id];
+            isSeen = mesCntent.message.seen[get(ds.user,'id')];
           }
         }
       }
@@ -744,6 +798,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       this.set('playerAction', 10);
       ds.updateWatching('', 'closed');
     }
+    window.globalPlayer=null;
   },
   modeClass: computed('model', function () {
     if (this.isTypePublicRoom(this.get('model.type'))){
@@ -763,6 +818,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   }),
   myID: computed('model', function () {
     return this.get('db').myId();
+  }),
+  isMinimized: computed('videoPlayerState', function(){
+    return this.get('videoPlayerState') === 0;
   }),
   chatMembers: computed('allWatchers','isFullScreen','remoteStreams.@each.{mic,video,stream}','streamingModel.mic','streamingModel.video',function(){
     const myId = this.get('db').myId();
@@ -959,6 +1017,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     return (master || senderId === this.db.myId());
   }),
   closeFullScreen(){
+    $('.messages-holder-full').show();
+    this.set('playerAction', 1000);
     $('body').removeClass('fullscreen-video');
     $('.controlsOverlay').removeClass('fullscreen-video');
     this.set('videoPlayerState',1);
@@ -1092,6 +1152,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }
         return;
       }
+      let holder = $('#youtubePlaceHolder');
+      let height = 9 * holder.width() / 16;
+      holder.height(height);
+
+      $('#youtubePlaceHolder').show();
       this.videoDetails(video).then((details)=>{
         this.shareVideo(details, true);
       });
@@ -1197,6 +1262,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       $('.controlsOverlay').addClass('fullscreen-video');
       $('body').addClass('fullscreen-video');
       this.set('videoPlayerState',1);
+      $('.messages-holder-full').show();
       this.set('isFullScreen',true);
     },
     videoPlayerFullWindowOff(){
@@ -1207,6 +1273,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     },
     videoPlayerExpand(){
       this.set('videoPlayerState',1);
+    },
+    onPlayerShow(){
+      this.set('refreshScroll',new Date());
     },
     onPlayerUpdate(){
       if (window.globalPlayer && window.globalPlayer.isMuted){

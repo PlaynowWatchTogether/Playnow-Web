@@ -3,9 +3,10 @@ import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
 export default Mixin.create({
   firebaseApp: service(),
+  db:service(),
   beforeModel() {
     return new Promise((resolve) => {
-      this.firebaseApp.auth().onAuthStateChanged((user) => {
+      this.get('db').authClb((user) => {
         if (user) {
           resolve()
         } else {

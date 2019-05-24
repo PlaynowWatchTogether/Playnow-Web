@@ -65,6 +65,16 @@ export default Component.extend({
       }
     });
   },
+  handleResize(){
+    let holder = $('#youtubeHolder');
+    let height = 9 * holder.width() / 16;
+    holder.height(height);
+
+    $('#youtubeHolder .overlay').height(height);
+    $('#youtubeHolder .controlsOverlay').height(height);
+    $('#youtubeHolder #ytplayer').height(height);
+    $('.watchers-holder').height(height);
+  },
   didInsertElement() {
     this._super(...arguments);
     // var tag = document.createElement('script');
@@ -86,7 +96,7 @@ export default Component.extend({
     $(document).on('mouseenter', (event) => {
       run(() => {
         debug(`mouse enter ${event.target.id}`);
-        $('.feed-content-wrapper').addClass('mouse-on');        
+        $('.feed-content-wrapper').addClass('mouse-on');
       });
     });
     $(document).on('mouseleave', (event) => {
@@ -103,13 +113,11 @@ export default Component.extend({
     };
     videojs.hook('setup',this.setupVideoJS);
     let holder = $('#youtubeHolder');
-    $(window).on('resize', function () {
-      let height = 9 * holder.width() / 16;
-      holder.height(height);
-      $('#youtubeHolder .overlay').height(height);
-      $('#youtubeHolder .controlsOverlay').height(height);
-      $('#youtubeHolder #ytplayer').height(height);
-      $('.watchers-holder').height(height);
+    $(window).on('resize', ()=> {
+      run(()=>{
+        this.handleResize();
+      });
+
     });
     let height = 9 * holder.width() / 16;
     holder.height(height);
@@ -180,7 +188,7 @@ export default Component.extend({
       this.set('player', player);
       this.get('onPlayerUpdate')();
     }
-
+    $('#youtubePlaceHolder').hide();
     this.actionObserver(this);
     this.videoObserver(this);
   },
@@ -189,12 +197,14 @@ export default Component.extend({
     if (newState === 1){
       $('.youtube-music-holder').hide();
       $('#youtubeHolder').show();
-      $('#youtubePlaceHolder').show();
+      // $('#youtubePlaceHolder').show();
       $('#youtubeHolder .overlay').show();
+      window.playerObj.get('onPlayerShow')();
     }else{
       $('#youtubeHolder').hide();
       $('.youtube-music-holder').show();
     }
+
   },
   sendPlayedPlay(){
     let player = this.get('player');
@@ -265,6 +275,8 @@ export default Component.extend({
               // player.stopVideo()
             } else if (action === 5) {
               obj.sendPlayerSeek(this.get('playerSeconds'));
+            } else if (action === 1000){
+              obj.handleResize();
             } else {
               return;
             }
@@ -401,12 +413,13 @@ export default Component.extend({
           if (obj.get('getVideoState') === 1){
             $('.youtube-music-holder').hide();
             $('#youtubeHolder').show();
-            $('#youtubePlaceHolder').show();
+            // $('#youtubePlaceHolder').show();
             $('#youtubeHolder .overlay').show();
           }else{
             $('#youtubeHolder').hide();
             $('.youtube-music-holder').show();
           }
+          window.playerObj.get('onPlayerShow')();
 
           debug('video');
         }

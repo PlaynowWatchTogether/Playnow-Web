@@ -7,7 +7,7 @@ import {Promise} from 'rsvp';
 
 export default Mixin.create({
   db: service(),
-  syncFriends(){
+  syncFriends(syncFinished){
     const myId = this.get('db').myId();
     this.get('db').friends((friends) => {
 
@@ -52,6 +52,7 @@ export default Mixin.create({
 
 
       });
+      syncFinished();
     }, () => {
 
     });
@@ -66,8 +67,9 @@ export default Mixin.create({
         }
         let normalizedData = this.store.normalize('home-friend', friendPayload);
         this.store.push(normalizedData);
-        this.handleGroupMessages(friend);
-      });      
+        this.handleGroupMessages(friend);      
+      });
+      syncFinished();
     }, () => {
 
     });

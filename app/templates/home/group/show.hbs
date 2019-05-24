@@ -149,31 +149,32 @@
               </div>
             {{else}}
               <div class="feed-post-holder">
-                <div class="feed-post-wrapper">
+                {{#if canPost}}
+                  <div class="feed-post-wrapper">
+                    <div class="feed-post {{if uploads "has-uploads"}}">
+                      {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
+                      {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
+                                                enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
+                      {{#file-upload name="chatPhotos"
+                                     onfileadd=(action "uploadImageToChatAction")}}
+                        <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
+                      {{/file-upload}}
 
-                  <div class="feed-post {{if uploads "has-uploads"}}">
-                    {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
-                    {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
-                                              enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-                    {{#file-upload name="chatPhotos"
-                                   onfileadd=(action "uploadImageToChatAction")}}
-                      <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
-                    {{/file-upload}}
+                      <div class="imgHolder">
 
-                    <div class="imgHolder">
-
-                      <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
+                        <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
+                      </div>
                     </div>
+                    {{#if uploads}}
+                      <div class="feed-uploads">
+                        {{#each uploads as |upload|}}
+                          {{chat-upload-item model=upload
+                            onRemove=(action "onRemoveUpload")}}
+                        {{/each}}
+                      </div>
+                    {{/if}}
                   </div>
-                  {{#if uploads}}
-                    <div class="feed-uploads">
-                      {{#each uploads as |upload|}}
-                        {{chat-upload-item model=upload
-                          onRemove=(action "onRemoveUpload")}}
-                      {{/each}}
-                    </div>
-                  {{/if}}
-                </div>
+                {{/if}}
               </div>
             {{/if}}
 

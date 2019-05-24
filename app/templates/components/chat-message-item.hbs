@@ -1,7 +1,5 @@
 {{#if shouldDisplaySender}}
-  {{#user-profile-view classNames="profilePicWrapper" model=user.id}}
-    <img src={{user.safeProfilePic}} class="profilePic" alt="icon">
-  {{/user-profile-view}}
+  {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper"}}  
 {{else}}
 {{#unless isShareVideo}}
   <div class="profilePicWrapper"></div>
@@ -78,7 +76,7 @@
         {{else}}
           {{#if isSeen}}
             <div class="last-seen">
-              {{remote-user-profile-pic model=receiver.id classNames="profilePicWrapper"}}                              
+              {{remote-user-profile-pic model=receiver.id classNames="profilePicWrapper"}}
             </div>
           {{else}}
             <div class="sent-message">

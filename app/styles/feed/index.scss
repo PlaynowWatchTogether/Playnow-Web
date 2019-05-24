@@ -102,11 +102,12 @@
           }
           .list{
             .empty{
-              color: #b9b9b9;
+              color: lightgray;
               margin: auto;
               text-align: center;
-              padding-top: 10px;
-              padding-bottom: 10px;
+              font-size: 90%;
+              padding-top: 20px;
+              padding-bottom: 20px;
             }
             .home-feed-item-link{
               text-decoration: none;

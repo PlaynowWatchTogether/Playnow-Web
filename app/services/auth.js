@@ -9,11 +9,12 @@ export default Service.extend({
   firebaseApp: service(),
   store: service(),
   current: null,
+  db: service(),
   init() {
     this._super(...arguments);
     const localStore = this.get('localStore');
     this.set('uid', localStore.get('uid'));
-    this.firebaseApp.auth().onAuthStateChanged((user) => {
+    this.get('db').authClb((user) => {
       if (user) {
         this.userUpdate = (profile) => {
           this.current = ProfileObject.create({model: profile.val()});

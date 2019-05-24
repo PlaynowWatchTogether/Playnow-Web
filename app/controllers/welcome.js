@@ -6,6 +6,7 @@ import {computed} from '@ember/object';
 import {Promise} from 'rsvp';
 export default Controller.extend({
   firebaseApp: service(),
+  db: service(),
   init() {
     this._super(...arguments);
 
@@ -30,7 +31,11 @@ export default Controller.extend({
     this.set('signupLoading', false);
     const auth = this.get('firebaseApp').auth();
     debug("Created user with " + auth.currentUser.uid);
-    this.transitionToRoute("home");
+    this.get('db').profile(auth.currentUser.uid).then((profile)=>{
+      this.get('db').set('currentUser', profile);
+      this.transitionToRoute("home");
+    });
+
   },
   async loginWithEmail(email, password) {
     const auth = await this.get('firebaseApp').auth();
@@ -77,10 +82,10 @@ export default Controller.extend({
     let db = this.get('firebaseApp').database();
     let friendID = 'IZ3cAldc41PsvRnppzngv85utJf2';
     let uid = this.get('firebaseApp').auth().currentUser.uid;
-    let updates = {};
-    updates[uid + '/Friends/' + friendID + '/id'] = uid;
-    updates[friendID + '/Friends/' + uid + '/id'] = friendID;
-    return db.ref('/Users').update(updates)
+    return Promise.all([
+      db.ref(`/Users/${uid}/Friends/${friendID}/id`).set(uid),
+      db.ref(`/Users/${friendID}/Friends/${uid}/id`).set(friendID)
+    ]);
   },
   clearError() {
     setTimeout(() => {
@@ -181,22 +186,24 @@ export default Controller.extend({
           this.clearError();
         } else {
           this.createUser(register.username, register.password).then((user) => {
-            let bd = register.birthDate.format("YYYY-MM-DD");
-            let fields = {
-              'Email': register.username + "@g2z4oldenfingers.com",
-              'BirthDate': bd,
-              'FirstName': register.firstName,
-              'LastName': register.lastName,
-            };
-            user.updateProfile({displayName: register.username}).then(() => {
-              return this.updateProfile(user, fields)
-            }).then(() => {
-              return this.addDefaultFriend();
-            }).then(() => {
-              this.userCreated();
-            }, () => {
-              this.userCreated()
-            })
+            setTimeout(()=>{
+              let bd = register.birthDate.format("YYYY-MM-DD");
+              let fields = {
+                'Email': register.username + "@g2z4oldenfingers.com",
+                'BirthDate': bd,
+                'FirstName': register.firstName,
+                'LastName': register.lastName,
+              };
+              user.updateProfile({displayName: register.username}).then(() => {
+                return this.updateProfile(user, fields)
+              }).then(() => {
+                return this.addDefaultFriend();
+              }).then(() => {
+                this.userCreated();
+              }, () => {
+                this.userCreated()
+              })
+            },5000);
           }, (error) => {
             if (error.code === 'auth/weak-password') {
               this.set('form.register.error.password', error.message);

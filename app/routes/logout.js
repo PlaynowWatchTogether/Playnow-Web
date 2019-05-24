@@ -4,10 +4,11 @@ import {Promise} from 'rsvp';
 export default Route.extend({
   auth: service(),
   firebaseApp: service(),
+  db: service(),
   beforeModel() {
     this._super(...arguments);
     return new Promise((resolve) => {
-      this.firebaseApp.auth().onAuthStateChanged((user) => {
+      this.get('db').authClb((user) => {
         this.set('user', user);
         if (user) {
           resolve()

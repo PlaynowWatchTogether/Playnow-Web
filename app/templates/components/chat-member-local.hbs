@@ -2,9 +2,16 @@
   <div class="member-content">
     {{remote-user-profile-pic model=model.userId classNames="profilePicWrapper" alt="ProfilePic"}}
     <div class="video-holder">
+      {{loading-view}}
+    </div>
+
+    <div class="muted-holder {{if isMuted "active"}}">
+      <img src="/assets/ic_streaming_mic_off_24px.svg" alt="streaming muted">
     </div>
     <div class="mic-holder">
       <img src="/assets/ic_streaming_mic.svg" alt="streaming mic">
+    </div>
+    <div class="overlay">
     </div>
   </div>
 </div>

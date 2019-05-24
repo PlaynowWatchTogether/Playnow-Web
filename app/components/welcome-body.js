@@ -17,7 +17,7 @@ export default Component.extend({
     if (this.get('useFooter')) {
       footerHeight = footerHeight * this.get('useFooter');
     }
-    let calcHeight = Math.max($('body').height(), this.minHeight) - (headerHeight ? headerHeight : 0) - (footerHeight ? footerHeight : 0);
+    let calcHeight = Math.max($('body').height(), this.minHeight) - (headerHeight ? headerHeight : 55) - (footerHeight ? footerHeight : 0);
     $(this.element).css('height', calcHeight);
   },
   didInsertElement() {

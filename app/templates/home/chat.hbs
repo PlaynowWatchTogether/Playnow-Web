@@ -45,7 +45,7 @@
               <div class="title noselect">
                 {{#if chatModel.hasProfilePic}}
                   <div class="profilePicWrapper">
-                    <img src={{chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                    <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
                   </div>
                 {{else}}
                   <div class="profilePicWrapper"></div>
@@ -59,9 +59,7 @@
               </div>
               {{#user-profile-view classNames="title noselect" model=chatModel.user.id}}
                 {{#if chatModel.hasProfilePic}}
-                  <div class="profilePicWrapper">
-                    <img src={{chatModel.user.safeProfilePic}} class="profilePic" alt="ProfilePic">
-                  </div>
+                  {{remote-user-profile-pic model=chatModel.user.id classNames="profilePicWrapper"}}
                 {{else}}
                   <div class="profilePicWrapper"></div>
                 {{/if}}
@@ -97,7 +95,7 @@
             </div>
           </div>
         {{/if}}
-        <div id="youtubeHolder" class={{playerLoadingClass}}>
+        <div id="youtubeHolder" class={{if playerLoadingClass "active" }}>
           {{#if hasPlayer}}
             {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
                                     videoLoadedAction=(action "videoLoaded")
@@ -107,6 +105,7 @@
                                     playerSeconds=playerSeconds
                                     videoMute=videoMute
                                     onPlayerUpdate=(action "onPlayerUpdate")
+                                    onPlayerShow=(action "onPlayerShow")
                                     onVideoEnd=(action "onVideoEnd")
                                     slidingProgress=slidingProgress}}
 
@@ -114,7 +113,16 @@
             <div class="overlay"></div>
             <div class="controlsOverlay">
               <div class="controlsHolder">
-                <img src="/assets/ic_video_close.png" class="close" alt="icon">
+                {{#if canAutoplay}}
+                  <div class="switch-holder">
+                    <div class="label noselect">Auto play</div>
+                    <label class="switch">
+                      <input type="checkbox" id="autoplay-checkbox" checked>
+                      <span class="switcher round"></span>
+
+                    </label>
+                  </div>
+                {{/if}}
                 <div class="control">
                   <div class="play play-action">
                     <img src="/assets/ic_icon_play_video.png" alt="icon">
@@ -150,17 +158,6 @@
                   <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
                     <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
                   </div>
-
-                  {{#if canAutoplay}}
-                    <div class="switch-holder">
-                      <div class="label noselect">Auto play</div>
-                      <label class="switch">
-                        <input type="checkbox" id="autoplay-checkbox" checked>
-                        <span class="switcher round"></span>
-
-                      </label>
-                    </div>
-                  {{/if}}
                 </div>
                 <input type="range" min="1" max="100" value="50" class="slider {{sliderClass}}">
               </div>
@@ -168,9 +165,7 @@
             <div class="loading-overlay {{loadingOverlayClass}}"></div>
           {{/if}}
         </div>
-        {{#unless hasPlayer}}
-          <div id="youtubePlaceHolder"></div>
-        {{/unless}}
+        <div id="youtubePlaceHolder"></div>
         {{#if hasPlayer}}
           <div class="youtube-music-holder">
             <div class="music-player">
@@ -203,7 +198,7 @@
             </div>
           </div>
         {{/if}}
-        <div class="messages-holder-full">
+        <div class="messages-holder-full {{if isFullScreen "fullscreen"}}">
           <div class="messages-holder-content">
 
             {{#end-scrollable classNames="messagesHolder"
@@ -211,6 +206,7 @@
                               onScrolledHalf=(action "loadMore")
                               onTopChildChanged=(action "topChildChanged")
                               scrollChild=".messagesWrappper"
+                              refreshScroll=refreshScroll
                               itemTimeSelector=".chat-message-time-item"}}
               {{#if isLoadingMessages}}
                 <div class="loading-holder h-100">
@@ -320,7 +316,7 @@
 
       {{/file-dropzone}}
     </div>
-    <div class="messages-side-bar {{if isFullScreen "fullscreen"}}">
+    <div class="messages-side-bar {{if isFullScreen "fullscreen"}} {{if isMinimized "minimized"}}">
       {{#if isFullScreen}}
         {{#if isOne2One}}
           {{streaming-control
@@ -330,18 +326,21 @@
             onToggleCamera=(action "onToggleCamera")}}
         {{/if}}
       {{/if}}
-      {{chat-members model=chatMembers classNames="streamer-holder" fullscreen=isFullScreen}}
-      {{#if isFullScreen}}
-        <div class="controls">
-          <div class="mute {{if videoMute "active"}}" role="button" {{action "videoPlayerMute"}}>
-            <img src="/assets/ic_mute_off_white@2x.png" alt="mute off" class="off">
-            <img src="/assets/ic_mute_on_white@2x.png" alt="mute on" class="on">
+      {{#unless isCompose}}
+        {{chat-members model=chatMembers classNames="streamer-holder" playerLoading=playerLoadingClass fullscreen=isFullScreen}}
+
+        {{#if isFullScreen}}
+          <div class="controls">
+            <div class="mute {{if videoMute "active"}}" role="button" {{action "videoPlayerMute"}}>
+              <img src="/assets/ic_mute_off_white@2x.png" alt="mute off" class="off">
+              <img src="/assets/ic_mute_on_white@2x.png" alt="mute on" class="on">
+            </div>
+            <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
+              <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
+            </div>
           </div>
-          <div class="full-off" role="button" {{action "videoPlayerFullWindowOff"}}>
-            <img src="/assets/ic_fill_window_off@2x.png" alt="mute">
-          </div>
-        </div>
-      {{/if}}
+        {{/if}}
+      {{/unless}}
     </div>
     <div class="feed-sidebar">
       <div class="feed-sidebar-wrapper">
@@ -411,7 +410,9 @@
   </div>
 </div>
 {{#if isGroup}}
-  {{group-shared-popup model=model dataSource=dataSource actionSelector=".titleHolder > .title"}}
+  {{#unless isCompose}}
+    {{group-shared-popup model=model dataSource=dataSource actionSelector=".titleHolder > .title"}}
+  {{/unless}}
 {{/if}}
 <div class="modal fade" id="videoPreviewModal" tabindex="-1" role="dialog" aria-labelledby="photoPreviewModal"
      aria-hidden="false">

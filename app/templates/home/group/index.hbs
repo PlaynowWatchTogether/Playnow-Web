@@ -71,29 +71,33 @@
 		    	<div class="feed-group-access">
 			    	<div class="feed-group-access-label">
 						<div class="title">
-							{{#if isPublic}}
-								Public group
+							{{#if isPrivate}}
+                Private group
+
 							{{else}}
-								Private group
+								Public group
 							{{/if}}
 						</div>
-			    		<div class="subtitle">
-			    			{{#if isPublic}}
-			    				Anyone can access
-			    			{{else}}
-			    				Access with approve
-			    			{{/if}}
-			    		</div>
 			    	</div>
 			    	<div class="feed-group-access-value">
 				    	<div class="switch-holder">
 		                  <label class="switch">
-		                  	{{input type="checkbox" checked=isPublic}}
+		                  	{{input type="checkbox" checked=isPrivate}}
 		                    <span class="switcher round"></span>
 		                  </label>
 		                </div>
 			    	</div>
 			    </div>
+          <div class="feed-group-access-subtitle">
+            <div class="subtitle">
+              {{#if isPrivate}}
+                <span>
+                Users will have to request to follow
+                your group in order to see your content
+                </span>
+              {{/if}}
+            </div>
+          </div>
 		    </div>
 	    </div>
     	<div class="feed-group-create-holder" {{action "createFeed"}} role="button">

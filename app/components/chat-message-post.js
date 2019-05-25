@@ -37,13 +37,13 @@ export default Component.extend(MessageAttachmentsWrapper, FeedReactionableElem,
   hasText: computed(function(){
     return (this.get('model.text')||'').trim().length>0;
   }),
-  modelText: computed('model.text', function(){
+  modelText: computed(function(){
     return this.get('model.text').replace('\n','<br>');
   }),
   actions: {
     onClickBody(){
       const act = this.get('onClickBody');
-      this.toggleProperty('showComments');      
+      this.toggleProperty('showComments');
     }
   }
 

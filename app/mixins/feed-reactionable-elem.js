@@ -1,12 +1,17 @@
 import Mixin from '@ember/object/mixin';
 import { computed } from '@ember/object';
+import { get } from '@ember/object';
 import {inject as service} from '@ember/service';
-
+import ArrayProxy from '@ember/array/proxy';
 export default Mixin.create({
   db:service(),
-  postCommentsCount: computed('model.Comments.@each', function(){
-    const comments = this.get('model.Comments') || {};
-    return Object.keys(comments).length;
+  init(){
+    this._super(...arguments);
+    this.set('itemComments',ArrayProxy.create({content:[]}));
+  },
+  postCommentsCount: computed('model.ItemComments.@each', function(){
+    const comments = this.get('model.ItemComments')||[];
+    return comments.length;
   }),
   isLiked: computed('model.Likes.@each', function(){
     const likes = this.get('model.Likes');
@@ -16,11 +21,10 @@ export default Mixin.create({
     const likes = this.get('model.Likes') || {};
     return Object.keys(likes).length
   }),
-  modelComments: computed('model.Comments.@each.id', function(){
-    const comments = this.get('model.Comments') || {};
-    return Object.values(comments).sort(function(a,b){
-      return a['serverDate'] - b['serverDate'];
-    })
+  modelComments: computed('model.ItemComments.@each.id', function(){
+    const comments = this.get('model.ItemComments')||[];
+    const sorted = comments.sortBy('serverDate');
+    return sorted;
   }),
   actions:{
     toggleReactionComments(){

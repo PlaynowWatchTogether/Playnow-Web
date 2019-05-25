@@ -14,6 +14,14 @@ export default Mixin.create({
         if (feed.type === 'message'){
           const messages = localFeed.get('Messages')||{};
           message = messages[feed.content.uid]||{};
+          const localMessage = this.store.normalize('user-feed-message',{
+            id: `${feed.id}-${message.uid}`,
+            rawData: JSON.stringify({
+              isMessage: true,
+              message: message
+            })
+          });
+          this.store.push(localMessage);
         }else if (feed.type === 'event'){
           if (feed.content.id){
             const localEvent = this.store.peekRecord('feed-event', feed.content.id);

@@ -979,18 +979,20 @@ $post-content-width: 63.8%;
             background: $primary-gradient;
             border-radius: 15px;
             padding: 10px;
+            cursor: pointer;
             .feed-sidebar-playing-holder{
               background: white;
               border-radius: 15px;
               padding: 10px 15px;
               .playing-title-label{
                 font-size: 80%;
-                color: #606060;
+                color: red;
+                font-family: $medium-font;
               }
               .playing-title{
-                margin-top: 10px;
+                margin-top: 5px;
                 font-size: 90%;
-                margin-bottom: 10px;
+                margin-bottom: 5px;
                 font-family: $medium-font;
               }
               .playing-thumbnail{
@@ -1013,6 +1015,14 @@ $post-content-width: 63.8%;
                   .action-join{
                     margin: auto;
                     @include iconned-button(#02E7B2, 18px)
+                    padding: 5px 15px;
+                    img{
+                      width: 15px;
+                    }
+                    .label{
+                      font-family: $medium-font;
+                      font-size: 100%;
+                    }
                   }
                 }
               }
@@ -1051,6 +1061,11 @@ $post-content-width: 63.8%;
                     margin-left: 5px;
                   }
                 }
+              }
+            }
+            &:hover{
+              .feed-sidebar-playing-holder{
+                background: #e6e6e6;
               }
             }
           }

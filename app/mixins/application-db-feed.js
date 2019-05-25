@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-
+import FeedModelWrapper from '../custom-objects/feed-model-wrapper';
 export default Mixin.create({
   handleFeedSync(){
     this.get('db').feeds((feeds)=>{
@@ -14,10 +14,24 @@ export default Mixin.create({
       });
       feeds.forEach((feed) => {
         feed['rawData'] = JSON.stringify(feed);
-        feed['lastUpdate'] = new Date().getUTCMilliseconds();    
+        feed['lastUpdate'] = new Date().getUTCMilliseconds();
 
         let normalizedData = this.store.normalize('feed-item', feed);
         this.store.push(normalizedData);
+        const feedWrapper = FeedModelWrapper.create({content: feed});
+
+        const message = feedWrapper.get('lastMessage');
+        if (message){
+          const localMessage = this.store.normalize('user-feed-message',{
+            id: `${feed.id}-${message.uid}`,
+            rawData: JSON.stringify({
+              isMessage: true,
+              message: message
+            })
+          });
+          this.store.push(localMessage);
+        }
+
 
         const events = feed.Events || {};
         const eventIds = Object.keys(events);
@@ -37,7 +51,8 @@ export default Mixin.create({
             const event = {
               id: eventKey,
               feedId: feed.id,
-              rawData: JSON.stringify(payload)
+              rawData: JSON.stringify(payload),
+              lastUpdate: new Date().getTime()
             }
             let normalizedData = this.store.normalize('feed-event', event);
             this.store.push(normalizedData);

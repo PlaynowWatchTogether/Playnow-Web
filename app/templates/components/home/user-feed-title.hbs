@@ -8,6 +8,11 @@
   </div>
 </div>
 <div class="feed-action">
+  {{#if showLive}}
+    <div class="live">
+      LIVE
+    </div>
+  {{/if}}
   {{#if isOwner}}
     <div class="action-follow-request">
       Owner

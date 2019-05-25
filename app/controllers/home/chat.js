@@ -24,7 +24,7 @@ import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import {Subject, BehaviorSubject, interval} from 'rxjs';
 import {debounce} from 'rxjs/operators';
 import {timer} from 'rxjs';
-
+import {htmlSafe} from '@ember/template'
 export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper, MessagingMessagePager,VideoSearchMixin, ChatModelHelper, {
   firebaseApp: service(),
   db: service(),
@@ -357,7 +357,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           const isAdmin = feed.isAdmin(myId);
           obj.set('chatModel', {
             hasProfilePic: true,
-            title: 'Live @' + feed.get('GroupName'),
+            title: htmlSafe('<span>Live</span> @' + feed.get('GroupName')),
             ProfilePic: feed.get('ProfilePic'),
             feed: feed,
             isAdmin: isAdmin
@@ -770,7 +770,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         isMessage: mesCntent.isMessage,
         isDate: mesCntent.isDate,
         isSeen: isSeen,
-        content: JSON.stringify(mesCntent)
+        rawData: JSON.stringify(mesCntent)
       });
 
       this.store.push(normalizedData);
@@ -1221,19 +1221,19 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       this.set("messageText", output);
     },
     onMessageClick(message) {
-      if (message['type'] === 'VideoRequest') {
+      if (message.get('type') === 'VideoRequest') {
         if (this.get('isMaster')) {
-          this.get('youtubeSearch').video(message['video']['id']).then((video) => {
+          this.get('youtubeSearch').video(message.get('video.id')).then((video) => {
             this.shareVideo(video);
           });
         }
       }
-      if (message['type'] === 'ShareVideo'){
-        this.get('youtubeSearch').video(message.video.id).then((video) => {
+      if (message.get('type') === 'ShareVideo'){
+        this.get('youtubeSearch').video(message.get('video.id')).then((video) => {
           this.shareVideo(video);
         });
       }
-      if (message['type'] === 'Video') {
+      if (message.get('type') === 'Video') {
         // this.set('videoPlayerUrl', message['media']);
         // $('#videoPreviewModal').modal();
       }

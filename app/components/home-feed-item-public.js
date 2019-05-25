@@ -5,6 +5,7 @@ import moment from 'moment';
 import FeedEventModelWrapper from '../custom-objects/feed-event-model-wrapper';
 export default Component.extend({
   db: service(),
+  store: service(),
   isFollowing: computed('model.lastUpdate', function(){
     return this.get('model').isFollowing(this.db.myId());
   }),

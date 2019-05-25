@@ -48,6 +48,12 @@
   .feed-action{
     place-items: center;
     display: flex;
+    .live{
+      color: red;
+      margin-left: 10px;
+      margin-right: 10px;
+      font-family: $medium-font;
+    }
     .action-following, .action-follow-request{
       background: #F4F4F4;
       cursor: pointer;

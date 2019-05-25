@@ -37,14 +37,15 @@ export default Component.extend(FeedActionsMixins, {
     const lfeed = this.get('localFeed');
     return this.get('model.content.videoId') === get(lfeed,'videoState.videoId') && get(lfeed,'isPlaying');
   }),
-  isEvent: computed('model.type', function(){
+  isEvent: computed(function(){
     return this.get('model.type') === 'event';
   }),
-  localEvent: computed('model.feedEvent', function(){
+  localEvent: computed(function(){
     return FeedEventModelWrapper.create({content:this.get('model.feedEvent')});
   }),
-  localFeedMessage: computed('model.feedMessage',function(){
-    return this.get('model.feedMessage');
+  localFeedMessage: computed(function(){
+    return this.store.peekRecord('user-feed-message',`${this.get('localFeed.id')}-${this.get('model.feedMessage.uid')}`);
+    // return this.get('model.feedMessage');
   }),
   localFeed: computed('model.localFeed',function(){
     return FeedModelWrapper.create({content:this.get('model.localFeed')});

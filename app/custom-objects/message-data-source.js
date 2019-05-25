@@ -457,7 +457,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
         }
       });
       if (inReplyTo){
-        message['inReplyTo'] = inReplyTo;
+        message['inReplyTo'] = inReplyTo.get('content');
       }
       message['userId'] = senderId;
       message['message'] = 'web';

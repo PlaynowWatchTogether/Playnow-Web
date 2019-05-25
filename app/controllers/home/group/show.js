@@ -37,13 +37,8 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   messageConvId(){
     return this.dataSource.feedId;
   },
-  membersOnline: computed('feed', function(){
-    const feed = this.get('feed');
-    if (feed){
-      return Object.values(get(feed,'videoWatching')||{});
-    }else{
-      return [];
-    }
+  membersOnline: computed('feed.videoWatching', function(){
+    return this.get('feed.membersOnline');
   }),
   handleModelChange(){
     $('body').on('click.title-click', '.feed-content .feed-title', ()=>{
@@ -111,6 +106,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   groupAdmins: computed('feed.AdminsArray.@each.id', function(){
     return this.get('feed').get('AdminsArray');
   }),
+  isNotAdmin: computed('feed', function(){
+    return !this.get('isAdmin');
+  }),
   isMember: computed('feed', function(){
     const admin = this.get('isAdmin');
     if (admin)
@@ -167,7 +165,7 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
           convoId: mesCntent.convId,
           isMessage: mesCntent.isMessage,
           isDate: mesCntent.isDate,
-          content: JSON.stringify(mesCntent)
+          rawData: JSON.stringify(mesCntent)
         });
 
         this.store.push(normalizedData);
@@ -289,20 +287,20 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       this.set('blockAutoscroll', show);
     },
     postCommentForMessage(message, text){
-      this.dataSource.postComment(this.dataSource.feedId,message.id,text);
+      this.dataSource.postComment(this.dataSource.feedId,get(message,'uid'),text);
     },
     onLikeComment(post,comment,liked){
       if (liked){
-        this.dataSource.addCommentLike(this.dataSource.feedId,post.uid, comment.uid);
+        this.dataSource.addCommentLike(this.dataSource.feedId,get(post,'id'), get(comment,'uid'));
       }else{
-        this.dataSource.removeCommentLike(this.dataSource.feedId,post.uid,comment.uid);
+        this.dataSource.removeCommentLike(this.dataSource.feedId,get(post,'id'),get(comment,'uid'));
       }
     },
     onLikePost(post, liked){
       if (liked){
-        this.dataSource.addLike(this.dataSource.feedId,post.uid);
+        this.dataSource.addLike(this.dataSource.feedId,get(post,'id'));
       }else{
-        this.dataSource.removeLike(this.dataSource.feedId,post.uid);
+        this.dataSource.removeLike(this.dataSource.feedId,get(post,'id'));
       }
     },
     unFollowGroup(){
@@ -357,9 +355,9 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     },
     onLikeEventComment(event,comment, liked){
       if (liked){
-        this.dataSource.addEventCommentLike(this.dataSource.feedId,get(event,'id'), comment.uid);
+        this.dataSource.addEventCommentLike(this.dataSource.feedId,get(event,'id'), get(comment,'uid'));
       }else{
-        this.dataSource.removeEventCommentLike(this.dataSource.feedId,get(event,'id'),comment.uid);
+        this.dataSource.removeEventCommentLike(this.dataSource.feedId,get(event,'id'),get(comment,'uid'));
       }
     },
     onPostEventComment(event, text){

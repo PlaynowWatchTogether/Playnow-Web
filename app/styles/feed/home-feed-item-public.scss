@@ -48,6 +48,13 @@
             height: 100%;
           }
         }
+        &.online{
+          background: $primary-gradient;
+          box-shadow: $message-shadow;
+          .pic{
+            box-shadow: none;
+          }
+        }
       }
     }
 

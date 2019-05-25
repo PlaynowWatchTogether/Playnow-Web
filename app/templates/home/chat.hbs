@@ -219,7 +219,7 @@
                   {{/if}}
                   {{#each filteredMessages as |message|}}
                     {{#if message.isMessage}}
-                      {{#chat-message-item model=message.message classNames="messageHolder"
+                      {{#chat-message-item model=message classNames="messageHolder"
                                            canClick=isMaster
                                            onClick=(action "onMessageClick")
                                            displaySender=message.displaySender

@@ -67,6 +67,9 @@
     .video-holder{
       transform: translate3d(0,0,0);
       display: none;
+      audio{
+        display: none;
+      }
       .loading-view{
         display: none;
         position: absolute;
@@ -174,7 +177,7 @@
 @mixin chat-members{
   display: flex;
   flex-direction: row;
-  z-index: 200;  
+  z-index: 200;
   .member{
     @include chat-member;
     cursor: pointer;

@@ -3,11 +3,21 @@ import { computed } from '@ember/object';
 import { get } from '@ember/object';
 import ObjectProxy from '@ember/object/proxy';
 import ArrayProxy from '@ember/array/proxy';
+import ArrayUniqObject from '../../custom-objects/array-uniq-object';
 export default Mixin.create({
   init(){
     this._super(...arguments);
     this.set('AdminsArrayInternal', ArrayProxy.create({content:[]}));
     this.addObserver('content', this,'contentObserver');
+    this.set('membersOnline',ArrayUniqObject.create({on: this, key:'content.videoWatching',uniqKey: 'userId'}));
+    this.set('videoWatchers',ArrayUniqObject.create({
+      on: this,
+      key:'content.videoWatching',
+      uniqKey: 'userId',
+      filterElements: (watcher)=>{
+        return get(watcher,'state') !== 'closed';
+      }
+    }));
   },
   contentObserver(obj){
     if (!obj.get('content')){
@@ -87,16 +97,6 @@ export default Mixin.create({
   groupViewers: computed('content.videoWatching', function(){
     const watching = this.get('content.videoWatching')||{};
     return Object.values(watching);
-  }),
-  videoWatchers: computed('content.videoWatching', function(){
-    const watching = this.get('content.videoWatching')||{};
-    const hasPlaying = [];
-    Object.values(watching).forEach((watcher)=>{
-      if (watcher.state !== 'closed'){
-        hasPlaying.push(watcher);
-      }
-    });
-    return hasPlaying;
   }),
   playingViews: computed('content.videoWatching', function(){
     const watching = this.get('content.videoWatching')||{};

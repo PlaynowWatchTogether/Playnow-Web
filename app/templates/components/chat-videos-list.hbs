@@ -1,21 +1,22 @@
 {{#scroll-with-listener  music=false
                          onScrolledHalf=(action "scrolledHalfYoutubeVideo") scrollParent=scrollParent
                          loading=loadingVideo}}
+  {{#unless hideVideos}}
+    <div class="searchHolder">
+      {{#search-holder classNames="search" tagName="form"}}
 
-  <div class="searchHolder">
-    {{#search-holder classNames="search" tagName="form"}}
-
-      <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
-      {{input value=searchQuery classNames="searchInput" placeholder="Search content"
-              insert-newline=(action "triggerSearch" bubbles=false) autocomplete='off' name="videoSearch"}}
-      <img src="/assets/ic_music_close.png" class="close-search" alt="close">
-      <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch" bubbles=false}} role="button">
-        <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
-      </div>
-    {{/search-holder}}
-  </div>
-  {{videos-list-auth-ui classNames="login-providers" providers=videoProviders onProviderChanged=(action "videoProvidersChanged")}}
-  {{yield}}
+        <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
+        {{input value=searchQuery classNames="searchInput" placeholder="Search content"
+                insert-newline=(action "triggerSearch" bubbles=false) autocomplete='off' name="videoSearch"}}
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+        <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch" bubbles=false}} role="button">
+          <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
+        </div>
+      {{/search-holder}}
+    </div>
+    {{videos-list-auth-ui classNames="login-providers" providers=videoProviders onProviderChanged=(action "videoProvidersChanged")}}
+    {{yield}}
+  {{/unless}}
   {{#if playlistModel}}
     {{chat-videos-playlist
       classNames='chat-videos-playlist'
@@ -26,33 +27,35 @@
       onAddVideo=(action "playlistVideoAdd")
       onRemoveVideo=(action "playlistVideoRemove")}}
   {{/if}}
-  <div class="title">
-    {{sectionTitle}}
-  </div>
-  {{#if isLoadingVideo}}
-    <div class="loading-holder h-100">
-      {{loading-view}}
+  {{#unless hideVideos}}
+    <div class="title">
+      {{sectionTitle}}
     </div>
-  {{else}}
-  {{/if}}
-  <div class="youtube-items noselect">
-
-    {{#each youtubeVideoItems as |video|}}
-      {{#youtube-video model=video classNames="youtube-item"
-                       clickAction=(action "videoPick")
-                       canAdd=canEditPlaylist
-                       playlistModel=playlistModel
-                       addAction=(action "videoAddToPlaylist")
-                       removeAction=(action 'playlistVideoRemove')
-                       displayRequest=displayVideoRequest}}
-      {{/youtube-video}}
+    {{#if isLoadingVideo}}
+      <div class="loading-holder h-100">
+        {{loading-view}}
+      </div>
     {{else}}
-      {{#unless isLoadingVideo}}
-        <div class="empty-search">
-          No videos found
-        </div>
-      {{/unless}}
-    {{/each}}
-  </div>
+    {{/if}}
+    <div class="youtube-items noselect">
+
+      {{#each youtubeVideoItems as |video|}}
+        {{#youtube-video model=video classNames="youtube-item"
+                         clickAction=(action "videoPick")
+                         canAdd=canEditPlaylist
+                         playlistModel=playlistModel
+                         addAction=(action "videoAddToPlaylist")
+                         removeAction=(action 'playlistVideoRemove')
+                         displayRequest=displayVideoRequest}}
+        {{/youtube-video}}
+      {{else}}
+        {{#unless isLoadingVideo}}
+          <div class="empty-search">
+            No videos found
+          </div>
+        {{/unless}}
+      {{/each}}
+    </div>
+  {{/unless}}
 
 {{/scroll-with-listener}}

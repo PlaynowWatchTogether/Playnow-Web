@@ -2157,9 +2157,9 @@ CHAT
       padding-right: 20px;
 
       .create-group-button{
-        font-family: $medium-font;
-        padding: 5px 15px;
+        font-family: $medium-font;        
         @include iconned-button(#60D3FC,15px,100%)
+        padding: 5px 15px;
       }
 
       .title {

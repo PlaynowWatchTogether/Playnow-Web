@@ -91,7 +91,7 @@ export default Controller.extend(FileUploadHelper, {
 				ProfilePic: this.get('profilePic')||'',
 				GroupName: name,
 				GroupDescription: desc,
-				GroupAccess: this.get('isPublic')?1:0
+				GroupAccess: this.get('isPrivate')?0:1
 			},this.get('channelLocation')).then((channel)=>{
 				this.transitionToRoute('home.group.show',{group_id: channel.id});
 			}).catch((error)=>{

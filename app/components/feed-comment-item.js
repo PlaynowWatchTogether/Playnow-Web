@@ -4,7 +4,7 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend({
   db: service(),
-  authorName: computed('model', function(){
+  authorName: computed(function(){
     const myId = this.get('db').myId();
     const sender = this.get('model.senderId');
     if (sender === myId){
@@ -13,7 +13,7 @@ export default Component.extend({
       return this.get('model.senderName');
     }
   }),
-  isLiked:computed('model', function(){
+  isLiked:computed('model.Likes', function(){
     const likes = this.get('model.Likes');
     const myId = this.get('db').myId();
     return (Object.keys(likes || {}).includes(myId));

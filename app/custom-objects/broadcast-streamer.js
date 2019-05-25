@@ -43,6 +43,8 @@ export default EmberObject.extend({
         // this.videoPreview.volume = 0;
 
         if(event.type === 'local') {
+          this.videoPreview = event.mediaElement;
+          $(event.mediaElement).appendTo($(videoElem));
           this.videoPreview.muted = true;
           this.videoPreview.volume = 0;
           try {
@@ -50,30 +52,29 @@ export default EmberObject.extend({
           } catch (e) {
               this.videoPreview.setAttribute('muted', true);
           }
+          this.videoPreview.setAttribute('controls', false);
           if (this.streamPublished){
             this.streamPublished(streamId);
           }
         }else{
-          this.videoPreview.muted = false
+          this.videoPreview = event.mediaElement;
+          this.videoPreview.setAttribute('controls', false);
+          $(event.mediaElement).appendTo($(videoElem));
         }
         this.videoPreview.srcObject = event.stream;
         this.videoPreview.play();
         $(videoElem).removeClass('loading');
       };
       this.connection.onstreamended = (event)=> {
-        debug('onstreamended');
-        if (this.streamRemoved){
-          this.streamRemoved(streamId);
-          $('#localVideo').remove();
-        }
-        this._handleClose(videoElem,streamId);
+        debug(`onstreamended ${event.type}`);
+        $(event.mediaElement).remove();
       };
 
       resolve();
     })
   },
   createLocalVideo(parent){
-    var video = $('<video muted id="localVideo"/>');
+    var video = $('<audio muted id="localVideo"/>');
     video.appendTo($(parent));
     return video[0];
   },
@@ -85,13 +86,13 @@ export default EmberObject.extend({
     // }
   },
   _handleMute(streamId,model){
-    const localStream = this.connection.attachStreams[0];
-    localStream.getVideoTracks().forEach((track)=>{
-      track.enabled = model.video;
-    });
-    localStream.getAudioTracks().forEach((track)=>{
-      track.enabled = model.mic;
-    })
+    // const localStream = this.connection.attachStreams[0];
+    // localStream.getVideoTracks().forEach((track)=>{
+    //   track.enabled = model.video;
+    // });
+    // localStream.getAudioTracks().forEach((track)=>{
+    //   track.enabled = model.mic;
+    // })
     if (this.streamPublished){
       this.streamPublished(streamId);
     }
@@ -122,26 +123,99 @@ export default EmberObject.extend({
       }
       $(videoElem).addClass('loading');
       this.createConnection(videoElem,streamId).then(()=>{
-        this.videoPreview = this.createLocalVideo(videoElem);
+        this.connection.mediaConstraints = {
+          audio: model.mic,
+          video: model.video,
+        };
         this.connection.session = {
-            audio: true,
-            video: true,
+            audio: model.mic,
+            video: model.video,
             oneway: true
         };
         this.connection.open(streamId, () =>{
-          this._handleMute(streamId, model);
+          // this._handleMute(streamId, model);
         });
 
       });
     }else{
       if (model.mic || model.video){
+        if (model.video && !this.isStreamingVideo()){
+            this.connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: false,
+                OfferToReceiveVideo: true
+            };
+            this.connection.session = {
+                audio: false,
+                video: true
+            };
+            this.connection.mediaConstraints = {
+                audio: false,
+                video: true
+            };
+            this.connection.addStream({video:true, oneway:true});
+        }
+        if (model.mic && !this.isStreamingMic()){
+            this.connection.sdpConstraints.mandatory = {
+                OfferToReceiveAudio: true,
+                OfferToReceiveVideo: false
+            };
+            this.connection.session = {
+                audio: true,
+                video: false
+            };
+            this.connection.mediaConstraints = {
+                audio: true,
+                video: false
+            };
+            this.connection.addStream({audio:true, oneway:true});
+        }
+        if (!model.video && this.isStreamingVideo()){
+          const video = this.videoStream();
+          video.stop();
+        }
+        if (!model.mic && this.isStreamingMic()){
+          const mic = this.micStream();
+          mic.stop();
+        }
         this._handleMute(streamId, model);
       }else{
         $(videoElem).removeClass('loading');
         this._handleClose(videoElem,streamId);
-        $('#localVideo').remove();
+        $(videoElem).find('video audio').remove();
       }
     }
+  },
+  videoStream(){
+    let ret = null;
+    this.connection.attachStreams.forEach((stream)=>{
+      if (stream.getVideoTracks().length){
+        ret = stream;
+      }
+    });
+    return ret;
+  },
+  micStream(){
+    let ret = null;
+    this.connection.attachStreams.forEach((stream)=>{
+      if (stream.getAudioTracks().length){
+        ret = stream;
+      }
+    });
+    return ret;
+  },
+  isStreamingVideo(){
+    let ret = false;
+    this.connection.attachStreams.forEach((stream)=>{
+      ret|=stream.getVideoTracks().length > 0;
+    });
+    return ret;
+  },
+  isStreamingMic(){
+    let ret = false;
+    this.connection.attachStreams.forEach((stream)=>{
+      ret|=stream.getAudioTracks().length > 0;
+    });
+    return ret;
   },
   playStream(videoElem,streamId){
     $(videoElem).addClass('loading');
@@ -155,7 +229,6 @@ export default EmberObject.extend({
           video: true,
           oneway: true
       };
-      this.videoPreview = $(`${videoElem} video`)[0];
       this.connection.join(streamId);
     });
   }

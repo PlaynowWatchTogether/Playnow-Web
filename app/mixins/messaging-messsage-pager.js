@@ -68,7 +68,7 @@ export default Mixin.create({
     const allMessages = this.get('allMessages');
     let foundIndex = -1;
     allMessages.forEach((elem, index)=>{
-      if (elem.get('message.uid') === uid){
+      if (elem.get('uid') === uid){
         foundIndex = index;
       }
     });

@@ -186,7 +186,7 @@
                     postCommentForMessage=(action "postCommentForMessage")
                     onLikePost=(action "onLikePost")
                     onLikeComment=(action "onLikeComment")
-                    model=message.message
+                    model=message
                     classNames="feed-post-item"
                   }}
                 {{/if}}
@@ -256,6 +256,7 @@
               displayVideoRequest=displayVideoRequest
               onVideoPick=(action "videoPick")
               playlistModel=playlistModel
+              hideVideos=isNotAdmin
               canEditPlaylist=isAdmin
               onPlaylistAddVideo=(action "playlistVideoAdd")
               onPlaylistRemoveVideo=(action "playlistVideoRemove")}}

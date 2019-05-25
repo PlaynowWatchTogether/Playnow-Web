@@ -240,7 +240,7 @@
     .feed-group-create-content{
 			display: flex;
 	    flex-direction: column;
-	    width: 50%;
+	    width: 60%;
 	    margin: auto;
 	    height: max-content;
 			.error{
@@ -250,6 +250,9 @@
 	    .details{
 	      display: flex;
     		flex-direction: row;
+				.feed-group-profile-pic{
+					flex: 0 0 auto;
+				}
     		.info{
     		    flex: 1 1 auto;
     		}
@@ -300,20 +303,19 @@
     		            color: #7B7878;
     		            font-family: $medium-font;
     		        }
-    		        .subtitle{
-    		        	color: #6F6F6F;
-    					font-size: 80%;
-    		        }
+
     		    }
     		    .feed-group-access-value {
     		        margin-top: auto;
-    				margin-bottom: auto;
+    						margin-bottom: auto;
     		    }
-
     		}
+				.feed-group-access-subtitle{
+					color: #6F6F6F;
+					font-size: 80%;
+				}
     		.feed-group-access-value{
 	    		.switch {
-
 	              position: relative;
 	              display: inline-block;
 	              width: 60px;
@@ -339,9 +341,9 @@
 	              bottom: 0;
 	              -webkit-transition: .4s;
 	              transition: .4s;
-	              background-color: white;
-    			  border: 3px solid black;
-    			  height: 25px;
+	              background: #919191;
+		    			  border: 3px solid black;
+		    			  height: 25px;
 	            }
 
 	            .switcher:before {
@@ -358,11 +360,12 @@
 	            }
 
 	            input:checked + .switcher {
-	              background-color: white;
+								background: #03e7b2;
+								border: 3px solid #03e7b2;
 	            }
 
 	            input:focus + .switcher {
-	              box-shadow: 0 0 1px #2196F3;
+	              box-shadow: 0 0 1px #03e7b2;
 	            }
 
 	            input:checked + .switcher:before {
@@ -385,8 +388,9 @@
 	    .fee-group-create{
 		    background: #02E7B2;
 		    width: max-content;
-		    padding: 10px 20px;
+		    padding: 10px 30px;
 		    color: white;
+				font-family: $medium-font;
 		    border-radius: 20px;
 		    margin: auto;
 		    margin-top: 20px;
@@ -405,6 +409,9 @@
     		margin-right: 40px;
     		.file-upload{
     			cursor: pointer;
+					&:hover{
+						background: #eae8e8;
+					}
     		}
     		.profilePicWrapper{
     		    width: 100%;

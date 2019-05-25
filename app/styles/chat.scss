@@ -425,12 +425,22 @@ body.home.chat{
   .feed-root{
     @include chat-controller;
     &.room{
+
       .feed-parent{
         .feed-content{
           padding-left: 5px;
           border-right: 1px solid #D5D3D3;
           .feed-content-wrapper{
             border-top-left-radius: $main-table-radius;
+            .titleHolder{
+              .title{
+                .name{
+                  span{
+                    color: red;
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
+import {get} from '@ember/object';
 import $ from 'jquery';
 import moment from 'moment';
 import { htmlSafe } from '@ember/template';
@@ -18,11 +19,11 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let model = this.get('model');
     return {
       snippet: {
-        title: model.video.title,
-        channelTitle: model.video.channelTitle,
+        title: model.get('video.title'),
+        channelTitle: model.get('video.channelTitle'),
         thumbnails: {
           medium:{
-            url: model.video.imageURL
+            url: model.get('video.imageURL')
           }
         }
       }
@@ -30,8 +31,8 @@ export default Component.extend(MessageAttachmentsWrapper, {
   }),
   messageTextClass: computed('model.{messageIndex,maxIndex}', function(){
     const model = this.get('model');
-    const index = model.messageIndex;
-    const max = model.maxIndex;
+    const index = model.get('messageIndex');
+    const max = model.get('maxIndex');
     if (max == 1){
       return 'single';
     }
@@ -52,11 +53,11 @@ export default Component.extend(MessageAttachmentsWrapper, {
   messageTS: computed('model.date', function(){
     return this.get('model.date');
   }),
-  messageUid: computed('model.uid', function () {
+  messageUid: computed(function () {
     return this.get('model.uid');
   }),
-  mine: computed('model', 'auth.uid', function () {
-    return this.get('model').senderId === this.auth.get('uid')
+  mine: computed(function () {
+    return this.get('model.senderId') === this.auth.get('uid')
   }),
   textAuthorId: computed(function(){
     return this.get('model.senderId');
@@ -66,13 +67,10 @@ export default Component.extend(MessageAttachmentsWrapper, {
   }),
   isAttachment: computed(function(){
     let model = this.get('model');
-    let type = model['type'];
+    let type = model.get('type');
     return type === 'attachment' || type === 'photo' || type === 'Video';
   }),
-  isLoading: computed(function(){
-    let model = this.get('model');
-    return model['isLoading'];
-  }),
+
   senderName: computed(function(){
     return this.get('model.senderName');
   }),
@@ -86,13 +84,13 @@ export default Component.extend(MessageAttachmentsWrapper, {
   },
   shareVideoTitle: computed(function(){
     const model = this.get('model');
-    const video = model.video;
+    const video = model.get('video');
     return `${video.title} | ${video.channelTitle}`;
 
   }),
   isShareVideo: computed(function(){
     let model = this.get('model');
-    let type = model['type'];
+    let type = model.get('type');
     return type === 'ShareVideo';
   }),
   attachments: computed(function(){
@@ -105,96 +103,49 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let members = this.get('members');
     let model = this.get('model');
     if (members && model){
-       var clr = this.get('memberColors')[model.senderId];
+       var clr = this.get('memberColors')[model.get('senderId')];
        if (clr)
           return htmlSafe(`color: ${clr}`);
         clr = this.randomColor();
-        this.get('memberColors')[model.senderId] = clr;
+        this.get('memberColors')[model.get('senderId')] = clr;
         return htmlSafe(`color: ${clr}`);
     }
     return htmlSafe('');
   }),
-  photoThumbnail: computed(function(){
-      let model = this.get('model');
-      if (model.type === 'photo'){
-        return this.get('model.thumbnail');
-      }else if (model.type === 'attachment'){
-        return model.attachment.url;
-      }else {
-        return '';
-      }
-  }),
-  isPhoto: computed(function () {
-    let model = this.get('model');
-    let type = model['type'];
-    if (type === 'photo'){
-      return true;
-    }
-    if (type === 'attachment'){
-      return model.attachment.type.startsWith('image/');
-    }
-    return false;
-  }),
-  isVideo: computed(function () {
-    let model = this.get('model');
-    let type = model['type'];
-    if (type === 'Video'){
-      return true;
-    }
-    if (type === 'attachment'){
-      return model.attachment.type === 'video/mp4' || model.attachment.type==='video/quicktime';
-    }
-    return false;
-  }),
-  attachmentName: computed(function(){
-    let model = this.get('model');
-    return model.attachment.name;
-  }),
+
   videoSrc: computed(function () {
     let model = this.get('model');
-    if (model.type === 'Video'){
-      return model['media'];
+    if (model.get('type') === 'Video'){
+      return model.get('media');
     }
-    if (model.type === 'attachment'){
+    if (model.get('type') === 'attachment'){
       return model.attachment.url;
     }
     return '';
   }),
-  videoThumbnail: computed(function () {
-    let model = this.get('model');
-    return model['media_thumbnail'];
-  }),
-  hasVideoThumbnail: computed(function () {
-    let model = this.get('model');
-    return model['media_thumbnail'] && model['media_thumbnail'].length > 0;
-  }),
-  attachmentUrl: computed(function(){
-    let model = this.get('model');
-    return model.attachment.url;
-  }),
   isVideoRequest: computed(function () {
     let model = this.get('model');
-    let type = model['type'];
+    let type = model.get('type');
     return type === 'VideoRequest';
   }),
   requestTitle: computed(function () {
     let model = this.get('model');
-    return model['senderName'] + ' requested to watch:';
+    return model.get('senderName') + ' requested to watch:';
   }),
   requestThumbnail: computed(function () {
     let model = this.get('model');
-    return model['video']['imageURL'];
+    return model.get('video.imageURL');
   }),
   requestChannel: computed(function () {
     let model = this.get('model');
-    return model['video']['title'];
+    return model.get('video.title');
   }),
   videoRequestClass: computed(function () {
     return this.get('canClick') ? 'clickable' : '';
   }),
   bodyMessage: computed(function () {
     let model = this.get('model');
-    return model['text'].autoLink();
+    return model.get('text').autoLink();
   }),
   isLocal: computed('model.isLocal', function(){
     return this.get('model.isLocal');
@@ -204,9 +155,9 @@ export default Component.extend(MessageAttachmentsWrapper, {
     let seen = this.get('lastSeen');
     let myId = this.get('myID');
     let model = this.get('model');
-    if (seen && model.senderId === myId) {
+    if (seen && model.get('senderId') === myId) {
       seen.forEach((elem) => {
-        if (elem.userId !== myId && model['id'] === elem.messageId) {
+        if (get(elem,'userId') !== myId && model.get('uid') === elem.messageId) {
           ret = true;
         }
       })
@@ -214,7 +165,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     return ret;
   }),
   tooltipPlacement: computed(function(){
-    if (this.get('model').senderId === this.auth.get('uid')){
+    if (this.get('model.senderId') === this.auth.get('uid')){
       return 'right';
     }else{
       return 'left';
@@ -237,7 +188,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     if (members) {
       let receiver = null;
       members.forEach((elem) => {
-        if (elem.id !== model.senderId) {
+        if (get(elem,'id') !== model.get('senderId')) {
           receiver = elem;
         }
       });
@@ -248,7 +199,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
 
   click() {
     if (this.get('canClick')) {
-      this.get('onClick')(this.model);
+      this.get('onClick')(this.get('model'));
     }
   },
   didInsertElement() {
@@ -267,7 +218,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     },
     videoRequestClick(){
       if (this.get('canClick')) {
-        this.get('onClick')(this.model);
+        this.get('onClick')(this.get('model'));
       }
     },
     clickOnPhoto() {

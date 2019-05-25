@@ -63,9 +63,9 @@ export default Mixin.create({
         feedId: get(group,'id')
       });
       if (liked){
-        ds.addCommentLike(ds.feedId,post.uid, comment.uid);
+        ds.addCommentLike(ds.feedId,get(post,'uid'), get(comment,'uid'));
       }else{
-        ds.removeCommentLike(ds.feedId,post.uid,comment.uid);
+        ds.removeCommentLike(ds.feedId,get(post,'uid'),get(comment,'uid'));
       }
     },
     onLikePost(group,post, liked){
@@ -76,9 +76,9 @@ export default Mixin.create({
         feedId: get(group,'id')
       });
       if (liked){
-        ds.addLike(ds.feedId,post.uid);
+        ds.addLike(ds.feedId,get(post,'uid'));
       }else{
-        ds.removeLike(ds.feedId,post.uid);
+        ds.removeLike(ds.feedId,get(post,'uid'));
       }
     },
     onLikeEventPost(group,event, liked){
@@ -102,9 +102,9 @@ export default Mixin.create({
         feedId: get(group,'id')
       });
       if (liked){
-        ds.addEventCommentLike(ds.feedId,get(event,'id'), comment.uid);
+        ds.addEventCommentLike(ds.feedId,get(event,'id'), get(comment,'uid'));
       }else{
-        ds.removeEventCommentLike(ds.feedId,get(event,'id'),comment.uid);
+        ds.removeEventCommentLike(ds.feedId,get(event,'id'),get(comment,'uid'));
       }
     },
   }

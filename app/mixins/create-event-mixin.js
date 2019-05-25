@@ -2,6 +2,7 @@ import Mixin from '@ember/object/mixin';
 import { debug } from '@ember/debug';
 import { computed } from '@ember/object';
 import { set } from '@ember/object';
+import moment from 'moment';
 export default Mixin.create({
   init(){
     this._super(...arguments);

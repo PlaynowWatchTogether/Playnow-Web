@@ -6,19 +6,19 @@
     <img src={{safe-profile-pic model.ProfilePic}} class="profilePicWrapper">
   </div>
 </div>
-<div class="feed-sidebar-playing-wrapper">
+<div class="feed-sidebar-playing-wrapper" {{action "joinLive" bubbles=false}} role="button">
   <div class="feed-sidebar-playing-holder">
     <div class="playing-title-label">
-      Now playing
+      LIVE.
     </div>
     <div class="playing-title">
-      {{feed.playingVideoTitle}}
+      {{model.playingVideoTitle}}
     </div>
     <div class="playing-thumbnail">
       {{thumbnail-background model=model.playingVideoThumbnail classNames="thumbnail"}}
       <div class="action">
-        <div class="action-join" {{action "joinLive" bubbles=false}}>
-          <img src="/assets/ic_plus@2x.png" alt="icon">
+        <div class="action-join">
+          <img src="/assets/ic_add_24px.svg" alt="icon">
           <div class="label">Join</div>
         </div>
       </div>

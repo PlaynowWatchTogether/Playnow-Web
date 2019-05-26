@@ -1,7 +1,7 @@
 {{#if isLive}}
   <div class="user-feed-item-live-wrapper {{if liveActive "active"}}">
     <div class="user-feed-item-live user-feed-item">
-      {{home/user-feed-title showLive=true model=localFeed classNames="feed-title-holder" clickAction=(action "openDetails")}}
+      {{home/user-feed-title showLive=liveActive model=localFeed classNames="feed-title-holder" clickAction=(action "openDetails")}}
       {{home/user-feed-live model=localFeed videoState=model.content liveActive=liveActive}}
     </div>
   </div>

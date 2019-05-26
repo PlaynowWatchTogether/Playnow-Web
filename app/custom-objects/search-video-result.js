@@ -8,7 +8,11 @@ export default EmberObject.extend({
       return this.data['snippet']['thumbnails']['medium']['url'];
     }
     if (this.data.kind === 'crunchyroll#media'){
-      return this.data.data.screenshot_image.large_url;
+      const url = this.data.data.screenshot_image.large_url;
+      if (url && !url.includes('https://')){
+        return url.replace('http://','https://');
+      }
+      return url;
     }
     if (this.data.kind === 'khan#media'){
       return this.data.data.video.thumbnailUrls.default;

@@ -357,6 +357,7 @@ $message-border-radius: 15.5px;
     @include events-create-input-holder;
     .create-btn{
       @include simple-button(#02E7B2);
+      font-family: $medium-font;
       width: max-content;
       margin: auto;
     }

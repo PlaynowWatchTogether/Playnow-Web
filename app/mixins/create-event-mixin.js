@@ -22,7 +22,9 @@ export default Mixin.create({
       title:'',
       description:'',
       date:{
-
+        date: moment().format("MM/DD/YYYY"),
+        timeStart: moment().format("hh:mm A"),
+        timeEnd: moment().add(1, 'hours').format("hh:mm A"),
       },
       seats:{
         available: -1

@@ -95,7 +95,7 @@
             </div>
           </div>
         {{/if}}
-        <div id="youtubeHolder" class={{if playerLoadingClass "active" }}>
+        <div id="youtubeHolder" class="{{if playerVideo "has-video"}} {{if playerLoadingClass "active" }} {{if isMinimized "minimized"}}">
           {{#if hasPlayer}}
             {{#youtube-video-player id="ytplayer" model=playerModel video=playerVideo playerAction=playerAction
                                     videoLoadedAction=(action "videoLoaded")

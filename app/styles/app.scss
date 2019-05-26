@@ -1956,11 +1956,6 @@ CHAT
   }
 }
 
-.chatRoot.youtubeMusic {
-  #youtubeHolder {
-    display: none !important;
-  }
-}
 
 .chatRoot.room {
   .content {
@@ -2157,7 +2152,7 @@ CHAT
       padding-right: 20px;
 
       .create-group-button{
-        font-family: $medium-font;        
+        font-family: $medium-font;
         @include iconned-button(#60D3FC,15px,100%)
         padding: 5px 15px;
       }

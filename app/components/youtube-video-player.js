@@ -52,7 +52,6 @@ export default Component.extend({
 
   },
   willDestroyElement() {
-    $('#youtubeHolder').hide();
     $('#youtubePlaceHolder').hide();
     $('#youtubeHolder .overlay').hide();
     videojs.removeHook('setup', this.setupVideoJS);
@@ -197,12 +196,12 @@ export default Component.extend({
     if (newState === 1){
       $('.youtube-music-holder').hide();
       $('#youtubeHolder').show();
-      // $('#youtubePlaceHolder').show();
       $('#youtubeHolder .overlay').show();
       window.playerObj.get('onPlayerShow')();
     }else{
-      $('#youtubeHolder').hide();
+      //$('#youtubeHolder').hide();
       $('.youtube-music-holder').show();
+
     }
 
   },
@@ -302,6 +301,15 @@ export default Component.extend({
     debug('playerChanged');
   },
   playerReady() {
+    const newState = window.playerObj.get('videoPlayerState');
+    if (newState === 1){
+
+    }else{
+
+
+    }
+
+
     window.playerObj.get('onPlayerUpdate')();
     window.playerObj.playerSubj.next(1);
   },
@@ -346,6 +354,15 @@ export default Component.extend({
       // $('.youtube-music-holder .controls .play-btn').hide();
       // $('.youtube-music-holder .controls .pause-btn').hide();
     } else if (event.data === 5) {//queued
+      if (window.playerObj.get('getVideoState') === 1){
+        $('.youtube-music-holder').hide();
+        $('#youtubeHolder').show();
+        $('#youtubeHolder .overlay').show();
+      }else{
+        $('.youtube-music-holder').show();
+        // $('#youtubeHolder').hide();
+        // $('.youtube-music-holder').show();
+      }
       // $('#youtubeHolder .controlsOverlay .play').hide();
       // $('#youtubeHolder .controlsOverlay .pause').hide();
 
@@ -410,15 +427,6 @@ export default Component.extend({
         if (val === 1) {
           obj.secondsToPlay = v.seconds;
           obj.queueVideoToPlayer(player,v.video,v.seconds);
-          if (obj.get('getVideoState') === 1){
-            $('.youtube-music-holder').hide();
-            $('#youtubeHolder').show();
-            // $('#youtubePlaceHolder').show();
-            $('#youtubeHolder .overlay').show();
-          }else{
-            $('#youtubeHolder').hide();
-            $('.youtube-music-holder').show();
-          }
           window.playerObj.get('onPlayerShow')();
 
           debug('video');

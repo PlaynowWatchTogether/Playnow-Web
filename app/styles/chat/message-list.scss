@@ -175,6 +175,13 @@
     width: 100%;
     background: #000;
     position: relative;
+    &.has-video{
+      display: flex;
+    }
+    &.minimized{
+      position: absolute;
+      z-index: -1;
+    }
 
     #ytplayer {
       width: 100%;

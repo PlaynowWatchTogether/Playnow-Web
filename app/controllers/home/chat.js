@@ -89,12 +89,23 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
                 // this.set('refreshScroll',new Date());
                 this.set('playerAction', 0);
                 this.set('playerVideo', {video: video, seconds: seconds});
+                if (get(video,'videoType') === 'youtube#music'){
+                  this.set('videoPlayerState',0);
+                }else{
+                  this.set('videoPlayerState',1);
+                }
+                this.set('youtube#video')
               },1000);
             }else{
               this.set('hasPlayer', true);
               // this.set('refreshScroll',new Date());
               this.set('playerAction', 0);
               this.set('playerVideo', {video: video, seconds: seconds});
+              if (get(video,'videoType') === 'youtube#music'){
+                this.set('videoPlayerState',0);
+              }else{
+                this.set('videoPlayerState',1);
+              }
             }
           });
         },
@@ -703,7 +714,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.resetUploads();
     this.resetVideoSearch();
     this.set('messageText', '');
-    this.set('playerVideo', {});
+    this.set('playerVideo', null);
     this.set('composeChips', []);
     this.set('chatModel', {});
 
@@ -792,7 +803,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let vsh = this.get('videoStateHandler');
     this.set('hasPlayer', false);
     vsh.closeVideo();
-    this.set('playerVideo', {});
+    this.set('playerVideo', null);
     let ds = this.get('dataSource');
     if (ds) {
       this.set('playerAction', 10);

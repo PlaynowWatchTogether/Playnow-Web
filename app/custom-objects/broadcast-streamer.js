@@ -79,7 +79,20 @@ export default EmberObject.extend({
     return video[0];
   },
   stopStream(videoElem, streamId){
+    if (this.connection){
+      this.connection.getAllParticipants().forEach((pid)=> {
+           this.connection.disconnectWith(pid);
+      });
 
+       // stop all local cameras
+      this.connection.attachStreams.forEach((localStream)=> {
+        localStream.stop();
+      });
+
+       // close socket.io connection
+      this.connection.closeSocket();
+      this.connection = null;
+    }
     // if (this.webRTCAdaptor){
       // this.webRTCAdaptor.stop(streamId);
       // this.webRTCAdaptor = null;

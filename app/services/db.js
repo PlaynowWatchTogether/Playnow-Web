@@ -420,12 +420,12 @@ export default Service.extend(VideoStateHandler, {
   updateGroupName(id,groupName){
     return new Promise((resolve,reject)=>{
       const ref = this.firebaseApp.database().ref();
-      const update = {};
+      const updates = [];
       this.realGroup(id).then((group)=>{
         Object.keys(group.Members).forEach((memberKey) => {
-          update["/Users/" + memberKey + "/Groups/" + id + "/GroupName"] = groupName;
+          updates.push(ref.child("/Users/" + memberKey + "/Groups/" + id + "/GroupName").set(groupName))
         });
-        ref.update(update).then(()=>{
+        Promise.all(updates).then(()=>{
           resolve();
         }).catch((error)=>{
           reject(error);

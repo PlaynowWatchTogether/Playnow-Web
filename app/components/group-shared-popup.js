@@ -58,7 +58,7 @@ export default Component.extend(FileUploadHelper, {
 	},
 	didInsertElement(){
 		this._super(...arguments);
-		$(this.get('actionSelector')).on('click', ()=>{
+		$('body').on('click',this.get('actionSelector'), ()=>{
 			$(this.element).find('#groupSharedPopup').modal('show');
 		});
 	},
@@ -90,6 +90,9 @@ export default Component.extend(FileUploadHelper, {
 			}
 			const db = this.get('db');
 			db.updateGroupName(this.get('model.chat_id'), newName).then(()=>{
+				this.set('isDisabled',true);
+				this.notifyPropertyChange('title');
+			}).catch((error)=>{
 				this.set('isDisabled',true);
 				this.notifyPropertyChange('title');
 			});

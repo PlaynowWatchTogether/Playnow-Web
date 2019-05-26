@@ -683,14 +683,14 @@ $message-border-radius: 15.5px;
   .nav-link.active {
     background: none;
 
-    color: #61D1FC;
+    color: #60D3FC;
     // border-bottom: 4px solid #27BDD8;
     border-bottom: none;
     padding-bottom: 0;
     border-radius: 0;
   }
   .nav-link.active::after{
-    background:  #61D1FC;
+    background:  #60D3FC;
     height: 4px;
     content: "1";
     width: 100%;

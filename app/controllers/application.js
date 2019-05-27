@@ -2,13 +2,14 @@ import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
 import moment from "moment";
 import {computed} from "@ember/object";
-import {set} from "@ember/object";
+import {set, get} from "@ember/object";
 import {debug} from "@ember/debug";
 import $ from "jquery";
 import UUIDGenerator from '../mixins/uuid-generator';
 import FeedModelWrapper from '../custom-objects/feed-model-wrapper';
 import emojione from 'emojione';
 import { addObserver } from '@ember/object/observers';
+
 export default Controller.extend(UUIDGenerator, {
   auth: service(),
   db: service(),
@@ -68,13 +69,19 @@ export default Controller.extend(UUIDGenerator, {
     let m = this.get('model');
     return m['Username'];
   }),
-  hasNewRequestsFeed: computed('feedLastUpdate', function(){
+  userNotificationsFeed: computed('userNotifications', function(){
+    const notifications = this.get('userNotifications')||[];
+    return notifications.filter((elem)=>{
+      return get(elem,'type') === 'feed';
+    })
+  }),
+  hasNewRequestsFeed: computed('feedLastUpdate','userNotificationsFeed', function(){
     const myID = this.db.myId();
     const adminFeeds = this.store.peekAll('feed-item').filter((elem) => {
       return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
     });
-
-    return adminFeeds.length > 0;
+    const notifications = this.get('userNotificationsFeed');
+    return adminFeeds.length > 0 || notifications.length>0;
   }),
   feedRequests: computed('feedLastUpdate', function(){
     const myID = this.db.myId();
@@ -98,6 +105,19 @@ export default Controller.extend(UUIDGenerator, {
     return (this.get('followers') || []).length > 0;
   }),
   actions: {
+    clearFeedNotifications(){
+      this.get('db').clearNotification(this.get('userNotificationsFeed'));
+      return false;
+    },
+    clearNotification(model){
+      this.get('db').clearNotification([model]);
+      return false;
+    },
+    openDetails(model){
+      this.transitionToRoute('home.group.show',{group_id: get(model,'elemId')});
+      this.get('db').clearNotification([model]);
+      return false;
+    },
     onBirthdayDateSet(bd) {
       this.set('form.birthDay', bd);
     },

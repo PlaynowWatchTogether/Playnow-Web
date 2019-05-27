@@ -96,16 +96,58 @@
 				.followers-content{
 					display: flex;
 					flex-direction: column;
-					font-family: $medium-font;
+
 					.title{
+						font-family: $medium-font;
 						border-bottom: 1px solid #DEDEDE;
 						padding: 10px 20px;
+						display: flex;
+    				place-content: space-between;
+						justify-content: space-between;
+					}
+					.notifications-title{
+						border-bottom: 1px solid #DEDEDE;
+						padding: 10px 20px;
+						display: flex;
+    				place-content: space-between;
+						justify-content: space-between;
+						.label{
+							font-family: $medium-font;
+						}
+						.action{
+							cursor: pointer;
+						}
+					}
+					.group-notifications{
+						padding: 0px 20px;
+						.user-notification{
+							display: flex;
+					    place-content: space-between;
+					    padding: 10px 0px;
+					    place-items: center;
+							align-items: center;
+							justify-content: space-between;
+					    cursor: pointer;
+							border-radius: 10px;
+							padding: 10px;
+							margin-top: 10px;
+							&:hover{
+								background: rgba(0,0,0,0.1);
+							}
+							.notification-actions{
+								padding: 5px;
+								img{
+									width: 10px;
+								}
+							}
+						}
 					}
 					.follower-items{
 						display: flex;
 						flex-direction: column;
 						max-height: 500px;
 						overflow-y: scroll;
+						font-family: $medium-font;
 						.follower-items-empty{
 							min-height: 200px;
 							display: flex;

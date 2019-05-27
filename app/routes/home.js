@@ -7,7 +7,8 @@ import {Promise} from 'rsvp';
 import ApplicationFriendsMixin from '../mixins/application-friends-mixin';
 import ApplicationDBFeed from '../mixins/application-db-feed';
 import ApplicationUserFeed from '../mixins/application-user-feed';
-export default Route.extend(ApplicationFriendsMixin,ApplicationDBFeed,ApplicationUserFeed, {
+import ApplicationNotificationMixin from '../mixins/application-notifications-mixin';
+export default Route.extend(ApplicationFriendsMixin,ApplicationDBFeed,ApplicationUserFeed,ApplicationNotificationMixin, {
   firebaseApp: service(),
   auth: service(),
   gcmManager: service(),
@@ -53,7 +54,7 @@ export default Route.extend(ApplicationFriendsMixin,ApplicationDBFeed,Applicatio
         });
     }
     this.handleFeedSync();
-
+    this.handleNotificationSync();
     this.db.messaging.requestPermission().then(() => {
       debug('Notification permission granted.');
       this.db.messagePermissionsGranted();

@@ -11,6 +11,7 @@ export default Service.extend(VideoStateHandler, {
   firebaseApp: service(),
   store: service(),
   gcmManager: service(),
+
   init() {
     this._super(...arguments);
     this.messaging = this.get('firebaseApp').messaging();
@@ -20,15 +21,19 @@ export default Service.extend(VideoStateHandler, {
     return this.get('feedUpdated');
   }),
   authClb(clb){
-    let called = false;
-    var unsubscribe = null;
-    const listener = (user)=> {
-     clb(user);
-     if (unsubscribe){
-       unsubscribe();
-     }
-   };
-   unsubscribe = this.firebaseApp.auth().onAuthStateChanged(listener);
+    if (this.firebaseApp.auth().currentUser){
+      clb(this.firebaseApp.auth().currentUser);
+    }else{
+      let called = false;
+      var unsubscribe = null;
+      const listener = (user)=> {
+       clb(user);
+       if (unsubscribe){
+         unsubscribe();
+       }
+      };
+      unsubscribe = this.firebaseApp.auth().onAuthStateChanged(listener);
+    }
   },
   friend(id){
     return new Promise((resolve,reject)=>{
@@ -177,6 +182,19 @@ export default Service.extend(VideoStateHandler, {
     let ref = this.firebaseApp.database().ref("Users/" + user);
     ref.off('value', clb)
   },
+  profileField(user,field) {
+    return new Promise((resolve, reject) => {
+      let ref = this.firebaseApp.database().ref(`Users/${user}/${field}`);
+      ref.once('value').then((snapshot) => {
+        let val = snapshot.val();
+        const payload = {};
+        payload[field] = val;
+        resolve(payload);
+      }).catch((error) => {
+        reject(error);
+      })
+    });
+  },
   profile(user) {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("Users/" + user);
@@ -288,12 +306,12 @@ export default Service.extend(VideoStateHandler, {
   },
   userFeedsOff(clb) {
     const myId = this.myId();
-    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+    let ref = this.firebaseApp.database().ref(`UsersFeed/${myId}`);
     ref.off('value', clb);
   },
   userFeedsOnce(updateCallback) {
     const myId = this.myId();
-    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+    let ref = this.firebaseApp.database().ref(`UsersFeed/${myId}`);
 
     let clb = (data) => {
       let records = [];
@@ -309,7 +327,7 @@ export default Service.extend(VideoStateHandler, {
   },
   userFeeds(updateCallback) {
     const myId = this.myId();
-    let ref = this.firebaseApp.database().ref(`Users/${myId}/feed`);
+    let ref = this.firebaseApp.database().ref(`UsersFeed/${myId}`);
 
     let clb = (data) => {
       let records = [];

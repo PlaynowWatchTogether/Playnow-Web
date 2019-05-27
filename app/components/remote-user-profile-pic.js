@@ -11,7 +11,7 @@ export default UserProfileView.extend({
   db:service(),
   postSenderPic: computed('model', function(){
     return DS.PromiseObject.create({
-      promise: this.get('db').profile(this.get('model'))
+      promise: this.get('db').profileField(this.get('model'),'ProfilePic')
     });
   }),
 });

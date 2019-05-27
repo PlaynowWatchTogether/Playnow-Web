@@ -14,9 +14,9 @@ export default UserProfileView.extend({
   },
   didInsertElement(){
     this._super(...arguments);
-    this.get('db').profile(this.get('model')).then((profile)=>{
+    this.get('db').profileField(this.get('model'),'Email').then((profile)=>{
       if ( !(this.get('isDestroyed') || this.get('isDestroying')) ) {
-        const email = profile.Email;
+        const email = profile;
         if (email){
           const parts = email.split('@');
           this.set('username', parts[0]);

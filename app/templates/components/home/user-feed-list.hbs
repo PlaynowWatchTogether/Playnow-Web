@@ -2,7 +2,7 @@
   {{loading-view}}
 {{/if}}
 {{#each model as |item| }}
-  {{home/user-feed-item model=item classNames="user-feed-item-wrapper" openDetails=(action "openDetails") lastUpdate=lastUpdate}}
+  {{home/user-feed-item model=item id=item.id classNames="user-feed-item-wrapper" openDetails=(action "openDetails") lastUpdate=lastUpdate}}
 {{else}}
   <div class="empty">
   </div>

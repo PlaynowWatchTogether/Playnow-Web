@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-
+import { debug } from '@ember/debug';
 export default Mixin.create({
   handleUserFeedSync(){
     this.get('db').userFeedsOnce((feeds)=>{
@@ -14,8 +14,9 @@ export default Mixin.create({
         if (feed.type === 'message'){
           const messages = localFeed.get('Messages')||{};
           message = messages[feed.content.uid]||{};
+          const mesId = `${feed.feedId}-${message.uid}`;          
           const localMessage = this.store.normalize('user-feed-message',{
-            id: `${feed.id}-${message.uid}`,
+            id: mesId,
             rawData: JSON.stringify({
               isMessage: true,
               message: message

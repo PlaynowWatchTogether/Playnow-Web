@@ -43,8 +43,14 @@ export default Component.extend(FeedActionsMixins, {
   localEvent: computed(function(){
     return FeedEventModelWrapper.create({content:this.get('model.feedEvent')});
   }),
-  localFeedMessage: computed(function(){
-    return this.store.peekRecord('user-feed-message',`${this.get('localFeed.id')}-${this.get('model.feedMessage.uid')}`);
+  localFeedMessage: computed('localFeed.lastUpdate',function(){
+    debug('localFeedMessage')
+    const id = `${this.get('localFeed.id')}-${this.get('model.feedMessage.uid')}`;
+    const ret = this.store.peekRecord('user-feed-message',id);
+    if (!ret){
+      debug(`not found localFeedMessage for ${id}`);
+    }
+    return ret;
     // return this.get('model.feedMessage');
   }),
   localFeed: computed('model.localFeed',function(){

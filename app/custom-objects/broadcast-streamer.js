@@ -135,10 +135,21 @@ export default EmberObject.extend({
       }
       $(videoElem).addClass('loading');
       this.createConnection(videoElem,streamId).then(()=>{
-        this.connection.mediaConstraints = {
-          audio: model.mic,
-          video: model.video,
-        };
+        if (model.video){
+          this.connection.mediaConstraints = {
+            audio: model.mic,
+            video: {
+              width: 320,
+              height: 240
+            },
+          };
+        }else {
+          this.connection.mediaConstraints = {
+            audio: true,
+            video: false,
+          };
+        }
+
         this.connection.session = {
             audio: model.mic,
             video: model.video,
@@ -167,7 +178,10 @@ export default EmberObject.extend({
             };
             this.connection.mediaConstraints = {
                 audio: false,
-                video: true
+                video: {
+                  width: 320,
+                  height: 240
+                }
             };
             this.connection.addStream({video:true, oneway:true});
         }

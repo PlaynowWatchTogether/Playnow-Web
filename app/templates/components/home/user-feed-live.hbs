@@ -1,8 +1,13 @@
 <div class="thumbnail-holder">
-  {{thumbnail-background model=videoState.videoThumbnail classNames="thumbnail"}}
+  {{#thumbnail-background model=videoState.videoThumbnail classNames="thumbnail"}}
+
+  {{/thumbnail-background}}
   <div class="video-title">
     <div class="title">
       {{videoState.videoName}}
+    </div>
+    <div class="video-icon">
+      <img src={{playingVideoIconUrl}}>
     </div>
   </div>
   {{#if liveActive}}

@@ -6,10 +6,23 @@
     .video-title{
       position: absolute;
       bottom: 0;
-      padding: 20px 10px;
+      padding: 10px 10px;
       color: white;
       background: rgba(0, 0, 0, 0.37);
       width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 40px;
+      min-height: 80px;
+    }
+    .video-icon{
+      display:flex;
+      align-items: center;
+      img{
+        max-height: 40px;
+        max-width: 40px;
+      }
     }
     .playing-members{
       display: flex;

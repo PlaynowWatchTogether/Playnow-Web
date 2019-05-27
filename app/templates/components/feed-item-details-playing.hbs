@@ -15,7 +15,11 @@
       {{model.playingVideoTitle}}
     </div>
     <div class="playing-thumbnail">
-      {{thumbnail-background model=model.playingVideoThumbnail classNames="thumbnail"}}
+      {{#thumbnail-background model=model.playingVideoThumbnail classNames="thumbnail"}}
+        <div class="video-icon">
+          <img src={{model.playingVideoIconUrl}}>
+        </div>
+      {{/thumbnail-background}}
       <div class="action">
         <div class="action-join">
           <img src="/assets/ic_add_24px.svg" alt="icon">

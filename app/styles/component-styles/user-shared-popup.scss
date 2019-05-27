@@ -1,0 +1,238 @@
+@import '../vars.scss';
+@import '../feed/home-feed-item-public.scss';
+@import './videos-list-auth-ui.scss';
+@mixin user-shared-popup{
+  .modal-dialog{
+    max-width: 71%;
+    .modal-content{
+      border-radius: 25px;
+      .modal-header{
+        padding: 10px 50px;
+        .modal-title{
+          font-family: $medium-font;
+          font-size: 110%;
+        }
+      }
+      .modal-body{
+        padding: 0;
+        .user-profile-header{
+          display: flex;
+          flex-direction: row;
+          padding-left: 135px;
+          padding-top: 50px;
+          padding-bottom: 45px;
+          border-bottom: 1px solid lightgrey;
+          .user-profile-image{
+            flex: 0 0 auto;
+            .profilePicWrapper{
+              width: 140px;
+              height: 140px;
+            }
+          }
+          .user-profile-title{
+            flex: 1 1 auto;
+            padding-left: 35px;
+            place-content: space-evenly;
+            display: flex;
+            flex-direction: column;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            .title-username{
+              font-size: 180%;
+            }
+            .title-fl-name{
+              font-family: $medium-font;
+            }
+            .title-friends-groups{
+              display: flex;
+              flex-direction: row;
+              .friends,.groups{
+                span{
+                  font-family: $medium-font
+                }
+              }
+              .groups{
+                margin-left: 90px;
+              }
+            }
+          }
+          .user-profile-social{
+            flex: 0 0 350px;
+            padding-right: 75px;
+            display: flex;
+            flex-direction: column;
+            .label1{
+              font-family: $medium-font;
+              font-size: 110%;
+            }
+            .label2{
+              font-size: 80%;
+            }
+            .login-providers{
+              @include videos-auth-list;
+            }
+          }
+
+        }
+        .user-profile-shared-label{
+          padding-left: 70px;
+          font-size: 110%;
+          padding-top: 20px;
+        }
+        .user-profile-shared{
+          padding-left: 70px;
+          .user-profile-shared-none{
+            text-align: center;
+            color: lightgray;
+          }
+        }
+        .user-profile-groups-label{
+          padding-left: 70px;
+          font-size: 110%;
+          padding-top: 20px;
+        }
+        .user-profile-shared{
+          padding-left: 65px;
+          display: flex;
+          overflow-y: scroll;
+          padding-right: 20px;
+          margin-right: 20px;
+          margin-top: 20px;
+          .group-profile-attachment{
+            flex: 0 0 auto;
+            overflow: hidden;
+
+            width: 120px;
+            height: 120px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            border: 1px solid black;
+            display: flex;
+            .message-img{
+              width: 100%;
+              height: 100%;
+            }
+            .message-attachment-holder{
+                display: flex;
+                margin: auto;
+                flex: 0 0 auto;
+                width: 100%;
+                height: 100%;
+                .message-attachment-link{
+                  width: 100%;
+                }
+                .message-attachment-wrapper{
+                  justify-content: center;
+                  height: 100%;
+                  place-content: center;
+                  place-items: center;
+                  overflow-wrap: break-word;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  display: flex;
+                  flex-direction: column;
+                }
+                .message-attachment-name{
+                  overflow-wrap: break-word;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  width: 100%;
+                  text-align: center;
+                  padding: 0px 10px;
+                }
+                .message-attachment-icon{
+                  align-content: center;
+                  display: flex;
+                  img{
+                    width: 50px;
+                    height: 50px;
+                  }
+                }
+            }
+          }
+        }
+        .user-profile-groups{
+          padding-left: 65px;
+          padding-right: 65px;
+          pointer-events: none;
+          .feed-list{
+            padding: 10px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            .home-feed-item-link{
+              padding: 10px;
+              text-decoration: none;
+              color: black;
+              display: flex;
+              flex: 1 1 33.3%;
+              max-width: 33.3%;
+              .home-feed-item-public{
+                background: #fff;
+                border-radius: 15px;
+                @include home-feed-item-public;
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+}
+#userUnlinkPopup {
+  .modal-content{
+    border-radius: 20px;
+    background-color: #F4F4F4;
+    place-items: center;
+    align-items: center;
+    max-width: 80%;
+    padding: 10px;
+    .modal-body{
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      .title{
+        font-size: 120%;
+        text-align: center;
+        span{
+          font-family: $medium-font;
+        }
+      }
+      .subtitle{
+        text-align: center;
+        margin-top: 15px;
+        color: #A5A5A5;
+      }
+      .icon{
+        text-align: center;
+        margin-top: 10px;
+        img{
+          width: 30px;
+        }
+      }
+      .control{
+        text-align: center;
+        margin-top: 15px;
+        display: flex;
+        place-content: center;
+        align-content: center;
+        .unlink{
+          @include simple-button(#FD9A9A);
+          background: #FD9A9A;
+          color: white;
+          padding: 12px 80px;
+          cursor: pointer;
+          text-align: center;
+          border-radius: 30px;
+          font-family: $medium-font;
+        }
+      }
+
+
+    }
+
+  }
+}

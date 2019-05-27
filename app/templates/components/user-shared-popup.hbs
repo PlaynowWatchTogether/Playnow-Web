@@ -1,0 +1,96 @@
+<!-- Modal -->
+<div class="modal fade" id="userSharedPopup" tabindex="-1" role="dialog" aria-labelledby="userSharedPopupTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title" id="userSharedPopupTitle">Profile</div>
+      </div>
+      <div class="modal-body">
+        <div class="user-profile-root">
+        	<div class="user-profile-header">
+        		<div class="user-profile-image">
+	        		{{remote-user-profile-pic classNames="profilePicWrapper" model=model.id}}
+        		</div>
+        		<div class="user-profile-title">
+                <div class="title-username">
+                  {{username}}
+                </div>
+                <div class="title-friends-groups">
+                  <div class="friends">
+                    <span>{{groups}}</span> groups
+                  </div>
+                  <div class="groups">
+                    <span>{{friends}}</span> friends
+                  </div>
+                </div>
+                <div class="title-fl-name">
+                  {{displayName}}
+                </div>
+        		</div>
+            <div class="user-profile-social">
+              {{#if isMine}}
+                <div class="label1">Linked Accounts</div>
+                <div class="label2">Click on logos to link account</div>
+                {{videos-list-auth-ui onProviderClick=(action "onProviderClick") isFromSettings=true classNames="login-providers" providers=videoProviders onProviderChanged=(action "onProviderChanged")}}
+              {{/if}}
+            </div>
+
+        	</div>
+          <div class="user-profile-shared-label">
+              Shared between you and {{username}}
+          </div>
+        	<div class="user-profile-shared">
+            {{#each attachments as |attachment|}}
+                {{group-profile-attachment model=attachment classNames="group-profile-attachment"}}
+            {{else}}
+                <div class="user-profile-shared-none">
+                    Nothing shared so far
+                </div>
+            {{/each}}
+        	</div>
+          <div class="user-profile-groups-label">
+            {{username}}'s Groups
+          </div>
+          <div class="user-profile-groups">
+            {{home-feed-list
+              model=groupOwner.items
+              isLoading=groupOwner.isLoading
+              isPublic=true
+              isFromSettings=true
+              classNames="feed-list"
+              }}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="userUnlinkPopup" tabindex="-1" role="dialog" aria-labelledby="userUnlinkPopupTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="title">
+          Unlink <span>{{platform.title}}</span>?
+        </div>
+        <div class="subtitle">
+          You can link it again by pressing the logo on your profile
+        </div>
+        <div class="icon">
+          {{#if platform.isYoutube}}
+            <img src="/assets/ic-video-provider-youtube.svg">
+          {{else if platform.isKhan}}
+            <img src="/assets/ic-video-provider-khan.svg">
+          {{else}}
+            <img src="/assets/ic-video-provider-crunchyroll.svg">
+          {{/if}}
+        </div>
+        <div class="control" {{action "unlinkPlatform"}}>
+          <div class="unlink">
+            Unlink
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

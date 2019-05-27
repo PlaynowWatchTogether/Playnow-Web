@@ -19,23 +19,25 @@
         {{viewsNumber}}
       </div>
     </div>
-    <div class="feed-actions">
-      {{#if isFollowing}}
-        <div class="action-following" {{action "unFollowGroup" bubbles=false}}>
-          <div class="simple">Following</div>
-          <div class="action">Unfollow</div>
-        </div>
-      {{else if isRequestedFollow}}
-        <div class="action-follow-request">
-          Requested
-        </div>
-      {{else}}
-        <div class="action-follow" {{action "followGroup" bubbles=false}}>
-          <img src="/assets/ic_plus@2x.png" alt="icon">
-          <div>Follow</div>
-        </div>
-      {{/if}}
-    </div>
+    {{#unless isFromSettings}}
+      <div class="feed-actions">
+        {{#if isFollowing}}
+          <div class="action-following" {{action "unFollowGroup" bubbles=false}}>
+            <div class="simple">Following</div>
+            <div class="action">Unfollow</div>
+          </div>
+        {{else if isRequestedFollow}}
+          <div class="action-follow-request">
+            Requested
+          </div>
+        {{else}}
+          <div class="action-follow" {{action "followGroup" bubbles=false}}>
+            <img src="/assets/ic_plus@2x.png" alt="icon">
+            <div>Follow</div>
+          </div>
+        {{/if}}
+      </div>
+    {{/unless}}
   </div>
 </div>
 <div class="feed-title">

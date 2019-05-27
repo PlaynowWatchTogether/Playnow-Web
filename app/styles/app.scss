@@ -8,6 +8,8 @@
 @import 'component-styles/youtube-video-player.scss';
 @import 'component-styles/watcher-item.scss';
 @import 'loading.scss';
+@import 'component-styles/user-shared-popup.scss';
+
 .seo-h1{
   display:none;
 }
@@ -3277,4 +3279,7 @@ CHAT
   .vjs-hidden,.vjs-loading-spinner,.vjs-text-track-display,.vjs-big-play-button,.vjs-control-bar,{
     display: none;
   }
+}
+#userSharedPopup{
+  @include user-shared-popup;
 }

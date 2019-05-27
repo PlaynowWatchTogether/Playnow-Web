@@ -4,6 +4,7 @@
     {{#link-to 'home.group.show' feed.id classNames="home-feed-item-link"}}
       {{home-feed-item-public
         model=feed
+        isFromSettings=isFromSettings
         classNames="home-feed-item-public"
         onFollowGroup=(action 'followGroup')
         onUnFollowGroup=(action 'unFollowGroup')

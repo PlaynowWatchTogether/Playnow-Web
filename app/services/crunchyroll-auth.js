@@ -9,7 +9,7 @@ import { mergeMap } from 'rxjs/operators';
 import { inject as service } from "@ember/service";
 import moment from 'moment';
 import { sort } from '@ember/object/computed';
-export default Service.extend({  
+export default Service.extend({
   store: service(),
   init(){
     this._super(...arguments);
@@ -167,6 +167,7 @@ export default Service.extend({
 
   },
   logout(){
+    this.set('creds',null);
     this._storeCreds(null);
   },
   login(username, password){

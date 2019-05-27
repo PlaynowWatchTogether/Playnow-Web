@@ -56,6 +56,10 @@ export default Service.extend({
   isLoggedIn: computed('creds', function(){
     return this.GoogleAuth!=null && this.GoogleAuth.isSignedIn.get();
   }),
+  logout(){
+    this.set('creds',null);
+    this.GoogleAuth.signOut();
+  },
   login(){
     this.GoogleAuth.signIn();
   },

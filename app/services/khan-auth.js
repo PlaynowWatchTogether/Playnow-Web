@@ -32,6 +32,10 @@ export default Service.extend({
       // last_ampersand: false
     });
   },
+  logout(){
+    this.set('creds',null);
+    this._storeCreds({});
+  },
   login(){
     return new Promise((resolve, reject)=>{
       const request_data={url:'https://www.khanacademy.org/api/auth2/request_token', method: 'POST',data:{oauth_callback: `${location.origin}/auth`}};

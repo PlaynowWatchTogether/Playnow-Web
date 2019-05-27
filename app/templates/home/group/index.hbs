@@ -70,14 +70,13 @@
 		    	</div>
 		    	<div class="feed-group-access">
 			    	<div class="feed-group-access-label">
-						<div class="title">
-							{{#if isPrivate}}
-                Private group
-
-							{{else}}
-								Public group
-							{{/if}}
-						</div>
+  						<div class="title">
+                  Private group
+  						</div>
+              <div class="subtitle">
+                Users will have to request to follow
+                your group in order to see your content
+              </div>
 			    	</div>
 			    	<div class="feed-group-access-value">
 				    	<div class="switch-holder">
@@ -87,17 +86,7 @@
 		                  </label>
 		                </div>
 			    	</div>
-			    </div>
-          <div class="feed-group-access-subtitle">
-            <div class="subtitle">
-              {{#if isPrivate}}
-                <span>
-                Users will have to request to follow
-                your group in order to see your content
-                </span>
-              {{/if}}
-            </div>
-          </div>
+			    </div>          
 		    </div>
 	    </div>
     	<div class="feed-group-create-holder" {{action "createFeed"}} role="button">

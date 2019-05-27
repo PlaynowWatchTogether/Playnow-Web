@@ -33,6 +33,7 @@ export default EmberObject.extend({
       };
       this.connection.onclose = (event)=>{
         debug('onclose');
+        $(event.mediaElement).remove();
       };
       this.connection.onleave = (event)=>{
         debug('onleave');
@@ -44,6 +45,7 @@ export default EmberObject.extend({
 
         if(event.type === 'local') {
           this.videoPreview = event.mediaElement;
+          event.mediaElement.removeAttribute('controls');
           $(event.mediaElement).appendTo($(videoElem));
           this.videoPreview.muted = true;
           this.videoPreview.volume = 0;
@@ -52,13 +54,10 @@ export default EmberObject.extend({
           } catch (e) {
               this.videoPreview.setAttribute('muted', true);
           }
-          this.videoPreview.setAttribute('controls', false);
-          if (this.streamPublished){
-            this.streamPublished(streamId);
-          }
+
         }else{
+          event.mediaElement.removeAttribute('controls');
           this.videoPreview = event.mediaElement;
-          this.videoPreview.setAttribute('controls', false);
           $(event.mediaElement).appendTo($(videoElem));
         }
         this.videoPreview.srcObject = event.stream;
@@ -146,6 +145,11 @@ export default EmberObject.extend({
             oneway: true
         };
         this.connection.open(streamId, () =>{
+          debug('connection.opened');
+          debug('streamPublished');
+          if (this.streamPublished){
+            this.streamPublished(streamId);
+          }
           // this._handleMute(streamId, model);
         });
 
@@ -194,7 +198,7 @@ export default EmberObject.extend({
       }else{
         $(videoElem).removeClass('loading');
         this._handleClose(videoElem,streamId);
-        $(videoElem).find('video audio').remove();
+        $(videoElem).find('video,audio').remove();
       }
     }
   },

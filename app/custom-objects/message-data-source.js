@@ -442,7 +442,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       message['type'] = 'text';
       if (video) {
         message['type'] = 'VideoRequest';
-        message['video'] = video;        
+        message['video'] = video;
       }
       message['attachments']=[];
       attachments.forEach((attachment)=>{
@@ -569,6 +569,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     }
     const dbRef = this.db.ref(ref).child(`${senderId}`);
     dbRef.onDisconnect().remove();
+    debug(`publishStream ${streamId}`)
     return dbRef.set({userId:senderId, stream:streamId,mic: model.mic, video: model.video});
   },
   removeStream(streamId){
@@ -587,6 +588,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       ref = `channels/feed/${convId}/Stream`
     }
     const dbRef = this.db.ref(ref).child(`${senderId}`);
+    debug(`removeStream ${streamId}`)
     return dbRef.remove();
   }
 

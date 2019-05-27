@@ -8,6 +8,7 @@ export default Component.extend({
     this.addObserver('model.streaming.mic', this,'streamingChanged');
     this.addObserver('model.streaming.video', this,'streamingChanged');
   },
+
   streamingChanged(obj){
     const streaming = obj.get('isStreaming');
     const old = obj.get('oldStreaming');

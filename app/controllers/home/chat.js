@@ -175,7 +175,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     const dsConv = this.get('dataSource').convId();
     const type = this.get('model.type');
     const id = this.get('db').myId();
-    return `${id}-${dsConv}`;
+    return `${new Date().getTime()}-${id}-${dsConv}`;
   },
   messageConvId(){
     const dsConv = this.get('dataSource').convId();

@@ -1,7 +1,7 @@
 <div class="member-wrapper">
   <div class="member-content">
     {{remote-user-profile-pic model=model.userId classNames="profilePicWrapper" alt="ProfilePic"}}
-    {{#if model.streaming}}
+    {{#if isStreaming}}
       {{#remote-stream model=model.streaming classNames="video-holder"}}
         {{loading-view}}
       {{/remote-stream}}

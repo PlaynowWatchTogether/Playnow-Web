@@ -186,6 +186,9 @@
     #ytplayer {
       width: 100%;
       position: absolute;
+      .vjs-resize-manager{
+        display: none;
+      }
     }
 
     .controlsOverlay {

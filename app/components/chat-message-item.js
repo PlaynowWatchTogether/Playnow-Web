@@ -18,15 +18,14 @@ export default Component.extend(MessageAttachmentsWrapper, {
   videoRequestModel: computed('model', function(){
     let model = this.get('model');
     return {
-      snippet: {
+        id: model.get('video.id'),
         title: model.get('video.title'),
-        channelTitle: model.get('video.channelTitle'),
-        thumbnails: {
-          medium:{
-            url: model.get('video.imageURL')
-          }
-        }
-      }
+        description: model.get('video.channelTitle'),
+        thumbnail: model.get('video.imageURL'),
+        videoUrl: model.get('video.imageUrl'),
+        kind: model.get('video.videoType'),
+        category:model.get('video.videoCategory')||'0',
+        url: model.get('video.videoUrl'),
     }
   }),
   messageTextClass: computed('model.{messageIndex,maxIndex}', function(){
@@ -218,7 +217,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
     },
     videoRequestClick(){
       if (this.get('canClick')) {
-        this.get('onClick')(this.get('model'));
+        this.get('onVideoRequestClick')(this.get('videoRequestModel'));
       }
     },
     clickOnPhoto() {

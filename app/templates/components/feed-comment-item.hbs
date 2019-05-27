@@ -6,11 +6,8 @@
     {{authorName}}
   </div>
   <div class="comment-like" {{action "toggleLike" bubbles=false}} role="button">
-    {{#if isLiked}}
-      <img src="/assets/ic-feed-post-liked@2x.png" alt="comment reactions likes">
-    {{else}}
-      <img src="/assets/ic-feed-post-likes@2x.png" alt="comment reactions likes">
-    {{/if}}
+    <img src="/assets/ic-feed-post-liked@2x.png" alt="comment reactions likes" class="{{unless isLiked "hidden"}}">
+    <img src="/assets/ic-feed-post-likes@2x.png" alt="comment reactions likes" class="{{if isLiked "hidden"}}">    
   </div>
 </div>
 <div class="comment-content">

@@ -1003,16 +1003,23 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
     if (this.get('canSendVideo')) {
+      let holder = $('#youtubePlaceHolder');
+      let height = 9 * holder.width() / 16;
+      holder.height(height);
+
+      $('#youtubePlaceHolder').show();
+      
       this.set('playerModel', video);
       ds.sendVideo(video)
     } else {
       ds.sendMessage('', [],null, {
-        id: video['id'],
-        title: video['snippet']['title'],
-        channelTitle: video['snippet']['channelTitle'],
-        imageURL: video['snippet']['thumbnails']['high']['url'],
-        isMusic: video['categoryId'] === '10',
-        videoType: video['categoryId'] === '10' ? 'youtubeMusic' : 'youtubeVideo'
+        id: get(video,'id'),
+        title: get(video,'title'),
+        channelTitle: get(video,'description'),
+        imageURL: get(video,'thumbnail'),
+        videoType: get(video,'kind'),
+        videoCategory: get(video,'category'),
+        videoUrl: get(video,'url')
       })
     }
   },
@@ -1163,11 +1170,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }
         return;
       }
-      let holder = $('#youtubePlaceHolder');
-      let height = 9 * holder.width() / 16;
-      holder.height(height);
 
-      $('#youtubePlaceHolder').show();
       this.videoDetails(video).then((details)=>{
         this.shareVideo(details, true);
       });
@@ -1231,12 +1234,15 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       let output = [m.slice(0, index), text, m.slice(index)].join('');
       this.set("messageText", output);
     },
+    onVideoRequestClick(video){
+      this.shareVideo(video);
+    },
     onMessageClick(message) {
       if (message.get('type') === 'VideoRequest') {
         if (this.get('isMaster')) {
-          this.get('youtubeSearch').video(message.get('video.id')).then((video) => {
-            this.shareVideo(video);
-          });
+          // this.get('youtubeSearch').video(message.get('video.id')).then((video) => {
+          //
+          // });
         }
       }
       if (message.get('type') === 'ShareVideo'){

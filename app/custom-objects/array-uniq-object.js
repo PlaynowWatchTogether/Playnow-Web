@@ -47,8 +47,7 @@ export default ArrayProxy.extend({
         current.removeObject(local);
       }
     });
-    this.notifyPropertyChange('content');
-    debug(`array-uniq-object contentChanged with ${elems.length}`);
+    this.notifyPropertyChange('content');    
   },
   contentChanged(obj){
     this.handleContent();

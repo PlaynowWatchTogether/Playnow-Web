@@ -442,8 +442,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       message['type'] = 'text';
       if (video) {
         message['type'] = 'VideoRequest';
-        message['video'] = video;
-        message['isMusic'] = video.isMusic;
+        message['video'] = video;        
       }
       message['attachments']=[];
       attachments.forEach((attachment)=>{

@@ -3,10 +3,7 @@
   <div class="label">{{postCommentsCount}}</div>
 </div>
 <div class="reaction-likes" {{action 'toggleLike' bubbles=false}}>
-  {{#if isLiked}}
-    <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes">
-  {{else}}
-    <img src="/assets/ic-feed-post-likes@2x.png" alt="post reactions likes">
-  {{/if}}
+  <img src="/assets/ic-feed-post-liked@2x.png" alt="post reactions likes" class="liked {{unless isLiked "hidden"}}">
+  <img src="/assets/ic-feed-post-likes@2x.png" alt="post reactions likes" class="likes {{if isLiked "hidden"}}">
   <div class="label">{{postLikesCount}}</div>
 </div>

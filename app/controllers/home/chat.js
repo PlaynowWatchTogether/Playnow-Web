@@ -82,7 +82,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
               this.set('hasPlayer', false);
               this.set('playerReady',false);
               this.set('playerAction', 0);
-              this.set('playerVideo', null);
+              this.set('playerVideo', {});
               this.set('videoPlayerState',1);
               setTimeout(()=>{
                 this.set('hasPlayer', true);
@@ -1008,7 +1008,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       holder.height(height);
 
       $('#youtubePlaceHolder').show();
-      
+
       this.set('playerModel', video);
       ds.sendVideo(video)
     } else {
@@ -1170,7 +1170,9 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }
         return;
       }
-
+      if (!this.get('playerVideo')){
+        this.set('playerVideo',{})
+      }
       this.videoDetails(video).then((details)=>{
         this.shareVideo(details, true);
       });

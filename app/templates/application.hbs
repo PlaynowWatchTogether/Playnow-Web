@@ -24,7 +24,7 @@
             </div>
           {{/user-profile-view}}
           <div class="controls">
-            {{#bs-dropdown classNames="dropdown feedgroups"}}
+            {{#bs-dropdown classNames="dropdown feedgroups" onClose=(action "readFeedNotifications")}}
               <div class="dropdown-toggle" id="dropdownFeedgroups" data-toggle="dropdown" aria-haspopup="true"
                    aria-expanded="false" data-display="static">
                 <img class="friend-requests" src="/assets/ic_profile_feed_notifications@2x.png" alt="icon">
@@ -66,21 +66,23 @@
                     </div>
                     {{/each}}
                   </div>
-                  {{#if userNotificationsFeed}}
-                    <div class="notifications-title">
-                      <div class="label">
-                        My Group notifications
-                      </div>
-                      <div class="action" {{action "clearFeedNotifications" bubbles=false}}>
-                        Clear
-                      </div>
+                  <div class="notifications-title">
+                    <div class="label">
+                      Notifications
                     </div>
-                    <div class="group-notifications">
-                      {{#each userNotificationsFeed as |notification|}}
-                        {{user-notification model=notification classNames="user-notification" clearNotification=(action "clearNotification" bubbles=false) openDetails=(action "openDetails" bubbles=false)}}
-                      {{/each}}
+                    <div class="action" {{action "clearFeedNotifications" bubbles=false}}>
+                      Clear
                     </div>
-                  {{/if}}
+                  </div>
+                  <div class="group-notifications">
+                    {{#each userNotificationsFeed as |notification|}}
+                      {{user-notification model=notification classNames="user-notification" clearNotification=(action "clearNotification" bubbles=false) openDetails=(action "openDetails" bubbles=false)}}
+                    {{else}}
+                      <div class="empty">
+                        Nothing to show
+                      </div>
+                    {{/each}}
+                  </div>
                 </div>
               </div>
             {{/bs-dropdown}}

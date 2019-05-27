@@ -771,7 +771,8 @@ $post-content-width: 63.8%;
             @include tabs;
           }
           .create-event{
-            @include iconned-button(#7FDBFC, 14px);
+            @include iconned-button(#60D3FC, 14px);
+            font-family: $medium-font;
           }
         }
         .tab-content{

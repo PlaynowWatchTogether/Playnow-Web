@@ -13,22 +13,13 @@ export default Component.extend({
     });
     $(this.element).on('show.bs.dropdown', function () {
       debug('shown dropdown');
-      // if (!$(this).find('.dropdown-menu').is(e.target)
-      //   && $(this).find('.dropdown-menu').has(e.target).length === 0
-      //   && $(this).find('.show').has(e.target).length === 0
-      // ) {
-      //   $(this).find('.dropdown-menu').removeClass('show');
-      // }
     });
-    // $('dropdown-backdrop').on('click', () => {
-    //   $('.dropdown-menu').hide();
-    //   $('.dropdown-backdrop').hide();
-    //   $('.dropdown').removeClass('active');
-    // });
-    // $('.dropdown-toggle').on('click', () => {
-    //   $('.dropdown').addClass('active');
-    //   $('.dropdown-menu').show();
-    //   $('.dropdown-backdrop').show();
-    // })
+    $(this.element).on('hidden.bs.dropdown', ()=> {
+      debug('hidden dropdown');
+      const act = this.get('onClose');
+      if (act){
+        act();
+      }
+    });
   }
 });

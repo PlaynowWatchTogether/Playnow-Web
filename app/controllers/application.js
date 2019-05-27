@@ -80,7 +80,9 @@ export default Controller.extend(UUIDGenerator, {
     const adminFeeds = this.store.peekAll('feed-item').filter((elem) => {
       return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;
     });
-    const notifications = this.get('userNotificationsFeed');
+    const notifications = this.get('userNotificationsFeed').filter((elem)=>{
+      return !get(elem,'read');
+    });
     return adminFeeds.length > 0 || notifications.length>0;
   }),
   feedRequests: computed('feedLastUpdate', function(){
@@ -104,11 +106,17 @@ export default Controller.extend(UUIDGenerator, {
   hasNewRequests: computed('followers.@each', function () {
     return (this.get('followers') || []).length > 0;
   }),
+
   actions: {
+    readFeedNotifications(){
+      this.get('db').readNotification(this.get('userNotificationsFeed'));
+      return false;
+    },
     clearFeedNotifications(){
       this.get('db').clearNotification(this.get('userNotificationsFeed'));
       return false;
     },
+
     clearNotification(model){
       this.get('db').clearNotification([model]);
       return false;

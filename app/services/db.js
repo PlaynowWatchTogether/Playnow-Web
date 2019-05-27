@@ -95,6 +95,15 @@ export default Service.extend(VideoStateHandler, {
   offListenGroup(ret){
     ret[0].off('value', ret[1]);
   },
+  readNotification(elems){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    let ref = this.firebaseApp.database().ref(`/UsersNotifications/${myId}`);
+    const updates = [];
+    elems.forEach((elem)=>{
+      updates.push(ref.child(get(elem,'id')).child('read').set(true));
+    });
+    return Promise.all(updates);
+  },
   clearNotification(elems){
     let myId = this.firebaseApp.auth().currentUser.uid;
     let ref = this.firebaseApp.database().ref(`/UsersNotifications/${myId}`);

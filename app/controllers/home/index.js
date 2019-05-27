@@ -202,8 +202,13 @@ export default Controller.extend({
 
       ds.joinEvent(get(group,'id'),get(event,'id'));
     },
-    openDetails(group){
-      this.transitionToRoute('home.group.show', get(group,'id'));
+    openDetails(group,live){
+      if (live){
+        this.transitionToRoute('home.chat', get(group,'id'),'feed');  
+      }else{
+        this.transitionToRoute('home.group.show', get(group,'id'));
+      }
+
     },
     onLeaveEvent(group, event){
       const ds = FeedGroupSource.create({

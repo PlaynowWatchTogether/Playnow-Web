@@ -9,7 +9,7 @@ export default Route.extend(AuthRouteMixin, {
   init() {
     this._super(...arguments);
     this.arProxy = ArrayProxy.create({content: []});
-  },  
+  },
   activate() {
     this._super(...arguments);
     $('body').addClass('index');

@@ -52,7 +52,11 @@ export default Component.extend(FeedActionsMixins, {
   }),
   actions:{
     openDetails(){
-      this.get('openDetails')(this.get('localFeed'));
+      this.get('openDetails')(this.get('localFeed'),false);
+    },
+    onClickLive(){
+      this.get('openDetails')(this.get('localFeed'),this.get('liveActive'));
+
     },
     onClickPostBody(){
 

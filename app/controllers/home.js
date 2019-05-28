@@ -11,18 +11,6 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
     this.addObserver('lastUpdate',this,'friendsUpdated');
-    this.set('friendsPager',UserFeedPager.create({
-      content: [],
-      limit: -1,
-      loadHandler: ()=>{
-        return new Promise((resolve)=>{
-          setTimeout(()=>{
-            resolve(this.get('sortedFriends'));
-          },1000);
-
-        });
-      }
-    }));
   },
   friendsUpdated(obj){
     debug('friendsUpdated');
@@ -30,7 +18,18 @@ export default Controller.extend({
   },
   activate(){
     debug('home controller activate');
-    this.get('friendsPager').load(true);
+    this.set('friendsPager',UserFeedPager.create({
+      content: [],
+      limit: -1,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.get('sortedFriends'));
+          },500);
+
+        });
+      }
+    }));    
   },
   actions: {
     triggerSearch() {

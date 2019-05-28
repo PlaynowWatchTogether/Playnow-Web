@@ -24,7 +24,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.get('discoverFeeds'));
-          },1000);
+          },100);
 
         });
       }
@@ -36,7 +36,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.publicFeeds());
-          },1000);
+          },100);
 
         });
       }
@@ -48,7 +48,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.myFeeds());
-          },1000);
+          },100);
 
         });
       }
@@ -60,7 +60,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.followedFeeds());
-          },1000);
+          },100);
 
         });
       }
@@ -71,7 +71,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.get('sortedUserFeed'));
-          },1000);
+          },100);
 
         });
       }
@@ -79,26 +79,30 @@ export default Controller.extend({
 
   },
   activate(){
-    this.get('userFeed').load(true);
-    this.get('groupOwner').load(true);
-    this.get('groupFollowing').load(true);
-    this.get('groupPublicSide').load(true);
-    this.get('groupPublic').load(true);
+    // this.get('userFeed').load(true);
+    // this.get('groupOwner').load(true);
+    // this.get('groupFollowing').load(true);
+    // this.get('groupPublicSide').load(true);
+    // this.get('groupPublic').load(true);
 
     addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
-
+    addObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated')
+  },
+  userFeedUpdated(obj){
+    debug('userFeedUpdated');
+    this.get('userFeed').load(false);
   },
   feedUpdated(obj){
     debug('feedUpdated');
     obj.set('lastUpdate',new Date().getTime());
     this.get('groupPublicSide').load(false);
-    this.get('userFeed').load(false);
     this.get('groupOwner').load(false);
     this.get('groupFollowing').load(false);
     this.get('groupPublic').load(false);
   },
   reset(){
     removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
+    removeObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated')
     this.get('userFeed').reset();
     this.get('groupOwner').reset();
     this.get('groupFollowing').reset();
@@ -204,7 +208,7 @@ export default Controller.extend({
     },
     openDetails(group,live){
       if (live){
-        this.transitionToRoute('home.chat', get(group,'id'),'feed');  
+        this.transitionToRoute('home.chat', get(group,'id'),'feed');
       }else{
         this.transitionToRoute('home.group.show', get(group,'id'));
       }

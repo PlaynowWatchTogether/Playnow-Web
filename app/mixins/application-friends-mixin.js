@@ -7,6 +7,18 @@ import {Promise} from 'rsvp';
 
 export default Mixin.create({
   db: service(),
+  init(){
+    this._super(...arguments);
+    this.syncValue = {
+      friends: false,
+      groups: false
+    }
+  },
+  sendSyncFinished(syncFinished){
+    if (this.syncValue.friends && this.syncValue.groups){
+      syncFinished();
+    }
+  },
   syncFriends(syncFinished){
     const myId = this.get('db').myId();
     this.get('db').friends((friends) => {
@@ -52,7 +64,8 @@ export default Mixin.create({
 
 
       });
-      syncFinished();
+      this.syncValue.friends=true;
+      this.sendSyncFinished(syncFinished);
     }, () => {
 
     });
@@ -67,9 +80,10 @@ export default Mixin.create({
         }
         let normalizedData = this.store.normalize('home-friend', friendPayload);
         this.store.push(normalizedData);
-        this.handleGroupMessages(friend);      
+        this.handleGroupMessages(friend);
       });
-      syncFinished();
+      this.syncValue.groups=true;
+      this.sendSyncFinished(syncFinished);
     }, () => {
 
     });

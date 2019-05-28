@@ -30,17 +30,7 @@ export default Route.extend(ApplicationFriendsMixin,ApplicationDBFeed,Applicatio
       })
 
     });
-  },
-  model() {
-    return new Promise((resolve,reject)=>{
-      const myID = this.get('db').myId();
-      this.get('db').profile(myID).then((profile)=>{
-        resolve(profile);
-      }).catch((error)=>{
-        reject(error);
-      })
-    });
-  },
+  },  
   activate() {
     this._super(...arguments);
     let ctrl = this.controllerFor('home');

@@ -21,13 +21,11 @@ export default Route.extend({
   model() {
     return new Promise((resolve) => {
       this.get('db').authClb((user) => {
-        resolve({id:user.uid});
+
         if (user) {
-          // this.db.profile(user.uid).then((model) => {
-            // resolve(model);
-          // })
+          resolve({id:user.uid});
         } else {
-          resolve(null)
+          resolve({})
         }
       })
 

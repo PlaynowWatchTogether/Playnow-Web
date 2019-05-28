@@ -16,6 +16,18 @@ export default ArrayProxy.extend({
       return this.get('content').slice(0,this.get('limit'));
     }
   }),
+  reload(){
+    this.set('isLoading', true);
+    setTimeout(()=>{
+      this.setObjects(this.get('cache'));
+      this.set('isLoading',false);
+
+    },200);
+  },
+  beforeReload(){
+    this.set('cache',this.toArray());
+    this.setObjects([]);
+  },
   load(reset){
     if (reset){
       this.setObjects([]);

@@ -86,7 +86,12 @@ export default Controller.extend({
     // this.get('groupPublic').load(true);
 
     addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
-    addObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated')
+    addObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated');
+    this.get('userFeed').reload();
+    this.get('groupOwner').reload();
+    this.get('groupFollowing').reload();
+    this.get('groupPublicSide').reload();
+    this.get('groupPublic').reload();
   },
   userFeedUpdated(obj){
     debug('userFeedUpdated');
@@ -103,11 +108,11 @@ export default Controller.extend({
   reset(){
     removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
     removeObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated')
-    this.get('userFeed').reset();
-    this.get('groupOwner').reset();
-    this.get('groupFollowing').reset();
-    this.get('groupPublicSide').reset();
-    this.get('groupPublic').reset();
+    this.get('userFeed').beforeReload();
+    this.get('groupOwner').beforeReload();
+    this.get('groupFollowing').beforeReload();
+    this.get('groupPublicSide').beforeReload();
+    this.get('groupPublic').beforeReload();
   },
   userFeedSort: ['createdAt:desc'],
   userFeedLocal: computed(function(){

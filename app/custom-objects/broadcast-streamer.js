@@ -74,8 +74,12 @@ export default EmberObject.extend({
           }
 
         }else{
-          event.mediaElement.removeAttribute('controls');
+
+
           this.videoPreview = event.mediaElement;
+          this.videoPreview.muted=false;
+          this.videoPreview.setAttribute('muted', false);
+          event.mediaElement.removeAttribute('controls');
           $(event.mediaElement).appendTo($(videoElem));
         }
         this.videoPreview.srcObject = event.stream;

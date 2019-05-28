@@ -29,6 +29,7 @@ Router.map(function() {
     this.route('terms');
     this.route('privacy');
     this.route('copyright');
+    this.route('community');
   });
 });
 

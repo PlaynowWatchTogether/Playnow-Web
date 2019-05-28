@@ -404,7 +404,7 @@ body.help{
     .help-contact-root{
       @include help-contact;
     }
-    .help-terms-root, .help-policy-root,.help-copyright-root{
+    .help-terms-root, .help-policy-root,.help-copyright-root,.help-community-root{
       @include help-terms;
     }
     .help-policy-root,.help-copyright-root{
@@ -412,10 +412,17 @@ body.help{
         margin-bottom: 55px;
       }
     }
-    .help-copyright-root{
+    .help-copyright-root,.help-community-root{
       .terms-content{
         padding-bottom: 90px;
-      }      
+      }
+    }
+    .help-community-root{
+      .terms-content{
+        .title{
+          padding-bottom: 70px;
+        }
+      }
     }
     .help-footer{
       @include help-footer;

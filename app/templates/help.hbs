@@ -35,10 +35,10 @@
           <div class="column-header">
             Company
           </div>
-          {{#link-to 'help.about' classNames="item"}}
+          {{#link-to "help.about" classNames="item"}}
             About Playnows
           {{/link-to}}
-          {{#link-to 'help.jobs' classNames="item"}}
+          {{#link-to "help.jobs" classNames="item"}}
             Jobs
           {{/link-to}}
         </div>
@@ -46,15 +46,15 @@
           <div class="column-header">
             Legal
           </div>
-          {{#link-to 'help.terms' classNames="item"}}
+          {{#link-to "help.terms" classNames="item"}}
             Terms of Use
           {{/link-to}}
-          <div class="item">
+          {{#link-to "help.privacy" classNames="item"}}
             Privacy Policy
-          </div>
-          <div class="item">
+          {{/link-to}}
+          {{#link-to "help.copyright" classNames="item"}}
             Copyright
-          </div>
+          {{/link-to}}
         </div>
         <div class="column">
           <div class="column-header">
@@ -74,7 +74,7 @@
           <div class="item">
             Branding
           </div>
-          {{#link-to 'help.contact' classNames="item"}}
+          {{#link-to "help.contact" classNames="item"}}
             Contact
           {{/link-to}}
         </div>
@@ -103,14 +103,14 @@
       </div>
       <div class="section3">
         <div class="link">
-          <a href="/" target="_blank" rel="noopener">
+          {{#link-to "help.privacy" classNames="item"}}
             Privacy Policy
-          </a>
+          {{/link-to}}
         </div>
         <div class="link terms">
-          {{#link-to 'help.terms' classNames="item"}}
+          {{#link-to "help.terms" classNames="item"}}
             Terms of Use
-          {{/link-to}}          
+          {{/link-to}}
         </div>
         <div class="inc">
           ©2019 Playnow, Inc. All rights reserved.

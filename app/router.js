@@ -27,6 +27,8 @@ Router.map(function() {
     this.route('jobs');
     this.route('contact');
     this.route('terms');
+    this.route('privacy');
+    this.route('copyright');
   });
 });
 

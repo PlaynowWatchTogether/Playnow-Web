@@ -404,8 +404,13 @@ body.help{
     .help-contact-root{
       @include help-contact;
     }
-    .help-terms-root{
+    .help-terms-root, .help-policy-root{
       @include help-terms;
+    }
+    .help-policy-root{
+      .time{
+        margin-bottom: 55px;
+      }
     }
     .help-footer{
       @include help-footer;

@@ -9,7 +9,7 @@
 @import 'component-styles/watcher-item.scss';
 @import 'loading.scss';
 @import 'component-styles/user-shared-popup.scss';
-
+@import 'help.scss';
 .seo-h1{
   display:none;
 }
@@ -107,11 +107,11 @@ body > .ember-view {
 }
 
 //Variables
-
-.background_gradient {
-  background-image: $primary-gradient
+body.welcome,body.home{
+  .welcomePage,.mainPage{
+    background-image: $primary-gradient;
+  }
 }
-
 .welcomePage {
   margin-left: -15px;
   margin-right: -15px;

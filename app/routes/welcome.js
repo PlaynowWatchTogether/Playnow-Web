@@ -14,5 +14,13 @@ export default Route.extend({
         }
       })
     })
+  },
+  activate() {
+    this._super(...arguments);
+    $('body').addClass('welcome');
+  },
+  deactivate() {
+    $('body').removeClass('welcome');
+    this._super(...arguments);
   }
 });

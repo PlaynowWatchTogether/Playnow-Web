@@ -1,4 +1,4 @@
-<div class="background_gradient welcomePage">
+<div class="welcomePage">
 
   {{#welcome-header classNames="container-fluid" tagName="header"}}
     <div class="row welcomeHeader">
@@ -130,9 +130,9 @@
       </div>
       <div class="item">
         <p class="footerColumnHeader">Company</p>
-        <a class="footerColumnItem" rel="noopener" target="_blank" href="https://dhj9817.wixsite.com/playnow/about">
+        {{#link-to "help.about" classNames="footerColumnItem"}}
           About Playnows
-        </a>
+        {{/link-to}}
         <a class="footerColumnItem" rel="noopener" target="_blank" href="https://dhj9817.wixsite.com/playnow/jobs">
           Jobs
         </a>

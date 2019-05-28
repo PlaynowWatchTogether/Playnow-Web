@@ -404,13 +404,18 @@ body.help{
     .help-contact-root{
       @include help-contact;
     }
-    .help-terms-root, .help-policy-root{
+    .help-terms-root, .help-policy-root,.help-copyright-root{
       @include help-terms;
     }
-    .help-policy-root{
+    .help-policy-root,.help-copyright-root{
       .time{
         margin-bottom: 55px;
       }
+    }
+    .help-copyright-root{
+      .terms-content{
+        padding-bottom: 90px;
+      }      
     }
     .help-footer{
       @include help-footer;

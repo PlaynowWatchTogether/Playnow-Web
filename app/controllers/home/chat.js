@@ -497,6 +497,42 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     });
     ds.members((members) => {
       obj.set('members', members);
+
+    });
+    ds.membersOnce().then((onceMembers)=>{
+      obj.set('onceMembers',onceMembers);
+      ds.messagesOnce((messages) => {
+        obj.updateRemoteMessages(messages);
+        const lastObj = (messages.lastObject||{serverDate:0});
+        const lastDate = lastObj.serverDate || lastObj.date
+        ds.messageAdded(lastDate+1,(newMessage)=>{
+          debug(`new message ${JSON.stringify(newMessage)}`);
+
+           if (newMessage.senderId !== obj.get('db').myId()){
+            newMessage.id = newMessage.uid;
+            const localMessages = obj.get('remoteMessages');
+            localMessages.pushObject(newMessage);
+            obj.updateRemoteMessages(localMessages);
+           }
+        })
+        ds.messageChanged((newMessage)=>{
+          const localMessages = obj.get('remoteMessages');
+          const exists = localMessages.find((elem)=>{
+            return get(elem,'uid') === get(newMessage,'uid');
+          });
+
+          if (exists){
+            exists.isLocal = false;
+            Object.assign(exists,newMessage)
+          }else{
+
+          }
+          obj.updateRemoteMessages(localMessages);
+          debug(`message changed ${JSON.stringify(newMessage)}`);
+
+
+        })
+      });
     });
     ds.typingIndicator((indicator) => {
       let myId = obj.get('db').myId();
@@ -542,9 +578,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
       obj.set('remoteStreams',remoteStreams);
 
     });
-    ds.messages((messages) => {
-      obj.updateRemoteMessages(messages);
-    });
+
 
     let pauseAction = () => {
       run(function () {
@@ -768,19 +802,29 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     const type = this.get('model.type');
     wrappedMessages.forEach((mesCntent)=>{
       let isSeen = false;
+      let receiverId = '';
+
       if (mesCntent.isMessage){
         if (ds.type === 'one2one') {
           if (mesCntent.message.senderId === myId && mesCntent.message.seen){
             isSeen = mesCntent.message.seen[get(ds.user,'id')];
           }
+          receiverId = get(ds.user,'id');
+          // const onceMembers = this.get('onceMembers');
         }
       }
       let normalizedData = this.store.normalize('thread-message', {
         id: mesCntent.id,
         convoId: mesCntent.convId,
         isMessage: mesCntent.isMessage,
+        mine: mesCntent.message.senderId===myId,
         isDate: mesCntent.isDate,
+        displaySender:mesCntent.displaySender,
+        messageIndex: mesCntent.messageIndex,
+        maxIndex: mesCntent.maxIndex,
         isSeen: isSeen,
+        isLocal: mesCntent.isLocal,
+        receiverId: receiverId,        
         rawData: JSON.stringify(mesCntent)
       });
 
@@ -796,6 +840,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     this.set('blockAutoscroll', false);
     this.set('isLoadingMessages', false);
     this.updateMessages(uiMessages);
+    debug('Updated remote messages');
 
   },
   closeVideo() {
@@ -988,10 +1033,17 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     ds.sendMessage(message,uploads, reply).then((newMessage)=>{
       const local = JSON.parse(JSON.stringify(newMessage));
       local.isLocal = true;
-      local.date = new Date().getTime();
+      local.date = this.get('ntp').estimatedServerTimeMs();
       local.id = newMessage.uid;
       const localMessages = this.get('remoteMessages');
-      localMessages.pushObject(local);
+      const exists = localMessages.find((elem)=>{
+        return get(elem,'uid') === get(newMessage,'uid');
+      });
+      if (exists){
+        exists.isLocal = true;
+      }else{
+        localMessages.pushObject(local);
+      }
       this.updateRemoteMessages(localMessages);
     });
 

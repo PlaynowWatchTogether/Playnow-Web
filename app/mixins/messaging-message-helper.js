@@ -31,6 +31,7 @@ export default Mixin.create({
         displaySender: displaySender,
         senderSpace: senderSpace,
         id: mes['id'],
+        isLocal: mes.isLocal,
         convId: convId
       };
       wrappedMessages.push(mesCntent);
@@ -61,8 +62,8 @@ export default Mixin.create({
     });
     messagesBySender.forEach((group)=>{
       group.content.forEach((elem, index)=>{
-        elem.message.maxIndex = group.content.length;
-        elem.message.messageIndex = index;
+        elem.maxIndex = group.content.length;
+        elem.messageIndex = index;
       });
     });
 

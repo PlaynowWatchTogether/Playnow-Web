@@ -35,7 +35,7 @@ export default Mixin.create({
     },500);
 
   },
-  allMessages: computed('messages.@each.id','messagesLimit', function(){
+  allMessages: computed('messages.@each.{id,isLocal}','messagesLimit', function(){
     return this.store.peekAll('thread-message').filter((elem) => {
       return elem.get('convoId') === this.messageConvId();
     }).sort((a, b)=>{

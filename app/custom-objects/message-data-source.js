@@ -5,8 +5,10 @@ import {get} from '@ember/object';
 import {Promise} from 'rsvp';
 import VideoStateHandlerMixin from '../mixins/video-state-handler-mixin';
 import ChatPlaylistHandler from '../mixins/chat-playlist-handler';
+import { run } from '@ember/runloop';
+import UUIDGenerator from '../mixins/uuid-generator';
 
-export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
+export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler,UUIDGenerator, {
   gcmManager: service(),
   type: 'one2one',
   user: null,
@@ -121,7 +123,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.videoWatchersRef.on('value', valueListener)
   },
   removeWatching() {
@@ -169,7 +171,6 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/lastMessageSeen";
-    this.lastSeenRef = ref;
     let valueListener = (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
@@ -179,14 +180,13 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener)
   },
   typingIndicator(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/typingIndicator";
-    this.typingRef = ref;
     let valueListener = (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
@@ -196,7 +196,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener)
   },
   sendSeen(mesId) {
@@ -217,7 +217,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     let valueListener = (snapshot) => {
       updateCallback(snapshot.val());
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener);
 
   },
@@ -225,7 +225,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/Messages";
-    this.db.ref(ref).once('value', (snapshot) => {
+    this.db.ref(ref).orderByChild('serverDate').once('value', (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
         let mes = item.val();
@@ -248,14 +248,66 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
     let convId = this.convId();
     let path = this.messageRoot();
     const senderId = this.myId;
+    // let ref = `${path}/${convId}/seen/${senderId}/${uid}`;
     let ref = `${path}/${convId}/Messages/${uid}/seen/${senderId}`;
     return this.db.ref(ref).set(true);
+  },
+  messageChanged(updateCallback){
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Messages";
+    let valueListener = (item) => {
+      let mes = item.val();
+      if (typeof mes === 'object') {
+        const type = mes['type'];
+        if (type !== 'ShareVideo'){
+          mes.id = item.key;
+          if (mes['serverDate']) {
+            mes['date'] = mes['serverDate']
+          } else {
+            if (mes['date'] % 1 !== 0) {
+              mes['date'] = mes['date'] * 1000;
+            }
+          }
+          updateCallback(mes);
+        }
+
+      }
+
+    };
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'child_changed'};
+    this.db.ref(ref).orderByChild('serverDate').on('child_changed', valueListener)
+  },
+  messageAdded(lastTime,updateCallback) {
+    let convId = this.convId();
+    let path = this.messageRoot();
+    let ref = path + "/" + convId + "/Messages";
+    let valueListener = (item) => {
+      let mes = item.val();
+      if (typeof mes === 'object') {
+        const type = mes['type'];
+        if (type !== 'ShareVideo'){
+          mes.id = item.key;
+          if (mes['serverDate']) {
+            mes['date'] = mes['serverDate']
+          } else {
+            if (mes['date'] % 1 !== 0) {
+              mes['date'] = mes['date'] * 1000;
+            }
+          }
+          updateCallback(mes);
+        }
+
+      }
+
+    };
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'child_added'};
+    this.db.ref(ref).orderByChild('serverDate').startAt(lastTime).on('child_added', valueListener)
   },
   messages(updateCallback) {
     let convId = this.convId();
     let path = this.messageRoot();
     let ref = path + "/" + convId + "/Messages";
-    this.messagesRef = ref;
     let valueListener = (snapshot) => {
       let records = [];
       snapshot.forEach((item) => {
@@ -277,7 +329,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener)
   },
   profile(user) {
@@ -347,7 +399,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener)
     return [ref,valueListener];
   },
@@ -361,7 +413,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       let convId = this.convId();
       let path = this.messageRoot();
       let ref = path + "/" + convId + "/Members";
-      this.membersRef = ref;
+
       let valueListener = (snapshot) => {
         let records = [];
         snapshot.forEach((item) => {
@@ -374,15 +426,15 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
         });
         updateCallback(records);
       };
-      this.listeners[ref] = valueListener;
+      this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
       this.db.ref(ref).on('value', valueListener)
     }
   },
   stop() {
     for (let listener in this.listeners) {
       let value = this.listeners[listener];
-      this.db.ref(listener).off('value', value);
-      debug('remove listener for ' + value);
+      this.db.ref(value.path).off(value.event, value.value);
+      debug(`remove listener id: ${listener} for path ${value.path} event: ${value.event}`);
 
     }
   },
@@ -463,21 +515,21 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       message['text'] = text;
       let ref = path + "/" + convId + "/Messages/" + msgUid;
       resolve(message);
-      this.db.ref(ref).update(message).then(() => {
-
-        if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
-          this.profile(this.myId).then((myProfile) => {
-            this.membersOnce().then((members) => {
-              members.forEach((member) => {
-                this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
+      run(()=>{
+        this.db.ref(ref).set(message,(error) => {
+          if (!error){
+            if (this.gcmManager && (this.type !== 'room' && this.type !== 'feed')) {
+              this.profile(this.myId).then((myProfile) => {
+                this.membersOnce().then((members) => {
+                  members.forEach((member) => {
+                    this.gcmManager.sendMessage(member.id, message, myProfile['FirstName'] + " sent a message", {});
+                  });
+                });
               });
-            });
-          });
-        }
+            }
+          }
+        });
       });
-      // setTimeout(()=>{
-
-      // },1000);
 
     });
 
@@ -497,9 +549,11 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       ref = `channels/feed/${convId}/Playlist`
     }
     if (ref){
-      this.db.ref(ref).on('value', (data)=>{
+      const valueListener = (data)=>{
         callback(data.val()||{});
-      })
+      };
+      this.db.ref(ref).on('value', valueListener)
+      this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     }
   },
   addPlaylistItem(video){
@@ -549,7 +603,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler, {
       });
       updateCallback(records);
     };
-    this.listeners[ref] = valueListener;
+    this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'value'};
     this.db.ref(ref).on('value', valueListener)
   },
   publishStream(streamId,model){

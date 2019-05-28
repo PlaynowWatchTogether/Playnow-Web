@@ -12,6 +12,24 @@ export default EmberObject.extend({
   createConnection(videoElem,streamId){
     return new Promise((resolve,reject)=>{
       this.connection = new RTCMultiConnection();
+      this.connection.iceServers = [];
+      //
+      // // second step, set STUN url
+      this.connection.iceServers.push({
+          urls: 'stun:stream.tunebrains.com:3478',
+          // credential: 'password',
+          // username: 'username',
+          // password: 'password'
+      });
+      //
+      // // last step, set TURN url (recommended)
+      this.connection.iceServers.push({
+          urls: 'turn:stream.tunebrains.com:3478',
+          // credential: 'password',
+          // username: 'username',
+          // password: 'password'
+      });
+
           // its mandatory in v3
       // this.connection.enableScalableBroadcast = true;
 

@@ -1,5 +1,5 @@
 {{#if shouldDisplaySender}}
-  {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper"}}  
+  {{remote-user-profile-pic model=model.senderId classNames="profilePicWrapper"}}
 {{else}}
 {{#unless isShareVideo}}
   <div class="profilePicWrapper"></div>
@@ -21,13 +21,13 @@
       </div>
     {{else}}
       <div class="message-text-holder">
-        {{#if mine}}
+        {{#if model.mine}}
           <div class="reply-holder" role="button" {{action "reply"}}>
             <img src="/assets/ic_chat_bubble_reply_mine@2x.png" alt="reply to message"/>
           </div>
         {{/if}}
         <div class="message-text with-tooltip {{messageTextClass}}" data-toggle="tooltip" data-placement={{tooltipPlacement}} title={{tooltipValue}}>
-          {{#unless mine}}
+          {{#unless model.mine}}
             {{#if displaySenderName}}
               {{#user-profile-view classNames="message-text-author" model=textAuthorId style=textAuthorClass}}
                 {{senderName}}
@@ -60,14 +60,14 @@
             </div>
           {{/if}}
         </div>
-        {{#unless mine}}
+        {{#unless model.mine}}
           <div class="reply-holder" role="button" {{action "reply"}}>
             <img src="/assets/ic_chat_bubble_reply@2x.png" alt="reply to message"/>
           </div>
         {{/unless}}
       </div>
 
-      {{#if mine}}
+      {{#if model.mine}}
         {{#if isLocal}}
           <div class="local-message">
             <div class="local-message-inside">
@@ -76,7 +76,7 @@
         {{else}}
           {{#if isSeen}}
             <div class="last-seen">
-              {{remote-user-profile-pic model=receiver.id classNames="profilePicWrapper"}}
+              {{remote-user-profile-pic model=model.receiverId classNames="profilePicWrapper"}}
             </div>
           {{else}}
             <div class="sent-message">

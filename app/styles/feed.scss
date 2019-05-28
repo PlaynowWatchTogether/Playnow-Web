@@ -96,7 +96,7 @@
 				.followers-content{
 					display: flex;
 					flex-direction: column;
-
+					padding-bottom: 10px;
 					.title{
 						font-family: $medium-font;
 						border-bottom: 1px solid #DEDEDE;
@@ -136,9 +136,9 @@
 							justify-content: space-between;
 					    cursor: pointer;
 							padding: 10px 20px;
-							margin-top: 10px;
 							&.read{
 								background: rgba(0,0,0,0.1);
+								color: rgba(0,0,0,0.4);
 							}
 							&:hover{
 								background: rgba(0,0,0,0.2);

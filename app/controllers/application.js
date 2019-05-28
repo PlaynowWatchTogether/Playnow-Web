@@ -73,9 +73,14 @@ export default Controller.extend(UUIDGenerator, {
     const notifications = this.get('userNotifications')||[];
     return notifications.filter((elem)=>{
       return get(elem,'type') === 'feed';
+    }).sort((a,b)=>{
+      return get(b,'createdAt')-get(a,'createdAt')
     })
   }),
   hasNewRequestsFeed: computed('feedLastUpdate','userNotificationsFeed', function(){
+    const model = this.get('model');
+    if (!model)
+      return false;
     const myID = this.db.myId();
     const adminFeeds = this.store.peekAll('feed-item').filter((elem) => {
       return elem.isAdmin(myID) && Object.keys(elem.get('FollowRequests')||{}).length >0;

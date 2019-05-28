@@ -8,6 +8,12 @@ export default DS.Model.extend(ProxyMixin,{
   convoId: attr('string'),
   rawData: attr('string'),
   isSeen: attr('boolean'),
+  displaySender: attr('boolean'),
+  messageIndex: attr('number'),
+  maxIndex:attr('number'),
+  mine: attr('boolean'),
+  isLocal: attr('boolean'),
+  receiverId:attr('string'),
   init(){
     this._super(...arguments);
 
@@ -31,9 +37,7 @@ export default DS.Model.extend(ProxyMixin,{
   content: computed('json', function () {
     return this.get('json').message;
   }),
-  displaySender: computed('json.displaySender', function () {
-    return this.get('json.displaySender');
-  }),
+
   senderSpace: computed('json.senderSpace', function(){
     return this.get('json.senderSpace')
   })

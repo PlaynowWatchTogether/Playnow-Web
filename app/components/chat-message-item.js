@@ -8,12 +8,11 @@ import { htmlSafe } from '@ember/template';
 import MessageAttachmentsWrapper from '../mixins/message-attachments-wrapper';
 
 export default Component.extend(MessageAttachmentsWrapper, {
-  classNameBindings: ['mine','senderSpace:sender-space'],
+  classNameBindings: ['model.mine:mine','senderSpace:sender-space'],
   store: service(),
   auth: service(),
-  attributeBindings: ['messageUid','messageTS','messageDate','messageIndex:message-index'],
-  shouldDisplaySender: computed('model', 'displaySender', function(){
-    return this.get('displaySender') && !this.get('isShareVideo');
+  shouldDisplaySender: computed('model.displaySender',function(){
+    return this.get('model.displaySender') && !this.get('isShareVideo');
   }),
   videoRequestModel: computed('model', function(){
     let model = this.get('model');
@@ -55,9 +54,7 @@ export default Component.extend(MessageAttachmentsWrapper, {
   messageUid: computed(function () {
     return this.get('model.uid');
   }),
-  mine: computed(function () {
-    return this.get('model.senderId') === this.auth.get('uid')
-  }),
+
   textAuthorId: computed(function(){
     return this.get('model.senderId');
   }),
@@ -148,20 +145,6 @@ export default Component.extend(MessageAttachmentsWrapper, {
   }),
   isLocal: computed('model.isLocal', function(){
     return this.get('model.isLocal');
-  }),
-  isLastSeen: computed('lastSeen', function () {
-    let ret = false;
-    let seen = this.get('lastSeen');
-    let myId = this.get('myID');
-    let model = this.get('model');
-    if (seen && model.get('senderId') === myId) {
-      seen.forEach((elem) => {
-        if (get(elem,'userId') !== myId && model.get('uid') === elem.messageId) {
-          ret = true;
-        }
-      })
-    }
-    return ret;
   }),
   tooltipPlacement: computed(function(){
     if (this.get('model.senderId') === this.auth.get('uid')){

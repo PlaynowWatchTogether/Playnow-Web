@@ -253,6 +253,62 @@
     }
   }
 }
+@mixin help-contact{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  min-height: 747px;
+  > .title{
+    padding-top: 40px;
+    font-size: 85%;
+    align-self: flex-start;
+    width: 90%;
+    text-align: right;
+
+    color: #A0A09F;
+    a{
+      text-decoration: none;
+      color: #E61997;
+    }
+  }
+  .contact-form{
+    flex: 0.6 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    place-content: center;
+    .contact-title{
+      font-family: $medium-font;
+      font-size: 120%;
+    }
+    > .title{
+      color: #2F2E2E;
+      font-size: 110%;
+      margin-top: 20px;
+    }
+    > .stitle{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 90%;
+      color: #605E5E;
+      text-decoration: none;
+      margin-top: 10px;
+      font-size: 90%;
+      .item{
+        font-size: 90%;
+      }
+      span{
+        color: #E61997
+      }
+      a{
+        color: #605E5E;
+        text-decoration: none;
+      }
+    }
+  }
+}
 body.help{
   min-width: 980px;
   .mainPage{
@@ -271,6 +327,9 @@ body.help{
     }
     .help-jobs-root{
       @include help-jobs;
+    }
+    .help-contact-root{
+      @include help-contact;
     }
     .help-footer{
       @include help-footer;

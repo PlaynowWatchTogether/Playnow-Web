@@ -26,6 +26,7 @@ Router.map(function() {
     this.route('about')
     this.route('jobs');
     this.route('contact');
+    this.route('terms');
   });
 });
 

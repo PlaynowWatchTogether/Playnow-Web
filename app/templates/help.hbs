@@ -35,20 +35,20 @@
           <div class="column-header">
             Company
           </div>
-          <div class="item">
+          {{#link-to 'help.about' classNames="item"}}
             About Playnows
-          </div>
-          <div class="item">
+          {{/link-to}}
+          {{#link-to 'help.jobs' classNames="item"}}
             Jobs
-          </div>
+          {{/link-to}}
         </div>
         <div class="column">
           <div class="column-header">
             Legal
           </div>
-          <div class="item">
+          {{#link-to 'help.terms' classNames="item"}}
             Terms of Use
-          </div>
+          {{/link-to}}
           <div class="item">
             Privacy Policy
           </div>
@@ -74,9 +74,9 @@
           <div class="item">
             Branding
           </div>
-          <div class="item">
+          {{#link-to 'help.contact' classNames="item"}}
             Contact
-          </div>
+          {{/link-to}}
         </div>
       </div>
       <div class="section2">
@@ -108,9 +108,9 @@
           </a>
         </div>
         <div class="link terms">
-          <a href="/" target="_blank" rel="noopener">
+          {{#link-to 'help.terms' classNames="item"}}
             Terms of Use
-          </a>
+          {{/link-to}}          
         </div>
         <div class="inc">
           ©2019 Playnow, Inc. All rights reserved.

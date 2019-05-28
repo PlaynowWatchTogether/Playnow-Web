@@ -309,6 +309,79 @@
     }
   }
 }
+@mixin help-terms{
+  display: flex;
+  flex-direction: column;
+  color: #605E5E;
+  p {
+    margin: 0;
+  }
+  .title-row{
+    background: rgb(109, 3, 148);
+    height: 47px;
+  }
+  .terms-content{
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 45px;
+    .title{
+      padding-top: 45px;
+      font-size: 200%;
+      line-height: 1;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      color: black;
+      font-family: $medium-font;
+    }
+    .title2{
+      font-size: 200%;
+      text-align: center;
+      color: black;
+      font-family: $medium-font;
+    }
+    .time{
+      margin-top: 10px;
+      color: #605E5E;
+      text-align: center;
+    }
+    .time2{
+      margin-bottom: 37px;
+      color: #605E5E;
+      text-align: center;
+    }
+    .margin-top{
+
+      margin-top: 20px;
+    }
+    .margin-bottom{
+      margin-bottom: 20px;
+    }
+    .header1{
+      margin-top: 20px;
+      text-align: left;
+      font-family: $medium-font;
+      margin-bottom: 20px;
+      font-size: 120%;
+      width: 100%;
+      color: #2F2E2E;
+    }
+    .header2{
+      margin-bottom: 20px;
+      font-size: 96%;
+      font-family: $medium-font;
+      color: #2F2E2E;
+    }
+    .contact{
+      margin-bottom: 102px;
+      width: 100%;
+      margin-top: 20px;
+    }
+  }
+
+}
 body.help{
   min-width: 980px;
   .mainPage{
@@ -330,6 +403,9 @@ body.help{
     }
     .help-contact-root{
       @include help-contact;
+    }
+    .help-terms-root{
+      @include help-terms;
     }
     .help-footer{
       @include help-footer;

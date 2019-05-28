@@ -30,6 +30,7 @@ Router.map(function() {
     this.route('privacy');
     this.route('copyright');
     this.route('community');
+    this.route('branding');
   });
 });
 

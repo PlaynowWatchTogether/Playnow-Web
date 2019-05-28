@@ -382,6 +382,38 @@
   }
 
 }
+@mixin help-branding{
+  display: flex;
+  flex-direction: row;
+  padding-top: 80px;
+  padding-bottom: 5px;
+  justify-content: center;
+  .branding-left{
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    .title{
+      font-size: 300%;
+      word-break: normal;
+      padding-bottom: 20px;      
+      font-family: $bold-font;
+      margin-top: 37%;
+    }
+    .market{
+      display: flex;
+      flex-direction: row;
+      place-content: space-around;
+      a{
+        .gplay{
+          height: 40px;
+        }
+      }
+    }
+  }
+  .branding-right{
+    flex: 0 0 auto;
+  }
+}
 body.help{
   min-width: 980px;
   .mainPage{
@@ -423,6 +455,9 @@ body.help{
           padding-bottom: 70px;
         }
       }
+    }
+    .help-branding-root{
+      @include help-branding;
     }
     .help-footer{
       @include help-footer;

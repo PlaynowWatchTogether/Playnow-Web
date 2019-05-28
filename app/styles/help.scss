@@ -70,10 +70,15 @@
 }
 @mixin help-header{
   height: 100px;
+  z-index: 200;
   display: flex;
   flex-direction: row;
   box-shadow: 0px 2px 6px lightgrey;
   justify-content: space-around;
+  position: fixed;
+  right: 0;
+  left: 0;
+  background: white;
   .help-header-brand{
     flex: 0 0 auto;
     display: flex;
@@ -168,6 +173,86 @@
     flex: 0.3 1 auto;
   }
 }
+@mixin help-jobs{
+  display: flex;
+  flex-direction: column;
+  .jobs-header{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    place-content: center;
+    .title{
+      font-size: 110%;
+      width: 69%;
+      text-align: center;
+      color: #605E5E;
+    }
+    .subtitle{
+      font-size: 290%;
+      margin-top: 20px;
+      font-family: $medium-font;
+    }
+  }
+  .jobs-list{
+    padding-bottom: 30px;
+    padding-top: 25px;
+    width: 65%;
+    place-self: center;
+    .job-item{
+      margin-top: 50px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid;
+      &:last-child{
+        border-bottom: none;
+      }
+      .title{
+        font-size: 140%;
+        font-family: $medium-font;
+        color: #2F2E2E;
+      }
+      .description{
+        padding-top: 35px;
+        line-height: 1.25;
+        font-size: 110%;
+      }
+      .resp-label,.skills-label{
+        padding-top: 20px;
+        font-size: 118%;
+        font-family: $medium-font;
+        color: #2F2E2E;
+      }
+      .responsibilities, .skills{
+        padding-top: 25px;
+        color: #605E5E;
+        line-height: 1.25;
+      }
+      .action{
+        display: flex;
+        justify-content: flex-end;
+        a{
+          text-decoration: none;
+
+          background-color: rgba(61, 155, 233, 1);
+          border: solid rgba(43, 104, 156, 1) 0px;
+          cursor: pointer !important;
+          color: white;
+          border-radius: 20px;
+          height: 40px;
+          min-height: 22px;
+          width: 142px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &:hover{
+            background-color: rgba(43, 104, 156, 1);
+            border-color: rgba(61, 155, 233, 1);
+          }
+        }
+      }
+    }
+  }
+}
 body.help{
   min-width: 980px;
   .mainPage{
@@ -178,8 +263,14 @@ body.help{
     .help-header{
       @include help-header;
     }
+    .help-content{
+      padding-top: 100px;
+    }
     .help-about-root{
       @include help-about;
+    }
+    .help-jobs-root{
+      @include help-jobs;
     }
     .help-footer{
       @include help-footer;

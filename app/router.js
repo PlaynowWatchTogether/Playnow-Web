@@ -24,6 +24,7 @@ Router.map(function() {
   this.route('auth');
   this.route('help', function(){
     this.route('about')
+    this.route('jobs');
   });
 });
 

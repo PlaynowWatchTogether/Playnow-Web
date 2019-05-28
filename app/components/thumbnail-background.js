@@ -27,11 +27,13 @@ export default Component.extend({
     this._super(...arguments);
     this.handleSize();
   },
-  handleSize: function handleSize() {
+  handleSize() {
     var parentWidth = $(this.element).parent().width();
     if (this.get('useSelfWidth')){
       parentWidth = $(this.element).width();
     }
-    $(this.element).css('height', parentWidth * (9 / 16));
+    const aspect = this.get('aspect') || (9 / 16);
+
+    $(this.element).css('height', parentWidth * aspect);
   }
 });

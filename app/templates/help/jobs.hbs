@@ -1,0 +1,51 @@
+<div class="help-jobs-root">
+  {{#thumbnail-background model="/assets/help/jobs-header.webp" classNames="jobs-header" aspect=0.412244897959184}}
+    <div class="title">
+      We are thriving towards one goal: To change how people communicate. Be a part of that. Be a part of Playnows.
+    </div>
+    <div class="subtitle">
+      Join Our Team
+    </div>
+  {{/thumbnail-background}}
+  <div class="jobs-list">
+    {{#each jobs as |job|}}
+      <div class="job-item">
+        <div class="title">
+          {{job.title}}
+        </div>
+        <div class="description">
+          {{job.description}}
+        </div>
+        <div class="resp-label">
+          Responsibilities
+        </div>
+        <div class="responsibilities">
+          <ul>
+            {{#each job.resp as |resp|}}
+                <li>
+                  {{resp}}
+                </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="skills-label">
+          Skills
+        </div>
+        <div class="skills">
+          <ul>
+            {{#each job.skills as |resp|}}
+                <li>
+                  {{resp}}
+                </li>
+            {{/each}}
+          </ul>
+        </div>
+        <div class="action">
+          <a href={{job.applyLink}} target="_blank" class="apply" rel="noopener">
+            Apply
+          </a>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

@@ -824,7 +824,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         maxIndex: mesCntent.maxIndex,
         isSeen: isSeen,
         isLocal: mesCntent.isLocal,
-        receiverId: receiverId,        
+        receiverId: receiverId,
         rawData: JSON.stringify(mesCntent)
       });
 
@@ -1031,27 +1031,29 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     let uploads = this.get('uploads');
     const message = (this.get('messageText')||'').replace(/(<([^>]+)>)/ig,"");
     ds.sendMessage(message,uploads, reply).then((newMessage)=>{
-      const local = JSON.parse(JSON.stringify(newMessage));
-      local.isLocal = true;
-      local.date = this.get('ntp').estimatedServerTimeMs();
-      local.id = newMessage.uid;
-      const localMessages = this.get('remoteMessages');
-      const exists = localMessages.find((elem)=>{
-        return get(elem,'uid') === get(newMessage,'uid');
-      });
-      if (exists){
-        exists.isLocal = true;
-      }else{
-        localMessages.pushObject(local);
-      }
-      this.updateRemoteMessages(localMessages);
+      this.handleSentMessage(newMessage);
     });
 
     this.resetUploads();
     this.set('inReplyTo', null);
     this.set('messageText', '');
   },
-
+  handleSentMessage(newMessage){
+    const local = JSON.parse(JSON.stringify(newMessage));
+    local.isLocal = true;
+    local.date = this.get('ntp').estimatedServerTimeMs();
+    local.id = newMessage.uid;
+    const localMessages = this.get('remoteMessages');
+    const exists = localMessages.find((elem)=>{
+      return get(elem,'uid') === get(newMessage,'uid');
+    });
+    if (exists){
+      exists.isLocal = true;
+    }else{
+      localMessages.pushObject(local);
+    }
+    this.updateRemoteMessages(localMessages);
+  },
   shareVideo(video,sendMessage = false) {
     let ds = this.get('dataSource');
     if (this.get('canSendVideo')) {
@@ -1072,6 +1074,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         videoType: get(video,'kind'),
         videoCategory: get(video,'category'),
         videoUrl: get(video,'url')
+      }).then((newMessage)=>{
+        this.handleSentMessage(newMessage);
       })
     }
   },
@@ -1222,8 +1226,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         }
         return;
       }
-      if (!this.get('playerVideo')){
-        this.set('playerVideo',{})
+      if (!this.get('playerVideo') && this.get('canSendVideo')){
+        this.set('playerVideo',{});
       }
       this.videoDetails(video).then((details)=>{
         this.shareVideo(details, true);

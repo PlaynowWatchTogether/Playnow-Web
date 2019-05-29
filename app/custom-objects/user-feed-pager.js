@@ -49,7 +49,7 @@ export default ArrayProxy.extend({
       if (this.get('synced')){
         this.set('isLoading', false);
       }
-      if (this.loadCompleted){
+      if (this.loadCompleted && this.get('synced')){
         this.loadCompleted(items.length===0);
       }
     });

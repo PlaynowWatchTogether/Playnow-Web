@@ -27,7 +27,7 @@
                                    disabled=disableProfilePicChange
                                    accept="image/*"
                                    onfileadd=(action "updateFeedPic")}}
-                      <img src={{safe-profile-pic feed.ProfilePic}} class="profilePic" alt="ProfilePic">
+                      <img src={{safe-profile-pic feed.ProfilePic 'group'}} class="profilePic" alt="ProfilePic">
                     {{/file-upload}}
                     {{#unless disableProfilePicChange}}
                       <div class="hover">

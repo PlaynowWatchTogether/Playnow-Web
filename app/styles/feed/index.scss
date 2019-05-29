@@ -34,8 +34,7 @@
           height: 100%;
         }
         .home-user-feed{
-          @include home-user-feed
-          height:100%;
+          @include home-user-feed          
           .empty{
             height: 100%;
             place-self: center;

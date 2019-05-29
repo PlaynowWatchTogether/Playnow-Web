@@ -22,7 +22,7 @@
             <div class="title noselect">
               {{#if chatModel.hasProfilePic}}
                 <div class="profilePicWrapper">
-                  <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                  <img src={{safe-profile-pic chatModel.ProfilePic 'group'}} class="profilePic" alt="ProfilePic">
                 </div>
               {{/if}}
 
@@ -45,7 +45,7 @@
               <div class="title noselect">
                 {{#if chatModel.hasProfilePic}}
                   <div class="profilePicWrapper">
-                    <img src={{safe-profile-pic chatModel.ProfilePic}} class="profilePic" alt="ProfilePic">
+                    <img src={{safe-profile-pic chatModel.ProfilePic 'group'}} class="profilePic" alt="ProfilePic">
                   </div>
                 {{else}}
                   <div class="profilePicWrapper"></div>
@@ -165,7 +165,7 @@
             <div class="loading-overlay {{loadingOverlayClass}}"></div>
           {{/if}}
         </div>
-        
+
         {{#if hasPlayer}}
           <div class="youtube-music-holder">
             <div class="music-player">

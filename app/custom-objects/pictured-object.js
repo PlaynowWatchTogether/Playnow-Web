@@ -6,7 +6,7 @@ export default ObjectProxy.extend({
   profilePic: computed('content', function () {
     let payload = this.get('content');
     if (!payload['ProfilePic'] || payload['ProfilePic'].length === 0) {
-      return '/assets/monalisa_rect.png'
+      return '/assets/default_profile.png'
     } else {
       return payload['ProfilePic']
     }

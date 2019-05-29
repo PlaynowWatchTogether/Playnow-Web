@@ -10,6 +10,9 @@
             <div>Searching: <span>{{model.query}}</span></div>
           </div>
           <div class="searchResult users">
+            {{#if loadingUsers}}
+              {{loading-view}}
+            {{/if}}
             {{#each search.users as |user|}}
               <div class="search-user-holder">
                 {{#search-user-item model=user classNames="search-user" addAction=(action "followUser")
@@ -28,6 +31,9 @@
           </div>
           <div class="searchResult rooms col-12">
             <div class="row">
+              {{#if loadingRooms}}
+                {{loading-view}}
+              {{/if}}
               {{#each search.rooms as |room|}}
                 <div class="col-6">
                   {{#link-to "home.chat" room.id "room" classNames="room-chat-link"}}

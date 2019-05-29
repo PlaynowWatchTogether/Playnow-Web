@@ -107,7 +107,7 @@ body > .ember-view {
 }
 
 //Variables
-body.welcome,body.home{
+body.welcome,body.home,body.search{
   .welcomePage,.mainPage{
     background-image: $primary-gradient;
   }
@@ -2390,7 +2390,13 @@ CHAT
     padding-left: 20px;
     padding-right: 50px;
     overflow-y: auto;
-
+    .row{
+      display: flex;
+      flex-direction: column;
+      .loading-view{
+        align-self: center;
+      }
+    }
     .room-chat-link {
       text-decoration: none;
       color: black;
@@ -2434,7 +2440,11 @@ CHAT
 
   .searchResult.users {
     overflow-y: auto;
-
+    display: flex;
+    flex-direction: column;
+    .loading-view{
+      align-self: center;
+    }
     .search-user-holder {
       padding-left: 20px;
       padding-right: 20px;

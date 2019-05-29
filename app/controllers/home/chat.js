@@ -370,7 +370,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         });
       }else if (type === 'feed'){
         obj.db.feed(convId).then((remoteFeed)=>{
-          obj.db.live(convId).then((live)=>{
+          if (remoteFeed.videoState){
             const feed = FeedModelWrapper.create({content:remoteFeed})
             const isAdmin = feed.isAdmin(myId);
             obj.set('chatModel', {
@@ -393,9 +393,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
             obj.videoStateHandler.isMaster = feed.get('videoState.senderId') === obj.firebaseApp.auth().currentUser.uid;
             obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
-          }).catch((error)=>{
+          }else{
             obj.transitionToRoute('home.group',remoteFeed.id);
-          });
+          }
+          // }).catch((error)=>{
+          //
+          // });
 
         }).catch((error)=>{
           obj.transitionToRoute('home');

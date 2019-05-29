@@ -63,6 +63,7 @@
   }
   .post-attachments{
     padding-bottom: 10px;
+    overflow: hidden;
     .multi-image-holder{
       @include multi-image-holder;
     }

@@ -172,10 +172,15 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
 
   }),
   localStreamId(){
-    const dsConv = this.get('dataSource').convId();
-    const type = this.get('model.type');
-    const id = this.get('db').myId();
-    return `${new Date().getTime()}-${id}-${dsConv}`;
+    const ds = this.get('dataSource');
+    if (ds){
+      const dsConv = ds.convId();
+      const type = this.get('model.type');
+      const id = this.get('db').myId();
+      return `${new Date().getTime()}-${id}-${dsConv}`;
+    }else{
+      return null;
+    }
   },
   messageConvId(){
     const dsConv = this.get('dataSource').convId();
@@ -338,6 +343,8 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           }
           debug('one2one profile updated');
         })
+      }).catch((error)=>{
+        obj.transitionToRoute('home');
       });
     } else if (obj.isTypePublicRoom(type)) {
       if (type === 'room'){
@@ -363,33 +370,39 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         });
       }else if (type === 'feed'){
         obj.db.feed(convId).then((remoteFeed)=>{
+          obj.db.live(convId).then((live)=>{
+            const feed = FeedModelWrapper.create({content:remoteFeed})
+            const isAdmin = feed.isAdmin(myId);
+            obj.set('chatModel', {
+              hasProfilePic: true,
+              title: htmlSafe('<span>Live</span> @' + feed.get('GroupName')),
+              ProfilePic: feed.get('ProfilePic'),
+              feed: feed,
+              isAdmin: isAdmin
+            });
+            obj.set('dataSource', MessageDataSource.create({
+              type: type,
+              gcmManager: obj.gcmManager,
+              feed: feed,
+              myId: obj.firebaseApp.auth().currentUser.uid,
+              db: obj.firebaseApp.database(),
+              fb: obj.firebaseApp,
+              auth: obj.auth
+            }));
 
-          const feed = FeedModelWrapper.create({content:remoteFeed})
-          const isAdmin = feed.isAdmin(myId);
-          obj.set('chatModel', {
-            hasProfilePic: true,
-            title: htmlSafe('<span>Live</span> @' + feed.get('GroupName')),
-            ProfilePic: feed.get('ProfilePic'),
-            feed: feed,
-            isAdmin: isAdmin
+
+            obj.videoStateHandler.isMaster = feed.get('videoState.senderId') === obj.firebaseApp.auth().currentUser.uid;
+            obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
+          }).catch((error)=>{
+            obj.transitionToRoute('home.group',remoteFeed.id);
           });
-          obj.set('dataSource', MessageDataSource.create({
-            type: type,
-            gcmManager: obj.gcmManager,
-            feed: feed,
-            myId: obj.firebaseApp.auth().currentUser.uid,
-            db: obj.firebaseApp.database(),
-            fb: obj.firebaseApp,
-            auth: obj.auth
-          }));
 
-
-          obj.videoStateHandler.isMaster = feed.get('videoState.senderId') === obj.firebaseApp.auth().currentUser.uid;
-          obj.videoStateHandler.syncMode = obj.isTypePublicRoom(type) ? 'sliding' : 'awaiting';
-        })
+        }).catch((error)=>{
+          obj.transitionToRoute('home');
+        });
       }
     } else if ('group' === type) {
-      obj.store.find('group', convId).then((group) => {
+      obj.db.group('convId').then((group) => {
         obj.set('chatModel', {
           hasProfilePic:  profilePic!=null && profilePic.length > 0,
           ProfilePic: profilePic,
@@ -419,10 +432,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           obj.set('chatModel.title', snapshot.GroupName);
           obj.set('chatModel.group', group);
         }));
-      });
+      }).catch((error)=>{
+        obj.transitionToRoute('home');
+      });;
 
     } else {
-      obj.set('chatModel', {});
+      obj.transitionToRoute('home');
     }
 
 
@@ -733,10 +748,12 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
   reset() {
     if (!this.get('isCompose')){
       const localStreamId = this.localStreamId();
-      this.set('playerReady',false);
-      this.set('streamingModel.mic',false);
-      this.set('streamingModel.video',false);
-      this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'), this.get('db').myId());
+      if (localStreamId){
+        this.set('playerReady',false);
+        this.set('streamingModel.mic',false);
+        this.set('streamingModel.video',false);
+        this.streamer.startStreaming(this.streamerHolderSelector(), this.localStreamId(),this.get('streamingModel'), this.get('db').myId());
+      }
     }
 
     this.closeFullScreen();

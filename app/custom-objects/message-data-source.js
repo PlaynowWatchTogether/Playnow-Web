@@ -302,7 +302,7 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler,UU
 
     };
     this.listeners[this.generateUUID()] = {path:ref,value:valueListener,event:'child_added'};
-    this.db.ref(ref).orderByChild('serverDate').startAt(lastTime).on('child_added', valueListener)
+    this.db.ref(ref).orderByChild('serverDate').startAt(lastTime||0).on('child_added', valueListener);
   },
   messages(updateCallback) {
     let convId = this.convId();

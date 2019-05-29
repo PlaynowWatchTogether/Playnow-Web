@@ -40,9 +40,13 @@ export default Service.extend(VideoStateHandler, {
       const myId = this.myId();
       let ref = this.firebaseApp.database().ref(`Users/${myId}/Friends/${id}`);
       ref.once('value', (data)=>{
-        const payload = data.val();
-        payload["id"] = data.key;
-        resolve(ObjectProxy.create({content:payload}));
+        if (data.exists()){
+          const payload = data.val();
+          payload["id"] = data.key;
+          resolve(ObjectProxy.create({content:payload}));
+        }else{
+          reject('not exists');
+        }
       }, (error)=>{
         reject(error);
       });
@@ -127,25 +131,54 @@ export default Service.extend(VideoStateHandler, {
       update(records)
     });
   },
+  live(id){
+    let myId = this.firebaseApp.auth().currentUser.uid;
+    return new Promise((resolve,reject)=>{
+      let ref = this.firebaseApp.database().ref(`/channels/live/${id}`);
+      ref.once('value', (data)=>{
+        if (data.exists()){
+          const payload = data.val();
+          payload["id"] = data.key;
+          resolve(payload);
+        }else{
+          reject('not found');
+        }
+      }).catch((error)=>{
+        reject(error);
+      });
+    });
+  },
   feed(id){
     let myId = this.firebaseApp.auth().currentUser.uid;
-    return new Promise((resolve)=>{
+    return new Promise((resolve,reject)=>{
       let ref = this.firebaseApp.database().ref(`/channels/feed/${id}`);
       ref.once('value', (data)=>{
-        const payload = data.val();
-        payload["id"] = data.key;
-        resolve(payload);
+        if (data.exists()){
+          const payload = data.val();
+          payload["id"] = data.key;
+          resolve(payload);
+        }else{
+          reject('not found');
+        }
+      }).catch((error)=>{
+        reject(error);
       });
     });
   },
   group(id){
     let myId = this.firebaseApp.auth().currentUser.uid;
-    return new Promise((resolve)=>{
+    return new Promise((resolve,reject)=>{
       let ref = this.firebaseApp.database().ref(`/Users/${myId}/Groups/${id}`);
       ref.once('value', (data)=>{
-        const payload = data.val();
-        payload["id"] = data.key;
-        resolve(payload);
+        if (data.exists()){
+          const payload = data.val();
+          payload["id"] = data.key;
+          resolve(payload);
+        }else{
+          reject('not found');
+        }
+      }).catch((error)=>{
+        reject(error);
       });
     });
 

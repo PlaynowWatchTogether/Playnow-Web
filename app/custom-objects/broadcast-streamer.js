@@ -12,23 +12,31 @@ export default EmberObject.extend({
   createConnection(videoElem,streamId){
     return new Promise((resolve,reject)=>{
       this.connection = new RTCMultiConnection();
-      this.connection.iceServers = [];
-      //
-      // // second step, set STUN url
-      this.connection.iceServers.push({
-          urls: 'stun:stream.tunebrains.com:3478',
-          // credential: 'password',
-          // username: 'username',
-          // password: 'password'
-      });
-      //
-      // // last step, set TURN url (recommended)
-      this.connection.iceServers.push({
-          urls: 'turn:stream.tunebrains.com:3478',
-          // credential: 'password',
-          // username: 'username',
-          // password: 'password'
-      });
+      // this.connection.iceServers = [];
+      // //
+      // // // second step, set STUN url
+      // this.connection.iceServers.push({
+      //     urls: 'stun:stun.l.google.com:19302',
+      //     // credential: 'password',
+      //     // username: 'username',
+      //     // password: 'password'
+      // });
+      // //
+      // // // last step, set TURN url (recommended)
+      // this.connection.iceServers.push({
+      //     urls: 'turn:stun.l.google.com:19302',
+      //     // credential: 'password',
+      //     // username: 'username',
+      //     // password: 'password'
+      // });
+
+     //  this.connection.candidates = {
+     //   relay: true,
+     //   reflexive: true,
+     //   host: true
+     // };
+     // this.connection.customStreams = {};
+     // this.connection.renegotiatedSessions = {};
 
           // its mandatory in v3
       // this.connection.enableScalableBroadcast = true;
@@ -43,9 +51,7 @@ export default EmberObject.extend({
           OfferToReceiveAudio: false,
           OfferToReceiveVideo: false
       };
-      this.connection.processSdp = function(sdp) {
-          return sdp; // return unchanged SDP
-      };
+
       this.connection.onbeforeunload = (event)=>{
         debug('onbeforeunload');
       };

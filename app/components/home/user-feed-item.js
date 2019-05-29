@@ -8,6 +8,7 @@ import { removeObserver } from '@ember/object/observers';
 import {debug} from '@ember/debug';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedEventModelWrapper from '../../custom-objects/feed-event-model-wrapper';
+import $ from 'jquery';
 export default Component.extend(FeedActionsMixins, {
   store: service(),
   db: service(),
@@ -49,8 +50,10 @@ export default Component.extend(FeedActionsMixins, {
     return ret;
     // return this.get('model.feedMessage');
   }),
-  localFeed: computed('model.localFeed',function(){
-    return FeedModelWrapper.create({content:this.get('model.localFeed')});
+  localFeed: computed('model.feedId',function(){
+    const ret = this.store.peekRecord('feed-item',this.get('model.feedId'));
+    return ret;
+    // return FeedModelWrapper.create({content:this.get('model.localFeed')});
   }),
   actions:{
     openDetails(){

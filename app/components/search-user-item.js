@@ -7,6 +7,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this.db.profile(this.get('model').id).then((profile) => {
+      this.set('profile',profile);
       let followers = Object.keys(profile['Followers'] || {});
       let friends = Object.keys(profile['Friends'] || {});
       if (followers.includes(this.db.myId())) {
@@ -21,12 +22,35 @@ export default Component.extend({
 
     });
   },
-  displayName: computed('model', function () {
+  addedTitle: computed('added','sent','model','profile', function(){
+    const profile = this.get('profile');
+    if (!profile){
+      return 'Added';
+    }
+    let followers = Object.keys(profile['Followers'] || {});
+    let friends = Object.keys(profile['Friends'] || {});
+    if (followers.includes(this.db.myId())) {
+      return 'Added';
+    }
+    if (friends.includes(this.db.myId())) {
+      return 'Friends';
+    }
+    if (this.get('sent')){
+      return 'Added';
+    }
+    return '';
+  }),
+  username: computed('model', function(){
     let email = this.get('model.Email');
     if (email && email.includes('@')) {
       return email.split('@')[0]
     }
     return email;
+  }),
+  displayName: computed('model', function () {
+    const firstName = this.get('model.FirstName');
+    const lastName = this.get('model.LastName');
+    return [firstName,lastName].join(" ");
   }),
   isAdded: computed('model', 'sent', 'added', function () {
     let res = false;

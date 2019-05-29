@@ -1,9 +1,9 @@
-<div class="row">
-  {{#welcome-body classNames="container-fluid justify-content-md-center col-10" tagName="section" minHeight=0}}
-    <div class="row root h-100">
-      <div class="col-6 search users h-100">
+<div class="search-root">
+  {{#welcome-body classNames="search-content" tagName="section" minHeight=0}}
+    <div class="root h-100">
+      <div class="search users h-100">
         <div class="content h-100">
-          <div class="header">
+          <div class="search-header">
             <span class="noselect">People</span>
           </div>
           <div class="searching-label">
@@ -24,27 +24,20 @@
           </div>
         </div>
       </div>
-      <div class="col-6 search rooms h-100">
-        <div class="content row h-100">
-          <div class="header">
+      <div class="search rooms h-100">
+        <div class="content h-100">
+          <div class="search-header">
             <span class="noselect">Rooms</span>
           </div>
-          <div class="searchResult rooms col-12">
-            <div class="row">
-              {{#if loadingRooms}}
-                {{loading-view}}
-              {{/if}}
-              {{#each search.rooms as |room|}}
-                <div class="col-6">
-                  {{#link-to "home.chat" room.id "room" classNames="room-chat-link"}}
-                    {{#home-room-item model=room classNames="search-room"
-                                      sent=sentRequests}}
-
-                    {{/home-room-item}}
-                  {{/link-to}}
-                </div>
-              {{/each}}
-            </div>
+          <div class="searchResult rooms">
+            {{home-feed-list
+              model=groupPublicSide.items
+              isLoading=groupPublicSide.isLoading
+              isPublic=true
+              classNames="feed-list items-holder"
+              onFollowGroup=(action "followGroup" bubbles=false)
+              onUnFollowGroup=(action "unFollowGroup" bubbles=false)
+              onJoinEvent=(action "onJoinEvent" bubbles=false) onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
           </div>
         </div>
       </div>

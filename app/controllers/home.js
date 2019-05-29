@@ -6,11 +6,15 @@ import FriendListItemObj from '../custom-objects/friend-list-item-obj'
 import $ from "jquery";
 import { debug } from '@ember/debug';
 import UserFeedPager from '../custom-objects/user-feed-pager';
+import { addObserver } from '@ember/object/observers';
+import { removeObserver } from '@ember/object/observers';
+
 export default Controller.extend({
   db: service(),
   init() {
     this._super(...arguments);
-    this.addObserver('lastUpdate',this,'friendsUpdated');
+    // this.addObserver('lastUpdate',this,'friendsUpdated');
+
   },
   friendsUpdated(obj){
     debug('friendsUpdated');
@@ -18,6 +22,7 @@ export default Controller.extend({
     this.get('friendsPager').load(false);
   },
   activate(){
+    addObserver(this.get('db'),'usersUpdated', this,'friendsUpdated');
     debug('home controller activate');
     this.set('friendsPager',UserFeedPager.create({
       content: [],
@@ -30,9 +35,12 @@ export default Controller.extend({
         });
       },
       loadCompleted:()=>{
-        
+
       }
     }));
+  },
+  reset(){
+    removeObserver(this.get('db'),'usersUpdated', this,'friendsUpdated');
   },
   actions: {
     triggerSearch() {

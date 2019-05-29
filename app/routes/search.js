@@ -2,7 +2,8 @@ import Route from '@ember/routing/route';
 import $ from "jquery";
 import AuthRouteMixin from '../mixins/auth-route-mixin'
 import {inject as service } from '@ember/service';
-export default Route.extend(AuthRouteMixin, {
+import SyncRoute from './sync-route';
+export default SyncRoute.extend(AuthRouteMixin, {
   db:service(),
   activate() {
     this._super(...arguments);
@@ -10,9 +11,12 @@ export default Route.extend(AuthRouteMixin, {
     let applicationCtrl = this.controllerFor('application');
     let searchCtrl = this.controllerFor('search');
     searchCtrl.set('profile', applicationCtrl.get('model'));
+    searchCtrl.activate();
 
   },
   deactivate() {
+    let searchCtrl = this.controllerFor('search');
+    searchCtrl.reset();
     this._super(...arguments);
     $('body').removeClass('search');
   },

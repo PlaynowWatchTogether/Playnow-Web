@@ -408,11 +408,11 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
         });
       }
     } else if ('group' === type) {
-      obj.db.group('convId').then((group) => {
+      obj.db.group(convId).then((group) => {
         obj.set('chatModel', {
           hasProfilePic:  profilePic!=null && profilePic.length > 0,
           ProfilePic: profilePic,
-          title: group.get('GroupName'),
+          title: get(group,'GroupName'),
           group: group
         });
         obj.set('dataSource', MessageDataSource.create({
@@ -424,7 +424,7 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
           fb: obj.firebaseApp,
           auth: obj.auth
         }));
-        let profilePic = group.get('ProfilePic');
+        let profilePic = get(group,'ProfilePic');
 
 
         obj.videoStateHandler.isMaster = obj.get('dataSource').convId() === obj.firebaseApp.auth().currentUser.uid;

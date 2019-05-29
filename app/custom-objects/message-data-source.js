@@ -35,9 +35,9 @@ export default EmberObject.extend(VideoStateHandlerMixin, ChatPlaylistHandler,UU
           return b + a;
       }
     } else if (this.type === 'room') {
-      return this.room.id;
+      return get(this.room,'id');
     } else if (this.type === 'group') {
-      return this.group['id'];
+      return get(this.group,'id');
     } else if (this.type === 'feed') {
       return this.feed.get('id');
     } else {

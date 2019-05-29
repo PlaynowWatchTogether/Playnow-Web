@@ -59,13 +59,13 @@ $message-border-radius: 15.5px;
   border-radius: 50%;
   background: #5BC8F8;
 }
-@mixin iconned-button($color, $width, $font-size: 80%, $column-gap:5px) {
+@mixin iconned-button($color, $width, $font-size: 80%, $column-gap:5px, $padding:5px 10px) {
   cursor: pointer;
   background: $color;
   border-radius: 20px;
   display: grid;
   grid-template-columns: min-content auto;
-  padding: 5px 10px;
+  padding: $padding;
   flex: 0 0 auto;
   grid-column-gap: $column-gap;
   &:hover{
@@ -341,7 +341,7 @@ $message-border-radius: 15.5px;
         display: flex;
 
         place-content: flex-end;
-        justify-content: flex-end;        
+        justify-content: flex-end;
         .file-upload{
           box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
           flex: 0 0 auto;

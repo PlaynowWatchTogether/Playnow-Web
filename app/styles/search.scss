@@ -1,0 +1,189 @@
+@import 'vars.scss';
+@import 'feed/home-feed-item-public.scss';
+body.search{
+  .mainPage{
+    .search-root{
+      .search.users{
+        flex: 0 0 35.2%;
+        max-width: 35.2%;
+        min-width: 35.2%;
+        .search-user-holder{
+          padding-left: 50px;
+          padding-right: 53px;
+          .search-user {
+            background: #F0F0F0;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: row;
+            padding: 10px 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            .profilePicWrapper {
+              width: 70px;
+              height: 70px;
+            }
+            .info{
+              flex: 1 1 auto;
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+              place-content: center;
+              justify-content: center;
+              margin-left: 15px;
+              .username{
+                overflow-wrap: break-word;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 130%;
+              }
+              .display-name{
+                overflow-wrap: break-word;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                color: #A7A2A2;
+                font-size: 80%;
+              }
+
+            }
+            .firstName {
+              flex: 1 1 auto;
+              cursor: pointer;
+              overflow-wrap: break-word;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+              margin: auto 10px;
+              font-weight: 600;
+              font-size: 100%;
+            }
+
+            .addHolder {
+              flex: 0 0 auto;
+              margin-top: auto;
+              margin-bottom: auto;
+            }
+
+            // .add, .added {
+            //   cursor: pointer;
+            //   background: #CF77FF;
+            //   border-radius: 20px;
+            //   display: grid;
+            //   grid-template-columns: auto 20px auto auto;
+            //   text-align: center;
+            //   padding: 5px 20px;
+            //
+            //   img {
+            //     width: 20px;
+            //     height: 20px;
+            //     margin-top: auto;
+            //     margin-bottom: auto;
+            //     display: inline-block;
+            //     grid-column-start: 2;
+            //   }
+            //
+            //   .label {
+            //     margin-left: 5px;
+            //     color: white;
+            //     display: inline-block;
+            //   }
+            // }
+            .add {
+              @include iconned-button(#CF77FF,15px,90%,5px,5px 15px);
+              box-shadow: $message-shadow;
+            }
+            .added {
+              @include iconned-button(#5AB9FF,15px,90%,5px,5px 15px);
+              box-shadow: $message-shadow;
+            }
+          }
+        }
+      }
+      .search.rooms{
+        flex: 1 1 auto;
+        // max-width: 59.6%;
+        // min-width: 59.6%;
+        padding-left: $table-gap;
+      }
+      .feed-list{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-left: 30px;
+        padding-right: 20px;
+        padding-top: 40px;
+        &.loading{
+          flex-direction: column;
+        }
+        .home-feed-item-link{
+          text-decoration: none;
+          color: black;
+          display: flex;
+          flex: 1 1 33.3%;
+          max-width: 33.3%;
+          .home-feed-item-public{
+            background: #fff;
+            border-radius: 15px;
+            @include home-feed-item-public;
+            padding: 5px;
+            .header{
+              .details{
+                .feed-actions{
+                  .action-following, .action-follow-request{
+                    font-size: 70%;
+                    padding: 2px 10px;
+                  }
+                  .action-follow{
+                    font-size: 80%;
+                    padding: 4px 10px;
+                  }
+                }
+              }
+              .feed-item-pic-wrapper{
+                .feed-item-pic{
+                  width: 90px;
+                  height: 90px;
+                  .pic{
+                    padding: 7px;
+                  }
+                  .feed-item-author-pic{
+                    width: 30px;
+                    height: 30px;
+                    padding: 2px;
+                  }
+                }
+              }
+
+            }
+
+
+            .feed-title{
+              font-size: 100%;
+            }
+            .feed-description{
+              font-size: 70%;
+            }
+            .footer-wrapper{
+              font-size: 80%;
+              .post-author-pic{
+                .profilePicWrapper{
+                  width: 15px;
+                  height: 15px;
+                  margin-top: 2px;
+                }
+              }
+              .feed-event-footer{
+                .author-profile-pic{
+                  width: 15px;
+                  height: 15px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

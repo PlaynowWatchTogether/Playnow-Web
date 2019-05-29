@@ -1,20 +1,25 @@
 {{#user-profile-view classNames="profilePicWrapper" model=model.id onRequestSent=(action 'onRequestSent')}}
-  <img class="profilePic" src={{model.safeProfilePic}} alt="icon">
+  <img class="profilePic" src={{safe-profile-pic model.ProfilePic 'user'}} alt="icon">
 {{/user-profile-view}}
-{{#user-profile-view classNames="firstName" model=model.id onRequestSent=(action 'onRequestSent')}}
-  {{displayName}}
+{{#user-profile-view classNames="info" model=model.id onRequestSent=(action 'onRequestSent')}}
+  <div class="username">
+    {{username}}
+  </div>
+  <div class="display-name">
+    {{displayName}}
+  </div>
 {{/user-profile-view}}
 <div class="addHolder">
   {{#if isAdded}}
     <div class="added">
-      <img src="/assets/ic_friend_added@2x.png" alt="icon">
+      <img src="/assets/ic_done_24px.svg" alt="icon">
       <div class="label">
         {{addedTitle}}
       </div>
     </div>
   {{else}}
     <div class="add" {{action "addFriend"}} role="button">
-      <img src="/assets/ic_add_friend@2x.png" alt="icon">
+      <img src="/assets/ic_add_24px.svg" alt="icon">
       <div class="label">
         Add
       </div>

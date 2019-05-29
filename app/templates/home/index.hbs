@@ -34,10 +34,8 @@
                               handleEnd=true
                               id='following'
                               onScrolledHalf=(action "loadMoreUserFeed")
-                              scrollChild=".main-content"}}
+                              scrollChild=".home-user-feed"}}
               {{#fit-parent-height parentSelector=".tabs" minusSelector="#content-tabs"}}
-
-                  <div class="main-content">
                     {{home/user-feed-list model=userFeed.items
                       lastUpdate=lastUpdate
                       isLoading=userFeed.isLoading
@@ -45,7 +43,6 @@
                       onFollowGroup=(action "followGroup")
                       onUnFollowGroup=(action "unFollowGroup")
                       onJoinEvent=(action "onJoinEvent") onLeaveEvent=(action "onLeaveEvent" bubbles=false)}}
-                  </div>
 
               {{/fit-parent-height}}
             {{/end-scrollable}}

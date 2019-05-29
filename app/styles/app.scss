@@ -10,6 +10,7 @@
 @import 'loading.scss';
 @import 'component-styles/user-shared-popup.scss';
 @import 'help.scss';
+@import 'search.scss';
 .seo-h1{
   display:none;
 }
@@ -2360,18 +2361,16 @@ CHAT
 .root > .search > .content {
   background: #fff;
   border-radius: 20px 20px 0 0;
-  display: grid;
-  grid-template-rows: 50px min-content auto;
+  display: flex;
+  flex-direction: column;
 
-  .header {
-    margin-top: auto;
-    margin-bottom: auto;
-    font-weight: 700;
+  .search-header {
     border-bottom: 1px solid #E6E6E6;
     height: 50px;
     display: grid;
 
     span {
+      font-family: $medium-font;
       font-weight: 800;
       margin-left: 20px;
       margin-top: auto;
@@ -2387,15 +2386,9 @@ CHAT
   }
 
   .searchResult.rooms {
-    padding-left: 20px;
-    padding-right: 50px;
     overflow-y: auto;
-    .row{
-      display: flex;
-      flex-direction: column;
-      .loading-view{
-        align-self: center;
-      }
+    .loading-view{
+      align-self: center;
     }
     .room-chat-link {
       text-decoration: none;
@@ -2444,74 +2437,6 @@ CHAT
     flex-direction: column;
     .loading-view{
       align-self: center;
-    }
-    .search-user-holder {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    .search-user {
-      background: #F0F0F0;
-      border-radius: 10px;
-      display: grid;
-      grid-template-columns: min-content auto min-content;
-      padding: 10px 20px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-
-      .profilePicWrapper {
-        width: 60px;
-        height: 60px;
-      }
-
-      .firstName {
-        cursor: pointer;
-        overflow-wrap: break-word;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        margin: auto 10px;
-        font-weight: 600;
-        font-size: 100%;
-      }
-
-      .addHolder {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-
-      .add, .added {
-        cursor: pointer;
-        background: #CF77FF;
-        border-radius: 20px;
-        display: grid;
-        grid-template-columns: auto 20px auto auto;
-        text-align: center;
-        padding: 5px 20px;
-
-        img {
-          width: 20px;
-          height: 20px;
-          margin-top: auto;
-          margin-bottom: auto;
-          display: inline-block;
-          grid-column-start: 2;
-        }
-
-        .label {
-          margin-left: 5px;
-          color: white;
-          display: inline-block;
-        }
-      }
-
-      .added {
-        background: #5AB9FF;
-      }
-
-      .add:hover {
-        background: #b939ff;
-      }
     }
   }
 }

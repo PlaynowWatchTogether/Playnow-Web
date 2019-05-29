@@ -17,6 +17,7 @@ export default Mixin.create({
   sendSyncFinished(syncFinished){
     if (this.syncValue.friends && this.syncValue.groups){
       syncFinished();
+      this.get('db').set('usersUpdated',new Date());
     }
   },
   syncFriends(syncFinished){

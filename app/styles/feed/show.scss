@@ -351,7 +351,9 @@ $post-content-width: 63.8%;
             }
             .feed-header-footer{
               padding: 10px;
+              z-index: 2;
               .feed-watcher-items{
+                z-index: 2;
                 display: flex;
                 place-content: flex-end;
                 justify-content: flex-end;
@@ -938,7 +940,7 @@ $post-content-width: 63.8%;
               }
             }
             .events-list-root{
-              @include events-list;              
+              @include events-list;
               .events-list-label{
                 font-size: 114%;
                 margin-left: 10px;

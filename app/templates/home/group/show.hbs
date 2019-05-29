@@ -126,9 +126,9 @@
           <div class="feed-header-footer">
             <div class="feed-watcher-items">
               {{#each membersOnline as |watcher|}}
-                <div class="feed-watcher-item">
+                {{#user-profile-view classNames="feed-watcher-item" model=watcher.userId}}
                   {{remote-user-profile-pic model=watcher.userId classNames="profilePicWrapper"}}
-                </div>
+                {{/user-profile-view}}
               {{/each}}
             </div>
           </div>

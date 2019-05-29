@@ -14,6 +14,7 @@ export default Controller.extend({
   },
   friendsUpdated(obj){
     debug('friendsUpdated');
+    this.get('friendsPager').set('synced',true);
     this.get('friendsPager').load(false);
   },
   activate(){
@@ -26,10 +27,12 @@ export default Controller.extend({
           setTimeout(()=>{
             resolve(this.get('sortedFriends'));
           },500);
-
         });
+      },
+      loadCompleted:()=>{
+        
       }
-    }));    
+    }));
   },
   actions: {
     triggerSearch() {

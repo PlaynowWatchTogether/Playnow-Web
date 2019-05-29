@@ -105,15 +105,26 @@ export default Controller.extend({
   userFeedUpdated(obj){
     debug('userFeedUpdated');
     this.set('emptyUserFeed',this.get('db').get('emptyUserFeed'));
+    this.get('userFeed').set('synced',true);
     this.get('userFeed').load(false);
   },
   feedUpdated(obj){
     debug('feedUpdated');
     obj.set('lastUpdate',new Date().getTime());
+    this.get('groupPublicSide').set('synced',true);
     this.get('groupPublicSide').load(false);
+
+    this.get('groupOwner').set('synced',true);
     this.get('groupOwner').load(false);
-    this.get('groupFollowing').load(false);
+
+    this.get('groupOwner').set('synced',true);
+    this.get('groupOwner').load(false);
+
+    this.get('groupDiscover').set('synced',true);
     this.get('groupDiscover').load(false);
+
+    this.get('groupFollowing').load(false);
+    this.get('groupFollowing').set('synced',true);
   },
   reset(){
     removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
@@ -192,7 +203,7 @@ export default Controller.extend({
 
     },
     loadMoreDiscover(){
-      this.get('groupPublic').loadMore();
+      this.get('groupDiscover').loadMore();
       debug('loadMoreDiscover');
     },
     loadMoreUserFeed(){

@@ -1,0 +1,33 @@
+<div class="help-support-root">
+  <div class="support-header">
+    <div class="img">
+      <img src="/assets/main.png" alt="app icon">
+    </div>
+    <div class="label">
+      Playnows Support
+    </div>
+    <div class="contact">
+      Have more questions?
+      {{#link-to 'help.contact'}}
+        Contact Us
+      {{/link-to}}
+      .
+    </div>
+  </div>
+  <div class="support-items">
+    {{#each topics as |topic|}}
+      {{#link-to 'help.support-show' topic.id tagName="div" classNames="support-topic-link"}}
+        <div class="support-topic {{topic.color}}">
+          <div class="title">
+            {{topic.title}}
+          </div>
+          <svg preserveAspectRatio="xMidYMid meet" data-bbox="12.649 5 184.352 123" xmlns="http://www.w3.org/2000/svg" viewBox="12.648999214172363 5 184.3520050048828 123" role="img" style="stroke-width: 0px;">
+              <g>
+                  <path d="M190.357 5H77.746c-1.578 0-3.098.743-4.249 1.823L14.612 62.099c-1.252 1.174-1.963 2.851-1.963 4.568s.711 3.376 1.963 4.55l58.885 55.153c1.151 1.079 2.671 1.63 4.249 1.63h112.612c3.431 0 6.643-2.663 6.643-6.094V11.498C197 8.067 193.788 5 190.357 5zM184 116H80.202L27.944 67l52.258-49H184v98z"></path>
+              </g>
+          </svg>
+        </div>
+      {{/link-to}}
+    {{/each}}
+  </div>
+</div>

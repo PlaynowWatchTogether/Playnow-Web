@@ -31,6 +31,9 @@ Router.map(function() {
     this.route('copyright');
     this.route('community');
     this.route('branding');
+    this.route('support-show',{path: '/support/:topic'});
+    this.route('support');
+
   });
 });
 

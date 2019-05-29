@@ -6,13 +6,49 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 <url>
-  <loc>https://playnows.com</loc>
-  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
-</url>
-<url>
-  <loc>https://playnows.com/welcome</loc>
+  <loc>https://grouplay-a9770.firebaseapp.com</loc>
   <lastmod>2019-04-16T11:37:33+00:00</lastmod>
 </url>
 
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/welcome</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/about</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/branding</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/community</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/contact</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/copyright</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/jobs</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/privacy</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/support</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
+<url>
+  <loc>https://grouplay-a9770.firebaseapp.com/help/terms</loc>
+  <lastmod>2019-04-16T11:37:33+00:00</lastmod>
+</url>
 
 </urlset>

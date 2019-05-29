@@ -1,0 +1,53 @@
+<div class="help-support-show-root">
+  <div class="support-header">
+    <div class="back">
+      {{#link-to "help.support" classNames="back-link"}}
+        <svg preserveAspectRatio="xMidYMid meet" data-bbox="62.414 7.193 56.117 189.118" xmlns="http://www.w3.org/2000/svg" viewBox="62.41419982910156 7.193414688110352 56.11652374267578 189.11758422851562" role="img" style="stroke-width: 0px;stroke: white;">
+            <g>
+                <path d="M115.413 196.311a3.118 3.118 0 0 1-2.742-1.627l-49.875-91.441a3.11 3.11 0 0 1 0-2.986L112.67 8.819a3.122 3.122 0 0 1 4.232-1.246 3.118 3.118 0 0 1 1.246 4.232L69.087 101.75l49.062 89.948a3.118 3.118 0 0 1-2.736 4.613z"></path>
+            </g>
+        </svg>
+      {{/link-to}}
+    </div>
+    <div class="label">
+      {{model.title}}
+    </div>
+    <div class="contact">
+      Have more questions?
+      {{#link-to 'help.contact'}}
+        Contact Us
+      {{/link-to}}
+      .
+    </div>
+  </div>
+  <div class="support-items">
+    <div class="support-col1">
+      {{#each model.items1 as |qs|}}
+        <div class="support-topic">
+          <div class="content">
+            <div class="title">
+              {{qs.title}}
+            </div>
+            <div class="text">
+              {{{qs.text}}}
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+    <div class="support-col2">
+      {{#each model.items2 as |qs|}}
+        <div class="support-topic">
+          <div class="content">
+            <div class="title">
+              {{qs.title}}
+            </div>
+            <div class="text">
+              {{{qs.text}}}
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

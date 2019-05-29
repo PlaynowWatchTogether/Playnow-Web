@@ -1,4 +1,10 @@
 @import './vars.scss';
+@mixin support-topic-bg($color){
+  background: $color;
+  &:hover{
+    background: darken($color, 30%);
+  }
+}
 @mixin help-about{
   display: flex;
   flex-direction: column;
@@ -44,6 +50,7 @@
     }
   }
   .arrow{
+    cursor: pointer;
     display: flex;
     align-items: center;
     place-items: center;
@@ -98,6 +105,7 @@
     display: flex;
     align-items: center;
     .link{
+      margin: 0px 25px;
       text-decoration: none;
       padding: 0 10px;
       color: #A0A09F;
@@ -182,6 +190,11 @@
     flex-direction: column;
     align-items: center;
     place-content: center;
+
+    background-image: url("/assets/help/jobs-header.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 406px;
     .title{
       font-size: 110%;
       width: 69%;
@@ -382,6 +395,149 @@
   }
 
 }
+@mixin help-support-show{
+  display: flex;
+  flex-direction: column;
+  .support-header{
+    height: 169px;
+    background: rgb(78, 194, 179);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    place-content: center;
+    color: white;
+    background-image: url("/assets/help/support-header.webp");
+    .img{
+      img{
+        width: 70px;
+      }
+    }
+    .contact{
+      align-self: start;
+      margin-top: 15px;
+      flex: 1.6 1 auto;
+    }
+    .back{
+      flex: 2.4 1 auto;
+      text-align: right;
+      svg{
+        width: 20px;
+      }
+    }
+    .label{
+      font-size: 250%;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      flex: 1 1 auto;
+      text-align: right;
+    }
+  }
+  .support-items{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    align-self: center;
+    padding: 40px;
+    .support-col1, .support-col2{
+      flex: 1 1 50%;
+      padding: 10px;
+      min-width: 50%;
+      max-width: 50%;
+      display: flex;
+      flex-direction: column;
+      .support-topic{
+        .content{
+          padding: 15px;
+          margin-top: 30px;
+          background: white;
+          box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+          border-radius: 5px;
+          .title{
+            font-family: $medium-font;
+            border-bottom: 3px solid rgba(242, 191, 94, 1);
+            font-size: 180%;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+          }
+          .text{
+            line-height: 1.5;
+          }
+        }
+      }
+    }
+
+  }
+}
+@mixin help-support{
+  .support-header{
+    height: 298px;
+    background: rgb(78, 194, 179);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    place-content: center;
+    color: white;
+    background-image: url("/assets/help/support-header.webp");
+    .img{
+      img{
+        width: 70px;
+      }
+    }
+    .label{
+      font-size: 250%;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .support-items{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    place-content: center;
+    min-height: 352px;
+    .support-topic{
+      margin-right: 15px;
+      width: 230px;
+      height: 230px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      place-content: center;
+      color: white;
+      cursor: pointer;
+      padding: 10px;
+      .title{
+        font-size: 200%;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      svg{
+        width: 40px;
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipW;
+        -ms-filter: "FlipW";
+      }
+      &.color1{
+        @include support-topic-bg(rgb(242, 191, 94));
+      }
+      &.color2{
+        @include support-topic-bg(rgb(255, 97, 97));
+      }
+      &.color3{
+        @include support-topic-bg(rgb(83, 110, 183));
+      }
+      &.color4{
+        @include support-topic-bg(rgb(117, 203, 168));
+      }
+
+    }
+
+  }
+}
 @mixin help-branding{
   display: flex;
   flex-direction: row;
@@ -395,7 +551,7 @@
     .title{
       font-size: 300%;
       word-break: normal;
-      padding-bottom: 20px;      
+      padding-bottom: 20px;
       font-family: $bold-font;
       margin-top: 37%;
     }
@@ -455,6 +611,12 @@ body.help{
           padding-bottom: 70px;
         }
       }
+    }
+    .help-support-root{
+      @include help-support;
+    }
+    .help-support-show-root{
+      @include help-support-show;
     }
     .help-branding-root{
       @include help-branding;

@@ -123,8 +123,12 @@
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <h6 class="dropdown-header">More:</h6>
                 <a class="dropdown-item" data-toggle="modal" data-target="#settingsModal">Settings</a>
-                <a class="dropdown-item" href="#">Information</a>
-                <a class="dropdown-item" href="#">Support</a>
+                {{#link-to "help.about" classNames="dropdown-item"}}
+                  Information
+                {{/link-to}}
+                {{#link-to "help.support" classNames="dropdown-item"}}
+                  Support
+                {{/link-to}}
                 <h6 class="dropdown-header">Action:</h6>
                 <a class="dropdown-item" href="#">Blocked</a>
                 <a class="dropdown-item" {{action "logout"}} role="button">Log Out</a>

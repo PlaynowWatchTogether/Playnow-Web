@@ -9,7 +9,23 @@
         <div class="user-profile-root">
         	<div class="user-profile-header">
         		<div class="user-profile-image">
-	        		{{remote-user-profile-pic classNames="profilePicWrapper" model=model.id}}
+	        		{{remote-user-profile-pic classNames="profilePicWrapper" model=model.id listen=true}}
+              {{#if isMine}}
+                {{#file-upload name="photos"
+                               accept="image/*"
+                               disabled=isLoadingPhoto
+                               onfileadd=(action "uploadImage")}}
+                               <a class="overlay">
+                                 Change
+                               </a>
+
+                {{/file-upload}}
+                {{#if isLoadingPhoto}}
+                  <div class="loading-holder">
+                    {{loading-view}}
+                  </div>
+                {{/if}}
+              {{/if}}
         		</div>
         		<div class="user-profile-title">
                 <div class="title-username">

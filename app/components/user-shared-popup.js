@@ -4,7 +4,9 @@ import { computed } from '@ember/object';
 import {inject as service} from '@ember/service';
 import MessageDataSource from '../custom-objects/message-data-source';
 import UserFeedPager from '../custom-objects/user-feed-pager';
-export default Component.extend({
+import UUIDGenerator from '../mixins/uuid-generator';
+import {get,set} from '@ember/object';
+export default Component.extend(UUIDGenerator,{
   db: service(),
   firebaseApp: service(),
   auth: service(),
@@ -103,6 +105,21 @@ export default Component.extend({
     });
   }),
   actions:{
+    uploadImage(file){
+      let metadata = {
+        cacheControl: 'public,max-age=86400'
+      };
+      let ref = this.firebaseApp.storage().ref('Media/ProfilePic/' + this.get('firebaseApp').auth().currentUser.uid + "/" + this.generateUUID() + '.png');
+      this.set('isLoadingPhoto',true)
+      ref.put(file.blob, metadata).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
+          set(this.get('model'),'ProfilePic', downloadURL);
+          this.get('db').updateProfilePic(downloadURL);
+          debug('File available at', downloadURL);
+          this.set('isLoadingPhoto',false)
+        });
+      });
+    },
     onProviderChanged(provider){
       this.notifyPropertyChange('providers');
     },

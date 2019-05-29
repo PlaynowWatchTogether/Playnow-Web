@@ -260,6 +260,21 @@ export default Service.extend(VideoStateHandler, {
       })
     });
   },
+  profileFieldListen(user,field,update) {
+
+    let ref = this.firebaseApp.database().ref(`Users/${user}/${field}`);
+    const clb = (snapshot) => {
+      let val = snapshot.val();
+      const payload = {};
+      payload[field] = val;
+      update(payload);
+    };
+    ref.on('value',clb);
+    return {path: ref, clb: clb}
+  },
+  profileFieldListenOff(ret){
+    ret.path.off('value')(clb);
+  },
   profile(user) {
     return new Promise((resolve, reject) => {
       let ref = this.firebaseApp.database().ref("Users/" + user);

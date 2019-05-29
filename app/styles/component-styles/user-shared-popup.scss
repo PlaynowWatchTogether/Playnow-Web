@@ -24,9 +24,45 @@
           border-bottom: 1px solid lightgrey;
           .user-profile-image{
             flex: 0 0 auto;
+            position: relative;
             .profilePicWrapper{
               width: 140px;
               height: 140px;
+            }
+            .file-upload{
+              display: none;
+              position: absolute;
+              width: 140px;
+              height: 140px;
+              top:0;
+              left:0;
+            }
+            .loading-holder{
+              position: absolute;
+              width: 140px;
+              height: 140px;
+              top:0;
+              left:0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .overlay{
+              width: 140px;
+              height: 140px;
+              border-radius: 50%;
+              background: #000;
+              opacity: 0.5;
+              color: white;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            &:hover{
+              .file-upload{
+                display: flex;
+              }
             }
           }
           .user-profile-title{

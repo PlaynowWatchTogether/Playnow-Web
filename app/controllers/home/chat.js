@@ -397,10 +397,10 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
             obj.db.live(convId).then((live)=>{
                 debug(`Got live ${live}`);
                 if (!live.videoState){
-                  this.transitionToRoute('home.group.show',{group_id: get(remoteFeed,'id')});
+                  obj.transitionToRoute('home.group.show',{group_id: get(remoteFeed,'id')});
                 }
             }).catch((error)=>{
-              this.transitionToRoute('home.group.show',{group_id: get(remoteFeed,'id')});
+              obj.transitionToRoute('home.group.show',{group_id: get(remoteFeed,'id')});
             })
 
         }).catch((error)=>{

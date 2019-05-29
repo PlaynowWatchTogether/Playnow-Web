@@ -938,9 +938,7 @@ $post-content-width: 63.8%;
               }
             }
             .events-list-root{
-              @include events-list;
-              padding-left: 24px;
-              padding-right: 12px;
+              @include events-list;              
               .events-list-label{
                 font-size: 114%;
                 margin-left: 10px;

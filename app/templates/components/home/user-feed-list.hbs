@@ -4,6 +4,9 @@
 {{#each model as |item| }}
   {{home/user-feed-item model=item id=item.id classNames="user-feed-item-wrapper" openDetails=(action "openDetails") lastUpdate=lastUpdate}}
 {{else}}
-  <div class="empty">
-  </div>
+  {{#unless isLoading}}
+    <div class="empty">
+      Nothing to show. Follow groups to see posts!
+    </div>
+  {{/unless}}
 {{/each}}

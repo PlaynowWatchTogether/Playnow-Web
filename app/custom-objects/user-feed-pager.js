@@ -44,6 +44,9 @@ export default ArrayProxy.extend({
       }
       this.notifyPropertyChange('items');
       this.set('isLoading', false);
+      if (this.loadCompleted){
+        this.loadCompleted(items.length===0);
+      }
     });
   },
   loadMore(){

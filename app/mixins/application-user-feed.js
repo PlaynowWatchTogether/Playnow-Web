@@ -6,6 +6,7 @@ export default Mixin.create({
 
       const lastUpdate = new Date().getTime();
 
+      const emptyUserFeed = feeds.length===0;
       feeds.forEach((feed) => {
         const localFeed = this.store.peekRecord('feed-item', feed.feedId);
         let message = {};
@@ -14,7 +15,7 @@ export default Mixin.create({
         if (feed.type === 'message'){
           const messages = localFeed.get('Messages')||{};
           message = messages[feed.content.uid]||{};
-          const mesId = `${feed.feedId}-${message.uid}`;          
+          const mesId = `${feed.feedId}-${message.uid}`;
           const localMessage = this.store.normalize('user-feed-message',{
             id: mesId,
             rawData: JSON.stringify({
@@ -60,6 +61,7 @@ export default Mixin.create({
       });
       const contrl = this.controllerFor('application');
       contrl.set('userFeedLastUpdate', new Date());
+      this.set('db.emptyUserFeed',emptyUserFeed);
       this.set('db.userFeedUpdated',new Date().getTime());
     })
   }

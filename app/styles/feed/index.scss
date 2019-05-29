@@ -31,9 +31,19 @@
       #following{
         .main-content{
           padding-bottom: 40px;
+          height: 100%;
         }
         .home-user-feed{
           @include home-user-feed
+          height:100%;
+          .empty{
+            height: 100%;
+            place-self: center;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            color: #cecece;
+          }
         }
       }
       #discover{

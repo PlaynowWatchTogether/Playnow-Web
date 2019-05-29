@@ -17,18 +17,6 @@ export default Controller.extend({
   auth: service(),
   init() {
     this._super(...arguments);
-    this.set('groupPublic',UserFeedPager.create({
-      content: [],
-      limit: 10,
-      loadHandler: ()=>{
-        return new Promise((resolve)=>{
-          setTimeout(()=>{
-            resolve(this.get('discoverFeeds'));
-          },100);
-
-        });
-      }
-    }));
     this.set('groupPublicSide',UserFeedPager.create({
       content: [],
       limit: 10,
@@ -36,6 +24,18 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.publicFeeds());
+          },100);
+
+        });
+      }
+    }));
+    this.set('groupDiscover',UserFeedPager.create({
+      content: [],
+      limit: 10,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            resolve(this.discoverFeeds());
           },100);
 
         });
@@ -72,8 +72,10 @@ export default Controller.extend({
           setTimeout(()=>{
             resolve(this.get('sortedUserFeed'));
           },100);
-
         });
+      },
+      loadCompleted: (empty)=>{
+        this.get('db').set('emptyUserFeed',empty);
       }
     }));
 
@@ -87,14 +89,22 @@ export default Controller.extend({
 
     addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
     addObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated');
+    addObserver(this.get('db'),'emptyUserFeed', this,'userFeedEmptyUpdated');
     this.get('userFeed').reload();
     this.get('groupOwner').reload();
     this.get('groupFollowing').reload();
     this.get('groupPublicSide').reload();
-    this.get('groupPublic').reload();
+    this.get('groupDiscover').reload();
+  },
+  userFeedEmptyUpdated(obj){
+    debug('user feed empty updated');
+    if (this.get('db').get('emptyUserFeed')){
+      $('#content-tabs .tab-discover a').tab('show');
+    }
   },
   userFeedUpdated(obj){
     debug('userFeedUpdated');
+    this.set('emptyUserFeed',this.get('db').get('emptyUserFeed'));
     this.get('userFeed').load(false);
   },
   feedUpdated(obj){
@@ -103,16 +113,17 @@ export default Controller.extend({
     this.get('groupPublicSide').load(false);
     this.get('groupOwner').load(false);
     this.get('groupFollowing').load(false);
-    this.get('groupPublic').load(false);
+    this.get('groupDiscover').load(false);
   },
   reset(){
     removeObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
     removeObserver(this.get('db'),'userFeedUpdated', this,'userFeedUpdated')
+    removeObserver(this.get('db'),'emptyUserFeed', this,'userFeedEmptyUpdated')
     this.get('userFeed').beforeReload();
     this.get('groupOwner').beforeReload();
     this.get('groupFollowing').beforeReload();
     this.get('groupPublicSide').beforeReload();
-    this.get('groupPublic').beforeReload();
+    this.get('groupDiscover').beforeReload();
   },
   userFeedSort: ['createdAt:desc'],
   userFeedLocal: computed(function(){
@@ -137,7 +148,7 @@ export default Controller.extend({
       return elem.get('creatorId') !== myID;
     });
   },
-  discoverFeeds: computed('lastUpdate','db.userLocation', function(){
+  discoverFeeds(){
     const location = this.get('db.userLocation');
     const myID = this.db.myId();
     return this.store.peekAll('feed-item').filter((elem) => {
@@ -159,7 +170,7 @@ export default Controller.extend({
         return get(a,'lastServerUpdate') - get(b,'lastServerUpdate');
       }
     });
-  }),
+  },
   toRad(val) {
     return val * Math.PI / 180;
   },

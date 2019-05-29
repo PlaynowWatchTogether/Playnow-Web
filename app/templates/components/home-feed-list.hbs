@@ -20,7 +20,9 @@
   {{loading-view}}
 {{else}}
   <div class="empty">
-    No groups
+    {{#unless isLoading}}
+      No groups
+    {{/unless}}
   </div>
 {{/if}}
 

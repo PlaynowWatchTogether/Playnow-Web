@@ -57,8 +57,8 @@
                               scrollChild=".feed-list"}}
               {{#fit-parent-height parentSelector=".tab-content" classNames="feed-discover-list-root"}}
                 {{home-feed-list
-                  model=groupPublic.items
-                  isLoading=groupPublic.isLoading
+                  model=groupDiscover.items
+                  isLoading=groupDiscover.isLoading
                   isPublic=true
                   classNames="feed-list"
                   onFollowGroup=(action "followGroup" bubbles=false)

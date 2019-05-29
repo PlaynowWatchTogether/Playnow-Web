@@ -3,13 +3,18 @@ import VideoSearchMixin from '../mixins/videos-search-mixin';
 import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/template';
 import {debug} from '@ember/debug';
+import { inject as service} from '@ember/service';
 export default Component.extend(VideoSearchMixin, {
+  khanAuth: service(),
+  crunchyrollAuth: service(),
+  youtubeSearch: service(),
+
   loadingVideoClass: computed('isLoadingVideo', function () {
     return this.get('isLoadingVideo') ? 'active' : '';
   }),
   init(){
     this._super(...arguments);
-    this.set('videoProviders',{khan: false, youtube: false, crunchyroll: false});
+    this.set('videoProviders',{khan: this.khanAuth.get('isLoggedIn'), youtube: this.youtubeSearch.get('isLoggedIn'), crunchyroll: this.crunchyrollAuth.get('isLoggedIn')});
   },
   sectionTitle: computed('searchQueryVideo', function(){
     const query = this.get('searchQueryVideo');

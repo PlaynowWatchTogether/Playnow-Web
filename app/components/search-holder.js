@@ -20,6 +20,7 @@ export default Component.extend({
       $(this.element).find(this.get('searchSelector') || 'input').trigger('change');
       $(this.element).find(this.get('searchSelector') || 'input').trigger('input');
       $(this.element).find(this.get('searchSelector') || 'input').focus();
+      $(this.element).find('.trigger-search').click();
     });
     $(this.element).find(this.get('searchSelector') || 'input').on('input', function () {
       if ($(this).val().length === 0) {

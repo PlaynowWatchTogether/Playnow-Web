@@ -16,6 +16,9 @@ export default Component.extend(VideoSearchMixin, {
     this._super(...arguments);
     this.set('videoProviders',{khan: this.khanAuth.get('isLoggedIn'), youtube: this.youtubeSearch.get('isLoggedIn'), crunchyroll: this.crunchyrollAuth.get('isLoggedIn')});
   },
+  isInSearch: computed('searchQueryVideo', function(){
+    return (this.get('searchQueryVideo')||'').length === 0;
+  }),
   sectionTitle: computed('searchQueryVideo', function(){
     const query = this.get('searchQueryVideo');
     if (!query || query.length === 0){

@@ -8,7 +8,7 @@
         <img src="/assets/search_icon@2x.png" class="icon" alt="icon">
         {{input value=searchQuery classNames="searchInput" placeholder="Search content"
                 insert-newline=(action "triggerSearch" bubbles=false) autocomplete='off' name="videoSearch"}}
-        <img src="/assets/ic_music_close.png" class="close-search" alt="close">
+        <img src="/assets/ic_music_close.png" class="close-search" alt="close" role="button">
         <div class="trigger-search {{loadingVideoClass}}" {{action "triggerSearch" bubbles=false}} role="button">
           <img src="/assets/ic_search_trigger@2x.png" class="icon" alt="icon">
         </div>
@@ -18,14 +18,16 @@
     {{yield}}
   {{/unless}}
   {{#if playlistModel}}
-    {{chat-videos-playlist
-      classNames='chat-videos-playlist'
-      model=playlistModel
-      isEditing=isEditingPlaylist
-      canEdit=canEditPlaylist
-      onVideoPick=(action "videoPick")
-      onAddVideo=(action "playlistVideoAdd")
-      onRemoveVideo=(action "playlistVideoRemove")}}
+    {{#if isInSearch}}
+      {{chat-videos-playlist
+        classNames='chat-videos-playlist'
+        model=playlistModel
+        isEditing=isEditingPlaylist
+        canEdit=canEditPlaylist
+        onVideoPick=(action "videoPick")
+        onAddVideo=(action "playlistVideoAdd")
+        onRemoveVideo=(action "playlistVideoRemove")}}
+    {{/if}}
   {{/if}}
   {{#unless hideVideos}}
     <div class="title">

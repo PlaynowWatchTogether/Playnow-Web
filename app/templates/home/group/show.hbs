@@ -196,6 +196,10 @@
                 {{#if message.isLoading}}
                   {{chat-message-loading classNames="chat-message-loading" model=message.message}}
                 {{/if}}
+              {{else}}
+                <div class="empty">
+                  Nothing to show
+                </div>
               {{/each}}
               {{#unless isLoadingMessages}}
                 <div class="message-scroll-date-holder">

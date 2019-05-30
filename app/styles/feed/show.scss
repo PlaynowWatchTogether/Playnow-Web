@@ -403,6 +403,11 @@ $post-content-width: 63.8%;
             .feed-messages-root{
               display: grid;
               grid-template-columns: auto;
+              .empty{
+                text-align: center;
+                padding-top: 40px;
+                color: darkgray;
+              }
               .feed-post-time{
                 margin-top: 20px;
                 z-index: 1;

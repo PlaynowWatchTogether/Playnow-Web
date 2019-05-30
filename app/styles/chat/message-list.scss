@@ -1537,6 +1537,9 @@
         flex: 1 0 auto;
         pointer-events: all;
         width: 100px;
+        &:hover{
+          background: rgba(49, 49, 49, 0.5);
+        }
         .messagesHolder{
           .message-scroll-date-holder{
             padding-right: $sidebar-width !important;

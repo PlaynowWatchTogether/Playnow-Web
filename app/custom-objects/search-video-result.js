@@ -2,13 +2,25 @@ import EmberObject from '@ember/object';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
 import { computed } from '@ember/object';
+import { get } from '@ember/object';
 export default EmberObject.extend({
   thumbnail: computed('data', function(){
     if (this.data.kind === 'youtube#video' || this.data.kind === 'youtube#music'){
-      return this.data['snippet']['thumbnails']['medium']['url'];
+      const thumbnails = this.data.snippet.thumbnails;
+      let max = {
+        url: '',
+        width: 0,
+        height: 0
+      };
+      Object.values(thumbnails).forEach((elem)=>{
+        if (elem.width > max.width || elem.height > max.height){
+          max = elem;
+        }
+      });
+      return get(max,'url');
     }
     if (this.data.kind === 'crunchyroll#media'){
-      const url = this.data.data.screenshot_image.large_url;
+      const url = this.data.data.screenshot_image.full_url;
       if (url && !url.includes('https://')){
         return url.replace('http://','https://');
       }

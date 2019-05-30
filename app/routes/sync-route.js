@@ -22,7 +22,7 @@ export default Route.extend(ApplicationFriendsMixin,ApplicationDBFeed,Applicatio
     });
 
     this.db.profileObserver(myId, (model) => {
-      this.set('model', model);
+      // this.set('model', model);
       ctrl.set('model', model);
     });
     this.syncFriends(()=>{

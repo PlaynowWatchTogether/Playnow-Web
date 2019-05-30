@@ -31,6 +31,7 @@ export default Controller.extend({
   },
   activate(){
     if (this.get('db').get('feedUpdated')){
+      this.get('groupPublicSide').set('synced',true);
       this.get('groupPublicSide').load(true);
     }
     addObserver(this.get('db'),'feedUpdated', this,'feedUpdated');
@@ -74,7 +75,7 @@ export default Controller.extend({
     this.set('loadingRooms',true);
 
     this.get('groupPublicSide').load(true);
-        
+
     this.db.profile(this.get('profile.id')).then((profile)=>{
       let friends = get(profile,'Friends');
       this.get('sentRequests').addObjects(Object.keys(friends).map((friend) => {

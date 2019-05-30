@@ -22,10 +22,14 @@
               </div>
             </div>
             <div class="loginHolder">
-              <div {{action "forgotAction"}} class="loginBtn hoveredBtn {{forgotBtnClass}}">Reset</div>
+              {{#if loginLoading}}
+                {{loading-view}}
+              {{else}}
+                <div {{action "forgotAction"}} class="loginBtn hoveredBtn {{forgotBtnClass}}" role="button">Reset</div>
+              {{/if}}
             </div>
             <div class="loginHolder">
-              <div {{action "forgotCancel"}} class="cancelBtn">Back</div>
+              <div {{action "forgotCancel"}} class="cancelBtn" role="button">Back</div>
             </div>
           {{else}}
 
@@ -42,11 +46,15 @@
                 <span class="passwordLabel">Password</span>
                 {{input value=form.password classNames="password" type="password"
                         insert-newline=(action "loginAction")}}
-                <span class="forgotPassword" {{action "openForgot"}}>Forgot Password?</span>
+                <span class="forgotPassword" {{action "openForgot"}} role="button">Forgot Password?</span>
               </div>
             </div>
             <div class="loginHolder">
-              <div {{action "loginAction"}} class="loginBtn hoveredBtn {{loginBtnClass}}">Log In</div>
+              {{#if loginLoading}}
+                {{loading-view}}
+              {{else}}
+                <div {{action "loginAction"}} class="loginBtn hoveredBtn {{loginBtnClass}}" role="button">Log In</div>
+              {{/if}}
             </div>
           {{/if}}
         </div>
@@ -115,7 +123,11 @@
             </div>
             <p class="termsText">By clicking Sign Up, you agree to the Terms and Policy.</p>
             <div class="signUpHolder">
-              <button {{action "signUpAction"}} class="signUpBtn hoveredBtn {{signupBtnClass}}">Sign Up</button>
+              {{#if signupLoading}}
+                {{loading-view}}
+              {{else}}
+                <button {{action "signUpAction"}} class="signUpBtn hoveredBtn {{signupBtnClass}}" role="button">Sign Up</button>
+              {{/if}}
               <span class="error-tip">{{form.register.error.global}}</span>
             </div>
           </div>

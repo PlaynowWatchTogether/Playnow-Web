@@ -217,6 +217,11 @@ body.welcome,body.home,body.search{
     align-self: center;
     margin-left: 10px;
     display: grid;
+    .loading-view{
+      div{
+        background: #5cd9fd;
+      }
+    }
   }
 
   cancelBtn:focus, .loginBtn:focus {
@@ -662,7 +667,9 @@ body.welcome,body.home,body.search{
 
   .signUpHolder {
     position: relative;
-
+    .loading-view{
+      margin-left: 140px;
+    }
     .error-tip {
       right: unset;
     }

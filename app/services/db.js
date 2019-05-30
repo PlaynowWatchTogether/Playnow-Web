@@ -273,7 +273,7 @@ export default Service.extend(VideoStateHandler, {
     return {path: ref, clb: clb}
   },
   profileFieldListenOff(ret){
-    ret.path.off('value')(clb);
+    ret.path.off('value',ret.clb);
   },
   profile(user) {
     return new Promise((resolve, reject) => {

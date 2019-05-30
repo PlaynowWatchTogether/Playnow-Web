@@ -97,6 +97,11 @@
             padding-right: 75px;
             display: flex;
             flex-direction: column;
+            &.other{
+              align-self: center;
+              place-items: center;
+              align-items: center;
+            }
             .label1{
               font-family: $medium-font;
               font-size: 110%;
@@ -106,6 +111,14 @@
             }
             .login-providers{
               @include videos-auth-list;
+            }
+            .add {
+              @include iconned-button(#CF77FF,15px,90%,5px,5px 15px);
+              box-shadow: $message-shadow;
+            }
+            .added {
+              @include iconned-button(#5AB9FF,15px,90%,5px,5px 15px);
+              box-shadow: $message-shadow;
             }
           }
 

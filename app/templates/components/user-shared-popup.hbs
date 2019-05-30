@@ -43,12 +43,38 @@
                   {{displayName}}
                 </div>
         		</div>
-            <div class="user-profile-social">
+            <div class="user-profile-social {{unless isMine "other"}}">
               {{#if isMine}}
                 <div class="label1">Linked Accounts</div>
                 <div class="label2">Click on logos to link account</div>
                 {{videos-list-auth-ui onProviderClick=(action "onProviderClick") isFromSettings=true classNames="login-providers" providers=videoProviders onProviderChanged=(action "onProviderChanged")}}
+              {{else}}
+                  {{#if myProfile}}
+                    {{#if isFriend}}
+                      <div class="added">
+                        <img src="/assets/ic_done_24px.svg" alt="icon">
+                        <div class="label">
+                          Friends
+                        </div>
+                      </div>
+                    {{else if isFollower}}
+                    <div class="added">
+                      <img src="/assets/ic_done_24px.svg" alt="icon">
+                      <div class="label">
+                        Added
+                      </div>
+                    </div>
+                    {{else}}
+                      <div class="add" {{action "addFriend"}} role="button">
+                        <img src="/assets/ic_add_24px.svg" alt="icon">
+                        <div class="label">
+                          Add friend
+                        </div>
+                      </div>
+                    {{/if}}
+                  {{/if}}
               {{/if}}
+
             </div>
 
         	</div>

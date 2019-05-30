@@ -21,11 +21,31 @@ export default Component.extend(UUIDGenerator,{
       crunchyroll: this.crunchyrollAuth.get('isLoggedIn')
     }
   }),
+  isFollower: computed('myProfile','model','sent', function(){
+    const my = this.get('myProfile');
+    const model = this.get('model');
+    let followers = Object.keys(get(model,'Followers') || {});
+    return followers.includes(get(my,'id')) || this.get('sent');
+  }),
+  isFriend: computed('myProfile','model', function(){
+    const my = this.get('myProfile');
+    const model = this.get('model');
+    let friends = Object.keys(get(my,'Friends') || {});
+    return friends.includes(this.get('model.id'));
+  }),
   didInsertElement(){
     this._super(...arguments);
+    $('#userSharedPopup').on('hidden.bs.modal',()=>{
+      this.set('myProfile', null);
+      this.set('sent', false);
+    });
     $('#userSharedPopup').on('show.bs.modal', ()=>{
+
       const data = this.get('db').get('shared-profile');
       this.set('model', data);
+      this.get('db').profile(this.get('db').myId()).then((profile)=>{
+        this.set('myProfile', profile);
+      });
       const ds =  MessageDataSource.create({
         type: 'one2one',
         user: data,
@@ -105,6 +125,10 @@ export default Component.extend(UUIDGenerator,{
     });
   }),
   actions:{
+    addFriend(){
+      this.get('db').followUser(this.get('model'));
+      this.set('sent', true);
+    },
     uploadImage(file){
       let metadata = {
         cacheControl: 'public,max-age=86400'

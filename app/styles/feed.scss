@@ -120,6 +120,8 @@
 					}
 					.group-notifications{
 						padding: 0px 0px;
+						overflow-y: auto;
+						max-height: 300px;
 						.empty{
 							min-height: 60px;
 					    text-align: center;

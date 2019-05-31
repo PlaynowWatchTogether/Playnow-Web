@@ -12,20 +12,20 @@ module.exports = function(defaults) {
       exclude:['assets/gcm-icon.png'],
       generateAssetMap: true
     },
-    // 'ember-cli-uglify': {
-    //   enabled: true
-    // },
-    // minifyJS: {
-    //   enabled: true
-    // },
-    // minifyCSS: {
-    //   enabled: true
-    // }
+    'ember-cli-uglify': {
+      enabled: true
+    },
+    minifyJS: {
+      enabled: true
+    },
+    minifyCSS: {
+      enabled: true
+    }
   });
   app.import('vendor/js/jquery.min.js');
   app.import('vendor/js/jquery-ui.min.js');
   app.import('vendor/css/bootstrap.min.css');
-  app.import('vendor/js/bootstrap.min.js');
+  app.import('vendor/js/bootstrap.bundle.min.js');
   // app.import('vendor/js/typeahead.bundle.js')
   // app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
   app.import('vendor/css/ekko-lightbox.css');

@@ -3,7 +3,7 @@ import {computed} from '@ember/object';
 import {bind} from '@ember/runloop';
 import {get} from '@ember/object';
 import {A} from '@ember/array';
-import $ from 'jquery';
+import J from 'jquery';
 import {assert} from '@ember/debug';
 
 export default TextField.extend({

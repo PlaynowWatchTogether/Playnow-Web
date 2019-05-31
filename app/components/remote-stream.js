@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { inject as service} from '@ember/service';
 import BroadcastStreamer from '../custom-objects/broadcast-streamer';
-import $ from 'jquery';
+import J from 'jquery';
 import { debug } from '@ember/debug';
 export default Component.extend({
   db: service(),

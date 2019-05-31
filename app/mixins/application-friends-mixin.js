@@ -2,7 +2,7 @@ import Mixin from '@ember/object/mixin';
 import {inject as service} from '@ember/service';
 import MessageDataSource from "../custom-objects/message-data-source";
 import {hash} from 'rsvp';
-import $ from 'jquery';
+import J from 'jquery';
 import {Promise} from 'rsvp';
 
 export default Mixin.create({

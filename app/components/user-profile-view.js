@@ -1,6 +1,6 @@
 import {get} from '@ember/object';
 import Component from '@ember/component';
-import $ from 'jquery';
+import J from 'jquery';
 import {debug} from '@ember/debug';
 import PicturedObject from '../custom-objects/pictured-object'
 import {inject as service} from '@ember/service';

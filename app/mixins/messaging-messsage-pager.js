@@ -2,7 +2,7 @@ import Mixin from '@ember/object/mixin';
 import ArrayProxy from '@ember/array/proxy';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
-import $ from 'jquery';
+import J from 'jquery';
 import { run } from '@ember/runloop';
 export default Mixin.create({
   DEFAULT_LIMIT:100,

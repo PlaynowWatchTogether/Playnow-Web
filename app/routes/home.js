@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import MessageDataSource from "../custom-objects/message-data-source";
 import {debug} from '@ember/debug';
-import $ from 'jquery';
+import J from 'jquery';
 import {Promise} from 'rsvp';
 import SyncRoute from './sync-route';
 export default SyncRoute.extend( {

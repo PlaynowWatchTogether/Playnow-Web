@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {debug} from '@ember/debug';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Service.extend({
   db: service(),

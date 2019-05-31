@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Component.extend({
   classNameBindings: ['isSelected:selected'],

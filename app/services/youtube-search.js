@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import $ from 'jquery';
+import J from 'jquery';
 
 const API_KEY = 'key=AIzaSyAC97r5YG4QYJfVwHXusD8YbhWrycChPqM';
 const VIDEOS_URL = 'https://www.googleapis.com/youtube/v3/videos';

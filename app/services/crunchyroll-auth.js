@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import $ from 'jquery';
+import J from 'jquery';
 import { storageFor } from 'ember-local-storage';
 // import {Promise} from 'rsvp';
 import { computed } from '@ember/object';

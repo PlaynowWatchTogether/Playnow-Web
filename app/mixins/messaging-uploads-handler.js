@@ -1,5 +1,5 @@
 import Mixin from '@ember/object/mixin';
-import $ from 'jquery';
+import J from 'jquery';
 import { set } from '@ember/object';
 import { debug } from '@ember/debug';
 import UUIDGenerator from './uuid-generator';

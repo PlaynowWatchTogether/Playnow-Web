@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import AuthRouteMixin from '../../mixins/auth-route-mixin'
 import {inject as service} from '@ember/service';
 import ArrayProxy from '@ember/array/proxy';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Route.extend(AuthRouteMixin, {
   db: service(),

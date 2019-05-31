@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import {bind} from '@ember/runloop';
-import $ from 'jquery';
+import J from 'jquery';
 import { emojiParse } from 'ember-emoji/helpers/emoji-parse';
 import emojione from 'emojione';
 export default Component.extend({

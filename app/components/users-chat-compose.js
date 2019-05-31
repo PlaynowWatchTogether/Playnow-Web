@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {debug} from '@ember/debug';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Component.extend({
   firebaseApp: service(),

@@ -6,7 +6,7 @@ import { debug } from '@ember/debug';
 import { get } from '@ember/object';
 import moment from 'moment';
 import SearchVideoResult from '../custom-objects/search-video-result';
-import $ from 'jquery';
+import J from 'jquery';
 export default Mixin.create(YoutubeSearch, {
   crunchyrollAuth: service(),
   khanAuth: service(),

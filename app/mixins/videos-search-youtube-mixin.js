@@ -1,7 +1,7 @@
 import Mixin from '@ember/object/mixin';
 import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Mixin.create({
   youtubeSearch: service(),

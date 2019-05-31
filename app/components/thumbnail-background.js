@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {htmlSafe} from '@ember/template'
-import $ from 'jquery';
+import J from 'jquery';
 import {run} from '@ember/runloop';
 export default Component.extend({
   attributeBindings: ['style'],

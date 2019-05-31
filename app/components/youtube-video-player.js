@@ -4,7 +4,7 @@ import {debounce} from 'rxjs/operators';
 import {timer} from 'rxjs';
 import {debug} from "@ember/debug";
 
-import $ from 'jquery';
+import J from 'jquery';
 import { get } from '@ember/object';
 import {run} from '@ember/runloop';
 import VideoJSProxy from '../custom-objects/video-js-player-proxy';

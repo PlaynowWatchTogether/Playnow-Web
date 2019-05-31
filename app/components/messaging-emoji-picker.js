@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import $ from 'jquery';
+import J from 'jquery';
 export default Component.extend({
   didInsertElement(){
     this._super(...arguments);    

@@ -1,7 +1,7 @@
 import EmberObject from '@ember/object';
 import {debug} from "@ember/debug";
 import {Promise} from 'rsvp';
-import $ from 'jquery';
+import J from 'jquery';
 
 export default EmberObject.extend({
   init(){

@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import moment from 'moment'
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Component.extend({
   classNameBindings: ['isDisabled:disabled'],

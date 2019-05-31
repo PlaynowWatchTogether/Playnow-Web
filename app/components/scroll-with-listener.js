@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import {debug} from "@ember/debug";
-import $ from 'jquery';
+import J from 'jquery';
 
 export default Component.extend({
   classNameBindings: ['music', 'loading'],

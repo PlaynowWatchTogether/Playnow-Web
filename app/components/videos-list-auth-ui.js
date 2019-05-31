@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import $ from 'jquery';
+import J from 'jquery';
 import { addObserver } from '@ember/object/observers';
 import { removeObserver } from '@ember/object/observers';
 import { debug } from '@ember/debug';

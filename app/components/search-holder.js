@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import $ from 'jquery';
+import J from 'jquery';
 import {debug} from '@ember/debug';
 
 export default Component.extend({

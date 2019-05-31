@@ -8,7 +8,7 @@ import { removeObserver } from '@ember/object/observers';
 import {debug} from '@ember/debug';
 import FeedModelWrapper from '../../custom-objects/feed-model-wrapper';
 import FeedEventModelWrapper from '../../custom-objects/feed-event-model-wrapper';
-import $ from 'jquery';
+import J from 'jquery';
 export default Component.extend(FeedActionsMixins, {
   store: service(),
   db: service(),

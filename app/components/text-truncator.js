@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import $ from 'jquery';
+import J from 'jquery';
 import { run } from '@ember/runloop';
 import { bind } from '@ember/runloop';
 export default Component.extend({

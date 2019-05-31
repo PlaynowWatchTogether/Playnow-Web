@@ -7,7 +7,7 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {run} from '@ember/runloop';
 import {debug} from "@ember/debug";
-import $ from 'jquery';
+import J from 'jquery';
 import moment from 'moment';
 import MessageObject from '../../custom-objects/message-object';
 import {Promise} from 'rsvp';

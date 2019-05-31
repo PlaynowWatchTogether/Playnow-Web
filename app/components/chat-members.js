@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import $ from 'jquery';
+import J from 'jquery';
 import { computed } from '@ember/object';
 import {debug} from '@ember/debug';
 import {run} from '@ember/runloop';

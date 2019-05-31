@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {get} from '@ember/object';
-import $ from 'jquery';
+import J from 'jquery';
 import moment from 'moment';
 import { htmlSafe } from '@ember/template';
 import MessageAttachmentsWrapper from '../mixins/message-attachments-wrapper';

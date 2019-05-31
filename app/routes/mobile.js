@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import $ from 'jquery'
+import J from 'jquery'
 
 export default Route.extend({
   activate() {

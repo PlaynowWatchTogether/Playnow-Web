@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import {inject as service} from '@ember/service';
-import $ from 'jquery';
+import J from 'jquery';
 import { get } from '@ember/object';
 import UserFeedPager from '../custom-objects/user-feed-pager';
 import { addObserver } from '@ember/object/observers';

@@ -5,6 +5,7 @@ module.exports = function (environment) {
     modulePrefix: 'web',
     environment,
     rootURL: '/',
+    rootDomain: 'https://grouplay-a9770.firebaseapp.com',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {

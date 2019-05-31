@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import $ from 'jquery';
+// import $ from 'jquery';
 import { computed } from '@ember/object';
 import moment from 'moment';
 

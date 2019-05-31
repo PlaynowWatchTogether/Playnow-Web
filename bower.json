@@ -3,7 +3,7 @@
   "dependencies": {
     "typeahead.js": "~0.11.1",
     "bootstrap-tokenfield": "~0.12.1",
-    "handlebars": "~3.0.3",    
+    "handlebars": "~3.0.3",
     "emojione-js": "https://raw.githubusercontent.com/Ranks/emojione/v2.2.7/lib/js/emojione.js"
   }
 }

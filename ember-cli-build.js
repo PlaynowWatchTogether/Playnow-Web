@@ -21,14 +21,17 @@ module.exports = function(defaults) {
     // minifyCSS: {
     //   enabled: true
     // }
-    // nodeModulesToVendor: [
-    //   'node_modules/ntp-time-sync/dist/index.js'
-    // ]
   });
-  app.import('node_modules/bootstrap/dist/css/bootstrap.css');
-  app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
-  app.import('vendor/js/jquery.sticky.js');
+  app.import('vendor/js/jquery.min.js');
+  app.import('vendor/js/jquery-ui.min.js');
+  app.import('vendor/css/bootstrap.min.css');
+  app.import('vendor/js/bootstrap.min.js');
+  // app.import('vendor/js/typeahead.bundle.js')
+  // app.import('node_modules/bootstrap/dist/css/bootstrap-theme.css');
+  app.import('vendor/css/ekko-lightbox.css');
   app.import('vendor/css/jquery.timepicker.min.css');
+  app.import('vendor/js/jquery.sticky.js');
+
   app.import('vendor/js/jquery.timepicker.min.js');
   app.import('vendor/js/datepair.js');
   app.import('vendor/js/jquery.datepair.js');
@@ -43,8 +46,8 @@ module.exports = function(defaults) {
   app.import('vendor/js/autolink-min.js');
   // app.import('vendor/js/videojs-contrib-hls.js');
   // app.import('vendor/js/video.js');
-  // app.import('vendor/js/bootstrap-datetimepicker.min.js');
-  //app.import('vendor/css/bootstrap-datetimepicker.min.css');
+  app.import('vendor/js/bootstrap-datepicker.min.js');
+  app.import('vendor/css/bootstrap-datepicker.min.css');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

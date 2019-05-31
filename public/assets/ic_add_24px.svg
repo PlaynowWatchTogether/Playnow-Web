@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-  <path id="ic_add_24px" d="M15,10.714H10.714V15H9.286V10.714H5V9.286H9.286V5h1.429V9.286H15Z" transform="translate(-5 -5)" fill="#fff"/>
-</svg>
+<svg height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg"><path d="m15 10.714h-4.286v4.286h-1.428v-4.286h-4.286v-1.428h4.286v-4.286h1.429v4.286h4.285z" fill="#fff" transform="translate(-5 -5)"/></svg>

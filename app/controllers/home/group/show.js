@@ -11,7 +11,7 @@ import CreateEventMixin from '../../../mixins/create-event-mixin';
 import SearchVideoResult from '../../../custom-objects/search-video-result';
 import moment from 'moment';
 import { get } from '@ember/object';
-import $ from 'jquery';
+// import $ from 'jquery';
 import FeedModelWrapper from '../../../custom-objects/feed-model-wrapper';
 import FeedEventModelWrapper from '../../../custom-objects/feed-event-model-wrapper';
 export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {

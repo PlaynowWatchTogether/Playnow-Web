@@ -183,9 +183,13 @@ export default Controller.extend(MessagingUploadsHandler, MessagingMessageHelper
     }
   },
   messageConvId(){
-    const dsConv = this.get('dataSource').convId();
-    const type = this.get('model.type');
-    return `${dsConv}-${type}`;
+    const ds = this.get('dataSource');
+    if (ds){
+      const dsConv = ds.convId();
+      const type = this.get('model.type');
+      return `${dsConv}-${type}`;
+    }
+    return '';
   },
   isGroup: computed('model', function(){
     return this.get('model.type') === 'group';

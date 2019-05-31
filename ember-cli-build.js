@@ -11,6 +11,15 @@ module.exports = function(defaults) {
       enabled: true,
       exclude:['assets/gcm-icon.png'],
       generateAssetMap: true
+    },
+    'ember-cli-uglify': {
+      enabled: true
+    },
+    minifyJS: {
+      enabled: true
+    },
+    minifyCSS: {
+      enabled: true
     }
     // nodeModulesToVendor: [
     //   'node_modules/ntp-time-sync/dist/index.js'
@@ -27,6 +36,11 @@ module.exports = function(defaults) {
   app.import('vendor/js/dotdotdot.js');
   app.import('vendor/js/oauth-1.0a.js');
   app.import('vendor/js/crypto-js.js');
+  // app.import('vendor/js/webrtc_adaptor.js')
+  app.import('vendor/js/RTCMultiConnection.min.js');
+  app.import('vendor/js/adapter.js');
+  app.import('vendor/js/socket.io.js');
+  app.import('vendor/js/autolink-min.js');
   // app.import('vendor/js/bootstrap-datetimepicker.min.js');
   //app.import('vendor/css/bootstrap-datetimepicker.min.css');
 

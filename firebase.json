@@ -13,13 +13,6 @@
         "destination": "/index.html"
       }
     ],
-    "redirects":[
-      {
-       "source": "/404",
-       "destination": "/404.html",
-       "type": 301
-      }
-    ],
     "headers": [
       {
         "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
@@ -35,7 +28,7 @@
         "headers": [
           {
             "key": "Cache-Control",
-            "value": "max-age=0"
+            "value": "max-age=604800, public"
           }
         ]
       }

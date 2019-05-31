@@ -24,7 +24,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.publicFeeds());
-          },100);
+          },1000);
 
         });
       }
@@ -36,7 +36,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.discoverFeeds());
-          },100);
+          },1000);
 
         });
       }
@@ -48,7 +48,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.myFeeds());
-          },100);
+          },1000);
 
         });
       }
@@ -60,7 +60,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.followedFeeds());
-          },100);
+          },1000);
 
         });
       }
@@ -71,7 +71,7 @@ export default Controller.extend({
         return new Promise((resolve)=>{
           setTimeout(()=>{
             resolve(this.get('sortedUserFeed'));
-          },100);
+          },1000);
         });
       },
       loadCompleted: (empty)=>{

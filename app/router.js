@@ -20,7 +20,7 @@ Router.map(function() {
   });
   this.route('search', {path: '/search/:query'});
   this.route('mobile');
-  this.route('404');
+  // this.route('404');
   this.route('auth');
   this.route('help', function(){
     this.route('about')
@@ -33,8 +33,8 @@ Router.map(function() {
     this.route('branding');
     this.route('support-show',{path: '/support/:topic'});
     this.route('support');
-
   });
+  this.route('notfound', { path: '/*path' });
 });
 
 export default Router;

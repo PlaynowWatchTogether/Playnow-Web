@@ -12,15 +12,15 @@ module.exports = function(defaults) {
       exclude:['assets/gcm-icon.png'],
       generateAssetMap: true
     },
-    'ember-cli-uglify': {
-      enabled: true
-    },
-    minifyJS: {
-      enabled: true
-    },
-    minifyCSS: {
-      enabled: true
-    }
+    // 'ember-cli-uglify': {
+    //   enabled: true
+    // },
+    // minifyJS: {
+    //   enabled: true
+    // },
+    // minifyCSS: {
+    //   enabled: true
+    // }
     // nodeModulesToVendor: [
     //   'node_modules/ntp-time-sync/dist/index.js'
     // ]
@@ -41,6 +41,8 @@ module.exports = function(defaults) {
   app.import('vendor/js/adapter.js');
   app.import('vendor/js/socket.io.js');
   app.import('vendor/js/autolink-min.js');
+  // app.import('vendor/js/videojs-contrib-hls.js');
+  // app.import('vendor/js/video.js');
   // app.import('vendor/js/bootstrap-datetimepicker.min.js');
   //app.import('vendor/css/bootstrap-datetimepicker.min.css');
 

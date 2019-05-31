@@ -18,20 +18,11 @@ export default ArrayProxy.extend({
   }),
   reload(){
     this.set('isLoading', true);
-    const old = this.get('cache');
-    if (old){
-      setTimeout(()=>{
-        this.setObjects(old);
-        this.set('isLoading',false);
-
-      },200);
-    }else{
-      this.load(true);
-    }
+    this.load(true);
   },
   beforeReload(){
-    this.set('cache',this.toArray());
     this.setObjects([]);
+    this.notifyPropertyChange('items');
   },
   load(reset){
     if (reset){

@@ -432,7 +432,6 @@ $post-content-width: 63.8%;
 
                   @include feed-post-content;
                   width: $post-content-width;
-                  margin-right: 18px;
                   padding-left: 0;
                   padding-right: 0px;
                   .post-author-pic{
@@ -623,8 +622,7 @@ $post-content-width: 63.8%;
               margin-bottom: 20px;
               flex-direction: column;
               box-shadow: $message-shadow;
-              width: $post-content-width;
-              margin-right: 18px;
+              width: $post-content-width;              
               font-size: 95%;
               .feed-post {
                 width: 100%;

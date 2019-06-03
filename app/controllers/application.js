@@ -21,6 +21,20 @@ export default Controller.extend(UUIDGenerator, {
     addObserver(this.get('db'),'currentUser',this,'dbCurrentUser');
 
     this.addObserver('model', this, 'modelObserver');
+    var firebaseConfig = {
+      apiKey: "AIzaSyB2wa-7D0HZTsSwFNXkUSWs7o-kGl0ku-0",
+      authDomain: "goldenfingers1-b95ba.firebaseapp.com",
+      databaseURL: "https://playnow-test.firebaseio.com",
+      projectId: "goldenfingers1-b95ba",
+      storageBucket: "goldenfingers1-b95ba.appspot.com",
+      messagingSenderId: "491254045283",
+      appId: "1:491254045283:web:9ab7392abc8b6ff5"
+    };
+
+  // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var perf = window.firebase.performance();
+
   },
   dbCurrentUser(){
     this.set('model',this.get('db.currentUser'));

@@ -12,15 +12,15 @@ module.exports = function(defaults) {
       exclude:['assets/gcm-icon.png'],
       generateAssetMap: true
     },
-    'ember-cli-uglify': {
-      enabled: true
-    },
-    minifyJS: {
-      enabled: true
-    },
-    minifyCSS: {
-      enabled: true
-    }
+    // 'ember-cli-uglify': {
+    //   enabled: true
+    // },
+    // minifyJS: {
+    //   enabled: true
+    // },
+    // minifyCSS: {
+    //   enabled: true
+    // }
   });
   app.import('vendor/js/jquery.min.js');
   app.import('vendor/js/jquery-ui.min.js');

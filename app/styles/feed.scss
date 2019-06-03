@@ -168,6 +168,7 @@
 								@include iconned-button(#5AB9FF, 19px, 100%, 5px);
 							}
 						}
+
 						.follower-item-feed-title{
 							margin-left: 20px;
 							margin-top: 10px;
@@ -211,7 +212,14 @@
 						display: grid;
 						grid-template-rows: repeat(auto-fit, 100px);
 						grid-row-gap: 10px;
-
+						.empty{
+							min-height: 60px;
+							text-align: center;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							color: #CECECE;
+						}
 						.follower {
 							@include follower-user-request;
 						}

@@ -279,7 +279,8 @@
       .feed-event-body{
         margin-left: 20px;
         .feed-event-pic{
-          margin-left: -20px
+          margin-left: -20px;
+          overflow: hidden;
         }
         .feed-event-header{
           .feed-event-title{

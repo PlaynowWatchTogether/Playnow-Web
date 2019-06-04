@@ -14,6 +14,7 @@ import { get } from '@ember/object';
 // import J from 'jquery';
 import FeedModelWrapper from '../../../custom-objects/feed-model-wrapper';
 import FeedEventModelWrapper from '../../../custom-objects/feed-event-model-wrapper';
+import UserFeedPager from '../../../custom-objects/user-feed-pager';
 export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper, MessagingMessagePager, CreateEventMixin, {
   firebaseApp: service(),
   db: service(),
@@ -22,8 +23,51 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
     this._super(...arguments);
     this.set('feed', FeedModelWrapper.create({content:null}));
     this.addObserver('model', this, 'modelObserver');
+    this.addObserver('feed', this, 'feedObserver');
     this.addObserver('dataSource', this, 'dsObserver');
     this.set('messageText','');
+    this.set('currentFeedEvents', UserFeedPager.create({
+      content: [],
+      limit: -1,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            const feed = this.get('feed');
+            var elems = [];
+            if (feed){
+              elems = this.store.peekAll('feed-event').filter((elem)=>{
+                return elem.get('feedId') === get(feed,'id') && !elem.get('isPast');
+              });
+            }else{
+              elems = [];
+            }
+            resolve(elems);
+          },1000);
+
+        });
+      }
+    }));
+    this.set('pastFeedEvents', UserFeedPager.create({
+      content: [],
+      limit: -1,
+      loadHandler: ()=>{
+        return new Promise((resolve)=>{
+          setTimeout(()=>{
+            const feed = this.get('feed');
+            var elems = [];
+            if (feed){
+              elems = this.store.peekAll('feed-event').filter((elem)=>{
+                return elem.get('feedId') === get(feed,'id') && elem.get('isPast');
+              });
+            }else{
+              elems = [];
+            }
+            resolve(elems);
+          },1000);
+
+        });
+      }
+    }));
   },
   modelObserver(obj){
     obj.handleModelChange();
@@ -40,6 +84,13 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   membersOnline: computed('feed.videoWatching', function(){
     return this.get('feed.membersOnline');
   }),
+  activate(){
+
+  },
+  feedObserver(obj){
+    this.get('pastFeedEvents').load(false);
+    this.get('currentFeedEvents').load(false);
+  },
   handleModelChange(){
     $('body').on('click.title-click', '.feed-content .feed-title', ()=>{
       $('.feed-messages-holder').scrollTop(0);
@@ -54,35 +105,20 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
       }
       debug('key up');
     });
-    const id = this.get('model.group_id');
-    const ds = FeedGroupSource.create({
-      db: this.get('db'),
-      firebaseApp: this.get('firebaseApp'),
-      auth: this.get('auth'),
-      feedId: id
+    new Promise((resolve)=>{
+      const id = this.get('model.group_id');
+      const ds = FeedGroupSource.create({
+        db: this.get('db'),
+        firebaseApp: this.get('firebaseApp'),
+        auth: this.get('auth'),
+        feedId: id
+      });
+      resolve(ds)
+    }).then((ds)=>{
+      this.set('dataSource', ds);
     });
-    this.set('dataSource', ds);
   },
-  currentFeedEvents: computed('feed', function(){
-    const feed = this.get('feed');
-    if (feed){
-      return this.store.peekAll('feed-event').filter((elem)=>{
-        return elem.get('feedId') === get(feed,'id') && !elem.get('isPast');
-      });
-    }else{
-      return [];
-    }
-  }),
-  pastFeedEvents: computed('feed', function(){
-    const feed = this.get('feed');
-    if (feed){
-      return this.store.peekAll('feed-event').filter((elem)=>{
-        return elem.get('feedId') === get(feed,'id') && elem.get('isPast');
-      });
-    }else{
-      return [];
-    }
-  }),
+
   isAdmin: computed('feed', function(){
     const myId = this.get('db').myId();
     return this.get('feed.creatorId') === myId || Object.keys(this.get('feed.Admins')||{}).includes(this.db.myId());;
@@ -147,37 +183,52 @@ export default Controller.extend(MessaginUploadsHandler, MessagingMessageHelper,
   }),
 
   handleDSChange(){
+    this.set('loadingFeed',true);
+    setTimeout(()=>{
+      this.dataSource.listen(this.dataSource.feedId, (feed)=>{
+        this.set('feed.content', feed);
+        this.notifyPropertyChange('feed');
+        this.set('lastMessageDate',get(feed,'lastMessageDate'));
+        this.get('pastFeedEvents').load(false);
+        this.get('currentFeedEvents').load(false);
+        this.set('loadingFeed',false);
+      });
+      this.dataSource.open(this.dataSource.feedId);
+      this.set('isLoadingMessages',true);
+      this.dataSource.messages(this.dataSource.feedId, (messages)=>{
+        debug("Messages updated");
+        new Promise((resolve)=>{
+          const converted = this.convertServerMessagesToUI(messages,this.messageConvId(),{skipDate: true});
+          const wrappedMessages = converted.messages;
+          const uiMessages = [];
+          wrappedMessages.forEach((mesCntent)=>{
+            let normalizedData = this.store.normalize('thread-message', {
+              id: mesCntent.id,
+              convoId: mesCntent.convId,
+              isMessage: mesCntent.isMessage,
+              isDate: mesCntent.isDate,
+              rawData: JSON.stringify(mesCntent)
+            });
 
-    this.dataSource.listen(this.dataSource.feedId, (feed)=>{
-      this.set('feed.content', feed);
-      this.notifyPropertyChange('feed');
-      this.set('lastMessageDate',get(feed,'lastMessageDate'));
-    });
-    this.dataSource.open(this.dataSource.feedId);
-    this.dataSource.messages(this.dataSource.feedId, (messages)=>{
-      const converted = this.convertServerMessagesToUI(messages,this.messageConvId(),{skipDate: true});
-      const wrappedMessages = converted.messages;
-      const uiMessages = [];
-      wrappedMessages.forEach((mesCntent)=>{
+            this.store.push(normalizedData);
 
-        let normalizedData = this.store.normalize('thread-message', {
-          id: mesCntent.id,
-          convoId: mesCntent.convId,
-          isMessage: mesCntent.isMessage,
-          isDate: mesCntent.isDate,
-          rawData: JSON.stringify(mesCntent)
+            uiMessages.push(MessageObject.create({
+              content: mesCntent
+            }));
+          });
+          resolve(uiMessages);
+        }).then((uiMessages)=>{
+          setTimeout(()=>{
+            this.set('blockAutoscroll', false);
+            this.set('isLoadingMessages', false);
+            this.updateMessages(uiMessages);
+          },500);
+
         });
 
-        this.store.push(normalizedData);
 
-        uiMessages.push(MessageObject.create({
-          content: mesCntent
-        }));
       });
-      this.set('blockAutoscroll', false);
-      this.set('isLoadingMessages', false);
-      this.updateMessages(uiMessages);
-    });
+    },500);
   },
   reset(){
     $('body').off('click.title-click');

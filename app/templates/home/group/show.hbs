@@ -18,109 +18,113 @@
           <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
         {{/link-to}}
         <div class="feed-header">
-          <div class="feed-header-body {{if editFeed "edit"}}">
-            <div class="feed-pic-holder">
-              <div class="feed-pic {{if feed.isPlaying "active"}}">
-                <div class="pic-holder">
-                  <div class="profilePicWrapper">
-                    {{#file-upload name="feedPic"
-                                   disabled=disableProfilePicChange
-                                   accept="image/*"
-                                   onfileadd=(action "updateFeedPic")}}
-                      <img src={{safe-profile-pic feed.ProfilePic 'group'}} class="profilePic" alt="ProfilePic">
-                    {{/file-upload}}
-                    {{#unless disableProfilePicChange}}
-                      <div class="hover">
-                        <span>
-                          Change
-                        </span>
-                      </div>
-                    {{/unless}}
+          {{#if loadingFeed}}
+            {{loading-view}}
+          {{else}}
+            <div class="feed-header-body {{if editFeed "edit"}}">
+              <div class="feed-pic-holder">
+                <div class="feed-pic {{if feed.isPlaying "active"}}">
+                  <div class="pic-holder">
+                    <div class="profilePicWrapper">
+                      {{#file-upload name="feedPic"
+                                     disabled=disableProfilePicChange
+                                     accept="image/*"
+                                     onfileadd=(action "updateFeedPic")}}
+                        <img src={{safe-profile-pic feed.ProfilePic 'group'}} class="profilePic" alt="ProfilePic">
+                      {{/file-upload}}
+                      {{#unless disableProfilePicChange}}
+                        <div class="hover">
+                          <span>
+                            Change
+                          </span>
+                        </div>
+                      {{/unless}}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="feed-middle {{if editFeed "edit"}}">
-              {{#if editFeed}}
-                <div class="feed-edit-save" {{action "saveEdit"}} role="button">
-                  Done
-                </div>
-                <div class="feed-title-edit">
-                  <span>@</span>
-                  {{input value=feedTitle classNames="edit" placeholder="Channel name" maxlength=50}}
-                </div>
-                <div class="feed-description-edit">
-                  {{textarea value=feedDescription classNames="edit" placeholder="Description" maxlength=150}}
-                </div>
-              {{else}}
-                {{#if isAdmin}}
-                  <div class="feed-edit" {{action "enableEdit"}} role="button">
-                    <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
-                  </div>
-                {{/if}}
-                <div class="feed-title noselect">
-                  <span class="at">
-                    @
-                  </span>
-                  {{feed.GroupName}}
-                </div>
-
-                <div class="feed-description">
-                  {{#if feed.GroupDescription}}
-                    {{#text-truncator classNames="feed-description-truncated" height=90}}
-                      <p>{{feed.GroupDescription}}</p>
-                    {{/text-truncator}}
-                  {{else}}
-                    <div class="empty">No description added</div>
-                  {{/if}}
-                </div>
-
-              {{/if}}
-              <div class="feed-admins-root">
-                <div class="label">ADMINS</div>
-                <div class="users">
-                  {{#each groupAdmins as |admin|}}
-                    {{feed-details-admin-item model=admin.id classNames="feed-admin-item"}}
-                  {{/each}}
-                </div>
+              <div class="feed-middle {{if editFeed "edit"}}">
                 {{#if editFeed}}
-                  <div class="feed-admins-edit" {{action "displayAdmins"}} role="button">
-                    <img src="/assets/ic_plus@2x.png" alt="icon">
-                    <div>Add Admin</div>
+                  <div class="feed-edit-save" {{action "saveEdit"}} role="button">
+                    Done
                   </div>
-                {{/if}}
-              </div>
-            </div>
-            <div class="feed-info">
-              <div class="feed-views">
-                <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
-                <div class="label">{{groupViews}}</div>
-              </div>
-              <div class="feed-actions">
-                {{#if isOwner}}
-                  <div class="action-follow-request">
-                    Owner
+                  <div class="feed-title-edit">
+                    <span>@</span>
+                    {{input value=feedTitle classNames="edit" placeholder="Channel name" maxlength=50}}
+                  </div>
+                  <div class="feed-description-edit">
+                    {{textarea value=feedDescription classNames="edit" placeholder="Description" maxlength=150}}
                   </div>
                 {{else}}
-                  {{#if isFollowing}}
-                    <div class="action-following" {{action "unFollowGroup"}} role="button">
-                      <div class="simple">Following</div>
-                      <div class="action">Unfollow</div>
-                    </div>
-                  {{else if isRequestedFollow}}
-                    <div class="action-follow-request">
-                      Requested
-                    </div>
-                  {{else}}
-                    <div class="action-follow" {{action "followGroup"}} role="button">
-                      <img src="/assets/ic_plus@2x.png" alt="icon">
-                      <div>Follow</div>
+                  {{#if isAdmin}}
+                    <div class="feed-edit" {{action "enableEdit"}} role="button">
+                      <img src="/assets/ic_icon_pencil@2x.png" class="edit-img" alt="edit feed">
                     </div>
                   {{/if}}
+                  <div class="feed-title noselect">
+                    <span class="at">
+                      @
+                    </span>
+                    {{feed.GroupName}}
+                  </div>
+
+                  <div class="feed-description">
+                    {{#if feed.GroupDescription}}
+                      {{#text-truncator classNames="feed-description-truncated" height=90}}
+                        <p>{{feed.GroupDescription}}</p>
+                      {{/text-truncator}}
+                    {{else}}
+                      <div class="empty">No description added</div>
+                    {{/if}}
+                  </div>
+
                 {{/if}}
+                <div class="feed-admins-root">
+                  <div class="label">ADMINS</div>
+                  <div class="users">
+                    {{#each groupAdmins as |admin|}}
+                      {{feed-details-admin-item model=admin.id classNames="feed-admin-item"}}
+                    {{/each}}
+                  </div>
+                  {{#if editFeed}}
+                    <div class="feed-admins-edit" {{action "displayAdmins"}} role="button">
+                      <img src="/assets/ic_plus@2x.png" alt="icon">
+                      <div>Add Admin</div>
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+              <div class="feed-info">
+                <div class="feed-views">
+                  <img src="/assets/ic_eye@2x.png" alt="views number" class="views-img">
+                  <div class="label">{{groupViews}}</div>
+                </div>
+                <div class="feed-actions">
+                  {{#if isOwner}}
+                    <div class="action-follow-request">
+                      Owner
+                    </div>
+                  {{else}}
+                    {{#if isFollowing}}
+                      <div class="action-following" {{action "unFollowGroup"}} role="button">
+                        <div class="simple">Following</div>
+                        <div class="action">Unfollow</div>
+                      </div>
+                    {{else if isRequestedFollow}}
+                      <div class="action-follow-request">
+                        Requested
+                      </div>
+                    {{else}}
+                      <div class="action-follow" {{action "followGroup"}} role="button">
+                        <img src="/assets/ic_plus@2x.png" alt="icon">
+                        <div>Follow</div>
+                      </div>
+                    {{/if}}
+                  {{/if}}
+                </div>
               </div>
             </div>
-          </div>
+          {{/if}}
           <div class="feed-header-shadow">
           </div>
           <div class="feed-header-footer">
@@ -133,87 +137,279 @@
             </div>
           </div>
         </div>
-        {{#if isMember}}
-          {{#end-scrollable classNames="feed-messages-holder"
-                            itemTimeSelector=".feed-post-time"
-                            blockScroll=true
-                            handleEnd=true
-                            onScrollChanged=(action "onScrollChanged")
-                            refreshScroll=lastMessageDate
-                            onScrolledHalf=(action "loadMore")
-                            onTopChildChanged=(action "topChildChanged")
-                            scrollChild=".feed-messages-root"}}
-            {{#if isLoadingMessages}}
-              <div class="loading-holder h-100">
-                {{loading-view}}
+        {{#if loadingFeed}}
+        {{else}}
+          {{#if isMember}}
+            {{#end-scrollable classNames="feed-messages-holder"
+                              itemTimeSelector=".feed-post-time"
+                              blockScroll=true
+                              handleEnd=true
+                              onScrollChanged=(action "onScrollChanged")
+                              refreshScroll=lastMessageDate
+                              onScrolledHalf=(action "loadMore")
+                              onTopChildChanged=(action "topChildChanged")
+                              scrollChild=".feed-messages-root"}}
+              {{#if isLoadingMessages}}
+                <div class="loading-holder h-100">
+                  {{loading-view}}
+                </div>
+              {{else}}
+                <div class="feed-post-holder">
+                  {{#if canPost}}
+                    <div class="feed-post-wrapper">
+                      <div class="feed-post {{if uploads "has-uploads"}}">
+                        {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
+                        {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
+                                                  enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
+                        {{#file-upload name="chatPhotos"
+                                       onfileadd=(action "uploadImageToChatAction")}}
+                          <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
+                        {{/file-upload}}
+
+                        <div class="imgHolder">
+
+                          <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
+                        </div>
+                      </div>
+                      {{#if uploads}}
+                        <div class="feed-uploads">
+                          {{#each uploads as |upload|}}
+                            {{chat-upload-item model=upload
+                              onRemove=(action "onRemoveUpload")}}
+                          {{/each}}
+                        </div>
+                      {{/if}}
+                    </div>
+                  {{/if}}
+                </div>
+              {{/if}}
+
+              <div class="feed-messages-root" data-total={{totalMessages}} data-limit={{messagesLimit}}>
+                {{#each filteredMessages as |message|}}
+                  {{#if message.isMessage}}
+                    {{chat-message-post
+                      willShowCommentsForMessage=(action "willShowCommentsForMessage")
+                      postCommentForMessage=(action "postCommentForMessage")
+                      onLikePost=(action "onLikePost")
+                      onLikeComment=(action "onLikeComment")
+                      model=message
+                      classNames="feed-post-item"
+                    }}
+                  {{/if}}
+                  {{#if message.isDate}}
+                    {{chat-message-time model=message.date classNames="feed-post-time"}}
+                  {{/if}}
+                  {{#if message.isLoading}}
+                    {{chat-message-loading classNames="chat-message-loading" model=message.message}}
+                  {{/if}}
+                {{else}}
+                  <div class="empty">
+                    Nothing to show
+                  </div>
+                {{/each}}
+                {{#unless isLoadingMessages}}
+                  <div class="message-scroll-date-holder">
+                    <div class="title">
+                      Today
+                    </div>
+                  </div>
+                {{/unless}}
+                {{#if hasMoreMessages}}
+                  <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+                {{/if}}
               </div>
-            {{else}}
-              <div class="feed-post-holder">
-                {{#if canPost}}
-                  <div class="feed-post-wrapper">
-                    <div class="feed-post {{if uploads "has-uploads"}}">
-                      {{messaging-emoji-picker displayEmoji=displayEmoji onSelectEmoji=(action "selectEmoji") classNames="emoji-picker-holder"}}
-                      {{custom-content-editable value=messageText model=model placeholder="Post a thread..." classNames="messageContent"
-                                                enter=(action "onMessageEnterPress") paste=(action "onTextPaste") allowNewlines=true}}
-                      {{#file-upload name="chatPhotos"
-                                     onfileadd=(action "uploadImageToChatAction")}}
-                        <img src="/assets/attachment@2x.png" alt="icon" class="hovered">
-                      {{/file-upload}}
+            {{/end-scrollable}}
 
-                      <div class="imgHolder">
+          {{else}}
+            <div class="feed-private-group">
+              <div class="label">
+                Private Group
+              </div>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{/file-dropzone}}
+    </div>
 
-                        <div {{action "onMessageEnterPress"}} alt="icon" role="button" class="chat-action-send {{chatActionSendClass}}">Post</div>
+    <div class="feed-sidebar">
+      {{#if loadingFeed}}
+        {{loading-view}}
+      {{else}}
+        {{#if isMember}}
+          <div class="header">
+            <div class="tabs">
+              <ul class="nav nav-pills" id="sidebar-tabs">
+                <li class="nav-item tab-videos">
+                  <a class="nav-link" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
+                     aria-selected="true">
+                    Videos
+                  </a>
+                </li>
+                <li class="nav-item tab-events">
+                  <a class="nav-link active" data-toggle="tab" href="#events" role="tab" aria-controls="events"
+                     aria-selected="true">
+                    Events
+                  </a>
+                </li>
+              </ul>
+            </div>
+            {{#unless creatingEvent}}
+              {{#if isAdmin}}
+                <div class="create-event" {{action "showCreateEvent"}} role="button">
+                  <img src="/assets/calendar.svg" alt="create event">
+                  <div class="label">Create Event</div>
+                </div>
+              {{/if}}
+            {{/unless}}
+          </div>
+          <div class="tab-content h-100">
+            <div class="tab-pane fade" id="videos">
+              {{#chat-videos-list
+                classNames="col-12"
+                scrollParent=".tab-content"
+                displayVideoRequest=displayVideoRequest
+                onVideoPick=(action "videoPick")
+                playlistModel=playlistModel
+                hideVideos=isNotAdmin
+                loadDelay=1000
+                canEditPlaylist=isAdmin
+                onPlaylistAddVideo=(action "playlistVideoAdd")
+                onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
+                {{#if feed.isPlaying}}
+                  {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
+                {{/if}}
+              {{/chat-videos-list}}
+            </div>
+            <div class="tab-pane fade  show active" id="events">
+              {{#if creatingEvent}}
+                <div class="events-create-root">
+                  <div class="back"  {{action "cancelCreateEvent"}} role="button">
+                    <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
+                  </div>
+                  <div class="create-label">
+                    Create Event
+                  </div>
+                  <div class="input-field-group">
+                    <div class="create-title input-field-wrapper {{if newEventErrors.title "with-error"}}">
+                      {{input value=newEvent.title placeholder="Title" classNames="edit" maxlength=50}}
+                      {{#if newEventErrors.title}}
+                        <span class="error">{{newEventErrors.title}}</span>
+                      {{/if}}
+                      <div class="limit">
+                        {{newEvent.title.length}}/50
                       </div>
                     </div>
-                    {{#if uploads}}
-                      <div class="feed-uploads">
-                        {{#each uploads as |upload|}}
-                          {{chat-upload-item model=upload
-                            onRemove=(action "onRemoveUpload")}}
-                        {{/each}}
-                      </div>
+                  </div>
+                  {{#event-create-date-time-picker model=newEvent.date classNames="input-field-group "}}
+                    {{#if newEventErrors.date}}
+                      <span class="error">{{newEventErrors.date}}</span>
                     {{/if}}
+                  {{/event-create-date-time-picker}}
+                  <div class="input-field-group">
+                    <div class="create-field-label">
+                      Event description
+                    </div>
+                    <div class="create-description input-field-wrapper {{if newEventErrors.description "with-error"}}">
+                      {{textarea value=newEvent.description placeholder="This event is for..."  maxlength=150}}
+                      {{#if newEventErrors.description}}
+                        <span class="error">{{newEventErrors.description}}</span>
+                      {{/if}}
+                      {{#if newEventUploads}}
+                        <div class="create-uploads">
+                          {{chat-upload-item model=newEventUploads
+                            onRemove=(action "removeEventPic")}}
+                        </div>
+                      {{else}}
+                        <div class="new-event-pic-btn">
+                          {{#file-upload name="eventPic"
+                                         accept="image/*"
+                                         onfileadd=(action "uploadEventPic")}}
+                            <img src="/assets/attachment@2x.png" role="button" alt="attach">
+                          {{/file-upload}}
+                        </div>
+                      {{/if}}
+                    </div>
+                    <div class="limit">
+                      {{newEvent.description.length}}/150
+                    </div>
                   </div>
-                {{/if}}
-              </div>
-            {{/if}}
+                  <div class="input-field-group">
+                    <div class="create-field-label">
+                      Seats
+                    </div>
+                    <div class="dropdown create-seats input-field-wrapper">
+                      {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
+                                      onChange=(action "onSeatsPick")}}
+                    </div>
+                  </div>
 
-            <div class="feed-messages-root" data-total={{totalMessages}} data-limit={{messagesLimit}}>
-              {{#each filteredMessages as |message|}}
-                {{#if message.isMessage}}
-                  {{chat-message-post
-                    willShowCommentsForMessage=(action "willShowCommentsForMessage")
-                    postCommentForMessage=(action "postCommentForMessage")
-                    onLikePost=(action "onLikePost")
-                    onLikeComment=(action "onLikeComment")
-                    model=message
-                    classNames="feed-post-item"
-                  }}
-                {{/if}}
-                {{#if message.isDate}}
-                  {{chat-message-time model=message.date classNames="feed-post-time"}}
-                {{/if}}
-                {{#if message.isLoading}}
-                  {{chat-message-loading classNames="chat-message-loading" model=message.message}}
-                {{/if}}
-              {{else}}
-                <div class="empty">
-                  Nothing to show
-                </div>
-              {{/each}}
-              {{#unless isLoadingMessages}}
-                <div class="message-scroll-date-holder">
-                  <div class="title">
-                    Today
+                  <div class="create">
+                    <div class="create-btn" {{action "createEvent"}} role="button">
+                      Create
+                    </div>
                   </div>
                 </div>
-              {{/unless}}
-              {{#if hasMoreMessages}}
-                <div class="load-more" role="button" {{action "loadMore"}}>Show more</div>
+              {{else}}
+                {{#if showingOneEvent}}
+                  {{feed-event-show-details
+                    model=showingOneEvent
+                    classNames="events-show-root"
+                    cancelShowEvent=(action "cancelShowEvent")
+                    joinEvent=(action "onJoinEvent")
+                    leaveEvent=(action "onLeaveEvent")
+                    deleteEvent=(action "onDeleteEvent")}}
+                {{else}}
+                  {{#if feed.isPlaying}}
+                    {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
+                  {{/if}}
+                  <div class="events-list-root">
+                    <div class="events-list-label">
+                      Upcoming Events
+                    </div>
+                    {{#each currentFeedEvents.items as |event|}}
+                      {{feed-event-list-item
+                        model=event
+                        isLoading=currentFeedEvents.isLoading
+                        classNames="events-list-item"
+                        onLikePost=(action "onLikeEventPost")
+                        onLikeEventComment=(action "onLikeEventComment")
+                        postCommentForMessage=(action "onPostEventComment")
+                        joinEvent=(action "onJoinEvent")
+                        leaveEvent=(action "onLeaveEvent")
+                        onDetails=(action "openEventDetails")}}
+                    {{else}}
+                      {{#unless currentFeedEvents.isLoading}}
+                        <div class="events-list-empty">
+                          No events
+                        </div>
+                      {{/unless}}
+                    {{/each}}
+                    <div class="events-list-label">
+                      Past Events
+                    </div>
+                    {{#each pastFeedEvents as |event|}}
+                      {{feed-event-list-item
+                        model=event
+                        isLoading=pastFeedEvents.isLoading
+                        classNames="events-list-item"
+                        onLikePost=(action "onLikeEventPost")
+                        onLikeEventComment=(action "onLikeEventComment")
+                        postCommentForMessage=(action "onPostEventComment")
+                        joinEvent=(action "onJoinEvent")
+                        leaveEvent=(action "onLeaveEvent")
+                        onDetails=(action "openEventDetails")}}
+                    {{else}}
+                      {{#unless pastFeedEvents.isLoading}}
+                        <div class="events-list-empty">
+                          No events
+                        </div>
+                      {{/unless}}
+                    {{/each}}
+                  </div>
+                {{/if}}
               {{/if}}
             </div>
-          {{/end-scrollable}}
-
+          </div>
         {{else}}
           <div class="feed-private-group">
             <div class="label">
@@ -221,184 +417,6 @@
             </div>
           </div>
         {{/if}}
-      {{/file-dropzone}}
-    </div>
-
-    <div class="feed-sidebar">
-      {{#if isMember}}
-        <div class="header">
-          <div class="tabs">
-            <ul class="nav nav-pills" id="sidebar-tabs">
-              <li class="nav-item tab-videos">
-                <a class="nav-link" data-toggle="tab" href="#videos" role="tab" aria-controls="videos"
-                   aria-selected="true">
-                  Videos
-                </a>
-              </li>
-              <li class="nav-item tab-events">
-                <a class="nav-link active" data-toggle="tab" href="#events" role="tab" aria-controls="events"
-                   aria-selected="true">
-                  Events
-                </a>
-              </li>
-            </ul>
-          </div>
-          {{#unless creatingEvent}}
-            {{#if isAdmin}}
-              <div class="create-event" {{action "showCreateEvent"}} role="button">
-                <img src="/assets/calendar.svg" alt="create event">
-                <div class="label">Create Event</div>
-              </div>
-            {{/if}}
-          {{/unless}}
-        </div>
-        <div class="tab-content h-100">
-          <div class="tab-pane fade" id="videos">
-            {{#chat-videos-list
-              classNames="col-12"
-              scrollParent=".tab-content"
-              displayVideoRequest=displayVideoRequest
-              onVideoPick=(action "videoPick")
-              playlistModel=playlistModel
-              hideVideos=isNotAdmin
-              canEditPlaylist=isAdmin
-              onPlaylistAddVideo=(action "playlistVideoAdd")
-              onPlaylistRemoveVideo=(action "playlistVideoRemove")}}
-              {{#if feed.isPlaying}}
-                {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
-              {{/if}}
-            {{/chat-videos-list}}
-          </div>
-          <div class="tab-pane fade  show active" id="events">
-            {{#if creatingEvent}}
-              <div class="events-create-root">
-                <div class="back"  {{action "cancelCreateEvent"}} role="button">
-                  <img class="back-icon" src="/assets/ic_arrow_back_flipped@2x.png" alt="icon">
-                </div>
-                <div class="create-label">
-                  Create Event
-                </div>
-                <div class="input-field-group">
-                  <div class="create-title input-field-wrapper {{if newEventErrors.title "with-error"}}">
-                    {{input value=newEvent.title placeholder="Title" classNames="edit" maxlength=50}}
-                    {{#if newEventErrors.title}}
-                      <span class="error">{{newEventErrors.title}}</span>
-                    {{/if}}
-                    <div class="limit">
-                      {{newEvent.title.length}}/50
-                    </div>
-                  </div>
-                </div>
-                {{#event-create-date-time-picker model=newEvent.date classNames="input-field-group "}}
-                  {{#if newEventErrors.date}}
-                    <span class="error">{{newEventErrors.date}}</span>
-                  {{/if}}
-                {{/event-create-date-time-picker}}
-                <div class="input-field-group">
-                  <div class="create-field-label">
-                    Event description
-                  </div>
-                  <div class="create-description input-field-wrapper {{if newEventErrors.description "with-error"}}">
-                    {{textarea value=newEvent.description placeholder="This event is for..."  maxlength=150}}
-                    {{#if newEventErrors.description}}
-                      <span class="error">{{newEventErrors.description}}</span>
-                    {{/if}}
-                    {{#if newEventUploads}}
-                      <div class="create-uploads">
-                        {{chat-upload-item model=newEventUploads
-                          onRemove=(action "removeEventPic")}}
-                      </div>
-                    {{else}}
-                      <div class="new-event-pic-btn">
-                        {{#file-upload name="eventPic"
-                                       accept="image/*"
-                                       onfileadd=(action "uploadEventPic")}}
-                          <img src="/assets/attachment@2x.png" role="button" alt="attach">
-                        {{/file-upload}}
-                      </div>
-                    {{/if}}
-                  </div>
-                  <div class="limit">
-                    {{newEvent.description.length}}/150
-                  </div>
-                </div>
-                <div class="input-field-group">
-                  <div class="create-field-label">
-                    Seats
-                  </div>
-                  <div class="dropdown create-seats input-field-wrapper">
-                    {{custom-select model=newEventSeatsDropdown selected=newEventSeats classNames="edit select-seats"
-                                    onChange=(action "onSeatsPick")}}
-                  </div>
-                </div>
-
-                <div class="create">
-                  <div class="create-btn" {{action "createEvent"}} role="button">
-                    Create
-                  </div>
-                </div>
-              </div>
-            {{else}}
-              {{#if showingOneEvent}}
-                {{feed-event-show-details
-                  model=showingOneEvent
-                  classNames="events-show-root"
-                  cancelShowEvent=(action "cancelShowEvent")
-                  joinEvent=(action "onJoinEvent")
-                  leaveEvent=(action "onLeaveEvent")
-                  deleteEvent=(action "onDeleteEvent")}}
-              {{else}}
-                {{#if feed.isPlaying}}
-                  {{feed-item-details-playing model=feed classNames="feed-sidebar-playing-root" joinLive=(action "joinLive" bubbles=false)}}
-                {{/if}}
-                <div class="events-list-root">
-                  <div class="events-list-label">
-                    Upcoming Events
-                  </div>
-                  {{#each currentFeedEvents as |event|}}
-                    {{feed-event-list-item
-                      model=event
-                      classNames="events-list-item"
-                      onLikePost=(action "onLikeEventPost")
-                      onLikeEventComment=(action "onLikeEventComment")
-                      postCommentForMessage=(action "onPostEventComment")
-                      joinEvent=(action "onJoinEvent")
-                      leaveEvent=(action "onLeaveEvent")
-                      onDetails=(action "openEventDetails")}}
-                  {{else}}
-                    <div class="events-list-empty">
-                      No events
-                    </div>
-                  {{/each}}
-                  <div class="events-list-label">
-                    Past Events
-                  </div>
-                  {{#each pastFeedEvents as |event|}}
-                    {{feed-event-list-item
-                      model=event
-                      classNames="events-list-item"
-                      onLikePost=(action "onLikeEventPost")
-                      onLikeEventComment=(action "onLikeEventComment")
-                      postCommentForMessage=(action "onPostEventComment")
-                      joinEvent=(action "onJoinEvent")
-                      leaveEvent=(action "onLeaveEvent")
-                      onDetails=(action "openEventDetails")}}
-                  {{else}}
-                    <div class="events-list-empty">
-                      No events
-                    </div>
-                  {{/each}}
-                </div>
-              {{/if}}
-            {{/if}}
-          </div>
-        </div>
-      {{else}}
-        <div class="feed-private-group">
-          <div class="label">
-            Private Group
-          </div>
-        </div>
       {{/if}}
     </div>
   </div>

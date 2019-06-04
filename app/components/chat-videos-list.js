@@ -29,7 +29,16 @@ export default Component.extend(VideoSearchMixin, {
   }),
   didInsertElement(){
     this._super(...arguments);
-    this.queryVideos(true);
+    const delay = this.get('loadDelay');
+    if (delay){
+      this.set('loadingVideo', true);
+      setTimeout(()=>{
+        this.queryVideos(true);
+      },delay);
+    }else{
+      this.queryVideos(true);
+    }
+
   },
   actions:{
     scrolledHalfYoutubeVideo() {
